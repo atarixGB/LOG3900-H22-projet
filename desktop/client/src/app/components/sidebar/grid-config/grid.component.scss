@@ -1,0 +1,59 @@
+.section {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+}
+
+hr {
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid #cfcfcf;
+    width: 100%;
+    margin: 0;
+}
+
+ 
+::ng-deep .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-bar {
+    background-color: orangered;
+}
+
+::ng-deep .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-thumb {
+    background-color: orangered;
+}
+
+.attributeContainer {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    width: 80%;
+    justify-content: space-between;
+}
+
+.attributeContainer input {
+    width: 30%;
+    line-height: 20px;
+}
+
+
+
+p {
+    margin: 5px 0px 0px 0px;
+    font-size: 12px;
+}
+
+hr {
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid #cfcfcf;
+    width: 100%;
+}
+
+
+
+h3 {
+    text-align: center;
+    letter-spacing: 3px;
+    text-shadow: 1px 1px 5px rgb(27, 27, 27);
+}

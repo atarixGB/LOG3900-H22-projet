@@ -1,0 +1,25 @@
+<canvas
+    width="40"
+    height="40"
+    [ngStyle]="{ 'background-color': primaryColor.inString }"
+    (click)="openColorPicker(ColorOrder.PrimaryColor)"
+    class="mainColor"
+></canvas>
+<canvas
+    width="40"
+    height="40"
+    [ngStyle]="{ 'background-color': secondaryColor.inString }"
+    (click)="openColorPicker(ColorOrder.SecondaryColor)"
+    class="secondaryColor"
+></canvas>
+<button mat-icon-button (click)="exchangeColorOrder()" id="switchColorButton" matTooltip="Inverser les couleurs" matTooltipPosition="after">
+    <mat-icon>swap_horiz</mat-icon>
+</button>
+<div class="mainColorText">
+    Couleur <br />
+    principale
+</div>
+<div class="secondaryColorText">
+    Couleur <br />
+    secondaire
+</div>
