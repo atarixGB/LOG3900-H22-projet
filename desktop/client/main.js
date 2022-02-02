@@ -13,7 +13,7 @@ function initWindow() {
             nodeIntegration: true,
         },
     });
-
+    
     // Electron Build Path
     appWindow.loadURL(
         url.format({
