@@ -1,0 +1,49 @@
+{
+  "name": "client",
+  "version": "0.0.0",
+  "main": "main.js",
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve",
+    "build": "ng build",
+    "watch": "ng build --watch --configuration development",
+    "test": "ng test",
+    "start:electron": "ng build --base-href ./ && electron .",
+    "build:electron": "ng build --prod && electron-packager . --asar=true --ignore=/node_modules --ignore=/e2e --ignore=/src --overwrite --out=./build"
+  },
+  "private": true,
+  "dependencies": {
+    "@angular/animations": "~13.1.0",
+    "@angular/cdk": "^13.2.1",
+    "@angular/common": "~13.1.0",
+    "@angular/compiler": "~13.1.0",
+    "@angular/core": "~13.1.0",
+    "@angular/flex-layout": "^13.0.0-beta.38",
+    "@angular/forms": "~13.1.0",
+    "@angular/material": "^13.2.1",
+    "@angular/platform-browser": "~13.1.0",
+    "@angular/platform-browser-dynamic": "~13.1.0",
+    "@angular/router": "~13.1.0",
+    "angular-material": "^1.2.4",
+    "rxjs": "~7.4.0",
+    "socket.io-client": "^4.4.1",
+    "tslib": "^2.3.0",
+    "zone.js": "~0.11.4"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "^13.2.1",
+    "@angular/cli": "~13.1.4",
+    "@angular/compiler-cli": "~13.1.0",
+    "@types/jasmine": "~3.10.0",
+    "@types/node": "^12.11.1",
+    "electron": "^17.0.0",
+    "electron-packager": "^15.4.0",
+    "jasmine-core": "~3.10.0",
+    "karma": "~6.3.0",
+    "karma-chrome-launcher": "~3.1.0",
+    "karma-coverage": "~2.1.0",
+    "karma-jasmine": "~4.0.0",
+    "karma-jasmine-html-reporter": "~1.7.0",
+    "typescript": "~4.5.2"
+  }
+}
