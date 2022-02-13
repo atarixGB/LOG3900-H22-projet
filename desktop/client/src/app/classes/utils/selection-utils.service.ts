@@ -6,11 +6,8 @@ import { DrawingService } from '@app/services/drawing/drawing.service';
 import { ResizeSelectionService } from '@app/services/selection/resize-selection.service';
 import { EllipseService } from '@app/services/tools/ellipse/ellipse.service';
 import { RectangleService } from '@app/services/tools/rectangle/rectangle.service';
-import { LassoService } from '@app/services/tools/selection/lasso/lasso.service';
 
 const SELECTION_DEFAULT_LINE_THICKNESS = 3;
-const PIXEL_LENGTH = 4;
-const MAX_RGB = 255;
 
 @Injectable({
     providedIn: 'root',
@@ -32,7 +29,6 @@ export class SelectionUtilsService {
         private drawingService: DrawingService,
         private rectangleService: RectangleService,
         private ellipseService: EllipseService,
-        private lassoService: LassoService,
         private resizeSelectionService: ResizeSelectionService,
     ) {
         this.cleanedUnderneath = false;
@@ -97,8 +93,6 @@ export class SelectionUtilsService {
             this.rectangleService.drawShape(this.drawingService.previewCtx);
         }
 
-        if (selection.isLasso) this.lassoService.drawPolygon(this.drawingService.previewCtx, selection.origin);
-
         this.createControlPoints(selection);
     }
 
@@ -145,21 +139,6 @@ export class SelectionUtilsService {
             );
             this.drawingService.baseCtx.fill();
             this.drawingService.baseCtx.closePath();
-        } else if (selection.isLasso) {
-            const imageData = selection.clearImageDataPolygon.data;
-            let pixelCounter = 0;
-
-            for (let i = selection.origin.y; i < selection.origin.y + selection.height; i++) {
-                for (let j = selection.origin.x; j < selection.origin.x + selection.width; j++) {
-                    if (imageData[pixelCounter + PIXEL_LENGTH - 1] !== 0) {
-                        for (let k = 0; k < PIXEL_LENGTH; k++) {
-                            imageData[pixelCounter + k] = MAX_RGB;
-                        }
-                    }
-                    pixelCounter += PIXEL_LENGTH;
-                }
-            }
-            this.lassoService.printPolygon(selection.clearImageDataPolygon, selection);
         } else {
             this.drawingService.baseCtx.fillRect(selection.origin.x, selection.origin.y, selection.width, selection.height);
             this.drawingService.baseCtx.closePath();

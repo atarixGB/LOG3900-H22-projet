@@ -30,14 +30,12 @@ export class DrawingComponent implements AfterViewInit, OnDestroy, OnChanges {
     @ViewChild('previewCanvas', { static: false }) private previewCanvas: ElementRef<HTMLCanvasElement>;
     @ViewChild('cursorCanvas', { static: false }) private cursorCanvas: ElementRef<HTMLCanvasElement>;
     @ViewChild('workingArea', { static: false }) private workingArea: ElementRef<HTMLDivElement>;
-    @ViewChild('lassoPreviewCanvas', { static: false }) private lassoPreviewCanvas: ElementRef<HTMLCanvasElement>;
 
     dragPosition: Vec2;
     canvasSize: Vec2;
     private baseCtx: CanvasRenderingContext2D;
     private previewCtx: CanvasRenderingContext2D;
     private cursorCtx: CanvasRenderingContext2D;
-    private lassoPreviewCtx: CanvasRenderingContext2D;
     private currentDrawing: ImageData;
     private subscription: Subscription;
     private positionX: number;
@@ -64,7 +62,6 @@ export class DrawingComponent implements AfterViewInit, OnDestroy, OnChanges {
                 this.drawingService.baseCtx.beginPath();
                 this.drawingService.baseCtx.clearRect(0, 0, this.canvasSize.x, this.canvasSize.y);
                 this.drawingService.previewCtx.clearRect(0, 0, this.canvasSize.x, this.canvasSize.y);
-                this.drawingService.lassoPreviewCtx.clearRect(0, 0, this.canvasSize.x, this.canvasSize.y);
                 this.whiteBackgroundCanvas();
             }
         });
@@ -268,11 +265,9 @@ export class DrawingComponent implements AfterViewInit, OnDestroy, OnChanges {
         this.baseCtx = this.baseCanvas.nativeElement.getContext('2d') as CanvasRenderingContext2D;
         this.previewCtx = this.previewCanvas.nativeElement.getContext('2d') as CanvasRenderingContext2D;
         this.cursorCtx = this.cursorCanvas.nativeElement.getContext('2d') as CanvasRenderingContext2D;
-        this.lassoPreviewCtx = this.lassoPreviewCanvas.nativeElement.getContext('2d') as CanvasRenderingContext2D;
         this.drawingService.baseCtx = this.baseCtx;
         this.drawingService.previewCtx = this.previewCtx;
         this.drawingService.cursorCtx = this.cursorCtx;
-        this.drawingService.lassoPreviewCtx = this.lassoPreviewCtx;
         this.drawingService.canvas = this.baseCanvas.nativeElement;
         this.keyHandlerService.baseCtx = this.baseCtx;
         this.keyHandlerService.canvasSize = this.canvasSize;
@@ -293,8 +288,7 @@ export class DrawingComponent implements AfterViewInit, OnDestroy, OnChanges {
 
             if (
                 this.toolManagerService.currentToolEnum === ToolList.SelectionRectangle ||
-                this.toolManagerService.currentToolEnum === ToolList.SelectionEllipse ||
-                this.toolManagerService.currentToolEnum === ToolList.Lasso
+                this.toolManagerService.currentToolEnum === ToolList.SelectionEllipse
             ) {
                 if (!this.selectionService.newSelection) {
                     this.toolManagerService.currentTool = this.moveSelectionService;

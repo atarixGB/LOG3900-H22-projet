@@ -25,17 +25,6 @@
         </mat-grid-tile>
         <mat-grid-tile>
             <button
-                [ngClass]="{ active: toolManagerService.currentToolEnum === ToolList.Line }"
-                mat-icon-button
-                matTooltip="Ligne (L)"
-                matTooltipPosition="above"
-                (click)="onTool(ToolList.Line)"
-            >
-                <mat-icon>power_input</mat-icon>
-            </button>
-        </mat-grid-tile>
-        <mat-grid-tile>
-            <button
                 [ngClass]="{ active: toolManagerService.currentToolEnum === ToolList.Rectangle }"
                 mat-icon-button
                 matTooltip="Rectangle (1)"
@@ -98,17 +87,6 @@
                 (click)="onTool(ToolList.SelectionEllipse)"
             >
                 <mat-icon>motion_photos_on</mat-icon>
-            </button>
-        </mat-grid-tile>
-        <mat-grid-tile>
-            <button
-                [ngClass]="{ active: toolManagerService.currentToolEnum === ToolList.Lasso }"
-                mat-icon-button
-                matTooltip="Lasso polygonal (V)"
-                matTooltipPosition="above"
-                (click)="onTool(ToolList.Lasso)"
-            >
-                <mat-icon>signal_cellular_connected_no_internet_0_bar</mat-icon>
             </button>
         </mat-grid-tile>
         <mat-grid-tile></mat-grid-tile>

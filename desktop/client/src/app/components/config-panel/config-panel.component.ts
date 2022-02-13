@@ -16,8 +16,7 @@ export class ConfigPanelComponent {
         if (
             this.toolManagerService.currentToolEnum !== ToolList.Eraser &&
             this.toolManagerService.currentToolEnum !== ToolList.SelectionRectangle &&
-            this.toolManagerService.currentToolEnum !== ToolList.SelectionEllipse &&
-            this.toolManagerService.currentToolEnum !== ToolList.Lasso
+            this.toolManagerService.currentToolEnum !== ToolList.SelectionEllipse
         )
             return true;
         return false;

@@ -5,7 +5,6 @@ import { ToolList } from '@app/interfaces-enums/tool-list';
 import { MoveSelectionService } from '@app/services/selection/move-selection.service';
 import { EllipseService } from './ellipse/ellipse.service';
 import { EraserService } from './eraser/eraser.service';
-import { LineService } from './line/line.service';
 import { PaintBucketService } from './paint-bucket/paint-bucket.service';
 import { PencilService } from './pencil/pencil.service';
 import { PolygonService } from './polygon/polygon.service';
@@ -25,7 +24,6 @@ export class ToolManagerService {
 
     constructor(
         private pencilService: PencilService,
-        private lineService: LineService,
         private eraserService: EraserService,
         private ellipseService: EllipseService,
         private rectangleService: RectangleService,
@@ -44,11 +42,9 @@ export class ToolManagerService {
             .set(ToolList.Rectangle, this.rectangleService)
             .set(ToolList.Polygon, this.polygonService)
             .set(ToolList.Eraser, this.eraserService)
-            .set(ToolList.Line, this.lineService)
             .set(ToolList.SelectionRectangle, this.selectionService)
             .set(ToolList.SelectionEllipse, this.selectionService)
             .set(ToolList.MoveSelection, this.moveSelectionService)
-            .set(ToolList.Lasso, this.selectionService)
             .set(ToolList.PaintBucket, this.paintBucketService)
             .set(ToolList.MoveSelection, this.moveSelectionService)
 
@@ -57,7 +53,6 @@ export class ToolManagerService {
             .set('c', this.pencilService)
             .set('1', this.rectangleService)
             .set('2', this.ellipseService)
-            .set('l', this.lineService)
             .set('e', this.eraserService)
             .set('3', this.polygonService)
             .set('r', this.selectionService)
@@ -84,13 +79,10 @@ export class ToolManagerService {
             this.currentTool = this.keyBindings.get(keyShortcut);
             if (keyShortcut === 's') {
                 this.currentToolEnum = ToolList.SelectionEllipse;
-            } else if (keyShortcut === 'v') {
-                this.currentToolEnum = ToolList.Lasso;
-            } else {
+            }  else {
                 this.currentToolEnum = this.getEnumFromMap(this.serviceBindings, this.currentTool);
             }
             this.isSelectionEllipse();
-            this.isLasso();
         }
     }
 
@@ -101,7 +93,6 @@ export class ToolManagerService {
             this.currentTool = this.serviceBindings.get(tool);
             this.currentToolEnum = tool;
             this.isSelectionEllipse();
-            this.isLasso();
         }
     }
 
@@ -152,13 +143,5 @@ export class ToolManagerService {
             return;
         }
         this.selectionService.isEllipse = false;
-    }
-
-    isLasso(): void {
-        if (this.currentToolEnum === ToolList.Lasso) {
-            this.selectionService.isLasso = true;
-            return;
-        }
-        this.selectionService.isLasso = false;
     }
 }
