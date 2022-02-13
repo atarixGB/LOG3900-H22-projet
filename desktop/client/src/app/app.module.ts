@@ -45,7 +45,6 @@ import { LineConfigComponent } from './components/sidebar/line-config/line-confi
 import { PaintConfigComponent } from './components/sidebar/paint-config/paint-config.component';
 import { SliderComponent } from './components/sidebar/paint-config/slider/slider.component';
 import { PencilConfigComponent } from './components/sidebar/pencil-config/pencil-config.component';
-import { PipetteComponent } from './components/sidebar/pipette-config/pipette.component';
 import { PolygonConfigComponent } from './components/sidebar/polygon-config/polygon-config.component';
 import { RectangleConfigComponent } from './components/sidebar/rectangle-config/rectangle-config.component';
 import { SelectionConfigComponent } from './components/sidebar/selection-config/selection-config.component';
@@ -76,7 +75,6 @@ import { ToolsListComponent } from './components/sidebar/tools-list/tools-list.c
         ColorPopupComponent,
         ConfigPanelComponent,
         ExportModalComponent,
-        PipetteComponent,
         PolygonConfigComponent,
         SelectionConfigComponent,
         SaveDrawingModalComponent,

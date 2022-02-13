@@ -69,17 +69,6 @@
         </mat-grid-tile>
         <mat-grid-tile>
             <button
-                [ngClass]="{ active: toolManagerService.currentToolEnum === ToolList.Pipette }"
-                mat-icon-button
-                matTooltip="Pipette (I)"
-                matTooltipPosition="above"
-                (click)="onTool(ToolList.Pipette)"
-            >
-                <mat-icon>colorize</mat-icon>
-            </button>
-        </mat-grid-tile>
-        <mat-grid-tile>
-            <button
                 [ngClass]="{ active: toolManagerService.currentToolEnum === ToolList.PaintBucket }"
                 mat-icon-button
                 matTooltip="Sceau de peinture (B)"
