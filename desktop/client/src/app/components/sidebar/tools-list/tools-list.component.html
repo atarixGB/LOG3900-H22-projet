@@ -80,17 +80,6 @@
         </mat-grid-tile>
         <mat-grid-tile>
             <button
-                [ngClass]="{ active: toolManagerService.currentToolEnum === ToolList.Spray }"
-                mat-icon-button
-                matTooltip="Aérosol (A)"
-                matTooltipPosition="above"
-                (click)="onTool(ToolList.Spray)"
-            >
-                <mat-icon>blur_on</mat-icon>
-            </button>
-        </mat-grid-tile>
-        <mat-grid-tile>
-            <button
                 [ngClass]="{ active: toolManagerService.currentToolEnum === ToolList.PaintBucket }"
                 mat-icon-button
                 matTooltip="Sceau de peinture (B)"

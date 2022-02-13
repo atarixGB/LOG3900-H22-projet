@@ -3,7 +3,6 @@ import { Tool } from '@app/classes/tool';
 import { Vec2 } from '@app/classes/vec2';
 import { ToolList } from '@app/interfaces-enums/tool-list';
 import { MoveSelectionService } from '@app/services/selection/move-selection.service';
-import { SprayService } from '@app/services/tools/spray/spray.service';
 import { EllipseService } from './ellipse/ellipse.service';
 import { EraserService } from './eraser/eraser.service';
 import { LineService } from './line/line.service';
@@ -34,7 +33,6 @@ export class ToolManagerService {
         private paintBucketService: PaintBucketService,
         private pipetteService: PipetteService,
         private polygonService: PolygonService,
-        private sprayService: SprayService,
         private selectionService: SelectionService,
         private moveSelectionService: MoveSelectionService,
     ) {
@@ -50,7 +48,6 @@ export class ToolManagerService {
             .set(ToolList.Eraser, this.eraserService)
             .set(ToolList.Line, this.lineService)
             .set(ToolList.Pipette, this.pipetteService)
-            .set(ToolList.Spray, this.sprayService)
             .set(ToolList.SelectionRectangle, this.selectionService)
             .set(ToolList.SelectionEllipse, this.selectionService)
             .set(ToolList.MoveSelection, this.moveSelectionService)
@@ -67,7 +64,6 @@ export class ToolManagerService {
             .set('e', this.eraserService)
             .set('i', this.pipetteService)
             .set('3', this.polygonService)
-            .set('a', this.sprayService)
             .set('r', this.selectionService)
             .set('s', this.selectionService)
             .set('v', this.selectionService)

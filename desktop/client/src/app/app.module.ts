@@ -50,7 +50,6 @@ import { PolygonConfigComponent } from './components/sidebar/polygon-config/poly
 import { RectangleConfigComponent } from './components/sidebar/rectangle-config/rectangle-config.component';
 import { SelectionConfigComponent } from './components/sidebar/selection-config/selection-config.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
-import { SprayConfigComponent } from './components/sidebar/spray-config/spray-config.component';
 import { ToolsListComponent } from './components/sidebar/tools-list/tools-list.component';
 
 @NgModule({
@@ -79,7 +78,6 @@ import { ToolsListComponent } from './components/sidebar/tools-list/tools-list.c
         ExportModalComponent,
         PipetteComponent,
         PolygonConfigComponent,
-        SprayConfigComponent,
         SelectionConfigComponent,
         SaveDrawingModalComponent,
         CarouselComponent,
