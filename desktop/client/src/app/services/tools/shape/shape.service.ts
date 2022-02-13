@@ -9,6 +9,7 @@ export abstract class ShapeService extends Tool {
     pathData: Vec2[];
     lineWidth: number;
     selectType: TypeStyle;
+    isSelection: boolean;
     isShiftShape: boolean;
     colorPrime: string;
     colorSecond: string;
@@ -22,6 +23,7 @@ export abstract class ShapeService extends Tool {
         this.lineWidth = DEFAULT_LINE_THICKNESS;
         this.fillValue = false;
         this.strokeValue = false;
+        this.isSelection = false;
         this.selectType = TypeStyle.Stroke;
         this.changeType();
         this.clearPath();
@@ -91,6 +93,13 @@ export abstract class ShapeService extends Tool {
         const filling = this.colorManager.selectedColor[ColorOrder.PrimaryColor].inString;
         const contouring = this.colorManager.selectedColor[ColorOrder.SecondaryColor].inString;
 
+        if (this.isSelection) {
+            ctx.strokeStyle = 'rgb(116, 113, 113)';
+            ctx.fillStyle = 'rgba(116, 113, 113, 0)';
+            ctx.fill();
+            ctx.stroke();
+            return;
+        }
         if (this.strokeValue) {
             ctx.strokeStyle = contouring;
             ctx.fillStyle = 'rgba(255, 0, 0, 0)';

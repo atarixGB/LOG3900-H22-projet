@@ -92,6 +92,7 @@
                     mat-icon-button
                     matTooltip="Annuler (Ctrl+Z)"
                     matTooltipPosition="above"
+                    (click)="this.selectionService.terminateSelection()"
                     (click)="undo()"
                     [disabled]="!undoRedoService.canUndo()"
                 >

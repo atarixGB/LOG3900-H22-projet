@@ -10,6 +10,8 @@ import { DrawingService } from '@app/services/drawing/drawing.service';
 import { ExportService } from '@app/services/export-image/export.service';
 import { KeyHandlerService } from '@app/services/key-handler/key-handler.service';
 import { NewDrawingService } from '@app/services/new-drawing/new-drawing.service';
+import { MoveSelectionService } from '@app/services/selection/move-selection.service';
+import { SelectionService } from '@app/services/tools/selection/selection.service';
 import { ToolManagerService } from '@app/services/tools/tool-manager.service';
 import { DrawingData } from '@common/communication/drawing-data';
 import { Subscription } from 'rxjs';
@@ -42,12 +44,14 @@ export class DrawingComponent implements AfterViewInit, OnDestroy, OnChanges {
 
     constructor(
         public toolManagerService: ToolManagerService,
+        public moveSelectionService: MoveSelectionService,
         public exportService: ExportService,
         public dialog: MatDialog,
         private route: ActivatedRoute,
         private drawingService: DrawingService,
         private cdr: ChangeDetectorRef,
         private newDrawingService: NewDrawingService,
+        private selectionService: SelectionService,
         private autoSaveService: AutoSaveService,
         private keyHandlerService: KeyHandlerService,
     ) {
@@ -125,6 +129,8 @@ export class DrawingComponent implements AfterViewInit, OnDestroy, OnChanges {
         } else {
             this.cursorCtx.clearRect(0, 0, this.cursorCanvas.nativeElement.width, this.cursorCanvas.nativeElement.height);
         }
+
+        this.handleSelectionTool(event);
     }
 
     onMouseDown(event: MouseEvent): void {
@@ -272,6 +278,23 @@ export class DrawingComponent implements AfterViewInit, OnDestroy, OnChanges {
         this.canvasSize = { x: this.workingArea.nativeElement.offsetWidth / 2, y: this.workingArea.nativeElement.offsetHeight / 2 };
         if (this.canvasSize.x < MIN_SIZE || this.canvasSize.y < MIN_SIZE) {
             this.canvasSize = { x: MIN_SIZE, y: MIN_SIZE };
+        }
+    }
+
+    private handleSelectionTool(event: MouseEvent): void {
+        const element = event.target as HTMLElement;
+        if (!element.className.includes('box')) {
+            this.toolManagerService.onMouseMove(event, this.mouseCoord(event));
+
+            if (
+                this.toolManagerService.currentToolEnum === ToolList.SelectionRectangle
+            ) {
+                if (!this.selectionService.newSelection) {
+                    this.toolManagerService.currentTool = this.moveSelectionService;
+                } else {
+                    this.toolManagerService.currentTool = this.selectionService;
+                }
+            }
         }
     }
 

@@ -6,6 +6,7 @@ export enum ToolList {
     Polygon = 6,
     SelectionRectangle = 8,
     PaintBucket = 10,
+    MoveSelection = 12,
     Undo = 13,
     Redo = 14,
 }

@@ -3,6 +3,8 @@ import { SelectionTool } from '@app/classes/selection';
 import { Vec2 } from '@app/classes/vec2';
 import { CONTROLPOINTSIZE } from '@app/constants/constants';
 import { DrawingService } from '@app/services/drawing/drawing.service';
+import { ResizeSelectionService } from '@app/services/selection/resize-selection.service';
+import { EllipseService } from '@app/services/tools/ellipse/ellipse.service';
 import { RectangleService } from '@app/services/tools/rectangle/rectangle.service';
 
 const SELECTION_DEFAULT_LINE_THICKNESS = 3;
@@ -13,28 +15,45 @@ const SELECTION_DEFAULT_LINE_THICKNESS = 3;
 export class SelectionUtilsService {
     controlPointsCoord: Vec2[];
     cleanedUnderneath: boolean;
+    isResizing: boolean;
 
+    private origin: Vec2;
+    private destination: Vec2;
+    private width: number;
+    private height: number;
+    private resizedSelection: SelectionTool;
     private previousLineWidthRectangle: number;
+    private previousLineWidthEllipse: number;
 
     constructor(
         private drawingService: DrawingService,
         private rectangleService: RectangleService,
+        private ellipseService: EllipseService,
+        private resizeSelectionService: ResizeSelectionService,
     ) {
         this.cleanedUnderneath = false;
+        this.isResizing = false;
     }
 
     initializeToolParameters(): void {
         this.previousLineWidthRectangle = this.rectangleService.lineWidth;
+        this.previousLineWidthEllipse = this.ellipseService.lineWidth;
         this.rectangleService.isSelection = true;
+        this.ellipseService.isSelection = true;
         this.rectangleService.lineWidth = SELECTION_DEFAULT_LINE_THICKNESS;
+        this.ellipseService.lineWidth = SELECTION_DEFAULT_LINE_THICKNESS;
+
         this.drawingService.previewCtx.setLineDash([2]);
     }
 
     resetParametersTools(): void {
         this.rectangleService.mouseDown = false;
         this.rectangleService.lineWidth = this.previousLineWidthRectangle;
+        this.ellipseService.mouseDown = false;
+        this.ellipseService.lineWidth = this.previousLineWidthEllipse;
         this.drawingService.previewCtx.setLineDash([0]);
         this.rectangleService.isSelection = false;
+        this.ellipseService.isSelection = false;
     }
 
     mouseInSelectionArea(origin: Vec2, destination: Vec2, mouseCoord: Vec2): boolean {
@@ -62,10 +81,18 @@ export class SelectionUtilsService {
 
     createBoundaryBox(selection: SelectionTool): void {
         this.initializeToolParameters();
-        this.rectangleService.clearPath();
-        this.rectangleService.pathData.push(selection.origin);
-        this.rectangleService.pathData.push(selection.destination);
-        this.rectangleService.drawShape(this.drawingService.previewCtx);
+        if (selection.isEllipse) {
+            this.ellipseService.clearPath();
+            this.ellipseService.pathData.push(selection.origin);
+            this.ellipseService.pathData.push(selection.destination);
+            this.ellipseService.drawShape(this.drawingService.previewCtx);
+        } else {
+            this.rectangleService.clearPath();
+            this.rectangleService.pathData.push(selection.origin);
+            this.rectangleService.pathData.push(selection.destination);
+            this.rectangleService.drawShape(this.drawingService.previewCtx);
+        }
+
         this.createControlPoints(selection);
     }
 
@@ -116,5 +143,37 @@ export class SelectionUtilsService {
             this.drawingService.baseCtx.fillRect(selection.origin.x, selection.origin.y, selection.width, selection.height);
             this.drawingService.baseCtx.closePath();
         }
+    }
+
+    resizeSelection(ctx: CanvasRenderingContext2D, mouseCoord: Vec2, selection: SelectionTool): void {
+        this.resizeSelectionService.onMouseMove(mouseCoord, selection);
+        this.drawingService.clearCanvas(this.drawingService.previewCtx);
+
+        if (!this.cleanedUnderneath) {
+            this.clearUnderneathShape(selection);
+            this.cleanedUnderneath = true;
+        }
+
+        this.resizeSelectionService.printResize(ctx);
+        this.origin = selection.origin;
+        this.width = this.resizeSelectionService.resizeWidth;
+        this.height = this.resizeSelectionService.resizeHeight;
+        this.destination = { x: this.origin.x + this.width, y: this.origin.y + this.height };
+        this.resizedSelection = new SelectionTool(this.origin, this.destination, this.width, this.height);
+        this.createBoundaryBox(this.resizedSelection);
+    }
+
+    endResizeSelection(): SelectionTool {
+        this.isResizing = false;
+        this.cleanedUnderneath = false;
+        this.drawingService.clearCanvas(this.drawingService.previewCtx);
+        this.resizeSelectionService.printResize(this.drawingService.previewCtx);
+
+        this.origin = this.resizeSelectionService.newOrigin;
+        this.width = this.resizeSelectionService.resizeWidth;
+        this.height = this.resizeSelectionService.resizeHeight;
+        this.destination = { x: this.origin.x + this.width, y: this.origin.y + this.height };
+        this.resizedSelection = this.reajustOriginAndDestination(new SelectionTool(this.origin, this.destination, this.width, this.height));
+        return this.resizedSelection;
     }
 }
