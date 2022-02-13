@@ -1,5 +1,5 @@
 import { CdkDragEnd, CdkDragMove } from '@angular/cdk/drag-drop';
-import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, HostListener, OnChanges, OnDestroy, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, OnChanges, OnDestroy, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { Vec2 } from '@app/classes/vec2';
@@ -49,7 +49,6 @@ export class DrawingComponent implements AfterViewInit, OnDestroy, OnChanges {
         public dialog: MatDialog,
         private route: ActivatedRoute,
         private drawingService: DrawingService,
-        private cdr: ChangeDetectorRef,
         private newDrawingService: NewDrawingService,
         private selectionService: SelectionService,
         private autoSaveService: AutoSaveService,
@@ -85,7 +84,6 @@ export class DrawingComponent implements AfterViewInit, OnDestroy, OnChanges {
             };
         }
 
-        this.cdr.detectChanges();
         this.route.params.subscribe((params) => {
             if (params.url) {
                 const img = new Image();
