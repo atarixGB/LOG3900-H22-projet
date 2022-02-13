@@ -5,7 +5,6 @@ import { SelectionUtilsService } from '@app/classes/utils/selection-utils.servic
 import { Vec2 } from '@app/classes/vec2';
 import { MouseButton } from '@app/constants/constants';
 import { DrawingService } from '@app/services/drawing/drawing.service';
-import { MagnetismService } from '@app/services/selection/magnetism.service';
 import { SelectionService } from '@app/services/tools/selection/selection.service';
 import { ResizeSelectionService } from './resize-selection.service';
 
@@ -25,7 +24,6 @@ enum ArrowKeys {
     providedIn: 'root',
 })
 export class MoveSelectionService extends Tool implements OnDestroy {
-    isMagnetism: boolean;
     private selectionObject: SelectionTool;
     private initialMousePosition: Vec2;
     private origin: Vec2;
@@ -38,12 +36,10 @@ export class MoveSelectionService extends Tool implements OnDestroy {
     constructor(
         drawingService: DrawingService,
         private selectionService: SelectionService,
-        private magnetismService: MagnetismService,
         private resizeSelectionService: ResizeSelectionService,
         private selectionUtilsService: SelectionUtilsService,
     ) {
         super(drawingService);
-        this.isMagnetism = false;
         this.keysDown = new Map<ArrowKeys, boolean>();
         this.keysDown.set(ArrowKeys.Up, false).set(ArrowKeys.Down, false).set(ArrowKeys.Left, false).set(ArrowKeys.Right, false);
         this.intervalId = undefined;
@@ -53,10 +49,6 @@ export class MoveSelectionService extends Tool implements OnDestroy {
         if (this.intervalId) {
             clearInterval(this.intervalId);
         }
-    }
-
-    enableMagnetism(isChecked: boolean): void {
-        this.isMagnetism = isChecked;
     }
 
     onMouseDown(event: MouseEvent): void {
@@ -186,9 +178,6 @@ export class MoveSelectionService extends Tool implements OnDestroy {
         const distanceY: number = this.mouseDownCoord.y - this.initialMousePosition.y;
         this.newOrigin = { x: this.origin.x + distanceX, y: this.origin.y + distanceY };
 
-        if (this.isMagnetism) {
-            this.newOrigin = this.magnetismService.activateMagnetism(this.newOrigin, this.selectionService.height, this.selectionService.width);
-        }
         ctx.putImageData(this.selectionData, this.newOrigin.x, this.newOrigin.y);
     }
 
@@ -197,11 +186,6 @@ export class MoveSelectionService extends Tool implements OnDestroy {
         let pixelShiftY = DY;
 
         this.newOrigin = this.selectionService.origin;
-
-        if (this.isMagnetism) {
-            pixelShiftX = this.magnetismService.squareSize;
-            pixelShiftY = this.magnetismService.squareSize;
-        }
 
         if (this.keysDown.get(ArrowKeys.Right)) {
             this.newOrigin.x += pixelShiftX;
@@ -218,9 +202,6 @@ export class MoveSelectionService extends Tool implements OnDestroy {
 
         this.clearUnderneathShape();
         this.drawingService.clearCanvas(ctx);
-        if (this.isMagnetism) {
-            this.newOrigin = this.magnetismService.activateMagnetism(this.newOrigin, this.selectionService.height, this.selectionService.width);
-        }
         ctx.putImageData(this.selectionData, this.newOrigin.x, this.newOrigin.y);
         this.selectionData = ctx.getImageData(this.newOrigin.x, this.newOrigin.y, this.selectionData.width, this.selectionData.height);
         this.origin = this.newOrigin;
