@@ -46,7 +46,6 @@ import { SliderComponent } from './components/sidebar/paint-config/slider/slider
 import { PencilConfigComponent } from './components/sidebar/pencil-config/pencil-config.component';
 import { PolygonConfigComponent } from './components/sidebar/polygon-config/polygon-config.component';
 import { RectangleConfigComponent } from './components/sidebar/rectangle-config/rectangle-config.component';
-import { SelectionConfigComponent } from './components/sidebar/selection-config/selection-config.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { ToolsListComponent } from './components/sidebar/tools-list/tools-list.component';
 
@@ -74,7 +73,6 @@ import { ToolsListComponent } from './components/sidebar/tools-list/tools-list.c
         ConfigPanelComponent,
         ExportModalComponent,
         PolygonConfigComponent,
-        SelectionConfigComponent,
         SaveDrawingModalComponent,
         CarouselComponent,
         CarouselDrawingComponent,
