@@ -14,5 +14,6 @@ coverage/
 #saved-drawings in server
 /server/saved-drawings/
 
-# build folder
+# additional custom folder
 build/
+.angular
