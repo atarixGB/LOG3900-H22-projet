@@ -43,7 +43,6 @@ export class ToolManagerService {
             .set(ToolList.Polygon, this.polygonService)
             .set(ToolList.Eraser, this.eraserService)
             .set(ToolList.SelectionRectangle, this.selectionService)
-            .set(ToolList.SelectionEllipse, this.selectionService)
             .set(ToolList.MoveSelection, this.moveSelectionService)
             .set(ToolList.PaintBucket, this.paintBucketService)
             .set(ToolList.MoveSelection, this.moveSelectionService)
@@ -56,8 +55,6 @@ export class ToolManagerService {
             .set('e', this.eraserService)
             .set('3', this.polygonService)
             .set('r', this.selectionService)
-            .set('s', this.selectionService)
-            .set('v', this.selectionService)
             .set('b', this.paintBucketService)
     }
 
@@ -77,12 +74,7 @@ export class ToolManagerService {
     switchToolWithKeys(keyShortcut: string): void {
         if (this.keyBindings.has(keyShortcut)) {
             this.currentTool = this.keyBindings.get(keyShortcut);
-            if (keyShortcut === 's') {
-                this.currentToolEnum = ToolList.SelectionEllipse;
-            }  else {
-                this.currentToolEnum = this.getEnumFromMap(this.serviceBindings, this.currentTool);
-            }
-            this.isSelectionEllipse();
+            this.currentToolEnum = this.getEnumFromMap(this.serviceBindings, this.currentTool);
         }
     }
 
@@ -92,7 +84,6 @@ export class ToolManagerService {
         if (this.serviceBindings.has(tool)) {
             this.currentTool = this.serviceBindings.get(tool);
             this.currentToolEnum = tool;
-            this.isSelectionEllipse();
         }
     }
 
@@ -137,11 +128,4 @@ export class ToolManagerService {
         if (this.currentTool) this.currentTool.handleKeyUp(event);
     }
 
-    isSelectionEllipse(): void {
-        if (this.currentToolEnum === ToolList.SelectionEllipse) {
-            this.selectionService.isEllipse = true;
-            return;
-        }
-        this.selectionService.isEllipse = false;
-    }
 }

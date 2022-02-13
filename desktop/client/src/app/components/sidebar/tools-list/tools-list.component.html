@@ -78,17 +78,6 @@
                 <mat-icon>crop_free</mat-icon>
             </button>
         </mat-grid-tile>
-        <mat-grid-tile>
-            <button
-                [ngClass]="{ active: toolManagerService.currentToolEnum === ToolList.SelectionEllipse }"
-                mat-icon-button
-                matTooltip="Sélection Ellipse (S)"
-                matTooltipPosition="above"
-                (click)="onTool(ToolList.SelectionEllipse)"
-            >
-                <mat-icon>motion_photos_on</mat-icon>
-            </button>
-        </mat-grid-tile>
         <mat-grid-tile></mat-grid-tile>
     </mat-grid-list>
 </div>

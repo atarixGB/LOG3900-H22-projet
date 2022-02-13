@@ -7,8 +7,6 @@ import { MouseButton } from '@app/constants/constants';
 import { DrawingService } from '@app/services/drawing/drawing.service';
 import { ResizeSelectionService } from '@app/services/selection/resize-selection.service';
 import { RectangleService } from '@app/services/tools//rectangle/rectangle.service';
-import { EllipseService } from '@app/services/tools/ellipse/ellipse.service';
-import { EllipseSelectionService } from '@app/services/tools/selection/ellipse-selection/ellipse-selection.service';
 import { UndoRedoService } from '@app/services/undo-redo/undo-redo.service';
 
 @Injectable({
@@ -19,7 +17,6 @@ export class SelectionService extends Tool {
     origin: Vec2;
     firstOrigin: Vec2;
     destination: Vec2;
-    isEllipse: boolean;
     activeSelection: boolean;
     newSelection: boolean;
     initialSelection: boolean;
@@ -36,14 +33,11 @@ export class SelectionService extends Tool {
     constructor(
         public drawingService: DrawingService,
         private rectangleService: RectangleService,
-        private ellipseService: EllipseService,
-        private ellipseSelectionService: EllipseSelectionService,
         private undoRedoService: UndoRedoService,
         private resizeSelectionService: ResizeSelectionService,
         private selectionUtilsService: SelectionUtilsService,
     ) {
         super(drawingService);
-        this.isEllipse = false;
         this.activeSelection = false;
         this.newSelection = true;
         this.initialSelection = true;
@@ -67,8 +61,7 @@ export class SelectionService extends Tool {
                 return;
             }
 
-            if (this.isEllipse) this.ellipseService.onMouseMove(event);
-            else this.rectangleService.onMouseMove(event);
+            this.rectangleService.onMouseMove(event);
         }
 
         this.handleActiveSelectionOnMouseMove(event);
@@ -84,8 +77,7 @@ export class SelectionService extends Tool {
     }
 
     handleKeyDown(event: KeyboardEvent): void {
-        if (this.isEllipse) this.ellipseService.handleKeyDown(event);
-        else this.rectangleService.handleKeyDown(event);
+        this.rectangleService.handleKeyDown(event);
 
         if (event.key === 'Escape') {
             event.preventDefault();
@@ -104,8 +96,7 @@ export class SelectionService extends Tool {
             this.resizeSelectionService.shiftKey = false;
         }
 
-        if (this.isEllipse) this.ellipseService.handleKeyUp(event);
-        else this.rectangleService.handleKeyUp(event);
+        this.rectangleService.handleKeyUp(event);
     }
 
     selectAll(): void {
@@ -144,8 +135,7 @@ export class SelectionService extends Tool {
         if (this.imageMoved) {
             this.imageMoved = false;
             this.selectionObject.origin = this.origin;
-            if (this.isEllipse) this.ellipseSelectionService.printEllipse(this.selectionObject);
-            else this.drawingService.baseCtx.putImageData(this.selection, this.origin.x, this.origin.y);
+            this.drawingService.baseCtx.putImageData(this.selection, this.origin.x, this.origin.y);
             this.addToUndoStack();
         }
     }
@@ -153,9 +143,6 @@ export class SelectionService extends Tool {
     getSelectionData(ctx: CanvasRenderingContext2D): void {
         this.selection = ctx.getImageData(this.origin.x, this.origin.y, this.width, this.height);
         this.initialseSelectionObject();
-        if (this.isEllipse) {
-            this.selection = this.ellipseSelectionService.checkPixelInEllipse(this.selectionObject);
-        } 
         this.selectionObject.image = this.selection;
     }
 
@@ -186,8 +173,7 @@ export class SelectionService extends Tool {
             this.selectionObject = new SelectionTool({ x: 0, y: 0 }, { x: 0, y: 0 }, 0, 0);
             this.selectionDeleted = false;
 
-            if (this.isEllipse) this.ellipseService.onMouseDown(event);
-            else this.rectangleService.onMouseDown(event);
+            this.rectangleService.onMouseDown(event);
         }
     }
 
@@ -225,13 +211,8 @@ export class SelectionService extends Tool {
     }
 
     private calculateDimension(): void {
-        if (this.isEllipse) {
-            this.origin = this.ellipseService.pathData[0];
-            this.destination = this.ellipseService.pathData[this.ellipseService.pathData.length - 1];
-        }  else {
-            this.origin = this.rectangleService.pathData[0];
-            this.destination = this.rectangleService.pathData[this.rectangleService.pathData.length - 1];
-        }
+        this.origin = this.rectangleService.pathData[0];
+        this.destination = this.rectangleService.pathData[this.rectangleService.pathData.length - 1];
         this.width = this.destination.x - this.origin.x;
         this.height = this.destination.y - this.origin.y;
         this.firstOrigin.x = this.origin.x;
@@ -254,7 +235,6 @@ export class SelectionService extends Tool {
         this.selectionObject.width = this.width;
         this.selectionObject.height = this.height;
         this.selectionObject.image = this.selection;
-        this.selectionObject.isEllipse = this.isEllipse;
     }
 
     private addToUndoStack(): void {

@@ -287,8 +287,7 @@ export class DrawingComponent implements AfterViewInit, OnDestroy, OnChanges {
             this.toolManagerService.onMouseMove(event, this.mouseCoord(event));
 
             if (
-                this.toolManagerService.currentToolEnum === ToolList.SelectionRectangle ||
-                this.toolManagerService.currentToolEnum === ToolList.SelectionEllipse
+                this.toolManagerService.currentToolEnum === ToolList.SelectionRectangle
             ) {
                 if (!this.selectionService.newSelection) {
                     this.toolManagerService.currentTool = this.moveSelectionService;

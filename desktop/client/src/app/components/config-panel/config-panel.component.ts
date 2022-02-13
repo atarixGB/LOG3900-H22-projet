@@ -15,8 +15,7 @@ export class ConfigPanelComponent {
     includesColorConfiguration(): boolean {
         if (
             this.toolManagerService.currentToolEnum !== ToolList.Eraser &&
-            this.toolManagerService.currentToolEnum !== ToolList.SelectionRectangle &&
-            this.toolManagerService.currentToolEnum !== ToolList.SelectionEllipse
+            this.toolManagerService.currentToolEnum !== ToolList.SelectionRectangle 
         )
             return true;
         return false;
