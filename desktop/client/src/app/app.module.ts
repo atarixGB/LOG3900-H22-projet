@@ -52,7 +52,6 @@ import { SelectionConfigComponent } from './components/sidebar/selection-config/
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { SprayConfigComponent } from './components/sidebar/spray-config/spray-config.component';
 import { StampComponent } from './components/sidebar/stamp-config/stamp-config.component';
-import { TextConfigComponent } from './components/sidebar/text-config/text-config.component';
 import { ToolsListComponent } from './components/sidebar/tools-list/tools-list.component';
 
 @NgModule({
@@ -89,7 +88,6 @@ import { ToolsListComponent } from './components/sidebar/tools-list/tools-list.c
         StampComponent,
         PaintConfigComponent,
         SliderComponent,
-        TextConfigComponent,
     ],
     imports: [
         BrowserModule,

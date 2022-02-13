@@ -135,17 +135,6 @@
         </mat-grid-tile>
         <mat-grid-tile>
             <button
-                [ngClass]="{ active: toolManagerService.currentToolEnum === ToolList.Text }"
-                mat-icon-button
-                matTooltip="Texte (T)"
-                matTooltipPosition="above"
-                (click)="onTool(ToolList.Text)"
-            >
-                <mat-icon>title</mat-icon>
-            </button>
-        </mat-grid-tile>
-        <mat-grid-tile>
-            <button
                 [ngClass]="{ active: toolManagerService.currentToolEnum === ToolList.Stamp }"
                 mat-icon-button
                 matTooltip="Étampe (D)"

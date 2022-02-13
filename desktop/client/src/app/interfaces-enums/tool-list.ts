@@ -15,5 +15,4 @@ export enum ToolList {
     Undo = 13,
     Redo = 14,
     Stamp = 15,
-    Text = 16,
 }
