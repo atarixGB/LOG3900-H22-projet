@@ -28,7 +28,6 @@ const LOAD_IMAGE = 100;
 export class DrawingComponent implements AfterViewInit, OnDestroy, OnChanges {
     @ViewChild('baseCanvas', { static: false }) private baseCanvas: ElementRef<HTMLCanvasElement>;
     @ViewChild('previewCanvas', { static: false }) private previewCanvas: ElementRef<HTMLCanvasElement>;
-    @ViewChild('gridCanvas', { static: false }) private gridCanvas: ElementRef<HTMLCanvasElement>;
     @ViewChild('cursorCanvas', { static: false }) private cursorCanvas: ElementRef<HTMLCanvasElement>;
     @ViewChild('workingArea', { static: false }) private workingArea: ElementRef<HTMLDivElement>;
     @ViewChild('lassoPreviewCanvas', { static: false }) private lassoPreviewCanvas: ElementRef<HTMLCanvasElement>;
@@ -37,7 +36,6 @@ export class DrawingComponent implements AfterViewInit, OnDestroy, OnChanges {
     canvasSize: Vec2;
     private baseCtx: CanvasRenderingContext2D;
     private previewCtx: CanvasRenderingContext2D;
-    private gridCtx: CanvasRenderingContext2D;
     private cursorCtx: CanvasRenderingContext2D;
     private lassoPreviewCtx: CanvasRenderingContext2D;
     private currentDrawing: ImageData;
@@ -67,7 +65,6 @@ export class DrawingComponent implements AfterViewInit, OnDestroy, OnChanges {
                 this.drawingService.baseCtx.clearRect(0, 0, this.canvasSize.x, this.canvasSize.y);
                 this.drawingService.previewCtx.clearRect(0, 0, this.canvasSize.x, this.canvasSize.y);
                 this.drawingService.lassoPreviewCtx.clearRect(0, 0, this.canvasSize.x, this.canvasSize.y);
-                this.drawingService.gridCtx.clearRect(0, 0, this.canvasSize.x, this.canvasSize.y);
                 this.whiteBackgroundCanvas();
             }
         });
@@ -272,14 +269,11 @@ export class DrawingComponent implements AfterViewInit, OnDestroy, OnChanges {
         this.previewCtx = this.previewCanvas.nativeElement.getContext('2d') as CanvasRenderingContext2D;
         this.cursorCtx = this.cursorCanvas.nativeElement.getContext('2d') as CanvasRenderingContext2D;
         this.lassoPreviewCtx = this.lassoPreviewCanvas.nativeElement.getContext('2d') as CanvasRenderingContext2D;
-        this.gridCtx = this.gridCanvas.nativeElement.getContext('2d') as CanvasRenderingContext2D;
         this.drawingService.baseCtx = this.baseCtx;
         this.drawingService.previewCtx = this.previewCtx;
         this.drawingService.cursorCtx = this.cursorCtx;
         this.drawingService.lassoPreviewCtx = this.lassoPreviewCtx;
-        this.drawingService.gridCtx = this.gridCtx;
         this.drawingService.canvas = this.baseCanvas.nativeElement;
-        this.drawingService.gridCanvas = this.gridCanvas.nativeElement;
         this.keyHandlerService.baseCtx = this.baseCtx;
         this.keyHandlerService.canvasSize = this.canvasSize;
         this.adjustCanvasSize();
@@ -312,9 +306,6 @@ export class DrawingComponent implements AfterViewInit, OnDestroy, OnChanges {
     }
 
     private whiteBackgroundCanvas(): void {
-        if (this.drawingService.isGridEnabled) {
-            this.drawingService.setGrid();
-        }
         this.baseCtx.beginPath();
         this.baseCtx.fillStyle = '#FFFFFF';
         this.baseCtx.fillRect(0, 0, this.canvasSize.x, this.canvasSize.y);
