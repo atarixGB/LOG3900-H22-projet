@@ -14,5 +14,4 @@ export enum ToolList {
     MoveSelection = 12,
     Undo = 13,
     Redo = 14,
-    Stamp = 15,
 }

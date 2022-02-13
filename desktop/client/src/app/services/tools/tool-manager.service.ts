@@ -13,7 +13,6 @@ import { PipetteService } from './pipette/pipette.service';
 import { PolygonService } from './polygon/polygon.service';
 import { RectangleService } from './rectangle/rectangle.service';
 import { SelectionService } from './selection/selection.service';
-import { StampService } from './stamp/stamp.service';
 
 @Injectable({
     providedIn: 'root',
@@ -38,7 +37,6 @@ export class ToolManagerService {
         private sprayService: SprayService,
         private selectionService: SelectionService,
         private moveSelectionService: MoveSelectionService,
-        private stampService: StampService,
     ) {
         this.currentTool = this.pencilService;
         this.currentToolEnum = ToolList.Pencil;
@@ -56,7 +54,6 @@ export class ToolManagerService {
             .set(ToolList.SelectionRectangle, this.selectionService)
             .set(ToolList.SelectionEllipse, this.selectionService)
             .set(ToolList.MoveSelection, this.moveSelectionService)
-            .set(ToolList.Stamp, this.stampService)
             .set(ToolList.Lasso, this.selectionService)
             .set(ToolList.PaintBucket, this.paintBucketService)
             .set(ToolList.MoveSelection, this.moveSelectionService)
@@ -73,7 +70,6 @@ export class ToolManagerService {
             .set('a', this.sprayService)
             .set('r', this.selectionService)
             .set('s', this.selectionService)
-            .set('d', this.stampService)
             .set('v', this.selectionService)
             .set('b', this.paintBucketService)
     }
