@@ -2,7 +2,6 @@ import { ComponentType } from '@angular/cdk/portal';
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Vec2 } from '@app/classes/vec2';
-import { CarouselComponent } from '@app/components/carousel/carousel-modal/carousel.component';
 import { ExportModalComponent } from '@app/components/export-modal/export-modal.component';
 import { NewDrawModalComponent } from '@app/components/new-draw-modal/new-draw-modal.component';
 import { SaveDrawingModalComponent } from '@app/components/save-drawing-modal/save-drawing-modal.component';
@@ -30,7 +29,6 @@ export class KeyHandlerService {
     ) {}
 
     handleKeyDown(event: KeyboardEvent): void {
-        this.modalHandler(event, CarouselComponent, 'g');
         this.modalHandler(event, NewDrawModalComponent, 'o');
         this.modalHandler(event, SaveDrawingModalComponent, 's');
         this.modalHandler(event, ExportModalComponent, 'e');
@@ -56,7 +54,7 @@ export class KeyHandlerService {
 
     private modalHandler(
         event: KeyboardEvent,
-        component: ComponentType<NewDrawModalComponent | SaveDrawingModalComponent | CarouselComponent | ExportModalComponent>,
+        component: ComponentType<NewDrawModalComponent | SaveDrawingModalComponent | ExportModalComponent>,
         key: string,
     ): void {
         const modalKeysPressed = event.ctrlKey && event.key === key;

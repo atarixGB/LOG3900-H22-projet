@@ -13,10 +13,11 @@
     <mat-form-field class="inputs">
         <input matInput placeholder="Rouge" pattern="[a-fA-f0-9 ]*" [(ngModel)]="selectedColor.Hex.Red" (change)="updateHex()" maxlength="2" />
     </mat-form-field>
-    
+
     <canvas class="preview" width="40" height="40" [ngStyle]="{ 'background-color': selectedColor.inString }"></canvas>
 
-    <div *ngIf="data != 2">
+    <!-- <div *ngIf="data != 2"> TO VERIFY (it triggers an error)-->
+    <div *ngIf="true">
         <div class="history" *ngFor="let history of colorHistory">
             <canvas
                 width="40"

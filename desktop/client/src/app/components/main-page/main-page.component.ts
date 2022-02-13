@@ -1,6 +1,6 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { CarouselComponent } from '@app/components/carousel/carousel-modal/carousel.component';
+// import { CarouselComponent } from '@app/components/carousel/carousel-modal/carousel.component';
 import { AutoSaveService } from '@app/services/auto-save/auto-save.service';
 
 @Component({
@@ -21,16 +21,11 @@ export class MainPageComponent implements OnInit {
     handleKeyDown(event: KeyboardEvent): void {
         if (event.ctrlKey && event.key === 'g') {
             event.preventDefault();
-            this.openCarousel();
         }
     }
 
     ngOnInit(): void {
         this.isDisabled = this.autoSaveService.localStorageIsEmpty();
-    }
-
-    openCarousel(): void {
-        this.dialog.open(CarouselComponent);
     }
 
     continueDrawing(): void {
