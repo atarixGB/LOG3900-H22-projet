@@ -3,7 +3,6 @@ import { SelectionTool } from '@app/classes/selection';
 import { Vec2 } from '@app/classes/vec2';
 import { CONTROLPOINTSIZE } from '@app/constants/constants';
 import { DrawingService } from '@app/services/drawing/drawing.service';
-import { ResizeSelectionService } from '@app/services/selection/resize-selection.service';
 import { EllipseService } from '@app/services/tools/ellipse/ellipse.service';
 import { RectangleService } from '@app/services/tools/rectangle/rectangle.service';
 
@@ -29,7 +28,6 @@ export class SelectionUtilsService {
         private drawingService: DrawingService,
         private rectangleService: RectangleService,
         private ellipseService: EllipseService,
-        private resizeSelectionService: ResizeSelectionService,
     ) {
         this.cleanedUnderneath = false;
         this.isResizing = false;
@@ -146,7 +144,6 @@ export class SelectionUtilsService {
     }
 
     resizeSelection(ctx: CanvasRenderingContext2D, mouseCoord: Vec2, selection: SelectionTool): void {
-        this.resizeSelectionService.onMouseMove(mouseCoord, selection);
         this.drawingService.clearCanvas(this.drawingService.previewCtx);
 
         if (!this.cleanedUnderneath) {
@@ -154,10 +151,7 @@ export class SelectionUtilsService {
             this.cleanedUnderneath = true;
         }
 
-        this.resizeSelectionService.printResize(ctx);
         this.origin = selection.origin;
-        this.width = this.resizeSelectionService.resizeWidth;
-        this.height = this.resizeSelectionService.resizeHeight;
         this.destination = { x: this.origin.x + this.width, y: this.origin.y + this.height };
         this.resizedSelection = new SelectionTool(this.origin, this.destination, this.width, this.height);
         this.createBoundaryBox(this.resizedSelection);
@@ -167,11 +161,6 @@ export class SelectionUtilsService {
         this.isResizing = false;
         this.cleanedUnderneath = false;
         this.drawingService.clearCanvas(this.drawingService.previewCtx);
-        this.resizeSelectionService.printResize(this.drawingService.previewCtx);
-
-        this.origin = this.resizeSelectionService.newOrigin;
-        this.width = this.resizeSelectionService.resizeWidth;
-        this.height = this.resizeSelectionService.resizeHeight;
         this.destination = { x: this.origin.x + this.width, y: this.origin.y + this.height };
         this.resizedSelection = this.reajustOriginAndDestination(new SelectionTool(this.origin, this.destination, this.width, this.height));
         return this.resizedSelection;

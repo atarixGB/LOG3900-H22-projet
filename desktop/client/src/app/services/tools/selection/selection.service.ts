@@ -5,7 +5,6 @@ import { SelectionUtilsService } from '@app/classes/utils/selection-utils.servic
 import { Vec2 } from '@app/classes/vec2';
 import { MouseButton } from '@app/constants/constants';
 import { DrawingService } from '@app/services/drawing/drawing.service';
-import { ResizeSelectionService } from '@app/services/selection/resize-selection.service';
 import { RectangleService } from '@app/services/tools//rectangle/rectangle.service';
 
 @Injectable({
@@ -32,7 +31,6 @@ export class SelectionService extends Tool {
     constructor(
         public drawingService: DrawingService,
         private rectangleService: RectangleService,
-        private resizeSelectionService: ResizeSelectionService,
         private selectionUtilsService: SelectionUtilsService,
     ) {
         super(drawingService);
@@ -84,14 +82,12 @@ export class SelectionService extends Tool {
 
         if (event.key === 'Shift') {
             event.preventDefault();
-            this.resizeSelectionService.shiftKey = true;
         }
     }
 
     handleKeyUp(event: KeyboardEvent): void {
         if (event.key === 'Shift') {
             event.preventDefault();
-            this.resizeSelectionService.shiftKey = false;
         }
 
         this.rectangleService.handleKeyUp(event);
@@ -153,8 +149,6 @@ export class SelectionService extends Tool {
     private handleResizedSelectionOnMouseDown(event: MouseEvent): void {
         if (this.mouseDown) {
             if (this.activeSelection) {
-                this.resizeSelectionService.controlPointsCoord = this.selectionUtilsService.controlPointsCoord;
-                this.selectionUtilsService.isResizing = this.resizeSelectionService.checkIfMouseIsOnControlPoint(this.getPositionFromMouse(event));
                 this.clearUnderneath = true;
             }
         }
