@@ -5,7 +5,6 @@ import { ToolList } from '@app/interfaces-enums/tool-list';
 import { MoveSelectionService } from '@app/services/selection/move-selection.service';
 import { EllipseService } from './ellipse/ellipse.service';
 import { EraserService } from './eraser/eraser.service';
-import { PaintBucketService } from './paint-bucket/paint-bucket.service';
 import { PencilService } from './pencil/pencil.service';
 import { PolygonService } from './polygon/polygon.service';
 import { RectangleService } from './rectangle/rectangle.service';
@@ -27,7 +26,6 @@ export class ToolManagerService {
         private eraserService: EraserService,
         private ellipseService: EllipseService,
         private rectangleService: RectangleService,
-        private paintBucketService: PaintBucketService,
         private polygonService: PolygonService,
         private selectionService: SelectionService,
         private moveSelectionService: MoveSelectionService,
@@ -44,7 +42,6 @@ export class ToolManagerService {
             .set(ToolList.Eraser, this.eraserService)
             .set(ToolList.SelectionRectangle, this.selectionService)
             .set(ToolList.MoveSelection, this.moveSelectionService)
-            .set(ToolList.PaintBucket, this.paintBucketService)
             .set(ToolList.MoveSelection, this.moveSelectionService)
 
         this.keyBindings = new Map<string, Tool>();
@@ -54,8 +51,6 @@ export class ToolManagerService {
             .set('2', this.ellipseService)
             .set('e', this.eraserService)
             .set('3', this.polygonService)
-            .set('r', this.selectionService)
-            .set('b', this.paintBucketService)
     }
 
     private getEnumFromMap(map: Map<ToolList, Tool>, searchValue: Tool | undefined): ToolList | undefined {
@@ -68,7 +63,7 @@ export class ToolManagerService {
     handleHotKeysShortcut(event: KeyboardEvent): void {
         if (this.currentTool && (event.key === 'Shift' || event.key === 'Backspace' || event.key === 'Escape' || event.key === 'Alt')) {
             this.currentTool.handleKeyDown(event);
-        } 
+        }
     }
 
     switchToolWithKeys(keyShortcut: string): void {

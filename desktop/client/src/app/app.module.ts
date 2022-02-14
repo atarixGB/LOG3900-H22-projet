@@ -30,17 +30,9 @@ import { ExportModalComponent } from './components/export-modal/export-modal.com
 import { MainPageComponent } from './components/main-page/main-page.component';
 import { NewDrawModalComponent } from './components/new-draw-modal/new-draw-modal.component';
 import { SaveDrawingModalComponent } from './components/save-drawing-modal/save-drawing-modal.component';
-import { AlphaSliderComponent } from './components/sidebar/color-components/alpha-slider/alpha-slider.component';
-import { ColorDisplayerComponent } from './components/sidebar/color-components/color-displayer/color-displayer.component';
-import { ColorPaletteComponent } from './components/sidebar/color-components/color-palette/color-palette.component';
-import { ColorPickerComponent } from './components/sidebar/color-components/color-picker/color-picker.component';
-import { ColorPopupComponent } from './components/sidebar/color-components/color-popup/color-popup.component';
-import { ColorSliderComponent } from './components/sidebar/color-components/color-slider/color-slider.component';
 import { EllipseConfigComponent } from './components/sidebar/ellipse-config/ellipse-config.component';
 import { EraserConfigComponent } from './components/sidebar/eraser-config/eraser-config.component';
 import { FileMenuComponent } from './components/sidebar/file-menu/file-menu.component';
-import { PaintConfigComponent } from './components/sidebar/paint-config/paint-config.component';
-import { SliderComponent } from './components/sidebar/paint-config/slider/slider.component';
 import { PencilConfigComponent } from './components/sidebar/pencil-config/pencil-config.component';
 import { PolygonConfigComponent } from './components/sidebar/polygon-config/polygon-config.component';
 import { RectangleConfigComponent } from './components/sidebar/rectangle-config/rectangle-config.component';
@@ -56,24 +48,16 @@ import { ToolsListComponent } from './components/sidebar/tools-list/tools-list.c
         MainPageComponent,
         FileMenuComponent,
         ToolsListComponent,
-        ColorPickerComponent,
-        ColorPaletteComponent,
-        ColorSliderComponent,
-        ColorDisplayerComponent,
         PencilConfigComponent,
-        AlphaSliderComponent,
         EraserConfigComponent,
         PencilConfigComponent,
         NewDrawModalComponent,
         EllipseConfigComponent,
         RectangleConfigComponent,
-        ColorPopupComponent,
         ConfigPanelComponent,
         ExportModalComponent,
         PolygonConfigComponent,
         SaveDrawingModalComponent,
-        PaintConfigComponent,
-        SliderComponent,
     ],
     imports: [
         BrowserModule,
@@ -102,7 +86,7 @@ import { ToolsListComponent } from './components/sidebar/tools-list/tools-list.c
         MatRadioModule,
         MatCheckboxModule,
     ],
-    entryComponents: [ColorPopupComponent, ColorPickerComponent],
+    entryComponents: [],
     providers: [],
     bootstrap: [AppComponent],
 })
