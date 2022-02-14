@@ -38,6 +38,7 @@ import { PolygonConfigComponent } from './components/sidebar/polygon-config/poly
 import { RectangleConfigComponent } from './components/sidebar/rectangle-config/rectangle-config.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { ToolsListComponent } from './components/sidebar/tools-list/tools-list.component';
+import { PaintConfigComponent } from './components/sidebar/paint-config/paint-config.component';
 
 @NgModule({
     declarations: [
@@ -58,6 +59,7 @@ import { ToolsListComponent } from './components/sidebar/tools-list/tools-list.c
         ExportModalComponent,
         PolygonConfigComponent,
         SaveDrawingModalComponent,
+        PaintConfigComponent,
     ],
     imports: [
         BrowserModule,
