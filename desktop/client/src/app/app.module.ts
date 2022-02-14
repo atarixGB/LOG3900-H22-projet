@@ -42,6 +42,10 @@ import { ToolsListComponent } from './components/editor/sidebar/tools-list/tools
 import { ChatroomComponent } from './components/chat/chatroom/chatroom.component';
 import { LoginComponent } from './components/login/login.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { ChatMenuComponent } from './components/chat/chat-menu/chat-menu.component';
+import { MenuComponent } from './components/menu/menu.component';
+import { SideMenuComponent } from './components/menu/side-menu/side-menu.component';
+import { SignUpComponent } from './components/sign-up/sign-up.component';
 
 @NgModule({
     declarations: [
@@ -65,6 +69,10 @@ import { FlexLayoutModule } from '@angular/flex-layout';
         PaintConfigComponent,
         ChatroomComponent,
         LoginComponent,
+        ChatMenuComponent,
+        MenuComponent,
+        SideMenuComponent,
+        SignUpComponent,
     ],
     imports: [
         BrowserModule,
@@ -92,9 +100,9 @@ import { FlexLayoutModule } from '@angular/flex-layout';
         MatProgressSpinnerModule,
         MatRadioModule,
         MatCheckboxModule,
-        FlexLayoutModule
+        FlexLayoutModule,
     ],
     providers: [],
-    bootstrap: [AppComponent]
+    bootstrap: [AppComponent],
 })
 export class AppModule {}

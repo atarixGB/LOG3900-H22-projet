@@ -23,7 +23,7 @@ export class LoginService {
             console.log('client', user);
 
             if (this.username == user) {
-                this.router.navigate(['../chatroom'], { relativeTo: this.route });
+                this.router.navigate(['../menu'], { relativeTo: this.route });
             }
         });
     }

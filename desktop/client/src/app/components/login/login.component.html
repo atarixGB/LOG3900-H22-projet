@@ -9,8 +9,17 @@
            <input matInput placeholder="Entrez votre nom" [(ngModel)] = "this.loginService.username" [ngModelOptions]="{standalone: true}">
          </mat-form-field>
       </form>
+      <form>
+         <mat-form-field  appearance="fill">
+           <mat-label>Mot de passe</mat-label>
+           <input matInput placeholder="Entrez votre mot de passe" [(ngModel)] = "this.password">
+         </mat-form-field>
+      </form>
+      <button mat-raised-button color="primary" (click)="this.connect()">SE CONNECTER</button>
    </div>
 
-   <button mat-raised-button color="primary" (click)="this.connect()" routerLink="/editor">ACCÉDER AU CLAVARDAGE</button>
-
+   <div fxLayout="column" fxLayoutAlign="start center">
+      <h1>Vous n'avez pas de compte? Inscrivez-vous maintenant!</h1>
+      <button mat-raised-button color="primary" routerLink="/signup">CRÉER UN COMPTE</button>
+   </div>
 </div>
