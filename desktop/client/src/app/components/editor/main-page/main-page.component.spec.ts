@@ -2,7 +2,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
 import { RouterTestingModule } from '@angular/router/testing';
-import { AutoSaveService } from '@app/services/auto-save/auto-save.service';
+import { AutoSaveService } from '@app/services/editor-services/auto-save/auto-save.service';
 import { MainPageComponent } from './main-page.component';
 
 //tslint:disable

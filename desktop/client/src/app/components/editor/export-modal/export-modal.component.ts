@@ -1,7 +1,7 @@
 import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, ViewChild } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { FiltersList } from '@app/interfaces-enums/filter-list';
-import { ExportService } from '@app/services/export-image/export.service';
+import { ExportService } from '@app/services/editor-services/export-image/export.service';
 
 const MIN_INPUT_SIZE = 0;
 const MAX_INPUT_SIZE = 15;

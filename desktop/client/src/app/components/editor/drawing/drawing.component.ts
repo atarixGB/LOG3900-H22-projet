@@ -5,12 +5,12 @@ import { ActivatedRoute } from '@angular/router';
 import { Vec2 } from '@app/classes/vec2';
 import { MIN_SIZE } from '@app/constants/constants';
 import { ToolList } from '@app/interfaces-enums/tool-list';
-import { AutoSaveService } from '@app/services/auto-save/auto-save.service';
-import { DrawingService } from '@app/services/drawing/drawing.service';
-import { ExportService } from '@app/services/export-image/export.service';
-import { KeyHandlerService } from '@app/services/key-handler/key-handler.service';
-import { NewDrawingService } from '@app/services/new-drawing/new-drawing.service';
-import { ToolManagerService } from '@app/services/tools/tool-manager.service';
+import { AutoSaveService } from '@app/services/editor-services/auto-save/auto-save.service';
+import { DrawingService } from '@app/services/editor-services/drawing/drawing.service';
+import { ExportService } from '@app/services/editor-services/export-image/export.service';
+import { KeyHandlerService } from '@app/services/editor-services/key-handler/key-handler.service';
+import { NewDrawingService } from '@app/services/editor-services/new-drawing/new-drawing.service';
+import { ToolManagerService } from '@app/services/editor-services/tools/tool-manager.service';
 import { DrawingData } from '@common/communication/drawing-data';
 import { Subscription } from 'rxjs';
 

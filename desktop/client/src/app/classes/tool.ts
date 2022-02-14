@@ -1,4 +1,4 @@
-import { DrawingService } from '@app/services/drawing/drawing.service';
+import { DrawingService } from '@app/services/editor-services/drawing/drawing.service';
 import { Vec2 } from './vec2';
 
 // the use of this abstract is justified, the methods are used in child classes

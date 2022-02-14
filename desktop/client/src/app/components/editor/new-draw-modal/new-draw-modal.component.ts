@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
-import { AutoSaveService } from '@app/services/auto-save/auto-save.service';
-import { NewDrawingService } from '@app/services/new-drawing/new-drawing.service';
+import { AutoSaveService } from '@app/services/editor-services/auto-save/auto-save.service';
+import { NewDrawingService } from '@app/services/editor-services/new-drawing/new-drawing.service';
 @Component({
     selector: 'app-new-draw-modal',
     templateUrl: './new-draw-modal.component.html',

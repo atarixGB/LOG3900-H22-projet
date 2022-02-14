@@ -3,8 +3,8 @@ import { Vec2 } from '@app/classes/vec2';
 import { DEFAULT_LINE_THICKNESS, MouseButton } from '@app/constants/constants';
 import { ColorOrder } from '@app/interfaces-enums/color-order';
 import { TypeStyle } from '@app/interfaces-enums/type-style';
-import { ColorManagerService } from '@app/services/color-manager/color-manager.service';
-import { DrawingService } from '@app/services/drawing/drawing.service';
+import { ColorManagerService } from '@app/services/editor-services/color-manager/color-manager.service';
+import { DrawingService } from '@app/services/editor-services/drawing/drawing.service';
 export abstract class ShapeService extends Tool {
     pathData: Vec2[];
     lineWidth: number;

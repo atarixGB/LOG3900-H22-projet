@@ -7,8 +7,8 @@ import { Vec2 } from '@app/classes/vec2';
 import { MAX_DEC_RANGE, MouseButton } from '@app/constants/constants';
 import { ColorOrder } from '@app/interfaces-enums/color-order';
 import { RGBA, RGBA_INDEX } from '@app/interfaces-enums/rgba';
-import { ColorManagerService } from '@app/services/color-manager/color-manager.service';
-import { DrawingService } from '@app/services/drawing/drawing.service';
+import { ColorManagerService } from '@app/services/editor-services/color-manager/color-manager.service';
+import { DrawingService } from '@app/services/editor-services/drawing/drawing.service';
 
 const RGBA_COMPONENTS = 4;
 const MAX_BYTE_VALUE = 255;

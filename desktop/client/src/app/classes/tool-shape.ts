@@ -1,5 +1,5 @@
 import { MouseButton } from '@app/constants/constants';
-import { DrawingService } from '@app/services/drawing/drawing.service';
+import { DrawingService } from '@app/services/editor-services/drawing/drawing.service';
 import { Tool } from './tool';
 import { Vec2 } from './vec2';
 

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FiltersList } from '@app/interfaces-enums/filter-list';
-import { DrawingService } from '@app/services/drawing/drawing.service';
-import { IndexService } from '@app/services/index/index.service';
+import { DrawingService } from '@app/services/editor-services/drawing/drawing.service';
+import { IndexService } from '@app/services/editor-services/index/index.service';
 
 const PREVIEW_ORIGIN_X = 0;
 const PREVIEW_ORIGIN_Y = 0;
