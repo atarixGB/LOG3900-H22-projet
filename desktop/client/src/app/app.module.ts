@@ -23,22 +23,22 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './components/app/app.component';
-import { ConfigPanelComponent } from './components/config-panel/config-panel.component';
-import { DrawingComponent } from './components/drawing/drawing.component';
+import { ConfigPanelComponent } from './components/editor/config-panel/config-panel.component';
+import { DrawingComponent } from './components/editor/drawing/drawing.component';
 import { EditorComponent } from './components/editor/editor.component';
-import { ExportModalComponent } from './components/export-modal/export-modal.component';
-import { MainPageComponent } from './components/main-page/main-page.component';
-import { NewDrawModalComponent } from './components/new-draw-modal/new-draw-modal.component';
-import { SaveDrawingModalComponent } from './components/save-drawing-modal/save-drawing-modal.component';
-import { EllipseConfigComponent } from './components/sidebar/ellipse-config/ellipse-config.component';
-import { EraserConfigComponent } from './components/sidebar/eraser-config/eraser-config.component';
-import { FileMenuComponent } from './components/sidebar/file-menu/file-menu.component';
-import { PencilConfigComponent } from './components/sidebar/pencil-config/pencil-config.component';
-import { PolygonConfigComponent } from './components/sidebar/polygon-config/polygon-config.component';
-import { RectangleConfigComponent } from './components/sidebar/rectangle-config/rectangle-config.component';
-import { SidebarComponent } from './components/sidebar/sidebar.component';
-import { ToolsListComponent } from './components/sidebar/tools-list/tools-list.component';
-import { PaintConfigComponent } from './components/sidebar/paint-config/paint-config.component';
+import { ExportModalComponent } from './components/editor/export-modal/export-modal.component';
+import { MainPageComponent } from './components/editor/main-page/main-page.component';
+import { NewDrawModalComponent } from './components/editor/new-draw-modal/new-draw-modal.component';
+import { SaveDrawingModalComponent } from './components/editor/save-drawing-modal/save-drawing-modal.component';
+import { EllipseConfigComponent } from './components/editor/sidebar/ellipse-config/ellipse-config.component';
+import { EraserConfigComponent } from './components/editor/sidebar/eraser-config/eraser-config.component';
+import { FileMenuComponent } from './components/editor/sidebar/file-menu/file-menu.component';
+import { PaintConfigComponent } from './components/editor/sidebar/paint-config/paint-config.component';
+import { PencilConfigComponent } from './components/editor/sidebar/pencil-config/pencil-config.component';
+import { PolygonConfigComponent } from './components/editor/sidebar/polygon-config/polygon-config.component';
+import { RectangleConfigComponent } from './components/editor/sidebar/rectangle-config/rectangle-config.component';
+import { SidebarComponent } from './components/editor/sidebar/sidebar.component';
+import { ToolsListComponent } from './components/editor/sidebar/tools-list/tools-list.component';
 
 @NgModule({
     declarations: [
