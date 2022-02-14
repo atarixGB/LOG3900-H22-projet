@@ -7,7 +7,6 @@ import { NewDrawModalComponent } from '@app/components/new-draw-modal/new-draw-m
 import { SaveDrawingModalComponent } from '@app/components/save-drawing-modal/save-drawing-modal.component';
 import { ToolList } from '@app/interfaces-enums/tool-list';
 import { ExportService } from '@app/services/export-image/export.service';
-import { SelectionService } from '@app/services/tools/selection/selection.service';
 import { ToolManagerService } from '@app/services/tools/tool-manager.service';
 
 @Injectable({
@@ -21,7 +20,6 @@ export class KeyHandlerService {
         public toolManagerService: ToolManagerService,
         public exportService: ExportService,
         public dialog: MatDialog,
-        private selectionService: SelectionService,
     ) {}
 
     handleKeyDown(event: KeyboardEvent): void {
@@ -46,22 +44,20 @@ export class KeyHandlerService {
         key: string,
     ): void {
         const modalKeysPressed = event.ctrlKey && event.key === key;
+
         if (modalKeysPressed && this.dialog.openDialogs.length === 0) {
             event.preventDefault();
 
             switch (event.key) {
                 case 'g':
-                    this.selectionService.terminateSelection();
                     this.dialog.open(component, { data: this.isCanvasBlank() });
                     break;
                 case 'e':
                     this.exportService.imagePrevisualization();
                     this.exportService.initializeExportParams();
-                    this.selectionService.terminateSelection();
                     this.dialog.open(component, {});
                     break;
                 default:
-                    this.selectionService.terminateSelection();
                     this.dialog.open(component, {});
                     break;
             }
@@ -74,7 +70,6 @@ export class KeyHandlerService {
         if (selectAllKeysPressed) {
             event.preventDefault();
             this.toolManagerService.currentToolEnum = ToolList.SelectionRectangle;
-            this.selectionService.selectAll();
         }
 
         return false;

@@ -7,7 +7,6 @@ import { EraserService } from './eraser/eraser.service';
 import { PencilService } from './pencil/pencil.service';
 import { PolygonService } from './polygon/polygon.service';
 import { RectangleService } from './rectangle/rectangle.service';
-import { SelectionService } from './selection/selection.service';
 
 @Injectable({
     providedIn: 'root',
@@ -16,7 +15,6 @@ export class ToolManagerService {
     toolList: ToolList;
     currentTool: Tool | undefined;
     currentToolEnum: ToolList | undefined;
-
     serviceBindings: Map<ToolList, Tool>;
     keyBindings: Map<string, Tool>;
 
@@ -26,7 +24,7 @@ export class ToolManagerService {
         private ellipseService: EllipseService,
         private rectangleService: RectangleService,
         private polygonService: PolygonService,
-        private selectionService: SelectionService,
+
     ) {
         this.currentTool = this.pencilService;
         this.currentToolEnum = ToolList.Pencil;
@@ -38,7 +36,7 @@ export class ToolManagerService {
             .set(ToolList.Rectangle, this.rectangleService)
             .set(ToolList.Polygon, this.polygonService)
             .set(ToolList.Eraser, this.eraserService)
-            .set(ToolList.SelectionRectangle, this.selectionService)
+            // .set(ToolList.SelectionRectangle, this.selectionService)
 
         this.keyBindings = new Map<string, Tool>();
         this.keyBindings
@@ -70,8 +68,6 @@ export class ToolManagerService {
     }
 
     switchTool(tool: ToolList): void {
-        if (this.currentTool instanceof SelectionService) this.selectionService.terminateSelection();
-
         if (this.serviceBindings.has(tool)) {
             this.currentTool = this.serviceBindings.get(tool);
             this.currentToolEnum = tool;

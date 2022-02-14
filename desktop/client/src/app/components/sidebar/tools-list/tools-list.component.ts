@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { ToolList } from '@app/interfaces-enums/tool-list';
-import { SelectionService } from '@app/services/tools/selection/selection.service';
 import { ToolManagerService } from '@app/services/tools/tool-manager.service';
 
 @Component({
@@ -10,7 +9,7 @@ import { ToolManagerService } from '@app/services/tools/tool-manager.service';
 })
 export class ToolsListComponent {
     ToolList: typeof ToolList = ToolList;
-    constructor(public toolManagerService: ToolManagerService, public selectionService: SelectionService) {}
+    constructor(public toolManagerService: ToolManagerService) {}
 
     onTool(selectedTool: ToolList): void {
         this.toolManagerService.switchTool(selectedTool);
