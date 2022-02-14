@@ -81,35 +81,3 @@
         <mat-grid-tile></mat-grid-tile>
     </mat-grid-list>
 </div>
-
-<div id="undoRedoMenu">
-    <hr />
-    <h3>Annuler/refaire</h3>
-    <div id="undoRedoList">
-        <mat-grid-list  cols="2">
-            <mat-grid-tile>
-                <button
-                    mat-icon-button
-                    matTooltip="Annuler (Ctrl+Z)"
-                    matTooltipPosition="above"
-                    (click)="this.selectionService.terminateSelection()"
-                    (click)="undo()"
-                    [disabled]="!undoRedoService.canUndo()"
-                >
-                    <mat-icon>undo</mat-icon>
-                </button>
-            </mat-grid-tile>
-            <mat-grid-tile>
-                <button
-                    mat-icon-button
-                    matTooltip="Refaire (Ctrl+Shift+Z)"
-                    matTooltipPosition="above"
-                    (click)="redo()"
-                    [disabled]="!undoRedoService.canRedo()"
-                >
-                    <mat-icon>redo</mat-icon>
-                </button>
-            </mat-grid-tile>
-        </mat-grid-list>
-    </div>
-</div>

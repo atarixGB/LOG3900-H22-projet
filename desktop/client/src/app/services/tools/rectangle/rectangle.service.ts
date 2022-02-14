@@ -1,19 +1,18 @@
 import { Injectable } from '@angular/core';
-import { Rectangle } from '@app/classes/rectangle';
 import { Vec2 } from '@app/classes/vec2';
 import { ColorManagerService } from '@app/services/color-manager/color-manager.service';
 import { DrawingService } from '@app/services/drawing/drawing.service';
 import { ShapeService } from '@app/services/tools/shape/shape.service';
-import { UndoRedoService } from '@app/services/undo-redo/undo-redo.service';
+
 @Injectable({
     providedIn: 'root',
 })
 export class RectangleService extends ShapeService {
     private shortestSide: number;
-    private width: number;
-    private height: number;
+    width: number;
+    height: number;
 
-    constructor(protected drawingService: DrawingService, colorManager: ColorManagerService, private undoRedoService: UndoRedoService) {
+    constructor(protected drawingService: DrawingService, colorManager: ColorManagerService) {
         super(drawingService, colorManager);
     }
 
@@ -27,7 +26,7 @@ export class RectangleService extends ShapeService {
 
     onMouseUp(): void {
         this.drawingService.clearCanvas(this.drawingService.previewCtx);
-        const leftpoint = this.findLeftPoint(this.pathData[0], this.pathData[this.pathData.length - 1]);
+
         if (!this.isShiftShape) {
             this.drawRectangle(this.drawingService.baseCtx, false);
             this.width = this.pathData[this.pathData.length - 1].x - this.pathData[0].x;
@@ -38,10 +37,7 @@ export class RectangleService extends ShapeService {
             this.width = this.shortestSide;
             this.height = this.shortestSide;
         }
-        const rectangle = new Rectangle(leftpoint, this.width, this.height, this.selectType, this.lineWidth, this.colorPrime, this.colorSecond);
 
-        this.undoRedoService.addToStack(rectangle);
-        this.undoRedoService.setToolInUse(false);
         this.mouseDown = false;
 
         this.clearPath();
@@ -49,7 +45,7 @@ export class RectangleService extends ShapeService {
 
     onMouseMove(event: MouseEvent): void {
         if (this.mouseDown) {
-            this.undoRedoService.setToolInUse(true);
+
             const mousePosition = this.getPositionFromMouse(event);
             this.pathData.push(mousePosition);
             this.drawingService.clearCanvas(this.drawingService.previewCtx);

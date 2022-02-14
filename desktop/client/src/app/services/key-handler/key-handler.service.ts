@@ -10,7 +10,6 @@ import { ExportService } from '@app/services/export-image/export.service';
 import { MoveSelectionService } from '@app/services/selection/move-selection.service';
 import { SelectionService } from '@app/services/tools/selection/selection.service';
 import { ToolManagerService } from '@app/services/tools/tool-manager.service';
-import { UndoRedoService } from '@app/services/undo-redo/undo-redo.service';
 
 @Injectable({
     providedIn: 'root',
@@ -24,7 +23,6 @@ export class KeyHandlerService {
         public moveSelectionService: MoveSelectionService,
         public exportService: ExportService,
         public dialog: MatDialog,
-        private undoRedoService: UndoRedoService,
         private selectionService: SelectionService,
     ) {}
 
@@ -38,8 +36,6 @@ export class KeyHandlerService {
         if (this.dialog.openDialogs.length < 1) {
             this.toolManagerService.handleHotKeysShortcut(event);
         }
-
-        this.undoRedoToolKeyHandler(event);
     }
 
     handleKeyUp(event: KeyboardEvent): void {
@@ -97,28 +93,6 @@ export class KeyHandlerService {
             }
         }
         return false;
-    }
-
-    private undoRedoToolKeyHandler(event: KeyboardEvent): void {
-        const undoKeysPressed =
-            event.ctrlKey && event.key === 'z' && this.undoRedoService.canUndo() && !this.toolManagerService.currentTool?.mouseDown;
-        const redoKeysPressed =
-            event.ctrlKey &&
-            event.shiftKey &&
-            event.code === 'KeyZ' &&
-            this.undoRedoService.canRedo() &&
-            !this.toolManagerService.currentTool?.mouseDown;
-
-        if (undoKeysPressed) {
-            event.preventDefault();
-            this.selectionService.terminateSelection();
-            this.undoRedoService.undo();
-        }
-
-        if (redoKeysPressed) {
-            event.preventDefault();
-            this.undoRedoService.redo();
-        }
     }
 
     private isCanvasBlank(): boolean {

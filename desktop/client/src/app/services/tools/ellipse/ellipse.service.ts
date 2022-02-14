@@ -1,10 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Ellipse } from '@app/classes/ellipse';
 import { ColorManagerService } from '@app/services/color-manager/color-manager.service';
 import { DrawingService } from '@app/services/drawing/drawing.service';
 import { RectangleService } from '@app/services/tools/rectangle/rectangle.service';
 import { ShapeService } from '@app/services/tools/shape/shape.service';
-import { UndoRedoService } from '@app/services/undo-redo/undo-redo.service';
 @Injectable({
     providedIn: 'root',
 })
@@ -15,7 +13,6 @@ export class EllipseService extends ShapeService {
     constructor(
         protected drawingService: DrawingService,
         private rectangle: RectangleService,
-        private undoRedoService: UndoRedoService,
         colorManager: ColorManagerService,
     ) {
         super(drawingService, colorManager);
@@ -63,17 +60,12 @@ export class EllipseService extends ShapeService {
             this.height = this.radius;
             this.isShiftShape = false;
         }
-        const ellipse = new Ellipse(this.origin, this.width, this.height, this.selectType, this.lineWidth, this.colorPrime, this.colorSecond);
 
-        this.undoRedoService.addToStack(ellipse);
-        this.undoRedoService.setToolInUse(false);
         this.mouseDown = false;
-
         this.clearPath();
     }
     onMouseMove(event: MouseEvent): void {
         if (this.mouseDown) {
-            this.undoRedoService.setToolInUse(true);
             const mousePosition = this.getPositionFromMouse(event);
             this.pathData.push(mousePosition);
             this.drawingService.clearCanvas(this.drawingService.previewCtx);

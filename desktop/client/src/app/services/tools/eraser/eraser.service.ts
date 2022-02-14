@@ -1,10 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Eraser } from '@app/classes/eraser';
 import { Tool } from '@app/classes/tool';
 import { Vec2 } from '@app/classes/vec2';
 import { MouseButton } from '@app/constants/constants';
 import { DrawingService } from '@app/services/drawing/drawing.service';
-import { UndoRedoService } from '@app/services/undo-redo/undo-redo.service';
 
 const MIN_ERASER_THICKNESS = 5;
 const DEFAULT_ERASER_COLOR = '#FFF';
@@ -16,7 +14,7 @@ export class EraserService extends Tool {
 
     private pathData: Vec2[];
 
-    constructor(drawingService: DrawingService, private undoRedoService: UndoRedoService) {
+    constructor(drawingService: DrawingService) {
         super(drawingService);
         this.clearPath();
 
@@ -40,10 +38,7 @@ export class EraserService extends Tool {
             this.pathData.push(mousePosition);
             this.drawLine(this.drawingService.baseCtx, this.pathData);
         }
-        const eraser = new Eraser(this.eraserThickness, this.pathData);
-        this.undoRedoService.addToStack(eraser);
         this.mouseDown = false;
-        this.undoRedoService.setToolInUse(false);
         this.clearPath();
     }
 
@@ -55,7 +50,6 @@ export class EraserService extends Tool {
             this.pathData.push(mousePosition);
             this.drawingService.clearCanvas(this.drawingService.previewCtx);
             this.drawLine(this.drawingService.baseCtx, this.pathData);
-            this.undoRedoService.setToolInUse(true);
         }
     }
 

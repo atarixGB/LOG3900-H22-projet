@@ -7,7 +7,6 @@ import { MouseButton } from '@app/constants/constants';
 import { DrawingService } from '@app/services/drawing/drawing.service';
 import { ResizeSelectionService } from '@app/services/selection/resize-selection.service';
 import { RectangleService } from '@app/services/tools//rectangle/rectangle.service';
-import { UndoRedoService } from '@app/services/undo-redo/undo-redo.service';
 
 @Injectable({
     providedIn: 'root',
@@ -33,7 +32,6 @@ export class SelectionService extends Tool {
     constructor(
         public drawingService: DrawingService,
         private rectangleService: RectangleService,
-        private undoRedoService: UndoRedoService,
         private resizeSelectionService: ResizeSelectionService,
         private selectionUtilsService: SelectionUtilsService,
     ) {
@@ -136,7 +134,6 @@ export class SelectionService extends Tool {
             this.imageMoved = false;
             this.selectionObject.origin = this.origin;
             this.drawingService.baseCtx.putImageData(this.selection, this.origin.x, this.origin.y);
-            this.addToUndoStack();
         }
     }
 
@@ -170,9 +167,7 @@ export class SelectionService extends Tool {
             this.selectionTerminated = false;
             this.selectionUtilsService.initializeToolParameters();
             this.printMovedSelection();
-            this.selectionObject = new SelectionTool({ x: 0, y: 0 }, { x: 0, y: 0 }, 0, 0);
             this.selectionDeleted = false;
-
             this.rectangleService.onMouseDown(event);
         }
     }
@@ -235,11 +230,5 @@ export class SelectionService extends Tool {
         this.selectionObject.width = this.width;
         this.selectionObject.height = this.height;
         this.selectionObject.image = this.selection;
-    }
-
-    private addToUndoStack(): void {
-        this.initialseSelectionObject();
-        this.undoRedoService.addToStack(this.selectionObject);
-        this.undoRedoService.setToolInUse(false);
     }
 }

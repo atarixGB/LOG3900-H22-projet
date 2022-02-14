@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Polygon } from '@app/classes/polygon';
 import { ToolShape } from '@app/classes/tool-shape';
 import { Vec2 } from '@app/classes/vec2';
 import { DEFAULT_LINE_THICKNESS } from '@app/constants/constants';
@@ -7,7 +6,6 @@ import { ColorOrder } from '@app/interfaces-enums/color-order';
 import { TypeStyle } from '@app/interfaces-enums/type-style';
 import { ColorManagerService } from '@app/services/color-manager/color-manager.service';
 import { DrawingService } from '@app/services/drawing/drawing.service';
-import { UndoRedoService } from '@app/services/undo-redo/undo-redo.service';
 
 const DASH_SEGMENT_FIRST = 1;
 const DASH_SEGMENT_SECONDARY = 3;
@@ -24,7 +22,7 @@ export class PolygonService extends ToolShape {
     strokeValue: boolean;
     lineWidth: number;
 
-    constructor(protected drawingService: DrawingService, private colorManager: ColorManagerService, private undoRedoService: UndoRedoService) {
+    constructor(protected drawingService: DrawingService, private colorManager: ColorManagerService) {
         super(drawingService);
         this.sides = MIN_SIDE;
         this.lineWidth = DEFAULT_LINE_THICKNESS;
@@ -38,25 +36,12 @@ export class PolygonService extends ToolShape {
             this.drawingService.clearCanvas(this.drawingService.previewCtx);
             this.finalPoint = this.getPositionFromMouse(event);
             this.drawPolygon(this.drawingService.baseCtx);
-            const polygon = new Polygon(
-                this.pointCircleCenter,
-                this.radius,
-                this.sides,
-                this.selectType,
-                this.lineWidth,
-                this.primaryColor,
-                this.secondaryColor,
-            );
-
-            this.undoRedoService.addToStack(polygon);
-            this.undoRedoService.setToolInUse(false);
             this.mouseDown = false;
         }
     }
 
     onMouseMove(event: MouseEvent): void {
         if (this.mouseDown) {
-            this.undoRedoService.setToolInUse(true);
             this.drawingService.clearCanvas(this.drawingService.previewCtx);
             this.finalPoint = this.getPositionFromMouse(event);
             this.ctxPreviewPerimeter();

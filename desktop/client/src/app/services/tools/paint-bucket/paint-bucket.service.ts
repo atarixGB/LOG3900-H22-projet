@@ -2,7 +2,6 @@
 // W. Malone. (2012) Create a paint bucket tool in HTML5 and javascript. [Online]
 // Available : http://www.williammalone.com/articles/html5-canvas-javascript-paint-bucket-tool/
 import { Injectable } from '@angular/core';
-import { PaintBucket } from '@app/classes/paint';
 import { Tool } from '@app/classes/tool';
 import { Vec2 } from '@app/classes/vec2';
 import { MAX_DEC_RANGE, MouseButton } from '@app/constants/constants';
@@ -10,7 +9,6 @@ import { ColorOrder } from '@app/interfaces-enums/color-order';
 import { RGBA, RGBA_INDEX } from '@app/interfaces-enums/rgba';
 import { ColorManagerService } from '@app/services/color-manager/color-manager.service';
 import { DrawingService } from '@app/services/drawing/drawing.service';
-import { UndoRedoService } from '@app/services/undo-redo/undo-redo.service';
 
 const RGBA_COMPONENTS = 4;
 const MAX_BYTE_VALUE = 255;
@@ -27,10 +25,9 @@ export class PaintBucketService extends Tool {
     tolerance: number;
     mouseDownCoord: Vec2;
     canvasData: ImageData;
-    paintBucket: PaintBucket;
     isContiguous: boolean;
 
-    constructor(protected drawingService: DrawingService, private colorManager: ColorManagerService, private undoRedoService: UndoRedoService) {
+    constructor(protected drawingService: DrawingService, private colorManager: ColorManagerService) {
         super(drawingService);
         this.maxTolerance = MAX_TOLERANCE_VALUE;
         this.minTolerance = MIN_TOLERANCE_VALUE;
@@ -67,8 +64,6 @@ export class PaintBucketService extends Tool {
         this.canvasData = canvasData;
         this.drawingService.baseCtx.putImageData(canvasData, 0, 0);
         this.isContiguous = false;
-        const paintBucket = new PaintBucket(this.isContiguous, this.canvasData);
-        this.undoRedoService.addToStack(paintBucket);
     }
 
     contiguousFill(): void {
@@ -106,8 +101,6 @@ export class PaintBucketService extends Tool {
         this.canvasData = canvasData;
         this.isContiguous = true;
         this.drawingService.baseCtx.putImageData(canvasData, 0, 0);
-        const paintBucket = new PaintBucket(this.isContiguous, this.canvasData);
-        this.undoRedoService.addToStack(paintBucket);
     }
 
     vec2ToString(pixel: Vec2): string {
