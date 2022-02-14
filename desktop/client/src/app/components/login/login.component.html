@@ -1,0 +1,16 @@
+<div fxLayout="column" fxLayoutAlign="space-evenly center"  fxFlex="auto">
+   <img src="./assets/PolyGramLogo.png" alt="Logo" fxFlex="40%">
+
+   <div fxLayout="column" fxLayoutAlign="start center">
+      <h1>Application de dessin collaborative</h1>
+      <form>
+         <mat-form-field  appearance="fill">
+           <mat-label>Identifiant</mat-label>
+           <input matInput placeholder="Entrez votre nom" [(ngModel)] = "this.loginService.username" [ngModelOptions]="{standalone: true}">
+         </mat-form-field>
+      </form>
+   </div>
+
+   <button mat-raised-button color="primary" (click)="this.connect()" routerLink="/editor">ACCÉDER AU CLAVARDAGE</button>
+
+</div>

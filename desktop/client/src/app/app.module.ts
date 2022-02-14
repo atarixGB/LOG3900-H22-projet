@@ -39,6 +39,9 @@ import { PolygonConfigComponent } from './components/editor/sidebar/polygon-conf
 import { RectangleConfigComponent } from './components/editor/sidebar/rectangle-config/rectangle-config.component';
 import { SidebarComponent } from './components/editor/sidebar/sidebar.component';
 import { ToolsListComponent } from './components/editor/sidebar/tools-list/tools-list.component';
+import { ChatroomComponent } from './components/chat/chatroom/chatroom.component';
+import { LoginComponent } from './components/login/login.component';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
     declarations: [
@@ -60,6 +63,8 @@ import { ToolsListComponent } from './components/editor/sidebar/tools-list/tools
         PolygonConfigComponent,
         SaveDrawingModalComponent,
         PaintConfigComponent,
+        ChatroomComponent,
+        LoginComponent,
     ],
     imports: [
         BrowserModule,
@@ -87,9 +92,9 @@ import { ToolsListComponent } from './components/editor/sidebar/tools-list/tools
         MatProgressSpinnerModule,
         MatRadioModule,
         MatCheckboxModule,
+        FlexLayoutModule
     ],
-    entryComponents: [],
     providers: [],
-    bootstrap: [AppComponent],
+    bootstrap: [AppComponent]
 })
 export class AppModule {}
