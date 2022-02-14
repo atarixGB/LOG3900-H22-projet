@@ -9,19 +9,12 @@ import { AutoSaveService } from '@app/services/auto-save/auto-save.service';
     styleUrls: ['./main-page.component.scss'],
 })
 export class MainPageComponent implements OnInit {
-    readonly title: string = 'Poly-Dessin';
+    readonly title: string = 'Polygram';
     readonly EDITOR_ROUTE: string = 'http://localhost:4200/editor';
     isDisabled: boolean;
 
     constructor(public dialog: MatDialog, private autoSaveService: AutoSaveService) {
         this.isDisabled = true;
-    }
-
-    @HostListener('document:keydown', ['$event'])
-    handleKeyDown(event: KeyboardEvent): void {
-        if (event.ctrlKey && event.key === 'g') {
-            event.preventDefault();
-        }
     }
 
     ngOnInit(): void {
