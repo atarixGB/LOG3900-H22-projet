@@ -7,7 +7,6 @@ import { NewDrawModalComponent } from '@app/components/new-draw-modal/new-draw-m
 import { SaveDrawingModalComponent } from '@app/components/save-drawing-modal/save-drawing-modal.component';
 import { ToolList } from '@app/interfaces-enums/tool-list';
 import { ExportService } from '@app/services/export-image/export.service';
-import { MoveSelectionService } from '@app/services/selection/move-selection.service';
 import { SelectionService } from '@app/services/tools/selection/selection.service';
 import { ToolManagerService } from '@app/services/tools/tool-manager.service';
 
@@ -20,7 +19,6 @@ export class KeyHandlerService {
 
     constructor(
         public toolManagerService: ToolManagerService,
-        public moveSelectionService: MoveSelectionService,
         public exportService: ExportService,
         public dialog: MatDialog,
         private selectionService: SelectionService,
@@ -39,12 +37,6 @@ export class KeyHandlerService {
     }
 
     handleKeyUp(event: KeyboardEvent): void {
-        if (this.toolManagerService.currentTool === this.selectionService || this.toolManagerService.currentTool === this.moveSelectionService) {
-            if (event.key === 'ArrowLeft' || event.key === 'ArrowRight' || event.key === 'ArrowUp' || event.key === 'ArrowDown') {
-                this.moveSelectionService.handleKeyUp(event);
-            }
-        }
-
         this.toolManagerService.handleKeyUp(event);
     }
 
@@ -78,8 +70,6 @@ export class KeyHandlerService {
 
     private selectionToolKeyHandler(event: KeyboardEvent): boolean {
         const selectAllKeysPressed = event.ctrlKey && event.key === 'a';
-        const selectionServiceIsSelected = this.toolManagerService.currentTool === this.selectionService;
-        const moveSelectionServiceIsSelected = this.toolManagerService.currentTool === this.moveSelectionService;
 
         if (selectAllKeysPressed) {
             event.preventDefault();
@@ -87,11 +77,6 @@ export class KeyHandlerService {
             this.selectionService.selectAll();
         }
 
-        if (selectionServiceIsSelected || moveSelectionServiceIsSelected) {
-            if (event.key === 'ArrowLeft' || event.key === 'ArrowRight' || event.key === 'ArrowUp' || event.key === 'ArrowDown') {
-                this.moveSelectionService.handleKeyDown(event);
-            }
-        }
         return false;
     }
 

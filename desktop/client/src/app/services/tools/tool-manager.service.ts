@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Tool } from '@app/classes/tool';
 import { Vec2 } from '@app/classes/vec2';
 import { ToolList } from '@app/interfaces-enums/tool-list';
-import { MoveSelectionService } from '@app/services/selection/move-selection.service';
 import { EllipseService } from './ellipse/ellipse.service';
 import { EraserService } from './eraser/eraser.service';
 import { PencilService } from './pencil/pencil.service';
@@ -28,7 +27,6 @@ export class ToolManagerService {
         private rectangleService: RectangleService,
         private polygonService: PolygonService,
         private selectionService: SelectionService,
-        private moveSelectionService: MoveSelectionService,
     ) {
         this.currentTool = this.pencilService;
         this.currentToolEnum = ToolList.Pencil;
@@ -41,8 +39,6 @@ export class ToolManagerService {
             .set(ToolList.Polygon, this.polygonService)
             .set(ToolList.Eraser, this.eraserService)
             .set(ToolList.SelectionRectangle, this.selectionService)
-            .set(ToolList.MoveSelection, this.moveSelectionService)
-            .set(ToolList.MoveSelection, this.moveSelectionService)
 
         this.keyBindings = new Map<string, Tool>();
         this.keyBindings

@@ -10,8 +10,6 @@ import { DrawingService } from '@app/services/drawing/drawing.service';
 import { ExportService } from '@app/services/export-image/export.service';
 import { KeyHandlerService } from '@app/services/key-handler/key-handler.service';
 import { NewDrawingService } from '@app/services/new-drawing/new-drawing.service';
-import { MoveSelectionService } from '@app/services/selection/move-selection.service';
-import { SelectionService } from '@app/services/tools/selection/selection.service';
 import { ToolManagerService } from '@app/services/tools/tool-manager.service';
 import { DrawingData } from '@common/communication/drawing-data';
 import { Subscription } from 'rxjs';
@@ -44,13 +42,11 @@ export class DrawingComponent implements AfterViewInit, OnDestroy, OnChanges {
 
     constructor(
         public toolManagerService: ToolManagerService,
-        public moveSelectionService: MoveSelectionService,
         public exportService: ExportService,
         public dialog: MatDialog,
         private route: ActivatedRoute,
         private drawingService: DrawingService,
         private newDrawingService: NewDrawingService,
-        private selectionService: SelectionService,
         private autoSaveService: AutoSaveService,
         private keyHandlerService: KeyHandlerService,
     ) {
@@ -283,16 +279,6 @@ export class DrawingComponent implements AfterViewInit, OnDestroy, OnChanges {
         const element = event.target as HTMLElement;
         if (!element.className.includes('box')) {
             this.toolManagerService.onMouseMove(event, this.mouseCoord(event));
-
-            if (
-                this.toolManagerService.currentToolEnum === ToolList.SelectionRectangle
-            ) {
-                if (!this.selectionService.newSelection) {
-                    this.toolManagerService.currentTool = this.moveSelectionService;
-                } else {
-                    this.toolManagerService.currentTool = this.selectionService;
-                }
-            }
         }
     }
 
