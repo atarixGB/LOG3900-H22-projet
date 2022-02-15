@@ -63,8 +63,10 @@ mongoClient.connect(url,{useNewUrlParser:true},function(err,client){
         });
 
         //login
-        app.post('/login',(request,response, next)=>{
+        app.post('/login',(request,response,next)=>{
             var post_data=request.body;
+
+            
             var identifier = post_data.identifier;
             var userPassword = post_data.password;
 
