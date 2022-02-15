@@ -1,16 +1,45 @@
 var mongodb=require('mongodb');
 var objectID = mongodb.objectID;
 var express = require ('express');
+var crypto = require ('crypto');
 var bodyParser = require ('body-parser');
+//import {saltHashPassword,checkHashPassword} from './crypto-utils';
 
 //constants
 const DATABASE_URL = 'mongodb+srv://equipe203:Log3900-H22@polygramcluster.arebt.mongodb.net/PolyGramDB?retryWrites=true&w=majority';
-const SERVER_PORT = 3000;
+const SERVER_PORT = 3001;
 
 //express service 
 var app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
+
+var genRandomString= function (length){
+    return crypto.randomBytes(Math.ceil(length/2))
+            .toString('hex')
+            .slice(0,length);
+}
+
+var sha512= function(password,salt){
+    var hash=crypto.createHmac('sha512',salt);
+    hash.update(password)
+    var value =hash.digest('hex');
+    return{
+        salt:salt,
+        passwordHash:value
+    };
+};
+
+function saltHashPassword(userPassword){
+    var salt = genRandomString(16); //create 16 random caracters 
+    var passwordData=sha512(userPassword,salt);
+    return passwordData;
+}
+
+function checkHashPassword (userPassword,salt){
+    var passwordData=sha512(userPassword,salt);
+    return passwordData;
+}
 
 //create mongoDB client
 var mongoClient = mongodb.MongoClient;
@@ -28,7 +57,7 @@ mongoClient.connect(url,{useNewUrlParser:true},function(err,client){
             var post_data=request.body;
 
             var plaint_password=post_data.password;
-            var hash_data=salHashPassword(plaint_password);
+            var hash_data=saltHashPassword(plaint_password);
 
             var password=hash_data.passwordHash;
             var salt = hash_data.salt;
@@ -103,7 +132,7 @@ mongoClient.connect(url,{useNewUrlParser:true},function(err,client){
         
         //start web server
         app.listen(SERVER_PORT, () => {
-            console.log('connected to MongoDB server, webserver running on port 3000');
+            console.log('connected to MongoDB server, webserver running on port 3001');
         })
     }
 

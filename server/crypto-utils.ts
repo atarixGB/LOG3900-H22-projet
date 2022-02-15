@@ -1,4 +1,4 @@
-var crypto = require ('crypto');
+import * as crypto from "crypto";
 
 //password utils
 // create function to random SALT
@@ -19,7 +19,7 @@ var sha512= function(password,salt){
     };
 };
 
-function salHashPassword(userPassword){
+function saltHashPassword(userPassword){
     var salt = genRandomString(16); //create 16 random caracters 
     var passwordData=sha512(userPassword,salt);
     return passwordData;
