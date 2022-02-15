@@ -1,0 +1,35 @@
+mat-sidenav-container {
+    color: rgb(247, 247, 247);
+    background-color: rgb(46, 46, 46);
+    height: 100%;
+    width: 200px;
+    padding: 1em;
+}
+
+.config-container {
+    display: inline-block;
+    margin: 12px;
+}
+
+h2,
+h5 {
+    margin: 0;
+    text-align: center;
+    text-shadow: 1px 1px 5px rgb(27, 27, 27);
+}
+
+h2 {
+    padding: 5px;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+}
+
+hr {
+    border-top: 1px solid;
+    border-color: rgb(255, 253, 253);
+}
+
+p {
+    text-align: center;
+}
+

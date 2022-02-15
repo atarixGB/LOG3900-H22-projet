@@ -1,0 +1,32 @@
+mat-sidenav-container {
+    background-color: rgb(65, 65, 65);
+    color: rgb(247, 247, 247);
+    height: 100%;
+    width: 220px;
+    padding: 15px;
+    border-left: 1px solid grey;
+}
+
+h3 {
+    margin-top: 50px;
+    text-align: center;
+    color: rgb(247, 247, 247);
+}
+
+#close-btn {
+    display: block;
+    right: 0;
+    float: right;
+    background-color: rgb(236, 0, 0);
+}
+
+.minimized-panel {
+    background-color: rgba(255, 7, 7, 0.582);
+    color: rgb(247, 247, 247);
+    position: fixed;
+    bottom: 0;
+    z-index: 100;
+}
+.grid{
+    margin-top: 100px;
+}

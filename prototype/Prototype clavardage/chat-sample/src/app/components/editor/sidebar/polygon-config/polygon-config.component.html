@@ -1,0 +1,21 @@
+<h4>Épaisseur: {{ polygonService.lineWidth }} px</h4>
+<div>
+  <mat-slider min="1" max="50" tickInterval="1000" thumbLabel [displayWith]="updateLineWidth"
+    [(ngModel)]="polygonService.lineWidth"> </mat-slider>
+</div>
+
+<h4>Nombre de côtés: {{ polygonService.sides }}</h4>
+<div>
+  <mat-slider min="3" max="12" tickInterval="1000" thumbLabel [displayWith]="updateLineWidth"
+    [(ngModel)]="polygonService.sides"> </mat-slider>
+</div>
+
+<mat-form-field>
+  <mat-label>Style du dessin</mat-label>
+  <mat-select class="white" [(ngModel)]="polygonService.selectType"
+    (selectionChange)="polygonService.changeSelectedType()">
+    <mat-option value="stroke">Contour</mat-option>
+    <mat-option value="fill">Plein</mat-option>
+    <mat-option value="strokeFill">Plein + contour</mat-option>
+  </mat-select>
+</mat-form-field>
