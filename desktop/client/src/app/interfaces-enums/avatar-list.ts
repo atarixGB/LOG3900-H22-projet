@@ -8,5 +8,4 @@ export const avatars: string[] = [
     './assets/avatars/av6.png',
     './assets/avatars/av7.png',
     './assets/avatars/av8.png',
-    './assets/avatars/av9.png',
 ];

@@ -1,13 +1,13 @@
 <div fxLayout="column" fxLayoutAlign="space-between center" class="fullHeight">
-    <h1>Choose an avatar!</h1>
+    <h1>Choisi ton avatar!</h1>
 
-    <div fxLayout="row" fxLayoutAlign="space-evenly center" *ngFor="let row of [].constructor(this.nbRows); let i = index">
-        <div fxLayoutAlign="center center" *ngFor="let column of [].constructor(this.nbColumns); let j = index" fxFlex="10" class="avatarDiv">
+    <div fxLayout="row" fxLayoutAlign="space-evenly stretch" *ngFor="let row of [].constructor(this.nbRows); let i = index" fxFlex="25">
+        <div fxLayoutAlign="center center" *ngFor="let column of [].constructor(this.nbColumns); let j = index" fxFlex="15" class="avatarDiv">
             <img
                 src="{{ this.avatarList[i * this.nbColumns + j] }}"
                 alt="avatar"
                 (click)="this.selectAvatar(i * this.nbColumns + j)"
-                fxFlex="100"
+                fxFlex="50"
                 id="{{ i * this.nbColumns + j }}"
             />
         </div>

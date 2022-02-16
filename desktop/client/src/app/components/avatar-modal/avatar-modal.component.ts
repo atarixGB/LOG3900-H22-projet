@@ -9,8 +9,8 @@ import { avatars } from '../../interfaces-enums/avatar-list';
 })
 export class AvatarModalComponent implements OnInit {
     avatarList: string[] = avatars;
-    nbRows: number = 2;
-    nbColumns: number = 5;
+    nbRows: number = 3;
+    nbColumns: number = 3;
     selectedAvatar: number = 0;
 
     constructor(private dialogRef: MatDialogRef<AvatarModalComponent>) {}
@@ -21,13 +21,13 @@ export class AvatarModalComponent implements OnInit {
 
     selectAvatar(selected: number): void {
         this.clearSelection();
-        var div = document.getElementById(selected.toString());
+        const div = document.getElementById(selected.toString());
         if (div) div.className = 'selected';
         this.selectedAvatar = selected;
     }
 
     clearSelection(): void {
-        var div = document.getElementById(this.selectedAvatar.toString());
+        const div = document.getElementById(this.selectedAvatar.toString());
         if (div) div.className = '';
     }
 
