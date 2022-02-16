@@ -39,13 +39,13 @@ import { PolygonConfigComponent } from './components/editor/sidebar/polygon-conf
 import { RectangleConfigComponent } from './components/editor/sidebar/rectangle-config/rectangle-config.component';
 import { SidebarComponent } from './components/editor/sidebar/sidebar.component';
 import { ToolsListComponent } from './components/editor/sidebar/tools-list/tools-list.component';
-import { ChatroomComponent } from './components/chat/chatroom/chatroom.component';
 import { LoginComponent } from './components/login/login.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ChatMenuComponent } from './components/chat/chat-menu/chat-menu.component';
 import { MenuComponent } from './components/menu/menu.component';
 import { SideMenuComponent } from './components/menu/side-menu/side-menu.component';
 import { SignUpComponent } from './components/sign-up/sign-up.component';
+import { ChatroomComponent } from './components/chat/chatroom/chatroom.component';
 
 @NgModule({
     declarations: [
@@ -67,12 +67,12 @@ import { SignUpComponent } from './components/sign-up/sign-up.component';
         PolygonConfigComponent,
         SaveDrawingModalComponent,
         PaintConfigComponent,
-        ChatroomComponent,
         LoginComponent,
         ChatMenuComponent,
         MenuComponent,
         SideMenuComponent,
         SignUpComponent,
+        ChatroomComponent
     ],
     imports: [
         BrowserModule,

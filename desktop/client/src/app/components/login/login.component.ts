@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { LoginService } from '../../services/login.service';
+import { LoginService } from '@app/services/login/login.service';
 
 @Component({
     selector: 'app-login',
@@ -14,8 +14,8 @@ export class LoginComponent {
     }
 
     connect(): void {
-        if (this.loginService.isValidUsername()) {
-            this.loginService.connectUser();
-        }
+        // if (this.loginService.isValidUsername()) {
+        //     this.loginService.connectUser();
+        // }
     }
 }
