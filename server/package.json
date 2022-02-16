@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.ts"
+    "start:chat": "node chat-server.ts",
+    "start:db": "node database-server.ts"
   },
   "author": "",
   "license": "ISC",

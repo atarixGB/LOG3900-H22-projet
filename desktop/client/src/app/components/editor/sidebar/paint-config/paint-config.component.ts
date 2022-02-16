@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { PaintBucketService } from '@app/services/editor-services/tools/paint-bucket/paint-bucket.service';
+import { PaintBucketService } from '@app/services/editor/tools/paint-bucket/paint-bucket.service';
 
 @Component({
     selector: 'app-paint-config',

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Vec2 } from '@app/classes/vec2';
-import { ColorManagerService } from '@app/services/editor-services/color-manager/color-manager.service';
-import { DrawingService } from '@app/services/editor-services/drawing/drawing.service';
-import { ShapeService } from '@app/services/editor-services/tools/shape/shape.service';
+import { ColorManagerService } from '@app/services/editor/color-manager/color-manager.service';
+import { DrawingService } from '@app/services/editor/drawing/drawing.service';
+import { ShapeService } from '@app/services/editor/tools/shape/shape.service';
 
 @Injectable({
     providedIn: 'root',

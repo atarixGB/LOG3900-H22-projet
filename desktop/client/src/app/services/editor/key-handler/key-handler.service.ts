@@ -6,8 +6,8 @@ import { ExportModalComponent } from '@app/components/editor/export-modal/export
 import { NewDrawModalComponent } from '@app/components/editor/new-draw-modal/new-draw-modal.component';
 import { SaveDrawingModalComponent } from '@app/components/editor/save-drawing-modal/save-drawing-modal.component';
 import { ToolList } from '@app/interfaces-enums/tool-list';
-import { ExportService } from '@app/services/editor-services/export-image/export.service';
-import { ToolManagerService } from '@app/services/editor-services/tools/tool-manager.service';
+import { ExportService } from '@app/services/editor/export-image/export.service';
+import { ToolManagerService } from '@app/services/editor/tools/tool-manager.service';
 
 @Injectable({
     providedIn: 'root',

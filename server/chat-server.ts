@@ -3,7 +3,7 @@ const socket = require('socket.io');
 const path = require('path')
 const fs = require('fs');
 const app = express();
-var PORT = process.env.PORT || 3000;
+var PORT = process.env.PORT || 3001;
 const server = app.listen(PORT); 
 const io = socket(server);
 
