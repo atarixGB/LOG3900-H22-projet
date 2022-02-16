@@ -26,7 +26,11 @@ export class LoginService {
         this.httpClient.post(LOGIN_URL, userCredentials).subscribe(
             (result) => {
                 console.log('Result: ', result);
-                this.router.navigate(['../menu'], { relativeTo: this.route });
+                if (result) {
+                  this.router.navigate(['../menu'], { relativeTo: this.route });
+                } else {
+                  // TODO: Add UI feedback
+                }
             },
             (error) => {
                 console.log("Error: ", error);

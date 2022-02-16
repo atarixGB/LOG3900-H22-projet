@@ -19,9 +19,6 @@ app.use(cors());
 //create mongoDB client
 var mongoClient = mongodb.MongoClient;
 
-//connection URL
-var url = DATABASE_URL;
-
 //password utils
 // create function to random SALT
 var genRandomString = function (length) {
@@ -52,7 +49,7 @@ function checkHashPassword(userPassword, salt) {
   return passwordData;
 }
 
-mongoClient.connect(url, { useNewUrlParser: true }, function (err, client) {
+mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, client) {
   if (err) {
     console.log("unable to connect to the mongoDB server error", err);
   } else {
@@ -122,10 +119,10 @@ mongoClient.connect(url, { useNewUrlParser: true }, function (err, client) {
                 ).passwordHash; //hash password with salt
                 var encrypted_password = user.password;
                 if (hashed_password == encrypted_password) {
-                  response.json("login success");
+                  response.json(true);
                   console.log("login success");
                 } else {
-                  response.json("wrong password");
+                  response.json(false);
                   console.log("wrong password");
                 }
               }
