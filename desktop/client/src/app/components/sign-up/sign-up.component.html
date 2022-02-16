@@ -1,36 +1,36 @@
-<div fxLayout="column" fxLayoutAlign="space-evenly center"  fxFlex="auto">
-   <img src="./assets/PolyGramLogo.png" alt="Logo" fxFlex="25">
+<div fxLayout="column" fxLayoutAlign="space-evenly center" fxFlex="auto">
+    <img src="./assets/PolyGramLogo.png" alt="Logo" fxFlex="25" />
 
-   <div fxLayout="column" fxLayoutAlign="start center">
-      <h1>Création du compte</h1>
-      <form>
-         <mat-form-field  appearance="fill">
-           <mat-label>Identifiant</mat-label>
-           <input matInput placeholder="Entrez votre nom">
-         </mat-form-field>
-      </form>
-      <form>
-         <mat-form-field  appearance="fill">
-           <mat-label>Mot de passe</mat-label>
-           <input matInput placeholder="Entrez votre mot de passe">
-         </mat-form-field>
-      </form>
-      <form>
-         <mat-form-field  appearance="fill">
-           <mat-label>Confirmation du mot de passe</mat-label>
-           <input matInput placeholder="Re-entrez votre mot de passe">
-         </mat-form-field>
-      </form>
-      <form>
-         <mat-form-field  appearance="fill">
-           <mat-label>Courriel</mat-label>
-           <input matInput placeholder="Entrez votre courriel">
-         </mat-form-field>
-      </form>
-      <button mat-raised-button color="primary">Choisir un avatar</button>
-   </div>
+    <div fxLayout="column" fxLayoutAlign="start center">
+        <h1>Création du compte</h1>
+        <form>
+            <mat-form-field appearance="fill">
+                <mat-label>Identifiant</mat-label>
+                <input matInput placeholder="Entrez votre nom" />
+            </mat-form-field>
+        </form>
+        <form>
+            <mat-form-field appearance="fill">
+                <mat-label>Mot de passe</mat-label>
+                <input matInput placeholder="Entrez votre mot de passe" />
+            </mat-form-field>
+        </form>
+        <form>
+            <mat-form-field appearance="fill">
+                <mat-label>Confirmation du mot de passe</mat-label>
+                <input matInput placeholder="Re-entrez votre mot de passe" />
+            </mat-form-field>
+        </form>
+        <form>
+            <mat-form-field appearance="fill">
+                <mat-label>Courriel</mat-label>
+                <input matInput placeholder="Entrez votre courriel" />
+            </mat-form-field>
+        </form>
+        <button mat-raised-button color="primary" (click)="this.openAvatarModal()">Choisir un avatar</button>
+    </div>
 
-   <div fxLayout="column" fxLayoutAlign="start center">
-      <button mat-raised-button color="primary" routerLink="/signup">CRÉER SON COMPTE</button>
-   </div>
+    <div fxLayout="column" fxLayoutAlign="start center">
+        <button mat-raised-button color="primary" routerLink="/signup">CRÉER SON COMPTE</button>
+    </div>
 </div>

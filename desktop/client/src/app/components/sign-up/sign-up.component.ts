@@ -1,15 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { AvatarModalComponent } from '../avatar-modal/avatar-modal.component';
 
 @Component({
-  selector: 'app-sign-up',
-  templateUrl: './sign-up.component.html',
-  styleUrls: ['./sign-up.component.scss']
+    selector: 'app-sign-up',
+    templateUrl: './sign-up.component.html',
+    styleUrls: ['./sign-up.component.scss'],
 })
-export class SignUpComponent implements OnInit {
+export class SignUpComponent {
+    constructor(public dialog: MatDialog) {}
 
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
+    openAvatarModal(): void {
+        this.dialog.open(AvatarModalComponent, {});
+    }
 }

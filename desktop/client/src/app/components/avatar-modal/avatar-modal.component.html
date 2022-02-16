@@ -1,0 +1,17 @@
+<div fxLayout="column" fxLayoutAlign="space-between center" class="fullHeight">
+    <h1>Choose an avatar!</h1>
+
+    <div fxLayout="row" fxLayoutAlign="space-evenly center" *ngFor="let row of [].constructor(this.nbRows); let i = index">
+        <div fxLayoutAlign="center center" *ngFor="let column of [].constructor(this.nbColumns); let j = index" fxFlex="10" class="avatarDiv">
+            <img
+                src="{{ this.avatarList[i * this.nbColumns + j] }}"
+                alt="avatar"
+                (click)="this.selectAvatar(i * this.nbColumns + j)"
+                fxFlex="100"
+                id="{{ i * this.nbColumns + j }}"
+            />
+        </div>
+    </div>
+
+    <button mat-raised-button color="accent" (click)="this.confirmAvatar()">Confirmer</button>
+</div>
