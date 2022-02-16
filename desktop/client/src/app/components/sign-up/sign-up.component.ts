@@ -10,6 +10,7 @@ export class SignUpComponent {
   password: string;
   confirmedPassword: string;
   email: string;
+  // avatar: Avatar;
 
   constructor(private signUpService: SignUpService) {
     this.username = "";
@@ -20,7 +21,7 @@ export class SignUpComponent {
   createAccountButton(): void {
     console.log(this.username, this.password, this.confirmedPassword, this.email);
 
-    if (this.checkFormInput()) {
+    if (this.checkUsername() && this.checkPassword() && this.checkEmail()) {
       this.signUpService.identifier = this.username;
       this.signUpService.password = this.password;
       this.signUpService.email = this.email;
@@ -28,24 +29,24 @@ export class SignUpComponent {
     }
   }
 
-  private checkFormInput(): boolean {
-    let areValid = this.checkUsername() && this.checkPassword() && this.checkEmail();
-    return areValid;
-  }
-
   private checkUsername(): boolean {
-    // TODO
-    return true;
+    let regex = /^[a-zA-Z0-9]+$/;
+    const isValid = regex.test(this.username);
+    console.log("username ok? ", isValid)
+    return isValid;
   }
 
   private checkPassword(): boolean {
-    let isValid: boolean = this.password == this.confirmedPassword;
+    const isValid: boolean = this.password == this.confirmedPassword;
+    console.log("password ok? ", isValid)
     return isValid;
   }
 
   private checkEmail(): boolean {
-    // TODO
-    return true;
+    let regex = /\S+@\S+\.\S+/;
+    const isValid = regex.test(this.email);
+    console.log("email ok? ", isValid)
+    return isValid;
   }
 
 }
