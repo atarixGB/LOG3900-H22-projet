@@ -15,17 +15,17 @@ export class SignUpService {
 
   signUp(): void {
     // POST resquest to create a new user in the database
-    const credentials = {
+    const userInfos = {
       identifier: this.identifier,
       password: this.password,
       email: this.email,
     }
 
-    this.httpClient.post(SIGN_UP_URL, credentials).subscribe(
+    this.httpClient.post(SIGN_UP_URL, userInfos).subscribe(
       (result) => {
-      console.log("Result:", result);
-    }, (error) => {
-      console.log("Error:", error);
-    })
+        console.log("Result:", result);
+      }, (error) => {
+        console.log("Error:", error);
+      })
   }
 }
