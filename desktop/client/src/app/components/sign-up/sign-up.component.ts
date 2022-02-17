@@ -19,8 +19,6 @@ export class SignUpComponent {
   }
 
   createAccountButton(): void {
-    console.log(this.username, this.password, this.confirmedPassword, this.email);
-
     if (this.checkUsername() && this.checkPassword() && this.checkEmail()) {
       this.signUpService.identifier = this.username;
       this.signUpService.password = this.password;
@@ -34,20 +32,17 @@ export class SignUpComponent {
   private checkUsername(): boolean {
     let regex = /^[a-zA-Z0-9]+$/;
     const isValid = regex.test(this.username);
-    console.log("username ok? ", isValid)
     return isValid && this.isValidInput(this.username);
   }
 
   private checkPassword(): boolean {
     const isValid: boolean = this.password == this.confirmedPassword;
-    console.log("password ok? ", isValid)
     return isValid && this.isValidInput(this.password);
   }
 
   private checkEmail(): boolean {
     let regex = /\S+@\S+\.\S+/;
     const isValid = regex.test(this.email);
-    console.log("email ok? ", isValid)
     return isValid && this.isValidInput(this.email);
   }
 
