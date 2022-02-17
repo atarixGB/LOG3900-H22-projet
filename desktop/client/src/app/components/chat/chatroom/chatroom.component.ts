@@ -48,6 +48,7 @@ export class ChatroomComponent implements AfterViewInit {
                     mine: isMine,
                 });
             }
+            this.scrollToBottom();
         });
     }
 
@@ -60,8 +61,15 @@ export class ChatroomComponent implements AfterViewInit {
         this.sendMessage();
     }
 
+    scrollToBottom(): void {
+        setTimeout(() => { // We have to wait for the view to update with the new message before we can scroll to the bottom
+            const msgsDiv = document.getElementById("messagesContainer");
+            if (msgsDiv) msgsDiv.scrollTop = msgsDiv.scrollHeight;
+        }, 50); 
+    }
+
     refocusMsgInputField(): void {
-        var inputField = document.getElementById("msgInput");
+        const inputField = document.getElementById("msgInput");
         if (inputField) inputField.focus();
     }
 }
