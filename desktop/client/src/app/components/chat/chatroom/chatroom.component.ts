@@ -35,6 +35,7 @@ export class ChatroomComponent implements AfterViewInit {
             this.socket.emit('message', data);
             this.message = '';
         }
+        this. refocusMsgInputField();
     }
 
     onNewMessage(): void {
@@ -57,6 +58,9 @@ export class ChatroomComponent implements AfterViewInit {
     @HostListener('document:keyup.enter', ['$event'])
     handleKeyUp(event: KeyboardEvent): void {
         this.sendMessage();
+    }
+
+    refocusMsgInputField(): void {
         var inputField = document.getElementById("msgInput");
         if (inputField) inputField.focus();
     }
