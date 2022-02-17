@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { AvatarModalComponent } from '../avatar-modal/avatar-modal.component';
+import { AvatarSelectionModalComponent } from '../avatar/avatar-selection-modal/avatar-selection-modal.component';
 
 @Component({
     selector: 'app-sign-up',
@@ -10,7 +10,7 @@ import { AvatarModalComponent } from '../avatar-modal/avatar-modal.component';
 export class SignUpComponent {
     constructor(public dialog: MatDialog) {}
 
-    openAvatarModal(): void {
-        this.dialog.open(AvatarModalComponent, {});
+    openAvatarSelectionModal(): void {
+        this.dialog.open(AvatarSelectionModalComponent, {});
     }
 }

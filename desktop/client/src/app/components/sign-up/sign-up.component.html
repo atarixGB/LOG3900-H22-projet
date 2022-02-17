@@ -27,7 +27,14 @@
                 <input matInput placeholder="Entrez votre courriel" />
             </mat-form-field>
         </form>
-        <button mat-raised-button color="primary" (click)="this.openAvatarModal()">Choisir un avatar</button>
+    </div>
+
+    <div fxLayout="column" fxLayoutAlign="center center">
+        <div fxLayout="row" fxLayoutAlign="center center">
+            <button mat-raised-button color="primary" (click)="this.openAvatarSelectionModal()" class="Width200">Choisir un avatar</button>
+            <div fxFlex="20"></div>
+            <button mat-raised-button color="primary" (click)="this.openAvatarSelectionModal()"  class="Width200">Importer un avatar</button>
+        </div>
     </div>
 
     <div fxLayout="column" fxLayoutAlign="start center">

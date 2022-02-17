@@ -46,7 +46,7 @@ import { ChatMenuComponent } from './components/chat/chat-menu/chat-menu.compone
 import { MenuComponent } from './components/menu/menu.component';
 import { SideMenuComponent } from './components/menu/side-menu/side-menu.component';
 import { SignUpComponent } from './components/sign-up/sign-up.component';
-import { AvatarModalComponent } from './components/avatar-modal/avatar-modal.component';
+import { AvatarSelectionModalComponent } from './components/avatar/avatar-selection-modal/avatar-selection-modal.component';
 
 @NgModule({
     declarations: [
@@ -74,7 +74,7 @@ import { AvatarModalComponent } from './components/avatar-modal/avatar-modal.com
         MenuComponent,
         SideMenuComponent,
         SignUpComponent,
-        AvatarModalComponent,
+        AvatarSelectionModalComponent,
     ],
     imports: [
         BrowserModule,
@@ -92,7 +92,7 @@ import { AvatarModalComponent } from './components/avatar-modal/avatar-modal.com
         BrowserAnimationsModule,
         DragDropModule,
         MatSliderModule,
-        MatSelectModule,
+        MatSelectModule, 
         MatInputModule,
         MatButtonToggleModule,
         MatSlideToggleModule,
