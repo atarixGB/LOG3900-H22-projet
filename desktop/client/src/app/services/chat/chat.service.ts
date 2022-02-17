@@ -13,26 +13,26 @@ export class ChatService {
 
   connectUser(): void {
     // this.socket = io.io('https://polygram-app.herokuapp.com/', { transports: ['websocket'] });
-    this.socket = io.io(`http://localhost:3000/`, { transports : ['websocket'] });
+    this.socket = io.io(`http://localhost:3001/`, { transports: ['websocket'] });
 
     this.socket.emit('newUser', this.username);
 
     this.socket.on('newUser', (user: string) => {
-        console.log('client', user);
+      console.log('client', user);
 
-        if (this.username == user) {
-            this.router.navigate(['../menu'], { relativeTo: this.route });
-        }
+      if (this.username == user) {
+        this.router.navigate(['../chatroom'], { relativeTo: this.route });
+      }
     });
-}
+  }
 
-disconnect(): void {
+  disconnect(): void {
     this.socket.emit('disconnectUser', this.username);
     this.socket.disconnect();
-}
+  }
 
-isValidUsername(): boolean {
-  return !(this.username === null || this.username.match(/^ *$/) !== null);
-}
+  isValidUsername(): boolean {
+    return !(this.username === null || this.username.match(/^ *$/) !== null);
+  }
 
 }

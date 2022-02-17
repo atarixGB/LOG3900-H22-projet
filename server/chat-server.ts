@@ -3,8 +3,8 @@ const socket = require('socket.io');
 const path = require('path')
 const fs = require('fs');
 const app = express();
-var PORT = process.env.PORT || 3001;
-const server = app.listen(PORT); 
+var CHAT_PORT = process.env.PORT || 3001;
+const server = app.listen(CHAT_PORT); 
 const io = socket(server);
 
 app.use(express.static('public')); 

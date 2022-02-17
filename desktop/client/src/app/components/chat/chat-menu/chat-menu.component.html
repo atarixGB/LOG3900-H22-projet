@@ -1,6 +1,6 @@
 <div fxLayout="row" fxLayoutAlign="center stretch" fxFlex="100">
    <app-side-menu fxLayout="column" fxLayoutAlign="start stretch" fxFlex="15%"></app-side-menu>
-   
+
    <div fxLayout="column" fxLayoutAlign="space-evenly stretch"  fxFlex="auto">
       <div fxFlex="20"></div>
 
@@ -10,7 +10,7 @@
       </div>
 
       <div fxLayout="row" fxLayoutAlign="space-evenly center" >
-         <button mat-raised-button color="primary" routerLink="/chatroom">Convo par défaut</button>
+         <button mat-raised-button color="primary" (click)="joinDefaultChannel()">Convo par défaut</button>
       </div>
 
       <div fxLayout="column" fxLayoutAlign="center center" >
