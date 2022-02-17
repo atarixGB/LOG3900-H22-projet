@@ -1,5 +1,5 @@
 import { formatDate } from '@angular/common';
-import { AfterViewInit, Component } from '@angular/core';
+import { AfterViewInit, Component, HostListener } from '@angular/core';
 import { IMessage } from '../../../interfaces-enums/IMessage';
 import { LoginService } from '../../../services/login.service';
 
@@ -52,5 +52,12 @@ export class ChatroomComponent implements AfterViewInit {
 
     isEmptyOrSpaces(str: string): boolean {
         return str === null || str.match(/^ *$/) !== null;
+    }
+
+    @HostListener('document:keyup.enter', ['$event'])
+    handleKeyUp(event: KeyboardEvent): void {
+        this.sendMessage();
+        var inputField = document.getElementById("msgInput");
+        if (inputField) inputField.focus();
     }
 }

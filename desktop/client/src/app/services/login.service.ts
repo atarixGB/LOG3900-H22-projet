@@ -14,8 +14,8 @@ export class LoginService {
     }
 
     connectUser(): void {
-        // this.socket = io.io('https://polygram-app.herokuapp.com/', { transports: ['websocket'] });
-        this.socket = io.io(`http://localhost:3000/`, { transports : ['websocket'] });
+        this.socket = io.io('https://polygram-app.herokuapp.com/', { transports: ['websocket'] });
+        // this.socket = io.io(`http://localhost:3000/`, { transports : ['websocket'] });
 
         this.socket.emit('newUser', this.username);
 

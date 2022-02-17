@@ -64,7 +64,7 @@
          <!-- Input et Boutton -->
          <div fxLayout="row" fxLayoutAlign="center stretch">
            <div fxFlex="5"></div>
-           <input class="bordered" fxFlex="70" matInput placeholder="Écris ton message ici!" type="text" [(ngModel)]="this.message">
+           <input id="msgInput" class="bordered" fxFlex="70" matInput placeholder="Écris ton message ici!" type="text" [(ngModel)]="this.message">
            <button fxFlex="20" mat-raised-button color="primary" (click)="sendMessage()">Send</button>
            <div fxFlex="5"></div>
          </div>
