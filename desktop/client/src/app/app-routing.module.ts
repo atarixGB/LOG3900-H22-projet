@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AlbumGalleryComponent } from './components/album-gallery/album-gallery.component';
 import { ChatMenuComponent } from './components/chat/chat-menu/chat-menu.component';
 import { ChatroomComponent } from './components/chat/chatroom/chatroom.component';
 import { EditorComponent } from './components/editor/editor.component';
@@ -15,6 +16,7 @@ const routes: Routes = [
     { path: 'editor', component: EditorComponent },
     { path: 'chatroom', component: ChatroomComponent },
     { path: 'chatmenu', component: ChatMenuComponent },
+    { path: 'albums', component: AlbumGalleryComponent },
     { path: '**', redirectTo: '/home' },
 ];
 
