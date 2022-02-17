@@ -47,6 +47,7 @@ import { MenuComponent } from './components/menu/menu.component';
 import { SideMenuComponent } from './components/menu/side-menu/side-menu.component';
 import { SignUpComponent } from './components/sign-up/sign-up.component';
 import { AlbumGalleryComponent } from './components/album-gallery/album-gallery.component';
+import { CreateAlbumDialogComponent } from './components/album-gallery/create-album-dialog/create-album-dialog.component';
 
 @NgModule({
     declarations: [
@@ -75,6 +76,7 @@ import { AlbumGalleryComponent } from './components/album-gallery/album-gallery.
         SideMenuComponent,
         SignUpComponent,
         AlbumGalleryComponent,
+        CreateAlbumDialogComponent,
     ],
     imports: [
         BrowserModule,
