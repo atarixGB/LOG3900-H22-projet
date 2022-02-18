@@ -5,3 +5,16 @@
 .Width200 {
     width: 200px;
 }
+
+#avatarImg {
+    height: 90%;
+}
+
+#avatarDisplay {
+    width: 150px;
+    height: 150px;
+    border-style: solid;
+    border-width: 5px;
+    border-radius: 50%;
+    overflow: hidden;
+}

@@ -37,7 +37,14 @@
         </div>
     </div>
 
+    <div fxLayout="column" fxLayoutAlign="center center">
+        <span>Votre avatar : </span> <br>
+        <div id="avatarDisplay" fxLayoutAlign="center center">
+            <img id="avatarImg" src={{this.avatarList[this.avatarFromSelection]}} alt="">
+        </div>
+    </div>
+
     <div fxLayout="column" fxLayoutAlign="start center">
-        <button mat-raised-button color="primary" routerLink="/signup">CRÉER SON COMPTE</button>
+        <button mat-raised-button color="warn" routerLink="/signup">CRÉER LE COMPTE</button>
     </div>
 </div>
