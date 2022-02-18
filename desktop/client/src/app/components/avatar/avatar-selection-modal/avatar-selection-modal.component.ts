@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
-import { avatars } from '../../../interfaces-enums/avatar-list';
+import { avatars } from '@app/interfaces-enums/avatar-list';
+import { SignUpService } from '@app/services/sign-up/sign-up.service';
+
+const nbRowsForAvatarDisplay = 3;
+const nbColumnsForAvatarDisplay = 3;
 
 @Component({
     selector: 'app-avatar-selection-modal',
@@ -11,9 +15,14 @@ export class AvatarSelectionModalComponent implements OnInit {
     avatarList: string[] = avatars;
     nbRows: number = 3;
     nbColumns: number = 3;
-    selectedAvatar: number = 0;
+    selectedAvatar: number;
 
-    constructor(private dialogRef: MatDialogRef<AvatarSelectionModalComponent>) {}
+    constructor(private dialogRef: MatDialogRef<AvatarSelectionModalComponent>, public signUpService: SignUpService) {
+        this.avatarList = avatars;
+        this.nbRows = nbRowsForAvatarDisplay;
+        this.nbColumns = nbColumnsForAvatarDisplay;
+        this.selectedAvatar = 0;
+    }
 
     ngOnInit(): void {
         this.dialogRef.updateSize('75%', '60%');
@@ -32,7 +41,7 @@ export class AvatarSelectionModalComponent implements OnInit {
     }
 
     confirmAvatar(): void {
-        // Send selected avatar to related services using this.selectedAvatar
+        this.signUpService.selectedAvatar = this.selectedAvatar;
         this.dialogRef.close();
     }
 }

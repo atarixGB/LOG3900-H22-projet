@@ -17,12 +17,12 @@ export class SignUpComponent {
     email: string;
 
     avatarList: string[] = avatars;
-    avatarFromSelection: number = 0;
 
-    constructor(private signUpService: SignUpService, public dialog: MatDialog) {
+    constructor(public signUpService: SignUpService, public dialog: MatDialog) {
         this.username = '';
         this.password = '';
         this.email = '';
+        this.avatarList = avatars;
     }
 
     createAccountButton(): void {

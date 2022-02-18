@@ -1,31 +1,34 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-const SIGN_UP_URL = "http://localhost:3000/register"
+const SIGN_UP_URL = 'http://localhost:3000/register';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root',
 })
 export class SignUpService {
-  identifier: string;
-  password: string;
-  email: string;
+    identifier: string;
+    password: string;
+    email: string;
+    selectedAvatar: number;
 
-  constructor(private httpClient: HttpClient) { }
+    constructor(private httpClient: HttpClient) {}
 
-  signUp(): void {
-    // POST resquest to create a new user in the database
-    const userInfos = {
-      identifier: this.identifier,
-      password: this.password,
-      email: this.email,
+    signUp(): void {
+        // POST resquest to create a new user in the database
+        const userInfos = {
+            identifier: this.identifier,
+            password: this.password,
+            email: this.email,
+        };
+
+        this.httpClient.post(SIGN_UP_URL, userInfos).subscribe(
+            (result) => {
+                console.log('Result:', result);
+            },
+            (error) => {
+                console.log('Error:', error);
+            },
+        );
     }
-
-    this.httpClient.post(SIGN_UP_URL, userInfos).subscribe(
-      (result) => {
-        console.log("Result:", result);
-      }, (error) => {
-        console.log("Error:", error);
-      })
-  }
 }
