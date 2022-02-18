@@ -12,9 +12,9 @@ const nbColumnsForAvatarDisplay = 3;
     styleUrls: ['./avatar-selection-modal.component.scss'],
 })
 export class AvatarSelectionModalComponent implements OnInit {
-    avatarList: string[] = avatars;
-    nbRows: number = 3;
-    nbColumns: number = 3;
+    avatarList: string[];
+    nbRows: number;
+    nbColumns: number;
     selectedAvatar: number;
 
     constructor(private dialogRef: MatDialogRef<AvatarSelectionModalComponent>, public signUpService: SignUpService) {
@@ -41,7 +41,7 @@ export class AvatarSelectionModalComponent implements OnInit {
     }
 
     confirmAvatar(): void {
-        this.signUpService.selectedAvatar = this.selectedAvatar;
+        this.signUpService.avatarSrc = this.avatarList[this.selectedAvatar];
         this.dialogRef.close();
     }
 }

@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { SignUpService } from '@app/services/sign-up/sign-up.service';
+import { avatars } from '../../interfaces-enums/avatar-list';
 import { AvatarImportModalComponent } from '../avatar/avatar-import-modal/avatar-import-modal.component';
 import { AvatarSelectionModalComponent } from '../avatar/avatar-selection-modal/avatar-selection-modal.component';
-import { avatars } from '../../interfaces-enums/avatar-list';
-import { SignUpService } from '@app/services/sign-up/sign-up.service';
 
 @Component({
     selector: 'app-sign-up',
@@ -16,7 +16,7 @@ export class SignUpComponent {
     confirmedPassword: string;
     email: string;
 
-    avatarList: string[] = avatars;
+    avatarList: string[];
 
     constructor(public signUpService: SignUpService, public dialog: MatDialog) {
         this.username = '';
@@ -37,7 +37,7 @@ export class SignUpComponent {
     }
 
     private checkUsername(): boolean {
-        let regex = /^[a-zA-Z0-9]+$/;
+        const regex = /^[a-zA-Z0-9]+$/;
         const isValid = regex.test(this.username);
         return isValid && this.isValidInput(this.username);
     }
@@ -48,7 +48,7 @@ export class SignUpComponent {
     }
 
     private checkEmail(): boolean {
-        let regex = /\S+@\S+\.\S+/;
+        const regex = /\S+@\S+\.\S+/;
         const isValid = regex.test(this.email);
         return isValid && this.isValidInput(this.email);
     }

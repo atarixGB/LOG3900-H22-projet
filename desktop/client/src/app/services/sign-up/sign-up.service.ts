@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 
 const SIGN_UP_URL = 'http://localhost:3000/register';
 
@@ -10,7 +10,7 @@ export class SignUpService {
     identifier: string;
     password: string;
     email: string;
-    selectedAvatar: number;
+    avatarSrc: any;
 
     constructor(private httpClient: HttpClient) {}
 

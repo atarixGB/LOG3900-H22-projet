@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
+import { SignUpService } from '@app/services/sign-up/sign-up.service';
 
 @Component({
     selector: 'app-avatar-import-modal',
@@ -7,11 +8,10 @@ import { MatDialogRef } from '@angular/material/dialog';
     styleUrls: ['./avatar-import-modal.component.scss'],
 })
 export class AvatarImportModalComponent implements OnInit {
-    imagePath: any;
     imgURL: any;
     isValidFile: boolean;
 
-    constructor(private dialogRef: MatDialogRef<AvatarImportModalComponent>) {
+    constructor(private dialogRef: MatDialogRef<AvatarImportModalComponent>, public signUpService: SignUpService) {
         this.isValidFile = true;
     }
 
@@ -30,7 +30,6 @@ export class AvatarImportModalComponent implements OnInit {
         }
         this.isValidFile = true;
         const reader = new FileReader();
-        this.imagePath = files;
         reader.readAsDataURL(files[0]);
         reader.onload = () => {
             this.imgURL = reader.result;
@@ -38,7 +37,7 @@ export class AvatarImportModalComponent implements OnInit {
     }
 
     confirmAvatar(): void {
-        // Send selected avatar to related services using this.imgURL i think
-        this.dialogRef.close();
+      this.signUpService.avatarSrc = this.imgURL;
+      this.dialogRef.close();
     }
 }
