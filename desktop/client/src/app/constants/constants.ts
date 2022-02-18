@@ -19,18 +19,6 @@ export enum MouseDirection {
     LowerRight = 3,
 }
 
-export const mouseEventLClick = {
-    x: 25,
-    y: 25,
-    button: 0,
-} as MouseEvent;
-
-export const mouseEventRClick = {
-    x: 25,
-    y: 25,
-    button: 2,
-} as MouseEvent;
-
 export const FIRSTCOLORTEST: RGBA = {
     Dec: { Red: 255, Green: 255, Blue: 255, Alpha: 1 },
     Hex: { Red: 'ff', Green: 'ff', Blue: 'ff' },

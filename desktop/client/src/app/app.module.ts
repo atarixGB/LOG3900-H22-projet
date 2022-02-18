@@ -33,7 +33,6 @@ import { ConfigPanelComponent } from './components/editor/config-panel/config-pa
 import { DrawingComponent } from './components/editor/drawing/drawing.component';
 import { EditorComponent } from './components/editor/editor.component';
 import { ExportModalComponent } from './components/editor/export-modal/export-modal.component';
-import { MainPageComponent } from './components/editor/main-page/main-page.component';
 import { NewDrawModalComponent } from './components/editor/new-draw-modal/new-draw-modal.component';
 import { SaveDrawingModalComponent } from './components/editor/save-drawing-modal/save-drawing-modal.component';
 import { EllipseConfigComponent } from './components/editor/sidebar/ellipse-config/ellipse-config.component';
@@ -56,7 +55,6 @@ import { SignUpComponent } from './components/sign-up/sign-up.component';
         EditorComponent,
         SidebarComponent,
         DrawingComponent,
-        MainPageComponent,
         FileMenuComponent,
         ToolsListComponent,
         PencilConfigComponent,
@@ -70,7 +68,6 @@ import { SignUpComponent } from './components/sign-up/sign-up.component';
         PolygonConfigComponent,
         SaveDrawingModalComponent,
         PaintConfigComponent,
-        ChatroomComponent,
         LoginComponent,
         ChatMenuComponent,
         MenuComponent,
@@ -78,6 +75,7 @@ import { SignUpComponent } from './components/sign-up/sign-up.component';
         SignUpComponent,
         AvatarSelectionModalComponent,
         AvatarImportModalComponent,
+        ChatroomComponent,
     ],
     imports: [
         BrowserModule,

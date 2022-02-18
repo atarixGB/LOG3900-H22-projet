@@ -1,35 +1,35 @@
 <div fxLayout="column" fxLayoutAlign="space-evenly center" fxFlex="auto">
     <img src="./assets/PolyGramLogo.png" alt="Logo" fxFlex="25" />
 
-    <div fxLayout="column" fxLayoutAlign="start center">
+   <div fxLayout="column" fxLayoutAlign="start center">
         <h1>Création du compte</h1>
         <form>
-            <mat-form-field appearance="fill">
-                <mat-label>Identifiant</mat-label>
-                <input matInput placeholder="Entrez votre nom" />
-            </mat-form-field>
+           <mat-form-field  appearance="fill">
+             <mat-label>Identifiant</mat-label>
+             <input matInput placeholder="Entrez votre nom" [(ngModel)]="this.username" name="username">
+           </mat-form-field>
         </form>
         <form>
-            <mat-form-field appearance="fill">
-                <mat-label>Mot de passe</mat-label>
-                <input type="password" matInput placeholder="Entrez votre mot de passe" />
-            </mat-form-field>
+           <mat-form-field  appearance="fill">
+             <mat-label>Mot de passe</mat-label>
+             <input matInput placeholder="Entrez votre mot de passe" type="password" [(ngModel)]="this.password" name="password">
+           </mat-form-field>
         </form>
         <form>
-            <mat-form-field appearance="fill">
-                <mat-label>Confirmation du mot de passe</mat-label>
-                <input type="password" matInput placeholder="Re-entrez votre mot de passe" />
-            </mat-form-field>
+           <mat-form-field  appearance="fill">
+             <mat-label>Confirmation du mot de passe</mat-label>
+             <input matInput placeholder="Confirmer votre mot de passe" type="password" [(ngModel)]="this.confirmedPassword" name="confirmedPassword">
+           </mat-form-field>
         </form>
         <form>
-            <mat-form-field appearance="fill">
-                <mat-label>Courriel</mat-label>
-                <input type="email" matInput placeholder="Entrez votre courriel" />
-            </mat-form-field>
+           <mat-form-field  appearance="fill">
+             <mat-label>Courriel</mat-label>
+             <input matInput placeholder="Entrez votre courriel" [(ngModel)]="this.email" name="email">
+           </mat-form-field>
         </form>
-    </div>
+   </div>
 
-    <div fxLayout="column" fxLayoutAlign="center center">
+   <div fxLayout="column" fxLayoutAlign="center center">
         <div fxLayout="row" fxLayoutAlign="center center">
             <button mat-raised-button color="primary" (click)="this.openAvatarSelectionModal()" class="Width200">Choisir un avatar</button>
             <div fxFlex="20"></div>

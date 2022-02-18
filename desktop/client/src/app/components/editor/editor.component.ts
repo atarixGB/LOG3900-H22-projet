@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ToolList } from '@app/interfaces-enums/tool-list';
-import { ToolManagerService } from '@app/services/editor-services/tools/tool-manager.service';
+import { ToolManagerService } from '@app/services/editor/tools/tool-manager.service';
 
 @Component({
     selector: 'app-editor',

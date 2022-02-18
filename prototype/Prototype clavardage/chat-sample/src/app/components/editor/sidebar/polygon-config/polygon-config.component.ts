@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { PolygonService } from 'src/app/services/editor-services/tools/polygon/polygon.service';
+import { PolygonService } from 'src/app/services/editor/tools/polygon/polygon.service';
 
 const INITIAL_SIDES = 3;
 
