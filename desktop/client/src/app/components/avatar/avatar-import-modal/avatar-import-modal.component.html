@@ -1,0 +1,17 @@
+<div fxLayout="column" fxLayoutAlign="space-between center" id="modalContainer">
+   <h1>Importe ton avatar!</h1>
+
+   <mat-form-field id="fileInput">
+      <ngx-mat-file-input (change)="onFileSelection($event)" placeholder="Cliquer ici pour selectionner un fichier" ></ngx-mat-file-input>
+      <mat-icon matSuffix>folder</mat-icon>
+   </mat-form-field>
+
+   <span id="errorMessage" *ngIf="!this.isValidFile"> Only images are supported. </span>
+
+   <div fxLayout="column" fxLayoutAlign="center center" *ngIf="this.isValidFile" fxFlex="50">
+      <span  fxFlex="10"> Vous avez importé l'image suivante : </span> <br>
+      <img [src]="imgURL" alt="Importer une image pour voir une apperçu." id="img" fxFlex="90">
+   </div>
+
+   <button mat-raised-button color="accent" (click)="this.confirmAvatar()">Confirmer</button>
+</div>
