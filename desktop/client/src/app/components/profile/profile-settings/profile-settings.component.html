@@ -56,7 +56,10 @@
              <div class="sectionTitleContainer" fxLayout="row" fxLayoutAlign="start center">
                <span>Description</span>
             </div>
-            <span>TO DO</span>
+            <mat-form-field class="topPadding" appearance="outline">
+               <mat-label>Modifier votre description!</mat-label>
+               <textarea id="descriptionInput" matInput [(ngModel)]="this.profileSettingsService.description"> {{this.profileSettingsService.description}} </textarea>
+            </mat-form-field>
 
          </div>
       </div>

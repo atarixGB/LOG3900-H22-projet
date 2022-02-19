@@ -47,3 +47,11 @@
 #usernameArrow {
     padding-top: 25px;
 }
+
+#descriptionInput {
+    height: 100px;
+    text-align: justify;
+    white-space: pre-line;
+    -moz-text-align-last: left;
+    text-align-last: left;
+}
