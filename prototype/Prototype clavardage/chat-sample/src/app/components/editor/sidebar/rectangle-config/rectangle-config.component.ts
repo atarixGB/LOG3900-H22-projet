@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RectangleService } from '@app/services/editor-services/tools/rectangle/rectangle.service';
+import { RectangleService } from '@app/services/editor/tools/rectangle/rectangle.service';
 
 @Component({
     selector: 'app-rectangle-config',

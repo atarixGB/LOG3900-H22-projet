@@ -1,7 +1,7 @@
 import { formatDate } from '@angular/common';
 import { AfterViewInit, Component } from '@angular/core';
 import { IMessage } from '../../../interfaces-enums/IMessage';
-import { LoginService } from '../../../services/login.service';
+import { ChatService } from '@app/services/chat/chat.service';
 
 @Component({
     selector: 'app-chatroom',
@@ -15,12 +15,12 @@ export class ChatroomComponent implements AfterViewInit {
     userList: string[] = [];
     socket: any;
 
-    constructor(public loginService: LoginService) {
-        this.socket = this.loginService.socket;
+    constructor(public chatService: ChatService) {
+        this.socket = this.chatService.socket;
     }
 
     ngAfterViewInit(): void {
-        this.userName = this.loginService.username;
+        this.userName = this.chatService.username;
         this.onNewMessage();
     }
 

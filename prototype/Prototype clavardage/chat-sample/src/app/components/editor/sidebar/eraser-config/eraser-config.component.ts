@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { EraserService } from '@app/services/editor-services/tools/eraser/eraser.service';
+import { EraserService } from '@app/services/editor/tools/eraser/eraser.service';
 
 @Component({
     selector: 'app-eraser-config',

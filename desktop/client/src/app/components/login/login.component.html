@@ -1,4 +1,4 @@
-<div fxLayout="column" fxLayoutAlign="space-evenly center"  fxFlex="auto">
+<div fxLayout="column" fxLayoutAlign="space-evenly center"  fxFlex="auto" class="login-container">
    <img src="./assets/PolyGramLogo.png" alt="Logo" fxFlex="40%">
 
    <div fxLayout="column" fxLayoutAlign="start center">
@@ -6,20 +6,20 @@
       <form>
          <mat-form-field  appearance="fill">
            <mat-label>Identifiant</mat-label>
-           <input matInput placeholder="Entrez votre nom" [(ngModel)] = "this.loginService.username" [ngModelOptions]="{standalone: true}">
+           <input matInput placeholder="Entrez votre nom" [(ngModel)]="this.username" name="username">
          </mat-form-field>
       </form>
       <form>
          <mat-form-field  appearance="fill">
            <mat-label>Mot de passe</mat-label>
-           <input matInput placeholder="Entrez votre mot de passe" [(ngModel)] = "this.password">
+           <input matInput placeholder="Entrez votre mot de passe" type="password" [(ngModel)]="this.password" name="password">
          </mat-form-field>
       </form>
       <button mat-raised-button color="primary" (click)="this.connect()">SE CONNECTER</button>
    </div>
 
    <div fxLayout="column" fxLayoutAlign="start center">
-      <h1>Vous n'avez pas de compte? Inscrivez-vous maintenant!</h1>
+      <h2>Vous n'avez pas de compte? Inscrivez-vous maintenant!</h2>
       <button mat-raised-button color="primary" routerLink="/signup">CRÉER UN COMPTE</button>
    </div>
 </div>

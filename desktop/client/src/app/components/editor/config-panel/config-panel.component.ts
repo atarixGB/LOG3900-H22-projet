@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ToolList } from '@app/interfaces-enums/tool-list';
-import { ToolManagerService } from '@app/services/editor-services/tools/tool-manager.service';
+import { ToolManagerService } from '@app/services/editor/tools/tool-manager.service';
 
 @Component({
     selector: 'app-config-panel',
@@ -15,7 +15,7 @@ export class ConfigPanelComponent {
     includesColorConfiguration(): boolean {
         if (
             this.toolManagerService.currentToolEnum !== ToolList.Eraser &&
-            this.toolManagerService.currentToolEnum !== ToolList.SelectionRectangle 
+            this.toolManagerService.currentToolEnum !== ToolList.SelectionRectangle
         )
             return true;
         return false;
