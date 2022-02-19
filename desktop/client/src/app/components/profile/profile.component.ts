@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component } from '@angular/core';
 import { ProfileService } from '@app/services/profile/profile.service';
 
 @Component({
@@ -6,8 +6,10 @@ import { ProfileService } from '@app/services/profile/profile.service';
     templateUrl: './profile.component.html',
     styleUrls: ['./profile.component.scss'],
 })
-export class ProfileComponent implements OnInit {
+export class ProfileComponent implements AfterViewInit {
     constructor(public profileService: ProfileService) {}
 
-    ngOnInit(): void {}
+    ngAfterViewInit(): void {
+        this.profileService.loadProfileInfo();
+    }
 }

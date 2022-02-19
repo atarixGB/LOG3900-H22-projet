@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { ProfileService } from './profile.service';
 
 @Injectable({
     providedIn: 'root',
@@ -9,10 +10,25 @@ export class ProfileSettingsService {
     description: string;
     avatarSrc: any;
 
-    constructor() {
-        this.username = 'Léon Le Brun'; // placeholder
-        this.description =
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'; // placeholder
-        this.avatarSrc = './assets/avatars/av0.png'; // placeholder
+    newUsername: string;
+
+    constructor(public profileService: ProfileService) {
+        this.getUserInfoFromProfile();
+    }
+
+    getUserInfoFromProfile(): void {
+        this.username = this.profileService.username;
+        this.description = this.profileService.description;
+        this.avatarSrc = this.profileService.avatarSrc;
+    }
+
+    applyChangesToProfil(): void {
+        // To do
+        console.log('TO DO: Apply changes to profile (in profile settings service)');
+    }
+
+    sendChangesToDB(): void {
+        // To do
+        console.log('TO DO: Send profile modifications to DB (in profile settings service)');
     }
 }

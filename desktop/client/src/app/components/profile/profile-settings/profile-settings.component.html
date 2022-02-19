@@ -1,6 +1,6 @@
 <div fxLayout="row" fxLayoutAlign="center stretch" fxFlex="100">
    <!-- Side Menu -->
-   <app-side-menu fxLayout="column" fxLayoutAlign="start stretch" fxFlex="15%"></app-side-menu>
+   <app-side-menu fxLayout="column" fxLayoutAlign="start stretch" fxFlex="15"></app-side-menu>
 
    <!-- Profil settings page -->
    <div fxLayout="column" fxLayoutAlign="start stretch" fxFlex="auto">
@@ -29,9 +29,36 @@
                    <button mat-raised-button color="primary" (click)="this.openAvatarImportModal()">Importer un nouvel avatar</button>
                </div>
             </div>
+
+
+            <!-- Username settings -->
+            <div class="sectionTitleContainer" fxLayout="row" fxLayoutAlign="start center">
+               <span>Pseudonyme</span>
+            </div>
+            <div class="topBottomPadding" fxLayout="row" fxLayoutAlign="space-evenly start">
+               <div fxLayout="column" fxLayoutAlign="start center" >
+                  <span>Pseudonyme courant:</span>
+                  <div class="bordered">
+                     <span>{{this.profileSettingsService.username}}</span>
+                  </div>
+              </div>
+              <mat-icon id="usernameArrow">arrow_forward</mat-icon>
+              <div fxLayout="column" fxLayoutAlign="space-evenly center" >
+                  <span>Changer à:</span>
+                  <mat-form-field appearance="outline">
+                     <mat-label>Entrez un nouveau nom!</mat-label>
+                     <input matInput placeholder="Nouveau nom" [(ngModel)]="this.newUsername" >
+                  </mat-form-field>
+              </div>
+            </div>
          </div>
       </div>
 
+      <!-- Confirmation btn -->
+      <div fxFlex="5"></div>
+      <div fxLayout="row" fxLayoutAlign="center start">
+         <button mat-raised-button color="warn" (click)="this.saveChanges()">Sauvegarder les changements</button>
+      </div>
 
    </div>
 </div>
