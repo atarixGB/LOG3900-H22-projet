@@ -12,7 +12,6 @@ export class AlbumGalleryComponent implements OnInit {
   constructor(private albumGalleryService: AlbumGalleryService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
-    this.getAllUserAlbums();
   }
 
   openCreateAlbumDialog(): void {
@@ -29,11 +28,7 @@ export class AlbumGalleryComponent implements OnInit {
   }
 
   viewAlbumButton(): void {
-    // TODO
-  }
-
-  private getAllUserAlbums(): void {
-    // TODO
+    console.log("getting album...")
     this.albumGalleryService.fetchAlbumsFromDatabase();
   }
 

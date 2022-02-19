@@ -131,6 +131,36 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
         });
     });
 
+    //create new album
+    app.post("/albums", (request, response, next) => {
+      const db = client.db("PolyGramDB");
+
+      console.log(request.body);
+
+      db.collection("albums").insertOne(request.body, (err, res) => {
+        request.body._id = res.insertedId.toHexString();
+        console.log(`Album "${request.body.name}" created successfully with ID: ${request.body._id}!`);
+        console.log(request.body);
+        response.json(request.body);
+      });
+    })
+
+    //get album
+    app.get("/albums", (request, response, next) => {
+      const db = client.db("PolyGramDB");
+
+      db.collection("albums").find().toArray((err, res) => {
+        console.log(res);
+        response.json(res);
+        ;
+      })
+    });
+
+    app.delete("albums/:id", (req, res, next) => {
+      // TODO
+      console.log(req.params.id);
+    })
+
     //start web server
     app.listen(SERVER_PORT, () => {
       console.log(

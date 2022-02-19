@@ -18,7 +18,6 @@ export class CreateAlbumDialogComponent {
    }
 
   createAlbumButton(): void {
-    console.log(`album created! ${this.name}, ${this.description}`);
     if (this.checkAlbumName()) {
       this.albumGalleryService.createAlbum(this.name, this.description, this.isPrivate);
     } else {
@@ -32,7 +31,6 @@ export class CreateAlbumDialogComponent {
   }
 
   changeAccess(value: number): void {
-    console.log(value);
     this.isPrivate = value == 1;
   }
 

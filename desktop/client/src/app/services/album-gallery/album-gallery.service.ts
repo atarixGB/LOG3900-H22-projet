@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { IAlbum } from '@app/interfaces-enums/IAlbum'
 import { LoginService } from '@app/services/login/login.service';
 
-export const ALBUM_URL = "http://localhost:3000/"
+export const ALBUM_URL = "http://localhost:3000/albums"
 
 @Injectable({
   providedIn: 'root'
@@ -26,11 +26,9 @@ export class AlbumGalleryService {
       isMine: true
     }
 
-    console.log(newAlbum);
-
-  this.httpClient;
+    this.httpClient;
     this.httpClient.post(ALBUM_URL, newAlbum).subscribe(
-      (result) => {
+      (result: IAlbum) => {
         console.log("Server result: ", result)
       },
       (error) => {
@@ -40,8 +38,17 @@ export class AlbumGalleryService {
 
   }
 
-  deleteAlbum(): void {
+  deleteAlbum(id: string): void {
     // TODO
+    const url = ALBUM_URL + `/${id}`;
+    this.httpClient.delete(url, { responseType: 'text' }).subscribe(
+      (result) => {
+        console.log("Server result: ", result);
+      },
+      (error) => {
+        console.log("Server error:", error);
+      }
+    )
   }
 
   viewAlbum(): void {
@@ -50,6 +57,19 @@ export class AlbumGalleryService {
 
   fetchAlbumsFromDatabase(): void {
     // TODO
+    const url = ALBUM_URL;
+    this.httpClient.get<IAlbum[]>(url).subscribe(
+      (albums: IAlbum[]) => {
+
+        for (let i = 0; i < albums.length; i++) {
+          this.albums.push(albums[i]);
+          console.log(albums[i]);
+        }
+      },
+      (error: any) => {
+        console.log('Impossible de retrouver les albums dans la base de données.\n Erreur:' + error);
+      }
+    );
   }
 
   fetchAllAlbumsFronDatabase(): void {
