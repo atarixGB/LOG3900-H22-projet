@@ -79,12 +79,12 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
         .find({ identifier: identifier })
         .count(function (err, number) {
           if (number != 0) {
-            response.json("identifier already exists");
+            response.json(false);
             console.log("identifier already exists");
           } else {
             //insert data
             db.collection("users").insertOne(insertJson, function (error, res) {
-              response.json("Registration success");
+              response.json(true);
               console.log("Registration success");
             });
           }
