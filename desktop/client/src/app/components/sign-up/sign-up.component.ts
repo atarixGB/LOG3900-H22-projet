@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { SignUpService } from '@app/services/sign-up/sign-up.service';
-import { avatars } from '../../interfaces-enums/avatar-list';
 import { AvatarImportModalComponent } from '../avatar/avatar-import-modal/avatar-import-modal.component';
 import { AvatarSelectionModalComponent } from '../avatar/avatar-selection-modal/avatar-selection-modal.component';
 
@@ -16,13 +15,10 @@ export class SignUpComponent {
     confirmedPassword: string;
     email: string;
 
-    avatarList: string[];
-
     constructor(public signUpService: SignUpService, public dialog: MatDialog) {
         this.username = '';
         this.password = '';
         this.email = '';
-        this.avatarList = avatars;
     }
 
     createAccountButton(): void {

@@ -6,7 +6,7 @@
    <div fxLayout="column" fxLayoutAlign="start stretch" fxFlex="auto">
       <div fxFlex="10"></div>
       <div fxLayout="row" fxLayoutAlign="center center" >
-         <h1 id="title">PROFIL</h1>
+         <h1 id="title">Profil</h1>
       </div>
       
       <!-- Avatar, username and description -->
@@ -14,7 +14,7 @@
 
          <div fxLayout="column" fxLayoutAlign="center center">
              <div id="avatarDisplay" fxLayoutAlign="center center">
-                 <img id="avatarImg" [src]="this.profileService.avatar">
+                 <img id="avatarImg" [src]="this.profileService.avatarSrc">
              </div>
              <h2>{{this.profileService.username}}</h2>
          </div>
@@ -66,7 +66,7 @@
       <!-- Settings -->
       <div fxFlex="5"></div>
       <div fxLayout="row" fxLayoutAlign="center start">
-         <button mat-raised-button color="warn">Paramètres du profil</button>
+         <button mat-raised-button color="warn" routerLink="/profileSettings">Paramètres du profil</button>
       </div>
    </div>
 </div>

@@ -3,10 +3,11 @@ import { Injectable } from '@angular/core';
 @Injectable({
     providedIn: 'root',
 })
-export class ProfileService {
+export class ProfileSettingsService {
     username: string;
+    password: string;
     description: string;
-    avatarSrc: string;
+    avatarSrc: any;
 
     constructor() {
         this.username = 'Léon Le Brun'; // placeholder

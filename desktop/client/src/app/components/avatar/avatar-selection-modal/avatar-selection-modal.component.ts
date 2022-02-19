@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { avatars } from '@app/interfaces-enums/avatar-list';
+import { ProfileSettingsService } from '@app/services/profile/profile-settings.service';
 import { SignUpService } from '@app/services/sign-up/sign-up.service';
 
 const nbRowsForAvatarDisplay = 3;
@@ -17,7 +18,11 @@ export class AvatarSelectionModalComponent implements OnInit {
     nbColumns: number;
     selectedAvatar: number;
 
-    constructor(private dialogRef: MatDialogRef<AvatarSelectionModalComponent>, public signUpService: SignUpService) {
+    constructor(
+        private dialogRef: MatDialogRef<AvatarSelectionModalComponent>,
+        public signUpService: SignUpService,
+        public profileSettingsService: ProfileSettingsService,
+    ) {
         this.avatarList = avatars;
         this.nbRows = nbRowsForAvatarDisplay;
         this.nbColumns = nbColumnsForAvatarDisplay;
@@ -42,6 +47,7 @@ export class AvatarSelectionModalComponent implements OnInit {
 
     confirmAvatar(): void {
         this.signUpService.avatarSrc = this.avatarList[this.selectedAvatar];
+        this.profileSettingsService.avatarSrc = this.avatarList[this.selectedAvatar];
         this.dialogRef.close();
     }
 }

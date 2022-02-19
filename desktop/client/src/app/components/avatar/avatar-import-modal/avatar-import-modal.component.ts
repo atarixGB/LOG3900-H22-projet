@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
+import { ProfileSettingsService } from '@app/services/profile/profile-settings.service';
 import { SignUpService } from '@app/services/sign-up/sign-up.service';
 
 @Component({
@@ -11,7 +12,11 @@ export class AvatarImportModalComponent implements OnInit {
     imgURL: any;
     isValidFile: boolean;
 
-    constructor(private dialogRef: MatDialogRef<AvatarImportModalComponent>, public signUpService: SignUpService) {
+    constructor(
+        private dialogRef: MatDialogRef<AvatarImportModalComponent>,
+        public signUpService: SignUpService,
+        public profileSettingsService: ProfileSettingsService,
+    ) {
         this.isValidFile = true;
     }
 
@@ -37,7 +42,8 @@ export class AvatarImportModalComponent implements OnInit {
     }
 
     confirmAvatar(): void {
-      this.signUpService.avatarSrc = this.imgURL;
-      this.dialogRef.close();
+        this.signUpService.avatarSrc = this.imgURL;
+        this.profileSettingsService.avatarSrc = this.imgURL;
+        this.dialogRef.close();
     }
 }
