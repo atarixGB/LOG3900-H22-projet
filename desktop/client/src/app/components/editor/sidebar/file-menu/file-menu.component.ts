@@ -3,8 +3,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { ExportModalComponent } from '@app/components/editor/export-modal/export-modal.component';
 import { NewDrawModalComponent } from '@app/components/editor/new-draw-modal/new-draw-modal.component';
 import { SaveDrawingModalComponent } from '@app/components/editor/save-drawing-modal/save-drawing-modal.component';
-import { ExportService } from '@app/services/editor-services/export-image/export.service';
-import { IndexService } from '@app/services/editor-services/index/index.service';
+import { ExportService } from '@app/services/editor/export-image/export.service';
+import { IndexService } from '@app/services/editor/index/index.service';
 import { BehaviorSubject } from 'rxjs';
 
 @Component({

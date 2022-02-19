@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { LoginService } from '@app/services/login.service';
+import { LoginService } from '@app/services/login/login.service';
 
 @Component({
     selector: 'app-login',
@@ -7,15 +7,26 @@ import { LoginService } from '@app/services/login.service';
     styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent {
+    username: string;
     password: string;
+    hide: boolean;
 
     constructor(public loginService: LoginService) {
+        this.username = '';
         this.password = '';
     }
 
     connect(): void {
-        if (this.loginService.isValidUsername()) {
-            this.loginService.connectUser();
-        }
+      if (this.isValidInput(this.username) && this.isValidInput(this.password)) {
+        this.loginService.username = this.username;
+        this.loginService.password = this.password;
+        this.loginService.connect();
+      } else {
+        // TODO: Add UI feedback
+      }
+    }
+
+    private isValidInput(str: string): boolean {
+      return !(str === null || str.match(/^ *$/) !== null);
     }
 }
