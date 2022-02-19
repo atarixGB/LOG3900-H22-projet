@@ -105,7 +105,7 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
         .find({ identifier: identifier })
         .count(function (err, number) {
           if (number == 0) {
-            response.json("identifier does not exists");
+            response.json(false);
             console.log("identifier does not exists");
           } else {
             //insert data
