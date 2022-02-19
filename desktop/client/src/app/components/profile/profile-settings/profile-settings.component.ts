@@ -28,7 +28,7 @@ export class ProfileSettingsComponent implements AfterContentInit {
 
     saveChanges(): void {
         this.validateNewUsername(); // TO DO
-        this.profileSettingsService.applyChangesToProfil(); // TO DO
+        this.profileSettingsService.applyChangesToProfile(); // TO DO
         this.profileSettingsService.sendChangesToDB(); // TO DO
     }
 

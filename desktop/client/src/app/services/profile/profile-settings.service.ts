@@ -22,7 +22,7 @@ export class ProfileSettingsService {
         this.avatarSrc = this.profileService.avatarSrc;
     }
 
-    applyChangesToProfil(): void {
+    applyChangesToProfile(): void {
         // To do
         console.log('TO DO: Apply changes to profile (in profile settings service)');
     }
