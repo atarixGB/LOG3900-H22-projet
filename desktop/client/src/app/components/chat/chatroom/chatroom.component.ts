@@ -45,7 +45,7 @@ export class ChatroomComponent implements AfterViewInit {
     onNewMessage(): void {
         this.socket.on('message', (data: any) => {
             if (data) {
-                let isMine = data.userName == this.userName;
+                const isMine = data.userName == this.userName;
                 this.messageList.push({
                     message: data.message,
                     userName: data.userName + (isMine ? ' (moi)' : '') + ' - ' + formatDate(new Date(), 'hh:mm:ss a', 'en-US'),
@@ -69,7 +69,9 @@ export class ChatroomComponent implements AfterViewInit {
         setTimeout(() => {
             // We have to wait for the view to update with the new message before we can scroll to the bottom
             const msgsDiv = document.getElementById('messagesContainer');
-            if (msgsDiv) msgsDiv.scrollTop = msgsDiv.scrollHeight;
+            if (msgsDiv) {
+                msgsDiv.scrollTop = msgsDiv.scrollHeight;
+            }
         }, 50);
     }
 
