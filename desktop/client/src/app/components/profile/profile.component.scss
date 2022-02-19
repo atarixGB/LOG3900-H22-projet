@@ -2,11 +2,11 @@
     height: 100%;
 }
 
-#title {
+.sectionTitle {
     text-decoration: underline;
 }
 
-#descTitle {
+#title {
     text-decoration: underline;
 }
 
@@ -26,4 +26,15 @@
     border-radius: 50%;
     overflow: hidden;
     background-color: black;
+}
+
+#statsContainer {
+    border-style: solid;
+    border-color: grey;
+    border-radius: 5px;
+    border-width: 2px;
+}
+
+#settingsBtn {
+    width: 200px;
 }
