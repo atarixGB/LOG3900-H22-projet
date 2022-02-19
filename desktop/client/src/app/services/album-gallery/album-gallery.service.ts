@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { IAlbum } from '@app/interfaces-enums/IAlbum'
-import { LoginService } from '../login.service';
+import { LoginService } from '@app/services/login/login.service';
 
 export const ALBUM_URL = "http://localhost:3000/"
 

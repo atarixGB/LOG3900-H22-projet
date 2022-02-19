@@ -27,7 +27,6 @@ import { ConfigPanelComponent } from './components/editor/config-panel/config-pa
 import { DrawingComponent } from './components/editor/drawing/drawing.component';
 import { EditorComponent } from './components/editor/editor.component';
 import { ExportModalComponent } from './components/editor/export-modal/export-modal.component';
-import { MainPageComponent } from './components/editor/main-page/main-page.component';
 import { NewDrawModalComponent } from './components/editor/new-draw-modal/new-draw-modal.component';
 import { SaveDrawingModalComponent } from './components/editor/save-drawing-modal/save-drawing-modal.component';
 import { EllipseConfigComponent } from './components/editor/sidebar/ellipse-config/ellipse-config.component';
@@ -39,7 +38,6 @@ import { PolygonConfigComponent } from './components/editor/sidebar/polygon-conf
 import { RectangleConfigComponent } from './components/editor/sidebar/rectangle-config/rectangle-config.component';
 import { SidebarComponent } from './components/editor/sidebar/sidebar.component';
 import { ToolsListComponent } from './components/editor/sidebar/tools-list/tools-list.component';
-import { ChatroomComponent } from './components/chat/chatroom/chatroom.component';
 import { LoginComponent } from './components/login/login.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ChatMenuComponent } from './components/chat/chat-menu/chat-menu.component';
@@ -48,6 +46,7 @@ import { SideMenuComponent } from './components/menu/side-menu/side-menu.compone
 import { SignUpComponent } from './components/sign-up/sign-up.component';
 import { AlbumGalleryComponent } from './components/album-gallery/album-gallery.component';
 import { CreateAlbumDialogComponent } from './components/album-gallery/create-album-dialog/create-album-dialog.component';
+import { ChatroomComponent } from './components/chat/chatroom/chatroom.component';
 
 @NgModule({
     declarations: [
@@ -55,7 +54,6 @@ import { CreateAlbumDialogComponent } from './components/album-gallery/create-al
         EditorComponent,
         SidebarComponent,
         DrawingComponent,
-        MainPageComponent,
         FileMenuComponent,
         ToolsListComponent,
         PencilConfigComponent,
@@ -69,7 +67,6 @@ import { CreateAlbumDialogComponent } from './components/album-gallery/create-al
         PolygonConfigComponent,
         SaveDrawingModalComponent,
         PaintConfigComponent,
-        ChatroomComponent,
         LoginComponent,
         ChatMenuComponent,
         MenuComponent,
@@ -77,6 +74,7 @@ import { CreateAlbumDialogComponent } from './components/album-gallery/create-al
         SignUpComponent,
         AlbumGalleryComponent,
         CreateAlbumDialogComponent,
+        ChatroomComponent
     ],
     imports: [
         BrowserModule,

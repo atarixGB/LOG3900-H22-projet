@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 // import { CarouselComponent } from '@app/components/carousel/carousel-modal/carousel.component';
-import { AutoSaveService } from '@app/services/editor-services/auto-save/auto-save.service';
+import { AutoSaveService } from '@app/services/editor/auto-save/auto-save.service';
 
 @Component({
     selector: 'app-main-page',

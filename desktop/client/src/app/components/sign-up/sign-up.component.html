@@ -6,31 +6,31 @@
       <form>
          <mat-form-field  appearance="fill">
            <mat-label>Identifiant</mat-label>
-           <input matInput placeholder="Entrez votre nom">
+           <input matInput placeholder="Entrez votre nom" [(ngModel)]="this.username" name="username">
          </mat-form-field>
       </form>
       <form>
          <mat-form-field  appearance="fill">
            <mat-label>Mot de passe</mat-label>
-           <input matInput placeholder="Entrez votre mot de passe">
+           <input matInput placeholder="Entrez votre mot de passe" type="password" [(ngModel)]="this.password" name="password">
          </mat-form-field>
       </form>
       <form>
          <mat-form-field  appearance="fill">
            <mat-label>Confirmation du mot de passe</mat-label>
-           <input matInput placeholder="Re-entrez votre mot de passe">
+           <input matInput placeholder="Confirmer votre mot de passe" type="password" [(ngModel)]="this.confirmedPassword" name="confirmedPassword">
          </mat-form-field>
       </form>
       <form>
          <mat-form-field  appearance="fill">
            <mat-label>Courriel</mat-label>
-           <input matInput placeholder="Entrez votre courriel">
+           <input matInput placeholder="Entrez votre courriel" [(ngModel)]="this.email" name="email">
          </mat-form-field>
       </form>
       <button mat-raised-button color="primary">Choisir un avatar</button>
    </div>
 
    <div fxLayout="column" fxLayoutAlign="start center">
-      <button mat-raised-button color="primary" routerLink="/signup">CRÉER SON COMPTE</button>
+      <button mat-raised-button color="primary" routerLink="/signup" (click)="this.createAccountButton()">CRÉER SON COMPTE</button>
    </div>
 </div>
