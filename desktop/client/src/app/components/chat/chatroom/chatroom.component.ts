@@ -1,7 +1,7 @@
 import { formatDate } from '@angular/common';
 import { AfterViewInit, Component, HostListener } from '@angular/core';
-import { IMessage } from '../../../interfaces-enums/IMessage';
-import { LoginService } from '../../../services/login.service';
+import { IMessage } from '@app/interfaces-enums/IMessage';
+import { LoginService } from '@app/services/login.service';
 
 @Component({
     selector: 'app-chatroom',
@@ -9,13 +9,17 @@ import { LoginService } from '../../../services/login.service';
     styleUrls: ['./chatroom.component.scss'],
 })
 export class ChatroomComponent implements AfterViewInit {
-    userName = '';
-    message = '';
-    messageList: IMessage[] = [];
-    userList: string[] = [];
+    userName: string;
+    message: string;
+    messageList: IMessage[];
+    userList: string[];
     socket: any;
 
     constructor(public loginService: LoginService) {
+        this.userName = '';
+        this.message = '';
+        this.messageList = [];
+        this.userList = [];
         this.socket = this.loginService.socket;
     }
 
@@ -35,7 +39,7 @@ export class ChatroomComponent implements AfterViewInit {
             this.socket.emit('message', data);
             this.message = '';
         }
-        this. refocusMsgInputField();
+        this.refocusMsgInputField();
     }
 
     onNewMessage(): void {
@@ -62,14 +66,15 @@ export class ChatroomComponent implements AfterViewInit {
     }
 
     scrollToBottom(): void {
-        setTimeout(() => { // We have to wait for the view to update with the new message before we can scroll to the bottom
-            const msgsDiv = document.getElementById("messagesContainer");
+        setTimeout(() => {
+            // We have to wait for the view to update with the new message before we can scroll to the bottom
+            const msgsDiv = document.getElementById('messagesContainer');
             if (msgsDiv) msgsDiv.scrollTop = msgsDiv.scrollHeight;
-        }, 50); 
+        }, 50);
     }
 
     refocusMsgInputField(): void {
-        const inputField = document.getElementById("msgInput");
+        const inputField = document.getElementById('msgInput');
         if (inputField) inputField.focus();
     }
 }
