@@ -1,0 +1,30 @@
+<div fxLayout="row" fxLayoutAlign="center stretch" fxFlex="100">
+   <app-side-menu fxLayout="column" fxLayoutAlign="start stretch" fxFlex="15%"></app-side-menu>
+
+   <div fxLayout="column" fxLayoutAlign="start stretch" fxFlex="auto">
+      <div fxFlex="10"></div>
+      <div fxLayout="row" fxLayoutAlign="center center" >
+         <h1 id="title">PROFIL</h1>
+      </div>
+      
+      <div fxLayout="row" fxLayoutAlign="center center" >
+         
+         <div fxLayout="column" fxLayoutAlign="center center">
+             <div id="avatarDisplay" fxLayoutAlign="center center">
+                 <img id="avatarImg" [src]="this.profileService.avatar">
+             </div>
+             <h2>{{this.profileService.username}}</h2>
+         </div>
+
+         <div fxFlex="2"></div>
+
+         <div fxLayout="column" fxLayoutAlign="start start" fxFlex="50">
+            <span id="descTitle">Description:</span>
+            <p id="description">{{this.profileService.description}}</p>
+        </div>
+         
+      </div>
+   
+   
+   </div>
+</div>

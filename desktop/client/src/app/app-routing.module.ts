@@ -5,6 +5,7 @@ import { ChatroomComponent } from './components/chat/chatroom/chatroom.component
 import { EditorComponent } from './components/editor/editor.component';
 import { LoginComponent } from './components/login/login.component';
 import { MenuComponent } from './components/menu/menu.component';
+import { ProfileComponent } from './components/profile/profile.component';
 import { SignUpComponent } from './components/sign-up/sign-up.component';
 
 const routes: Routes = [
@@ -15,6 +16,7 @@ const routes: Routes = [
     { path: 'editor', component: EditorComponent },
     { path: 'chatroom', component: ChatroomComponent },
     { path: 'chatmenu', component: ChatMenuComponent },
+    { path: 'profile', component: ProfileComponent },
     { path: '**', redirectTo: '/home' },
 ];
 

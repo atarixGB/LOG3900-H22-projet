@@ -47,6 +47,7 @@ import { ToolsListComponent } from './components/editor/sidebar/tools-list/tools
 import { LoginComponent } from './components/login/login.component';
 import { MenuComponent } from './components/menu/menu.component';
 import { SideMenuComponent } from './components/menu/side-menu/side-menu.component';
+import { ProfileComponent } from './components/profile/profile.component';
 import { SignUpComponent } from './components/sign-up/sign-up.component';
 
 @NgModule({
@@ -76,6 +77,7 @@ import { SignUpComponent } from './components/sign-up/sign-up.component';
         AvatarSelectionModalComponent,
         AvatarImportModalComponent,
         ChatroomComponent,
+        ProfileComponent,
     ],
     imports: [
         BrowserModule,
