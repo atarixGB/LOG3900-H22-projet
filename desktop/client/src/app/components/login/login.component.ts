@@ -17,16 +17,16 @@ export class LoginComponent {
     }
 
     connect(): void {
-      if (this.isValidInput(this.username) && this.isValidInput(this.password)) {
-        this.loginService.username = this.username;
-        this.loginService.password = this.password;
-        this.loginService.connect();
-      } else {
-        // TODO: Add UI feedback
-      }
+        if (this.isValidInput(this.username) && this.isValidInput(this.password)) {
+            this.loginService.username = this.username;
+            this.loginService.password = this.password;
+            this.loginService.connect();
+        } else {
+            // TODO: Add UI feedback
+        }
     }
 
     private isValidInput(str: string): boolean {
-      return !(str === null || str.match(/^ *$/) !== null);
+        return !(str === null || str.match(/^ *$/) !== null);
     }
 }

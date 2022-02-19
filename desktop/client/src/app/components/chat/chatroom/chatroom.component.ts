@@ -1,7 +1,6 @@
 import { formatDate } from '@angular/common';
 import { AfterViewInit, Component, HostListener } from '@angular/core';
 import { IMessage } from '@app/interfaces-enums/IMessage';
-import { LoginService } from '@app/services/login.service';
 import { ChatService } from '@app/services/chat/chat.service';
 
 @Component({
