@@ -27,7 +27,6 @@ export class AlbumGalleryComponent implements OnInit {
   }
 
   viewAllPublicAlbums(): void {
-    console.log("viewing all albums...")
     this.albumGalleryService.fetchAllAlbumsFromDatabase();
   }
 
@@ -35,9 +34,12 @@ export class AlbumGalleryComponent implements OnInit {
     this.albumGalleryService.deleteAlbum(album._id);
   }
 
-   viewMyAlbums(): void {
+  viewMyAlbums(): void {
     this.albumGalleryService.fetchMyAlbumsFromDatabase();
   }
 
+  ngOnDestroy(): void {
+    this.albumGalleryService.myAlbums = []; // clear myAlbums array to avoid doubles when pushing elements
+  }
 
 }

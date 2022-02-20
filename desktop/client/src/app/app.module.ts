@@ -47,6 +47,7 @@ import { SignUpComponent } from './components/sign-up/sign-up.component';
 import { AlbumGalleryComponent } from './components/album-gallery/album-gallery.component';
 import { CreateAlbumDialogComponent } from './components/album-gallery/create-album-dialog/create-album-dialog.component';
 import { ChatroomComponent } from './components/chat/chatroom/chatroom.component';
+import { PublicAlbumsComponent } from './components/album-gallery/public-albums/public-albums.component';
 
 @NgModule({
     declarations: [
@@ -74,7 +75,8 @@ import { ChatroomComponent } from './components/chat/chatroom/chatroom.component
         SignUpComponent,
         AlbumGalleryComponent,
         CreateAlbumDialogComponent,
-        ChatroomComponent
+        ChatroomComponent,
+        PublicAlbumsComponent
     ],
     imports: [
         BrowserModule,

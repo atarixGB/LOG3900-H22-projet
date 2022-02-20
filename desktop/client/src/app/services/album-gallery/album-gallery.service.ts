@@ -69,11 +69,12 @@ export class AlbumGalleryService {
 
   fetchAllAlbumsFromDatabase(): void {
     const url = ALBUM_URL;
+    console.log(url);
     this.httpClient.get<IAlbum[]>(url).subscribe(
       (albums: IAlbum[]) => {
         for (let i = 0; i < albums.length; i++) {
           this.publicAlbums.push(albums[i]);
-          console.log(this.publicAlbums[i]);
+          console.log(albums[i]);
         }
       },
       (error: any) => {
@@ -83,7 +84,7 @@ export class AlbumGalleryService {
   }
 
   fetchDrawingsFromSelectedAlbum(albumId: string | undefined): void {
-    console.log(albumId);
+    console.log("Fetching draings from album with id: " + albumId);
     // TODO: fetch album's drawings from db
   }
 }
