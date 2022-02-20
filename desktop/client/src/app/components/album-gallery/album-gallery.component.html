@@ -3,21 +3,18 @@
 
   <div fxLayout="column" fxLayoutAlign="space-evenly stretch" fxFlex="auto">
 
-    <div fxLayout="row" fxLayoutAlign="space-evenly center" >
-      <button mat-raised-button color="primary" (click)="openCreateAlbumDialog()">Créer un nouvel album</button>
-      <button mat-raised-button color="primary" (click)="viewAlbumButton()">Voir mes dessins</button>
-   </div>
+    <div fxLayout="row" fxLayoutAlign="space-evenly center">
+      <button mat-raised-button color="primary" (click)="this.openCreateAlbumDialog()">Créer un nouvel album</button>
+      <button mat-raised-button color="primary" (click)="this.viewAllPublicAlbums()">Voir tous les albums publics</button>
+    </div>
 
     <mat-grid-list cols="3" rowHeight="3:1">
-      <mat-grid-tile><button mat-icon-button disableRipple="true"><mat-icon>folder</mat-icon></button></mat-grid-tile>
-      <mat-grid-tile><button mat-icon-button disableRipple="true"><mat-icon>folder</mat-icon></button></mat-grid-tile>
-      <mat-grid-tile><button mat-icon-button disableRipple="true"><mat-icon>folder</mat-icon></button></mat-grid-tile>
-      <mat-grid-tile><button mat-icon-button disableRipple="true"><mat-icon>folder</mat-icon></button></mat-grid-tile>
-      <mat-grid-tile><button mat-icon-button disableRipple="true"><mat-icon>folder</mat-icon></button></mat-grid-tile>
-      <mat-grid-tile><button mat-icon-button disableRipple="true"><mat-icon>folder</mat-icon></button></mat-grid-tile>
-      <mat-grid-tile><button mat-icon-button disableRipple="true"><mat-icon>folder</mat-icon></button></mat-grid-tile>
-      <mat-grid-tile><button mat-icon-button disableRipple="true"><mat-icon>folder</mat-icon></button></mat-grid-tile>
-      <mat-grid-tile><button mat-icon-button disableRipple="true"><mat-icon>folder</mat-icon></button></mat-grid-tile>
+      <mat-grid-tile *ngFor="let album of this.albumGalleryService.myAlbums">
+        <button mat-icon-button disableRipple="true" (click)="this.onAlbumClick(album)">
+          <div><mat-icon>folder</mat-icon></div>
+          <div>{{album.name}}</div>
+        </button>
+      </mat-grid-tile>
     </mat-grid-list>
 
   </div>

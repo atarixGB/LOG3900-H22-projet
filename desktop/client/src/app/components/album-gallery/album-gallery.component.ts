@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { IAlbum } from '@app/interfaces-enums/IAlbum';
 import { AlbumGalleryService } from '@app/services/album-gallery/album-gallery.service'
 import { CreateAlbumDialogComponent } from './create-album-dialog/create-album-dialog.component';
 @Component({
@@ -9,27 +10,34 @@ import { CreateAlbumDialogComponent } from './create-album-dialog/create-album-d
 })
 export class AlbumGalleryComponent implements OnInit {
 
-  constructor(private albumGalleryService: AlbumGalleryService, public dialog: MatDialog) { }
+  constructor(public albumGalleryService: AlbumGalleryService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
+    this.viewMyAlbums();
   }
 
   openCreateAlbumDialog(): void {
-    console.log("open dialog");
-   this.dialog.open(CreateAlbumDialogComponent, {
-      // height: "50%",
-      // width: "30%"
-    });
-
+    this.dialog.open(CreateAlbumDialogComponent);
   }
 
-  deleteAlbumButton(): void {
-    // TODO
+  onAlbumClick(album: IAlbum): void {
+    console.log(album.name);
+    let id: string | undefined = album._id;
+    this.albumGalleryService.fetchDrawingsFromSelectedAlbum(id);
   }
 
-  viewAlbumButton(): void {
-    console.log("getting album...")
-    this.albumGalleryService.fetchAlbumsFromDatabase();
+  viewAllPublicAlbums(): void {
+    console.log("viewing all albums...")
+    this.albumGalleryService.fetchAllAlbumsFromDatabase();
   }
+
+  deleteAlbumButton(album: IAlbum): void {
+    this.albumGalleryService.deleteAlbum(album._id);
+  }
+
+   viewMyAlbums(): void {
+    this.albumGalleryService.fetchMyAlbumsFromDatabase();
+  }
+
 
 }

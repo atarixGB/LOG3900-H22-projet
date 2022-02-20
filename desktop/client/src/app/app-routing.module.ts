@@ -16,7 +16,7 @@ const routes: Routes = [
     { path: 'editor', component: EditorComponent },
     { path: 'chatroom', component: ChatroomComponent },
     { path: 'chatmenu', component: ChatMenuComponent },
-    { path: 'albums', component: AlbumGalleryComponent },
+    { path: 'my-albums', component: AlbumGalleryComponent },
     { path: '**', redirectTo: '/home' },
 ];
 

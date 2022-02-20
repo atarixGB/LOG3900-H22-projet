@@ -9,10 +9,12 @@ export const ALBUM_URL = "http://localhost:3000/albums"
   providedIn: 'root'
 })
 export class AlbumGalleryService {
-  albums: IAlbum[];
+  publicAlbums: IAlbum[];
+  myAlbums: IAlbum[];
 
   constructor(private httpClient: HttpClient, private loginService: LoginService) {
-    this.albums = [];
+    this.publicAlbums = [];
+    this.myAlbums = [];
   }
 
   createAlbum(name: string, description: string, isPrivate: boolean): void {
@@ -26,7 +28,6 @@ export class AlbumGalleryService {
       isMine: true
     }
 
-    this.httpClient;
     this.httpClient.post(ALBUM_URL, newAlbum).subscribe(
       (result: IAlbum) => {
         console.log("Server result: ", result)
@@ -38,41 +39,51 @@ export class AlbumGalleryService {
 
   }
 
-  deleteAlbum(id: string): void {
-    // TODO
-    const url = ALBUM_URL + `/${id}`;
+  deleteAlbum(albumId: string | undefined): void {
+    const url = ALBUM_URL + `/${albumId}`;
     this.httpClient.delete(url, { responseType: 'text' }).subscribe(
       (result) => {
         console.log("Server result: ", result);
       },
       (error) => {
-        console.log("Server error:", error);
+        console.log(`Impossible de retrouver les dessins de l'album dans la base de données.\nErreur: ${error}`);
       }
     )
   }
 
-  viewAlbum(): void {
-    // TODO
-  }
+  fetchMyAlbumsFromDatabase(): void {
+    const url = `${ALBUM_URL}/${this.loginService.username}`;
+    console.log(url);
 
-  fetchAlbumsFromDatabase(): void {
-    // TODO
-    const url = ALBUM_URL;
     this.httpClient.get<IAlbum[]>(url).subscribe(
       (albums: IAlbum[]) => {
-
         for (let i = 0; i < albums.length; i++) {
-          this.albums.push(albums[i]);
-          console.log(albums[i]);
+          this.myAlbums.push(albums[i]);
         }
       },
       (error: any) => {
-        console.log('Impossible de retrouver les albums dans la base de données.\n Erreur:' + error);
+        console.log(`Impossible de retrouver les albums dans la base de données.\nErreur: ${error}`);
       }
     );
   }
 
-  fetchAllAlbumsFronDatabase(): void {
-    // TODO
+  fetchAllAlbumsFromDatabase(): void {
+    const url = ALBUM_URL;
+    this.httpClient.get<IAlbum[]>(url).subscribe(
+      (albums: IAlbum[]) => {
+        for (let i = 0; i < albums.length; i++) {
+          this.publicAlbums.push(albums[i]);
+          console.log(this.publicAlbums[i]);
+        }
+      },
+      (error: any) => {
+        console.log(`Impossible de retrouver les albums dans la base de données.\nErreur: ${error}`);
+      }
+    );
+  }
+
+  fetchDrawingsFromSelectedAlbum(albumId: string | undefined): void {
+    console.log(albumId);
+    // TODO: fetch album's drawings from db
   }
 }

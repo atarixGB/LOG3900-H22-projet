@@ -50,6 +50,9 @@ function checkHashPassword(userPassword, salt) {
 }
 
 mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, client) {
+
+  const DB = client.db("PolyGramDB");
+
   if (err) {
     console.log("unable to connect to the mongoDB server error", err);
   } else {
@@ -72,10 +75,8 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
         salt: salt,
       };
 
-      var db = client.db("PolyGramDB");
-
       //check if identifier exists
-      db.collection("users")
+      DB.collection("users")
         .find({ identifier: identifier })
         .count(function (err, number) {
           if (number != 0) {
@@ -83,7 +84,7 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
             console.log("identifier already exists");
           } else {
             //insert data
-            db.collection("users").insertOne(insertJson, function (error, res) {
+            DB.collection("users").insertOne(insertJson, function (error, res) {
               response.json(true);
               console.log("Registration success");
             });
@@ -98,10 +99,8 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
       var identifier = post_data.identifier;
       var userPassword = post_data.password;
 
-      var db = client.db("PolyGramDB");
-
       //check if identifier exists
-      db.collection("users")
+      DB.collection("users")
         .find({ identifier: identifier })
         .count(function (err, number) {
           if (number == 0) {
@@ -109,7 +108,7 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
             console.log("identifier does not exists");
           } else {
             //insert data
-            db.collection("users").findOne(
+            DB.collection("users").findOne(
               { identifier: identifier },
               function (error, user) {
                 var salt = user.salt; //get salt from user
@@ -133,32 +132,38 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
 
     //create new album
     app.post("/albums", (request, response, next) => {
-      const db = client.db("PolyGramDB");
-
-      console.log(request.body);
-
-      db.collection("albums").insertOne(request.body, (err, res) => {
+      DB.collection("albums").insertOne(request.body, (err, res) => {
         request.body._id = res.insertedId.toHexString();
         console.log(`Album "${request.body.name}" created successfully with ID: ${request.body._id}!`);
-        console.log(request.body);
+        // console.log(request.body);
         response.json(request.body);
       });
     })
 
-    //get album
+    //get all public album
     app.get("/albums", (request, response, next) => {
-      const db = client.db("PolyGramDB");
+      DB.collection("albums").find( {isPrivate : false} ).toArray((err, res) => {
+        // console.log(res);
+        response.json(res);
+        ;
+      })
+    });
 
-      db.collection("albums").find().toArray((err, res) => {
+    //get user albums
+    app.get("/albums/:username", (request, response, next) => {
+      DB.collection("albums").find( { creator: request.params.username }).toArray((err, res) => {
         console.log(res);
         response.json(res);
         ;
       })
     });
 
-    app.delete("albums/:id", (req, res, next) => {
-      // TODO
-      console.log(req.params.id);
+    //delete album with specific id
+    app.delete("albums/:id", (request, response, next) => {
+      console.log(request.params.id);
+      DB.collection("albums").findOneAndDelete({ _id: request.params.id }, (err, res) => {
+        console.log(`Album with id ${request.params.id} has been deleted successfully!`);
+      })
     })
 
     //start web server
