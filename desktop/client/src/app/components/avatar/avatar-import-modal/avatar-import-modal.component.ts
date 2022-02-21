@@ -21,12 +21,14 @@ export class AvatarImportModalComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.dialogRef.updateSize('50', '50%');
+        this.dialogRef.updateSize('40%', '50%');
     }
 
     onFileSelection(event: any): void {
         const files = event.target.files;
-        if (files.length === 0) return;
+        if (files.length === 0) {
+            return;
+        }
 
         const mimeType = files[0].type;
         if (mimeType.match(/image\/*/) == null) {

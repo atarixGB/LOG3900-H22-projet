@@ -36,13 +36,17 @@ export class AvatarSelectionModalComponent implements OnInit {
     selectAvatar(selected: number): void {
         this.clearSelection();
         const div = document.getElementById(selected.toString());
-        if (div) div.className = 'selected';
+        if (div) {
+            div.className = 'selected';
+        }
         this.selectedAvatar = selected;
     }
 
     clearSelection(): void {
         const div = document.getElementById(this.selectedAvatar.toString());
-        if (div) div.className = '';
+        if (div) {
+            div.className = '';
+        }
     }
 
     confirmAvatar(): void {
