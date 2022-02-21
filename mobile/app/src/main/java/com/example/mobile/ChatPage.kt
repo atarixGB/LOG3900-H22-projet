@@ -1,18 +1,17 @@
 package com.example.mobile
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import io.socket.client.Socket
 import org.json.JSONObject
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import java.util.*
-import io.socket.client.Socket
 
 class ChatPage : AppCompatActivity() {
     private lateinit var rvOutputMsgs: RecyclerView

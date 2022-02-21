@@ -8,7 +8,7 @@ const crypto = require("crypto");
 //constants
 const DATABASE_URL =
   "mongodb+srv://equipe203:Log3900-H22@polygramcluster.arebt.mongodb.net/PolyGramDB?retryWrites=true&w=majority";
-const SERVER_PORT = 3000;
+const SERVER_PORT = 3001;
 
 //express service
 var app = express();
@@ -60,16 +60,17 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
 
       var plaint_password = post_data.password;
       var hash_data = salHashPassword(plaint_password);
-
       var password = hash_data.passwordHash;
       var salt = hash_data.salt;
-
       var identifier = post_data.identifier;
+      var avatar = post_data.avatar;
+      
 
       var insertJson = {
         identifier: identifier,
         password: password,
         salt: salt,
+        avatar: avatar,
       };
 
       var db = client.db("PolyGramDB");
@@ -79,12 +80,12 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
         .find({ identifier: identifier })
         .count(function (err, number) {
           if (number != 0) {
-            response.json(false);
+            response.json(406);
             console.log("identifier already exists");
           } else {
             //insert data
             db.collection("users").insertOne(insertJson, function (error, res) {
-              response.json(true);
+              response.json(201);
               console.log("Registration success");
             });
           }
@@ -105,12 +106,10 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
         .find({ identifier: identifier })
         .count(function (err, number) {
           if (number == 0) {
-            response.json(false);
+            response.json(404);
             console.log("identifier does not exists");
           } else {
-            //insert data
-            db.collection("users").findOne(
-              { identifier: identifier },
+            db.collection("users").findOne({ identifier: identifier },
               function (error, user) {
                 var salt = user.salt; //get salt from user
                 var hashed_password = checkHashPassword(
@@ -119,17 +118,17 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
                 ).passwordHash; //hash password with salt
                 var encrypted_password = user.password;
                 if (hashed_password == encrypted_password) {
-                  response.json(true);
+                  response.json(200);
                   console.log("login success");
                 } else {
-                  response.json(false);
+                  response.json(403);
                   console.log("wrong password");
                 }
               }
             );
-          }
+            }
+          });
         });
-    });
 
     //start web server
     app.listen(SERVER_PORT, () => {
