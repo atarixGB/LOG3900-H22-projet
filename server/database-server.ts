@@ -133,6 +133,26 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
         });
     });
 
+    //Getting a user's data 
+    app.post("/profile", (request, response, next) => {
+      var identifier = request.body.identifier;
+      var db = client.db("PolyGramDB");
+
+      //check if identifier exists
+      db.collection("users")
+        .find({ identifier: identifier })
+        .count(function (err, number) {
+          //get user data
+          db.collection("users").findOne(
+            { identifier: identifier },
+            function (error, user) {
+              response.json(user);
+              console.log("Got user data for profile load");
+            }
+          );
+        });
+    });
+
     //start web server
     app.listen(SERVER_PORT, () => {
       console.log(
