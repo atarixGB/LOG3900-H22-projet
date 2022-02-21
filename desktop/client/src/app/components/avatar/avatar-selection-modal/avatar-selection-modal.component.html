@@ -4,7 +4,7 @@
    <div fxLayout="row" fxLayoutAlign="space-evenly stretch" *ngFor="let row of [].constructor(this.nbRows); let i = index" fxFlex="25">
        <div fxLayoutAlign="center center" *ngFor="let column of [].constructor(this.nbColumns); let j = index" fxFlex="15" class="avatarDiv">
            <img
-               src="{{ this.avatarList[i * this.nbColumns + j] }}"
+               src="data:image/png;base64,{{ this.avatarList[i * this.nbColumns + j] }}"
                alt="avatar"
                (click)="this.selectAvatar(i * this.nbColumns + j)"
                fxFlex="50"

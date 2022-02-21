@@ -40,7 +40,7 @@
     <div fxLayout="column" fxLayoutAlign="center center">
         <span>Votre avatar : </span> <br>
         <div id="avatarDisplay" fxLayoutAlign="center center">
-            <img id="avatarImg" [src]="this.signUpService.avatarSrc">
+            <img *ngIf="this.signUpService.avatarSrc" id="avatarImg" src="data:image/png;base64,{{this.signUpService.avatarSrc}}">
         </div>
     </div>
 

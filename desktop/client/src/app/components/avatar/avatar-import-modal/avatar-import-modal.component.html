@@ -10,7 +10,7 @@
 
    <div fxLayout="column" fxLayoutAlign="center center" *ngIf="this.isValidFile" fxFlex="50">
       <span  fxFlex="10"> Vous avez importé l'image suivante : </span> <br>
-      <img [src]="imgURL" alt="Importer une image pour voir une apperçu." id="img" fxFlex="90">
+      <img src="data:image/png;base64,{{this.base64}}" alt="Importer une image pour voir une apperçu." id="img" fxFlex="90">
    </div>
 
    <button mat-raised-button color="accent" (click)="this.confirmAvatar()">Confirmer</button>

@@ -14,7 +14,7 @@
 
          <div fxLayout="column" fxLayoutAlign="center center">
              <div id="avatarDisplay" fxLayoutAlign="center center">
-                 <img id="avatarImg" [src]="this.profileService.avatarSrc">
+                 <img id="avatarImg" src="data:image/png;base64,{{this.profileService.avatarSrc}}">
              </div>
              <h2>{{this.profileService.username}}</h2>
          </div>

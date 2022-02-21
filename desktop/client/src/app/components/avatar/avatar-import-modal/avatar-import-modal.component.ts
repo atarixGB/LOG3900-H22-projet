@@ -9,7 +9,7 @@ import { SignUpService } from '@app/services/sign-up/sign-up.service';
     styleUrls: ['./avatar-import-modal.component.scss'],
 })
 export class AvatarImportModalComponent implements OnInit {
-    imgURL: any;
+    base64: any;
     isValidFile: boolean;
 
     constructor(
@@ -39,13 +39,16 @@ export class AvatarImportModalComponent implements OnInit {
         const reader = new FileReader();
         reader.readAsDataURL(files[0]);
         reader.onload = () => {
-            this.imgURL = reader.result;
+            const imgURL = reader.result;
+            if (imgURL) {
+                this.base64 = imgURL.toString().split(',')[1];
+            }
         };
     }
 
     confirmAvatar(): void {
-        this.signUpService.avatarSrc = this.imgURL;
-        this.profileSettingsService.avatarSrc = this.imgURL;
+        this.signUpService.avatarSrc = this.base64;
+        this.profileSettingsService.avatarSrc = this.base64;
         this.dialogRef.close();
     }
 }

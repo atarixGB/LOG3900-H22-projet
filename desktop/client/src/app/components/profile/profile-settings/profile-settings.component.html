@@ -22,7 +22,7 @@
             </div>
             <div class="topPadding" fxLayout="row" fxLayoutAlign="space-evenly stretch">
                <div id="avatarDisplay" fxLayoutAlign="center center">
-                  <img id="avatarImg" [src]="this.profileSettingsService.avatarSrc">
+                  <img id="avatarImg" src="data:image/png;base64,{{this.profileSettingsService.avatarSrc}}">
                </div>
                <div fxLayout="column" fxLayoutAlign="space-evenly center" >
                    <button mat-raised-button color="primary" (click)="this.openAvatarSelectionModal()">Choisir un nouvel avatar</button>
