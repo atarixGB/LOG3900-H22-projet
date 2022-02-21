@@ -11,7 +11,7 @@ export class SignUpService {
     identifier: string;
     password: string;
     email: string;
-    avatarSrc: any;
+    avatarSrc: string;
 
     constructor(private httpClient: HttpClient, private router: Router, private route: ActivatedRoute) {}
 
@@ -21,6 +21,7 @@ export class SignUpService {
             identifier: this.identifier,
             password: this.password,
             email: this.email,
+            avatar: this.avatarSrc,
         };
 
         this.httpClient.post(SIGN_UP_URL, userInfos).subscribe(

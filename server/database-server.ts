@@ -65,11 +65,13 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
       var salt = hash_data.salt;
 
       var identifier = post_data.identifier;
+      var avatar = post_data.avatar;
 
       var insertJson = {
         identifier: identifier,
         password: password,
         salt: salt,
+        avatar: avatar,
       };
 
       var db = client.db("PolyGramDB");

@@ -8,7 +8,7 @@ export class ProfileSettingsService {
     username: string;
     password: string;
     description: string;
-    avatarSrc: any;
+    avatarSrc: string;
 
     newUsername: string;
 
