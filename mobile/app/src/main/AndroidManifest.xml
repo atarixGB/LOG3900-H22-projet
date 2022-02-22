@@ -4,7 +4,7 @@
     package="com.example.mobile">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
     <application
@@ -15,17 +15,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Mobile"
         android:usesCleartextTraffic="true">
-        <activity android:name="com.example.mobile.Dashboard"></activity>
-        <activity
-            android:name=".PickAvatar"
-            android:exported="false" />
+        <activity android:name=".Dashboard" />
         <activity
             android:name=".Profile"
             android:exported="false" />
         <activity
             android:name=".Registration"
             android:exported="false" />
-
         <activity
             android:name=".joinRoom"
             android:exported="false" />
@@ -36,12 +32,12 @@
         <activity
             android:name=".ChatRooms"
             android:exported="false" />
-        <activity android:name="com.example.mobile.DrawingActivity" />
+        <activity android:name=".DrawingActivity" />
         <activity
-            android:name="com.example.mobile.ChatPage"
+            android:name=".ChatPage"
             android:exported="true" />
         <activity
-            android:name="com.example.mobile.MainActivity"
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

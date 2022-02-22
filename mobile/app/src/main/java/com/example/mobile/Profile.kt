@@ -53,11 +53,11 @@ class Profile : AppCompatActivity() {
             val builder = AlertDialog.Builder(this)
             builder.setTitle("Select avatar")
             builder.setMessage("choisi celui qui te plait")
-            builder.setPositiveButton("Avatars") { dialog, which ->
-                dialog.dismiss()
-                val intent = Intent(this, PickAvatar::class.java)
-                startActivity(intent)
-            }
+//            builder.setPositiveButton("Avatars") { dialog, which ->
+//                dialog.dismiss()
+//                val intent = Intent(this, PickAvatar::class.java)
+//                startActivity(intent)
+//            }
 
             builder.setNegativeButton("Caméra") { dialog, which ->
                 dialog.dismiss()

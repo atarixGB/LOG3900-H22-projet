@@ -26,9 +26,6 @@
         android:usesCleartextTraffic="true" >
         <activity android:name="com.example.mobile.Dashboard" />
         <activity
-            android:name="com.example.mobile.PickAvatar"
-            android:exported="false" />
-        <activity
             android:name="com.example.mobile.Profile"
             android:exported="false" />
         <activity

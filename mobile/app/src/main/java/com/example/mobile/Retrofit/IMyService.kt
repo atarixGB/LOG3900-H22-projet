@@ -20,6 +20,8 @@ interface IMyService {
     fun loginUser(@Field("identifier") identifier:String,
                   @Field("password")password:String):Observable<String>
 
+
+
 //    @Multipart
 //    @POST("upload")
 //    fun uploadImage(@Part part: MultipartBody.Part,@Part("somedate") requestBody: RequestBody ) : Call<RequestBody>
