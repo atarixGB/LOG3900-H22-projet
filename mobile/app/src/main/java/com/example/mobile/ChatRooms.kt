@@ -4,8 +4,14 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.mobile.Retrofit.IMyService
+import com.example.mobile.Retrofit.RetrofitClient
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import io.socket.client.Socket
 import org.json.JSONObject
 import java.util.ArrayList
@@ -22,6 +28,13 @@ class ChatRooms : AppCompatActivity(), CreateRoomPopUp.DialogListener, RoomAdapt
     private lateinit var user: String
     private lateinit var roomName: String
 
+    private lateinit var iMyService: IMyService
+    internal var compositeDisposable = CompositeDisposable()
+
+    override fun onStop() {
+        compositeDisposable.clear()
+        super.onStop()
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat_rooms)
@@ -30,6 +43,10 @@ class ChatRooms : AppCompatActivity(), CreateRoomPopUp.DialogListener, RoomAdapt
         join_room_btn = findViewById(R.id.join_room_btn)
         principal_room_btn = findViewById(R.id.principal_room_btn)
         rvOutputRooms = findViewById(R.id.rvOutputRooms)
+
+        //init api
+        val retrofit = RetrofitClient.getInstance()
+        iMyService = retrofit.create(IMyService::class.java)
 
         rooms = ArrayList()
         user = intent.getStringExtra("userName").toString()
@@ -106,6 +123,7 @@ class ChatRooms : AppCompatActivity(), CreateRoomPopUp.DialogListener, RoomAdapt
         roomData.put("userName", user)
         roomData.put("room", roomName)
         socket.emit("createRoom", roomData)
+        createRoom(user,this.roomName)
     }
 
     override fun roomAdapterListener(roomName: String) {
@@ -115,6 +133,19 @@ class ChatRooms : AppCompatActivity(), CreateRoomPopUp.DialogListener, RoomAdapt
         roomData.put("room", roomName)
         socket.emit("joinRoom", roomData)
         openChat()
+    }
+
+    private fun createRoom(userName: String, roomName: String) {
+        compositeDisposable.add(iMyService.createRoom(userName, roomName)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { result->
+                if(result == "201"){
+                    Toast.makeText(this,"creation faite avec succès", Toast.LENGTH_SHORT).show()
+                }else{
+                    Toast.makeText(this,"room déjà existante", Toast.LENGTH_SHORT).show()
+                }
+            })
     }
 
 }

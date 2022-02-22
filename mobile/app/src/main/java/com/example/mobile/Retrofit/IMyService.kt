@@ -22,6 +22,11 @@ interface IMyService {
 
 
 
+
+    @POST("createRoom")
+    @FormUrlEncoded
+    fun createRoom(@Field("identifier") identifier:String,
+                   @Field("roomName")password:String):Observable<String>
 //    @Multipart
 //    @POST("upload")
 //    fun uploadImage(@Part part: MultipartBody.Part,@Part("somedate") requestBody: RequestBody ) : Call<RequestBody>
