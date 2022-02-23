@@ -157,6 +157,23 @@ class ChatRooms : AppCompatActivity(), CreateRoomPopUp.DialogListener, RoomAdapt
     }
 
     private fun getRooms() {
+        var call: Call<List<Room>> = iMyService.getRooms()
+        call.enqueue(object: retrofit2.Callback<List<Room>> {
+            override fun onResponse(call: Call<List<Room>>, response: Response<List<Room>>) {
+                Toast.makeText(this@ChatRooms, "add", Toast.LENGTH_SHORT).show()
+                for (room in response.body()!!) {
+
+
+                    roomAdapter.addRoom(room)
+                    roomAdapter.notifyItemInserted((rvOutputRooms.adapter as RoomAdapter).itemCount)
+                }
+            }
+
+            override fun onFailure(call: Call<List<Room>>, t: Throwable) {
+                TODO("Not yet implemented")
+            }
+
+        })
 
 
     }
