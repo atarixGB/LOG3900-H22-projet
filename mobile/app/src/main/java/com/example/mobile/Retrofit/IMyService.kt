@@ -1,5 +1,7 @@
 package com.example.mobile.Retrofit
 
+import com.example.mobile.Room
+import com.example.mobile.RoomList
 import io.reactivex.Observable
 import retrofit2.http.*
 import okhttp3.MultipartBody
@@ -19,6 +21,15 @@ interface IMyService {
     @FormUrlEncoded
     fun loginUser(@Field("identifier") identifier:String,
                   @Field("password")password:String):Observable<String>
+
+    @POST("createRoom")
+    @FormUrlEncoded
+    fun createRoom(@Field("identifier") identifier:String,
+                   @Field("roomName")roomName:String):Observable<String>
+
+    @GET("getRooms")
+    fun getRooms():Call<List<Room>>
+
 
 //    @Multipart
 //    @POST("upload")

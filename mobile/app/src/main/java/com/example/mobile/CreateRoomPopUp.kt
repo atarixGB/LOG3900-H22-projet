@@ -33,7 +33,7 @@ class CreateRoomPopUp : DialogFragment() {
             roomName = this.editTextNewRoomName.text.toString()
             listener.popUpListener(roomName)
 
-            Toast.makeText(context, "$roomName created!" , Toast.LENGTH_LONG).show()
+            //Toast.makeText(context, "$roomName created!" , Toast.LENGTH_LONG).show()
             dismiss()
         }
 

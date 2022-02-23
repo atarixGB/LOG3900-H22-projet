@@ -128,7 +128,57 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
             );
             }
           });
+        }
+      );
+        app.post("/createRoom", (request, response, next) => {
+          var post_data = request.body;
+    
+          var identifier = post_data.identifier;
+          var roomName = post_data.roomName;
+          
+          
+    
+          var insertJson = {
+            identifier: identifier,
+            roomName: roomName,
+          };
+    
+          var db = client.db("PolyGramDB");
+    
+          //check if identifier exists
+          db.collection("rooms")
+            .find({ roomName: roomName })
+            .count(function (err, number) {
+              if (number != 0) {
+                response.json(406);
+                console.log("room already exists");
+              } else {
+                //insert data
+                db.collection("rooms").insertOne(insertJson, function (error, res) {
+                  response.json(201);
+                  console.log("Creation success");
+                });
+              }
+            });
         });
+
+        app.get("/getRooms", (request, response, next) => {
+          var post_data = request.body;
+  
+    
+          var db = client.db("PolyGramDB");
+
+          db.collection("rooms")
+            .find({}).limit(50).toArray(function (err, result) {
+              if (err) {
+                response.status(400).send("Error fetching rooms");
+              } else {
+                response.json(result)
+                console.log("add succes");
+              }
+            });
+        });
+
 
     //start web server
     app.listen(SERVER_PORT, () => {

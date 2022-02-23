@@ -57,7 +57,7 @@ class joinRoom : AppCompatActivity(), RoomAdapter.RoomAdapterListener{
                 val user = roomData.get("userName") as String
 
                 runOnUiThread{
-                    val room = Room(roomName, user)
+                    val room = Room("1", roomName, user)
                     roomAdapter.addRoom(room)
                     roomAdapter.notifyItemInserted((rvOutputRooms.adapter as RoomAdapter).itemCount)
                 }
