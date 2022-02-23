@@ -20,16 +20,15 @@ export class ProfileService {
     }
 
     loadProfileInfo(): void {
-        this.httpClient.post(PROFILE_URL, {identifier: this.username}).subscribe(
+        this.httpClient.get(PROFILE_URL + '/' + this.username).subscribe(
             (result) => {
-                const userdata = JSON.parse(JSON.stringify(result)); 
-                
+                const userdata = JSON.parse(JSON.stringify(result));
                 // this.description = userdata.description;
                 this.avatarSrc = userdata.avatar;
             },
             (error) => {
-                console.log("Error: ", error);
-            }
+                console.log('Error: ', error);
+            },
         );
     }
 }

@@ -134,23 +134,19 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
     });
 
     //Getting a user's data 
-    app.post("/profile", (request, response, next) => {
-      var identifier = request.body.identifier;
+    app.get("/profile/:username", (request, response, next) => {
+      var identifier = request.params.username;
+      console.log(identifier.toString());
       var db = client.db("PolyGramDB");
 
       //check if identifier exists
-      db.collection("users")
-        .find({ identifier: identifier })
-        .count(function (err, number) {
-          //get user data
-          db.collection("users").findOne(
-            { identifier: identifier },
-            function (error, user) {
-              response.json(user);
-              console.log("Got user data for profile load");
-            }
-          );
-        });
+      db.collection("users").findOne(
+        { identifier: identifier },
+        function (error, user) {
+          response.json(user);
+          console.log("Got user data for profile load: ", identifier);
+        }
+      );
     });
 
     //start web server
