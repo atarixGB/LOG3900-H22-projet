@@ -29,7 +29,7 @@ export class LoginService {
                 console.log('Result: ', result);
                 if (result) {
                   this.router.navigate(['../menu'], { relativeTo: this.route });
-                  this.profileService.username = this.username;
+                  this.profileService.setUsername(this.username);
                 } else {
                   // TODO: Add UI feedback
                 }

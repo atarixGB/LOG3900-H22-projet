@@ -10,12 +10,12 @@ import { ProfileSettingsService } from '@app/services/profile/profile-settings.s
     styleUrls: ['./profile-settings.component.scss'],
 })
 export class ProfileSettingsComponent implements AfterContentInit {
-    newUsername: string;
 
     constructor(public profileSettingsService: ProfileSettingsService, public dialog: MatDialog) {}
 
     ngAfterContentInit(): void {
         this.profileSettingsService.getUserInfoFromProfile();
+        this.profileSettingsService.newUsername = "";
     }
 
     openAvatarSelectionModal(): void {
@@ -27,13 +27,10 @@ export class ProfileSettingsComponent implements AfterContentInit {
     }
 
     saveChanges(): void {
-        this.validateNewUsername(); // TO DO
-        this.profileSettingsService.applyChangesToProfile(); // TO DO
-        this.profileSettingsService.sendChangesToDB(); // TO DO
-    }
-
-    validateNewUsername(): void {
-        // TO DO
-        console.log('TO DO: Validate new username (in profile settings component)');
-    }
+        if (this.profileSettingsService.isValidNewUsername()) {
+            this.profileSettingsService.sendChangesToDB();
+        } else {
+            console.log('TO DO: Message erreur quand le username est invalid (dans profile-settings component)');
+        }
+    }        
 }

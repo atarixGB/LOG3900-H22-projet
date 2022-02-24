@@ -1,18 +1,20 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ProfileService } from './profile.service';
+
+const PROFILE_UPDATE_URL = 'http://localhost:3000/profileUpdate';
 
 @Injectable({
     providedIn: 'root',
 })
 export class ProfileSettingsService {
     username: string;
-    password: string;
-    description: string;
     avatarSrc: string;
-
     newUsername: string;
+    description: string;
 
-    constructor(public profileService: ProfileService) {
+    constructor(private httpClient: HttpClient,  private router: Router, private route: ActivatedRoute, public profileService: ProfileService) {
         this.getUserInfoFromProfile();
     }
 
@@ -22,13 +24,37 @@ export class ProfileSettingsService {
         this.avatarSrc = this.profileService.avatarSrc;
     }
 
-    applyChangesToProfile(): void {
-        // To do
-        console.log('TO DO: Apply changes to profile (in profile settings service)');
+    isValidNewUsername(): boolean {
+        const isChanged = this.newUsername != "";
+        if (isChanged) {
+            const regex = /^[a-zA-Z0-9]+$/;
+            const isValid = regex.test(this.newUsername) && !(this.newUsername === null || this.newUsername.match(/^ *$/) !== null);
+            if (!isValid) {
+                return false;
+            }
+            this.profileService.setUsername(this.newUsername);
+        } 
+        return true;
     }
 
     sendChangesToDB(): void {
-        // To do
-        console.log('TO DO: Send profile modifications to DB (in profile settings service)');
+        // POST request to update new profile info 
+        const newInfos = {
+            oldUsername: this.username,
+            newUsername: this.newUsername,
+            avatar: this.avatarSrc,
+            // description : this.description
+        };
+
+        this.httpClient.post(PROFILE_UPDATE_URL, newInfos).subscribe(
+            (isSuccess) => {
+                if (isSuccess) {
+                    this.router.navigate(['../profile'], { relativeTo: this.route });
+                }
+            },
+            (error) => {
+                console.log('Error:', error);
+            },
+        );
     }
 }

@@ -19,6 +19,10 @@ export class ProfileService {
         this.avatarSrc = avatars[0]; // placeholder
     }
 
+    setUsername(name : string) :void {
+        this.username = name;
+    }
+
     loadProfileInfo(): void {
         this.httpClient.get(PROFILE_URL + '/' + this.username).subscribe(
             (result) => {

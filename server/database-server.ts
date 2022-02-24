@@ -149,6 +149,28 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
       );
     });
 
+    //Updating a users data
+    app.post("/profileUpdate", (request, response, next) => {
+      var post_data = request.body;
+      var oldUsername = post_data.oldUsername;
+      var newUsername = post_data.newUsername;
+      var avatar = post_data.avatar;
+      // var description = post_data.description;
+
+      var db = client.db("PolyGramDB");
+
+      db.collection("users")
+        .updateOne({ identifier: oldUsername }, {
+          $set : {
+            "identifier" : newUsername,
+            "avatar" : avatar
+            // "description" : description
+          },
+        }).then(result => {
+          response.json(result.modifiedCount > 0);
+        });
+    });
+
     //start web server
     app.listen(SERVER_PORT, () => {
       console.log(
