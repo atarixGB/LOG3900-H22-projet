@@ -66,12 +66,16 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
 
       var identifier = post_data.identifier;
       var avatar = post_data.avatar;
+      var email = post_data.email;
+      var description = post_data.description;
 
       var insertJson = {
         identifier: identifier,
         password: password,
         salt: salt,
         avatar: avatar,
+        email: email,
+        description: description,
       };
 
       var db = client.db("PolyGramDB");
@@ -155,7 +159,7 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
       var oldUsername = post_data.oldUsername;
       var newUsername = post_data.newUsername;
       var avatar = post_data.avatar;
-      // var description = post_data.description;
+      var description = post_data.description;
 
       var db = client.db("PolyGramDB");
 
@@ -163,8 +167,8 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
         .updateOne({ identifier: oldUsername }, {
           $set : {
             "identifier" : newUsername,
-            "avatar" : avatar
-            // "description" : description
+            "avatar" : avatar,
+            "description" : description
           },
         }).then(result => {
           response.json(result.modifiedCount > 0);
