@@ -9,14 +9,15 @@
          <h1 id="title">Profil</h1>
       </div>
       
-      <!-- Avatar, username and description -->
+      <!-- Avatar, username, email and description -->
       <div fxLayout="row" fxLayoutAlign="center center" >
 
          <div fxLayout="column" fxLayoutAlign="center center">
              <div id="avatarDisplay" fxLayoutAlign="center center">
                  <img id="avatarImg" src="data:image/png;base64,{{this.profileService.avatarSrc}}">
              </div>
-             <h2>{{this.profileService.username}}</h2>
+             <h2 id="username">{{this.profileService.username}}</h2>
+             <h3 id="email">{{this.profileService.email}}</h3>
          </div>
 
          <div fxFlex="2"></div>

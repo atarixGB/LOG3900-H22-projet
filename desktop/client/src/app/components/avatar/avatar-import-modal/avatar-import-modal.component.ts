@@ -48,7 +48,7 @@ export class AvatarImportModalComponent implements OnInit {
 
     confirmAvatar(): void {
         this.signUpService.avatarSrc = this.base64;
-        this.profileSettingsService.avatarSrc = this.base64;
+        this.profileSettingsService.newAvatarSrc = this.base64;
         this.dialogRef.close();
     }
 }

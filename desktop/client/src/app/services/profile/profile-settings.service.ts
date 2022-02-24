@@ -9,46 +9,52 @@ const PROFILE_UPDATE_URL = 'http://localhost:3000/profileUpdate';
     providedIn: 'root',
 })
 export class ProfileSettingsService {
-    username: string;
-    avatarSrc: string;
     newUsername: string;
-    description: string;
+    newAvatarSrc: string;
+    newDescription: string;
 
     constructor(private httpClient: HttpClient,  private router: Router, private route: ActivatedRoute, public profileService: ProfileService) {
         this.getUserInfoFromProfile();
     }
 
     getUserInfoFromProfile(): void {
-        this.username = this.profileService.username;
-        this.description = this.profileService.description;
-        this.avatarSrc = this.profileService.avatarSrc;
+        this.newUsername = this.profileService.username;
+        this.newAvatarSrc = this.profileService.avatarSrc;
+        this.newDescription = this.profileService.description;
     }
 
-    isValidNewUsername(): boolean {
-        const isChanged = this.newUsername != "";
-        if (isChanged) {
-            const regex = /^[a-zA-Z0-9]+$/;
-            const isValid = regex.test(this.newUsername) && !(this.newUsername === null || this.newUsername.match(/^ *$/) !== null);
-            if (!isValid) {
-                return false;
-            }
-            this.profileService.setUsername(this.newUsername);
-        } 
-        return true;
+    saveChanges() : void {
+        console.log('something changed :', this.somethingChanged());
+        
+        if(this.somethingChanged()) {
+            this.isValidNewUsername() ? this.sendChangesToDB() : console.log('TO DO: Message erreur quand le username est invalid (dans profile-settings component)');
+        } else {
+            this.router.navigate(['../profile'], { relativeTo: this.route });
+        }
     }
 
-    sendChangesToDB(): void {
+    private somethingChanged(): boolean {
+        return this.profileService.username != this.newUsername || this.profileService.avatarSrc != this.newAvatarSrc || this.profileService.description != this.newDescription;
+    }
+
+    private isValidNewUsername(): boolean {
+        const regex = /^[a-zA-Z0-9]+$/;
+        return regex.test(this.newUsername) && !(this.newUsername === null || this.newUsername.match(/^ *$/) !== null);
+    }
+
+    private sendChangesToDB(): void {
         // POST request to update new profile info 
         const newInfos = {
-            oldUsername: this.username,
+            oldUsername: this.profileService.username,
             newUsername: this.newUsername,
-            avatar: this.avatarSrc,
-            // description : this.description
+            newAvatar: this.newAvatarSrc,
+            newDescription : this.newDescription
         };
 
         this.httpClient.post(PROFILE_UPDATE_URL, newInfos).subscribe(
             (isSuccess) => {
                 if (isSuccess) {
+                    this.profileService.setUsername(this.newUsername);
                     this.router.navigate(['../profile'], { relativeTo: this.route });
                 }
             },
@@ -57,4 +63,5 @@ export class ProfileSettingsService {
             },
         );
     }
+    
 }

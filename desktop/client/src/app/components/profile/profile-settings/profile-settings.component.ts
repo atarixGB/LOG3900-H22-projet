@@ -15,7 +15,6 @@ export class ProfileSettingsComponent implements AfterContentInit {
 
     ngAfterContentInit(): void {
         this.profileSettingsService.getUserInfoFromProfile();
-        this.profileSettingsService.newUsername = "";
     }
 
     openAvatarSelectionModal(): void {
@@ -24,13 +23,5 @@ export class ProfileSettingsComponent implements AfterContentInit {
 
     openAvatarImportModal(): void {
         this.dialog.open(AvatarImportModalComponent, {});
-    }
-
-    saveChanges(): void {
-        if (this.profileSettingsService.isValidNewUsername()) {
-            this.profileSettingsService.sendChangesToDB();
-        } else {
-            console.log('TO DO: Message erreur quand le username est invalid (dans profile-settings component)');
-        }
-    }        
+    }    
 }

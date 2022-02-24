@@ -22,7 +22,7 @@
             </div>
             <div class="topPadding" fxLayout="row" fxLayoutAlign="space-evenly stretch">
                <div id="avatarDisplay" fxLayoutAlign="center center">
-                  <img id="avatarImg" src="data:image/png;base64,{{this.profileSettingsService.avatarSrc}}">
+                  <img id="avatarImg" src="data:image/png;base64,{{this.profileSettingsService.newAvatarSrc}}">
                </div>
                <div fxLayout="column" fxLayoutAlign="space-evenly center" >
                    <button mat-raised-button color="primary" (click)="this.openAvatarSelectionModal()">Choisir un nouvel avatar</button>
@@ -35,21 +35,11 @@
             <div class="sectionTitleContainer" fxLayout="row" fxLayoutAlign="start center">
                <span>Pseudonyme</span>
             </div>
-            <div class="topBottomPadding" fxLayout="row" fxLayoutAlign="space-evenly start">
-               <div fxLayout="column" fxLayoutAlign="start center" >
-                  <span>Pseudonyme courant:</span>
-                  <div class="bordered">
-                     <span>{{this.profileSettingsService.username}}</span>
-                  </div>
-              </div>
-              <mat-icon id="usernameArrow">arrow_forward</mat-icon>
-              <div fxLayout="column" fxLayoutAlign="space-evenly center" >
-                  <span>Changer à:</span>
-                  <mat-form-field appearance="outline">
-                     <mat-label>Entrez un nouveau nom!</mat-label>
-                     <input matInput placeholder="Nouveau nom" [(ngModel)]="this.profileSettingsService.newUsername" >
-                  </mat-form-field>
-              </div>
+            <div class="topBottomPadding" fxLayout="row" fxLayoutAlign="space-evenly center">
+               <mat-form-field appearance="outline">
+                  <mat-label>Entrez un nouveau nom</mat-label>
+                  <input matInput [(ngModel)]="this.profileSettingsService.newUsername">
+               </mat-form-field>
             </div>
 
              <!-- Description settings -->
@@ -57,8 +47,8 @@
                <span>Description</span>
             </div>
             <mat-form-field class="topPadding" appearance="outline">
-               <mat-label>Modifier votre description!</mat-label>
-               <textarea id="descriptionInput" matInput [(ngModel)]="this.profileSettingsService.description"> {{this.profileSettingsService.description}} </textarea>
+               <mat-label>Modifiez votre description!</mat-label>
+               <textarea id="descriptionInput" matInput [(ngModel)]="this.profileSettingsService.newDescription"></textarea> 
             </mat-form-field>
 
          </div>
@@ -67,7 +57,7 @@
       <!-- Confirmation btn -->
       <div fxFlex="5"></div>
       <div fxLayout="row" fxLayoutAlign="center start">
-         <button mat-raised-button color="warn" (click)="this.saveChanges()">Sauvegarder les changements</button>
+         <button mat-raised-button color="warn" (click)="this.profileSettingsService.saveChanges()">Sauvegarder les changements</button>
       </div>
 
    </div>

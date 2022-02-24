@@ -158,8 +158,8 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
       var post_data = request.body;
       var oldUsername = post_data.oldUsername;
       var newUsername = post_data.newUsername;
-      var avatar = post_data.avatar;
-      var description = post_data.description;
+      var avatar = post_data.newAvatar;
+      var description = post_data.newDescription;
 
       var db = client.db("PolyGramDB");
 

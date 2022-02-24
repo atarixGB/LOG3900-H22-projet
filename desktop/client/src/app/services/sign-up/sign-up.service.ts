@@ -23,7 +23,7 @@ export class SignUpService {
             password: this.password,
             avatar: this.avatarSrc,
             email: this.email,
-            description: this.description,
+            description: "Accédez aux paramètres du profil pour ajouter une description!",
         };
 
         this.httpClient.post(SIGN_UP_URL, userInfos).subscribe(

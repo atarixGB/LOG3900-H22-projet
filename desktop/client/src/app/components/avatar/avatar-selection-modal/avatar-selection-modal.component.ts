@@ -51,7 +51,7 @@ export class AvatarSelectionModalComponent implements OnInit {
 
     confirmAvatar(): void {
         this.signUpService.avatarSrc = this.avatarList[this.selectedAvatar];
-        this.profileSettingsService.avatarSrc = this.avatarList[this.selectedAvatar];
+        this.profileSettingsService.newAvatarSrc = this.avatarList[this.selectedAvatar];
         this.dialogRef.close();
     }
 }
