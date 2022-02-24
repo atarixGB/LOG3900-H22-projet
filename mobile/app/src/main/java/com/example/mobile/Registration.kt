@@ -127,7 +127,7 @@ class Registration : AppCompatActivity(),SelectAvatarPopUp.DialogListener {
         }
 
         registerAccountBtn.setOnClickListener {
-            registerUser(identifiant.text.toString(), pwd.text.toString(),displaypicture)
+            registerUser(identifiant.text.toString(), pwd.text.toString(),displaypicture,edt_email.text.toString())
         }
 
         loginAccountBtn.setOnClickListener {
@@ -151,10 +151,10 @@ class Registration : AppCompatActivity(),SelectAvatarPopUp.DialogListener {
         }
     }
 
-    private fun registerUser(identifier: String, password: String, avatar:CircularImageView) {
+    private fun registerUser(identifier: String, password: String, avatar:CircularImageView,email: String) {
         var avatarByteArray:ByteArray = convertToByteArray(avatar)
         var avatar_str:String = Base64.encodeToString(avatarByteArray,0)
-        compositeDisposable.add(iMyService.registerUser(identifier, password,avatar_str)
+        compositeDisposable.add(iMyService.registerUser(identifier, password,avatar_str,email)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { result->
@@ -162,6 +162,7 @@ class Registration : AppCompatActivity(),SelectAvatarPopUp.DialogListener {
                     Toast.makeText(this,"Enregistrement fait avec succès", Toast.LENGTH_SHORT).show()
                     val intent = Intent(this, Profile::class.java)
                     intent.putExtra("userName",identifiant.text.toString())
+                    intent.putExtra("email",edt_email.text.toString())
                     startActivity(intent)
                 }else{
                     Toast.makeText(this,"Nom d'utilisateur déjà existant", Toast.LENGTH_SHORT).show()

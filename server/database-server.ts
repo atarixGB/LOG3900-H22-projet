@@ -64,6 +64,7 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
       var salt = hash_data.salt;
       var identifier = post_data.identifier;
       var avatar = post_data.avatar;
+      var email = post_data.email
       
 
       var insertJson = {
@@ -71,6 +72,7 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
         password: password,
         salt: salt,
         avatar: avatar,
+        email: email,
       };
 
       var db = client.db("PolyGramDB");
@@ -129,6 +131,39 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
             }
           });
         });
+
+    //Getting a user's data 
+    app.get("/users", (request, response, next) => {
+      
+      var db = client.db("PolyGramDB");
+      db.collection("users")
+        .find({}).limit(50).toArray(function (err, result) {
+          if (err) {
+            response.status(400).send("Error fetching rooms");
+          } else {
+            response.json(result)
+            console.log("add succes");
+          }
+        });
+    });
+
+    app.get("/profile/:username", (request, response, next) => {
+    
+      var identifier = request.params.username;
+      console.log(identifier.toString());
+      var db = client.db("PolyGramDB");
+
+      //check if identifier exists
+      db.collection("users").findOne(
+        { identifier: identifier },
+        function (error, user) {
+          response.json(user);
+          console.log("Got user data for profile load: ", identifier);
+        }
+      );
+    });
+
+    
 
     //start web server
     app.listen(SERVER_PORT, () => {

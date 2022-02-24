@@ -3154,6 +3154,7 @@ id time
 id title
 id titleDividerNoCustom
 id title_template
+id title_username
 id toggle
 id toolBarFragment
 id top
@@ -3176,9 +3177,11 @@ id unlabeled
 id up
 id useLogo
 id userAvatar
+id user_email
 id user_joined_chat
 id user_receive_message
 id user_sent_message
+id username
 id username_bloc
 id valider
 id vertical
