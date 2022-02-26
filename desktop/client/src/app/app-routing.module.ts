@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AlbumGalleryComponent } from './components/album-gallery/album-gallery.component';
+import { AlbumGalleryComponent } from '@app/components/album-gallery/my-albums/album-gallery.component';
 import { PublicAlbumsComponent } from './components/album-gallery/public-albums/public-albums.component';
 import { ChatMenuComponent } from './components/chat/chat-menu/chat-menu.component';
 import { ChatroomComponent } from './components/chat/chatroom/chatroom.component';

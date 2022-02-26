@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { IAlbum } from '@app/interfaces-enums/IAlbum';
 import { AlbumGalleryService } from '@app/services/album-gallery/album-gallery.service'
-import { CreateAlbumDialogComponent } from './create-album-dialog/create-album-dialog.component';
+import { CreateAlbumDialogComponent } from '@app/components/album-gallery/create-album-dialog/create-album-dialog.component';
 @Component({
   selector: 'app-album-gallery',
   templateUrl: './album-gallery.component.html',
