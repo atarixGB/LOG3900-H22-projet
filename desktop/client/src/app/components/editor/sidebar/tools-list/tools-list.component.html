@@ -25,11 +25,6 @@
                 <mat-icon>radio_button_unchecked</mat-icon>
             </button>
         </mat-grid-tile>
-        <mat-grid-tile>
-            <button [ngClass]="{ active: toolManagerService.currentToolEnum === ToolList.Polygon }" mat-icon-button
-                matTooltip="Polygone (3)" matTooltipPosition="above" (click)="onTool(ToolList.Polygon)">
-                <mat-icon>change_history</mat-icon>
-            </button>
-        </mat-grid-tile>
+
     </mat-grid-list>
 </div>

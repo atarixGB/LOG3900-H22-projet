@@ -39,7 +39,6 @@ import { EllipseConfigComponent } from './components/editor/sidebar/ellipse-conf
 import { EraserConfigComponent } from './components/editor/sidebar/eraser-config/eraser-config.component';
 import { FileMenuComponent } from './components/editor/sidebar/file-menu/file-menu.component';
 import { PencilConfigComponent } from './components/editor/sidebar/pencil-config/pencil-config.component';
-import { PolygonConfigComponent } from './components/editor/sidebar/polygon-config/polygon-config.component';
 import { RectangleConfigComponent } from './components/editor/sidebar/rectangle-config/rectangle-config.component';
 import { SidebarComponent } from './components/editor/sidebar/sidebar.component';
 import { ToolsListComponent } from './components/editor/sidebar/tools-list/tools-list.component';
@@ -66,7 +65,6 @@ import { SignUpComponent } from './components/sign-up/sign-up.component';
         RectangleConfigComponent,
         ConfigPanelComponent,
         ExportModalComponent,
-        PolygonConfigComponent,
         SaveDrawingModalComponent,
         LoginComponent,
         ChatMenuComponent,

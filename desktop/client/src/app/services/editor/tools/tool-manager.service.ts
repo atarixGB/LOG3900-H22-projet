@@ -5,7 +5,6 @@ import { ToolList } from '@app/interfaces-enums/tool-list';
 import { EllipseService } from './ellipse/ellipse.service';
 import { EraserService } from './eraser/eraser.service';
 import { PencilService } from './pencil/pencil.service';
-import { PolygonService } from './polygon/polygon.service';
 import { RectangleService } from './rectangle/rectangle.service';
 
 @Injectable({
@@ -23,7 +22,6 @@ export class ToolManagerService {
         private eraserService: EraserService,
         private ellipseService: EllipseService,
         private rectangleService: RectangleService,
-        private polygonService: PolygonService,
 
     ) {
         this.currentTool = this.pencilService;
@@ -34,7 +32,6 @@ export class ToolManagerService {
             .set(ToolList.Pencil, this.pencilService)
             .set(ToolList.Ellipse, this.ellipseService)
             .set(ToolList.Rectangle, this.rectangleService)
-            .set(ToolList.Polygon, this.polygonService)
             .set(ToolList.Eraser, this.eraserService)
         // .set(ToolList.SelectionRectangle, this.selectionService)
 
@@ -44,7 +41,6 @@ export class ToolManagerService {
             .set('1', this.rectangleService)
             .set('2', this.ellipseService)
             .set('e', this.eraserService)
-            .set('3', this.polygonService)
     }
 
     private getEnumFromMap(map: Map<ToolList, Tool>, searchValue: Tool | undefined): ToolList | undefined {
