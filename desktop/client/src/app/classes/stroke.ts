@@ -1,4 +1,5 @@
 export abstract class Stroke {
+    sender: any;
     toolType: string;
     primaryColor: string;
     strokeWidth: number;

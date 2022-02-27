@@ -17,14 +17,17 @@ export class CollaborationService {
         this.socket = io.io('http://localhost:3002/', { transports: ['websocket'] });
 
         this.socket.on('receiveStroke', (stroke: Stroke) => {
-            console.log('Stroke received : ', stroke);
-            if (stroke.toolType === 'rectangle') {
-                this.drawRectangle(stroke as StrokeRectangle, this.drawingService.baseCtx);
+            if (stroke.sender !== this.socket.id) {
+                console.log('Stroke received');
+                if (stroke.toolType === 'rectangle') {
+                    this.drawRectangle(stroke as StrokeRectangle, this.drawingService.baseCtx);
+                }
             }
         });
     }
 
     broadcastStroke(stroke: Stroke): void {
+        stroke.sender = this.socket.id;
         this.socket.emit('broadcastStroke', stroke);
     }
 
