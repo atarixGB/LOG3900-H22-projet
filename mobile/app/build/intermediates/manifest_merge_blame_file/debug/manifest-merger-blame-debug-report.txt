@@ -6,127 +6,127 @@
 6
 7    <uses-sdk
 8        android:minSdkVersion="28"
-8-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml
+8-->C:\Users\Mio\Desktop\log3900-203\mobile\app\src\main\AndroidManifest.xml
 9        android:targetSdkVersion="31" />
-9-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml
+9-->C:\Users\Mio\Desktop\log3900-203\mobile\app\src\main\AndroidManifest.xml
 10
 11    <uses-permission android:name="android.permission.INTERNET" />
-11-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:6:5-67
-11-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:6:22-64
+11-->C:\Users\Mio\Desktop\log3900-203\mobile\app\src\main\AndroidManifest.xml:6:5-67
+11-->C:\Users\Mio\Desktop\log3900-203\mobile\app\src\main\AndroidManifest.xml:6:22-64
 12    <uses-permission android:name="android.permission.CAMERA" />
-12-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:7:5-64
-12-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:7:22-62
+12-->C:\Users\Mio\Desktop\log3900-203\mobile\app\src\main\AndroidManifest.xml:7:5-64
+12-->C:\Users\Mio\Desktop\log3900-203\mobile\app\src\main\AndroidManifest.xml:7:22-62
 13    <uses-permission android:name="android.permission.RECORD_AUDIO" />
-13-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:8:5-71
-13-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:8:22-68
+13-->C:\Users\Mio\Desktop\log3900-203\mobile\app\src\main\AndroidManifest.xml:8:5-71
+13-->C:\Users\Mio\Desktop\log3900-203\mobile\app\src\main\AndroidManifest.xml:8:22-68
 14
 15    <application
-15-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:10:5-52:19
+15-->C:\Users\Mio\Desktop\log3900-203\mobile\app\src\main\AndroidManifest.xml:10:5-52:19
 16        android:allowBackup="true"
-16-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:11:9-35
+16-->C:\Users\Mio\Desktop\log3900-203\mobile\app\src\main\AndroidManifest.xml:11:9-35
 17        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
-17-->[androidx.core:core:1.7.0] C:\Users\chaim\.gradle\caches\transforms-2\files-2.1\a431b63830e255b80e0dcda496eb99b4\core-1.7.0\AndroidManifest.xml:24:18-86
+17-->[androidx.core:core:1.7.0] C:\Users\Mio\.gradle\caches\transforms-2\files-2.1\a431b63830e255b80e0dcda496eb99b4\core-1.7.0\AndroidManifest.xml:24:18-86
 18        android:debuggable="true"
 19        android:extractNativeLibs="false"
 20        android:icon="@mipmap/ic_launcher"
-20-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:12:9-43
+20-->C:\Users\Mio\Desktop\log3900-203\mobile\app\src\main\AndroidManifest.xml:12:9-43
 21        android:label="@string/app_name"
-21-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:13:9-41
+21-->C:\Users\Mio\Desktop\log3900-203\mobile\app\src\main\AndroidManifest.xml:13:9-41
 22        android:roundIcon="@mipmap/ic_launcher_round"
-22-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:14:9-54
+22-->C:\Users\Mio\Desktop\log3900-203\mobile\app\src\main\AndroidManifest.xml:14:9-54
 23        android:supportsRtl="true"
-23-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:15:9-35
+23-->C:\Users\Mio\Desktop\log3900-203\mobile\app\src\main\AndroidManifest.xml:15:9-35
 24        android:testOnly="true"
 25        android:theme="@style/Theme.Mobile"
-25-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:16:9-44
+25-->C:\Users\Mio\Desktop\log3900-203\mobile\app\src\main\AndroidManifest.xml:16:9-44
 26        android:usesCleartextTraffic="true" >
-26-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:17:9-44
+26-->C:\Users\Mio\Desktop\log3900-203\mobile\app\src\main\AndroidManifest.xml:17:9-44
 27        <activity android:name="com.example.mobile.Dashboard" />
-27-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:18:9-74
-27-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:18:19-62
+27-->C:\Users\Mio\Desktop\log3900-203\mobile\app\src\main\AndroidManifest.xml:18:9-74
+27-->C:\Users\Mio\Desktop\log3900-203\mobile\app\src\main\AndroidManifest.xml:18:19-62
 28        <activity
-28-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:19:9-21:40
+28-->C:\Users\Mio\Desktop\log3900-203\mobile\app\src\main\AndroidManifest.xml:19:9-21:40
 29            android:name="com.example.mobile.PickAvatar"
-29-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:20:13-39
+29-->C:\Users\Mio\Desktop\log3900-203\mobile\app\src\main\AndroidManifest.xml:20:13-39
 30            android:exported="false" />
-30-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:21:13-37
+30-->C:\Users\Mio\Desktop\log3900-203\mobile\app\src\main\AndroidManifest.xml:21:13-37
 31        <activity
-31-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:22:9-24:40
+31-->C:\Users\Mio\Desktop\log3900-203\mobile\app\src\main\AndroidManifest.xml:22:9-24:40
 32            android:name="com.example.mobile.Profile"
-32-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:23:13-36
+32-->C:\Users\Mio\Desktop\log3900-203\mobile\app\src\main\AndroidManifest.xml:23:13-36
 33            android:exported="false" />
-33-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:24:13-37
+33-->C:\Users\Mio\Desktop\log3900-203\mobile\app\src\main\AndroidManifest.xml:24:13-37
 34        <activity
-34-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:25:9-27:40
+34-->C:\Users\Mio\Desktop\log3900-203\mobile\app\src\main\AndroidManifest.xml:25:9-27:40
 35            android:name="com.example.mobile.Registration"
-35-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:26:13-41
+35-->C:\Users\Mio\Desktop\log3900-203\mobile\app\src\main\AndroidManifest.xml:26:13-41
 36            android:exported="false" />
-36-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:27:13-37
+36-->C:\Users\Mio\Desktop\log3900-203\mobile\app\src\main\AndroidManifest.xml:27:13-37
 37        <activity
-37-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:29:9-31:40
+37-->C:\Users\Mio\Desktop\log3900-203\mobile\app\src\main\AndroidManifest.xml:29:9-31:40
 38            android:name="com.example.mobile.joinRoom"
-38-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:30:13-37
+38-->C:\Users\Mio\Desktop\log3900-203\mobile\app\src\main\AndroidManifest.xml:30:13-37
 39            android:exported="false" />
-39-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:31:13-37
+39-->C:\Users\Mio\Desktop\log3900-203\mobile\app\src\main\AndroidManifest.xml:31:13-37
 40        <activity
-40-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:32:9-35:45
+40-->C:\Users\Mio\Desktop\log3900-203\mobile\app\src\main\AndroidManifest.xml:32:9-35:45
 41            android:name="com.example.mobile.CreateRoomPopUp"
-41-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:33:13-44
+41-->C:\Users\Mio\Desktop\log3900-203\mobile\app\src\main\AndroidManifest.xml:33:13-44
 42            android:exported="false" />
-42-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:34:13-37
+42-->C:\Users\Mio\Desktop\log3900-203\mobile\app\src\main\AndroidManifest.xml:34:13-37
 43        <activity
-43-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:36:9-38:40
+43-->C:\Users\Mio\Desktop\log3900-203\mobile\app\src\main\AndroidManifest.xml:36:9-38:40
 44            android:name="com.example.mobile.ChatRooms"
-44-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:37:13-38
+44-->C:\Users\Mio\Desktop\log3900-203\mobile\app\src\main\AndroidManifest.xml:37:13-38
 45            android:exported="false" />
-45-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:38:13-37
+45-->C:\Users\Mio\Desktop\log3900-203\mobile\app\src\main\AndroidManifest.xml:38:13-37
 46        <activity android:name="com.example.mobile.DrawingActivity" />
-46-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:39:9-71
-46-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:39:19-68
+46-->C:\Users\Mio\Desktop\log3900-203\mobile\app\src\main\AndroidManifest.xml:39:9-71
+46-->C:\Users\Mio\Desktop\log3900-203\mobile\app\src\main\AndroidManifest.xml:39:19-68
 47        <activity
-47-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:40:9-42:39
+47-->C:\Users\Mio\Desktop\log3900-203\mobile\app\src\main\AndroidManifest.xml:40:9-42:39
 48            android:name="com.example.mobile.ChatPage"
-48-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:41:13-55
+48-->C:\Users\Mio\Desktop\log3900-203\mobile\app\src\main\AndroidManifest.xml:41:13-55
 49            android:exported="true" />
-49-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:42:13-36
+49-->C:\Users\Mio\Desktop\log3900-203\mobile\app\src\main\AndroidManifest.xml:42:13-36
 50        <activity
-50-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:43:9-51:20
+50-->C:\Users\Mio\Desktop\log3900-203\mobile\app\src\main\AndroidManifest.xml:43:9-51:20
 51            android:name="com.example.mobile.MainActivity"
-51-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:44:13-59
+51-->C:\Users\Mio\Desktop\log3900-203\mobile\app\src\main\AndroidManifest.xml:44:13-59
 52            android:exported="true" >
-52-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:45:13-36
+52-->C:\Users\Mio\Desktop\log3900-203\mobile\app\src\main\AndroidManifest.xml:45:13-36
 53            <intent-filter>
-53-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:46:13-50:29
+53-->C:\Users\Mio\Desktop\log3900-203\mobile\app\src\main\AndroidManifest.xml:46:13-50:29
 54                <action android:name="android.intent.action.MAIN" />
-54-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:47:17-69
-54-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:47:25-66
+54-->C:\Users\Mio\Desktop\log3900-203\mobile\app\src\main\AndroidManifest.xml:47:17-69
+54-->C:\Users\Mio\Desktop\log3900-203\mobile\app\src\main\AndroidManifest.xml:47:25-66
 55
 56                <category android:name="android.intent.category.LAUNCHER" />
-56-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:49:17-77
-56-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:49:27-74
+56-->C:\Users\Mio\Desktop\log3900-203\mobile\app\src\main\AndroidManifest.xml:49:17-77
+56-->C:\Users\Mio\Desktop\log3900-203\mobile\app\src\main\AndroidManifest.xml:49:27-74
 57            </intent-filter>
 58        </activity>
 59
 60        <provider
-60-->[androidx.emoji2:emoji2:1.0.0] C:\Users\chaim\.gradle\caches\transforms-2\files-2.1\a1db6a0ca78a28b66c64115dbc645d09\jetified-emoji2-1.0.0\AndroidManifest.xml:26:9-34:20
+60-->[androidx.emoji2:emoji2:1.0.0] C:\Users\Mio\.gradle\caches\transforms-2\files-2.1\a1db6a0ca78a28b66c64115dbc645d09\jetified-emoji2-1.0.0\AndroidManifest.xml:26:9-34:20
 61            android:name="androidx.startup.InitializationProvider"
-61-->[androidx.emoji2:emoji2:1.0.0] C:\Users\chaim\.gradle\caches\transforms-2\files-2.1\a1db6a0ca78a28b66c64115dbc645d09\jetified-emoji2-1.0.0\AndroidManifest.xml:27:13-67
+61-->[androidx.emoji2:emoji2:1.0.0] C:\Users\Mio\.gradle\caches\transforms-2\files-2.1\a1db6a0ca78a28b66c64115dbc645d09\jetified-emoji2-1.0.0\AndroidManifest.xml:27:13-67
 62            android:authorities="com.example.mobile.androidx-startup"
-62-->[androidx.emoji2:emoji2:1.0.0] C:\Users\chaim\.gradle\caches\transforms-2\files-2.1\a1db6a0ca78a28b66c64115dbc645d09\jetified-emoji2-1.0.0\AndroidManifest.xml:28:13-68
+62-->[androidx.emoji2:emoji2:1.0.0] C:\Users\Mio\.gradle\caches\transforms-2\files-2.1\a1db6a0ca78a28b66c64115dbc645d09\jetified-emoji2-1.0.0\AndroidManifest.xml:28:13-68
 63            android:exported="false" >
-63-->[androidx.emoji2:emoji2:1.0.0] C:\Users\chaim\.gradle\caches\transforms-2\files-2.1\a1db6a0ca78a28b66c64115dbc645d09\jetified-emoji2-1.0.0\AndroidManifest.xml:29:13-37
+63-->[androidx.emoji2:emoji2:1.0.0] C:\Users\Mio\.gradle\caches\transforms-2\files-2.1\a1db6a0ca78a28b66c64115dbc645d09\jetified-emoji2-1.0.0\AndroidManifest.xml:29:13-37
 64            <meta-data
-64-->[androidx.emoji2:emoji2:1.0.0] C:\Users\chaim\.gradle\caches\transforms-2\files-2.1\a1db6a0ca78a28b66c64115dbc645d09\jetified-emoji2-1.0.0\AndroidManifest.xml:31:13-33:52
+64-->[androidx.emoji2:emoji2:1.0.0] C:\Users\Mio\.gradle\caches\transforms-2\files-2.1\a1db6a0ca78a28b66c64115dbc645d09\jetified-emoji2-1.0.0\AndroidManifest.xml:31:13-33:52
 65                android:name="androidx.emoji2.text.EmojiCompatInitializer"
-65-->[androidx.emoji2:emoji2:1.0.0] C:\Users\chaim\.gradle\caches\transforms-2\files-2.1\a1db6a0ca78a28b66c64115dbc645d09\jetified-emoji2-1.0.0\AndroidManifest.xml:32:17-75
+65-->[androidx.emoji2:emoji2:1.0.0] C:\Users\Mio\.gradle\caches\transforms-2\files-2.1\a1db6a0ca78a28b66c64115dbc645d09\jetified-emoji2-1.0.0\AndroidManifest.xml:32:17-75
 66                android:value="androidx.startup" />
-66-->[androidx.emoji2:emoji2:1.0.0] C:\Users\chaim\.gradle\caches\transforms-2\files-2.1\a1db6a0ca78a28b66c64115dbc645d09\jetified-emoji2-1.0.0\AndroidManifest.xml:33:17-49
+66-->[androidx.emoji2:emoji2:1.0.0] C:\Users\Mio\.gradle\caches\transforms-2\files-2.1\a1db6a0ca78a28b66c64115dbc645d09\jetified-emoji2-1.0.0\AndroidManifest.xml:33:17-49
 67            <meta-data
-67-->[androidx.lifecycle:lifecycle-process:2.4.0] C:\Users\chaim\.gradle\caches\transforms-2\files-2.1\33cb0bcbb6de7bcdeaa8d59150e0e237\jetified-lifecycle-process-2.4.0\AndroidManifest.xml:31:13-33:52
+67-->[androidx.lifecycle:lifecycle-process:2.4.0] C:\Users\Mio\.gradle\caches\transforms-2\files-2.1\33cb0bcbb6de7bcdeaa8d59150e0e237\jetified-lifecycle-process-2.4.0\AndroidManifest.xml:31:13-33:52
 68                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
-68-->[androidx.lifecycle:lifecycle-process:2.4.0] C:\Users\chaim\.gradle\caches\transforms-2\files-2.1\33cb0bcbb6de7bcdeaa8d59150e0e237\jetified-lifecycle-process-2.4.0\AndroidManifest.xml:32:17-78
+68-->[androidx.lifecycle:lifecycle-process:2.4.0] C:\Users\Mio\.gradle\caches\transforms-2\files-2.1\33cb0bcbb6de7bcdeaa8d59150e0e237\jetified-lifecycle-process-2.4.0\AndroidManifest.xml:32:17-78
 69                android:value="androidx.startup" />
-69-->[androidx.lifecycle:lifecycle-process:2.4.0] C:\Users\chaim\.gradle\caches\transforms-2\files-2.1\33cb0bcbb6de7bcdeaa8d59150e0e237\jetified-lifecycle-process-2.4.0\AndroidManifest.xml:33:17-49
+69-->[androidx.lifecycle:lifecycle-process:2.4.0] C:\Users\Mio\.gradle\caches\transforms-2\files-2.1\33cb0bcbb6de7bcdeaa8d59150e0e237\jetified-lifecycle-process-2.4.0\AndroidManifest.xml:33:17-49
 70        </provider>
 71    </application>
 72

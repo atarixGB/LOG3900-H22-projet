@@ -36,8 +36,8 @@ class MyCanvasView(context: Context) : View(context) {
     // Holds the path you are currently drawing.
     private var path = Path()
 
-    private val drawColor = ResourcesCompat.getColor(resources, R.color.white, null)
-    private val backgroundColor = ResourcesCompat.getColor(resources, R.color.black, null)
+    private val drawColor = ResourcesCompat.getColor(resources, R.color.black, null)
+    private val backgroundColor = ResourcesCompat.getColor(resources, R.color.white, null)
     private lateinit var extraCanvas: Canvas
     private lateinit var extraBitmap: Bitmap
     private lateinit var frame: Rect
@@ -82,7 +82,7 @@ class MyCanvasView(context: Context) : View(context) {
         extraCanvas.drawColor(backgroundColor)
 
         // Calculate a rectangular frame around the picture.
-        val inset = 40
+        val inset = 5
         frame = Rect(inset, inset, width - inset, height - inset)
     }
 
@@ -127,9 +127,7 @@ class MyCanvasView(context: Context) : View(context) {
         val dx = Math.abs(motionTouchEventX - currentX)
         val dy = Math.abs(motionTouchEventY - currentY)
         if (dx >= touchTolerance || dy >= touchTolerance) {
-            // QuadTo() adds a quadratic bezier from the last point,
-            // approaching control point (x1,y1), and ending at (x2,y2).
-            path.quadTo(currentX, currentY, (motionTouchEventX + currentX) / 2, (motionTouchEventY + currentY) / 2)
+            path.lineTo(motionTouchEventX, motionTouchEventY)
             currentX = motionTouchEventX
             currentY = motionTouchEventY
             // Draw the path in the extra bitmap to save it.
