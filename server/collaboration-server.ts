@@ -17,6 +17,6 @@ io.on('connection', (socket) => {
 
     socket.on('broadcastStroke', (strokeData) => {
       console.log("StrokeData : " , strokeData);
-      //io.emit('receiveStroke', strokeData);
+      io.emit('receiveStroke', strokeData);
     })
 })

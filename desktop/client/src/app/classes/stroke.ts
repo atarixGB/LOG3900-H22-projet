@@ -1,10 +1,11 @@
-
 export abstract class Stroke {
-   primaryColor: string;
-   strokeWidth: number;
+    toolType: string;
+    primaryColor: string;
+    strokeWidth: number;
 
-   constructor(color:string, width:number) {
-      this.primaryColor = color;
-      this.strokeWidth = width;
-   }
+    constructor(tool: string, color: string, width: number) {
+        this.toolType = tool;
+        this.primaryColor = color;
+        this.strokeWidth = width;
+    }
 }
