@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
+import { StrokePencil } from '@app/classes/stroke-pencil';
 import { Tool } from '@app/classes/tool';
 import { Vec2 } from '@app/classes/vec2';
 import { DEFAULT_LINE_THICKNESS, MouseButton } from '@app/constants/constants';
+import { CollaborationService } from '@app/services/collaboration/collaboration.service';
 import { DrawingService } from '@app/services/editor/drawing/drawing.service';
 import { ColorOrder } from 'src/app/interfaces-enums/color-order';
 import { ColorManagerService } from 'src/app/services/editor/color-manager/color-manager.service';
@@ -14,7 +16,7 @@ export class PencilService extends Tool {
     color: string;
     private pathData: Vec2[];
 
-    constructor(drawingService: DrawingService, private colorManager: ColorManagerService) {
+    constructor(drawingService: DrawingService, private colorManager: ColorManagerService, private collaborationService: CollaborationService) {
         super(drawingService);
         this.clearPath();
         this.pencilThickness = DEFAULT_LINE_THICKNESS;
@@ -35,6 +37,8 @@ export class PencilService extends Tool {
             this.pathData.push(mousePosition);
             this.drawLine(this.drawingService.baseCtx, this.pathData);
             this.color = this.colorManager.selectedColor[ColorOrder.PrimaryColor].inString;
+
+            this.broadcastLine();
         }
 
         this.mouseDown = false;
@@ -83,5 +87,10 @@ export class PencilService extends Tool {
 
     private clearPath(): void {
         this.pathData = [];
+    }
+
+    private broadcastLine(): void {
+        const pencilStroke = new StrokePencil(this.color, this.pencilThickness, this.pathData);
+        this.collaborationService.broadcastStroke(pencilStroke);
     }
 }

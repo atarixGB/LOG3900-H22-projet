@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Stroke } from '@app/classes/stroke';
 import { StrokeEllipse } from '@app/classes/stroke-ellipse';
+import { StrokePencil } from '@app/classes/stroke-pencil';
 import { StrokeRectangle } from '@app/classes/stroke-rectangle';
 import { TypeStyle } from '@app/interfaces-enums/type-style';
 import { DrawingService } from '@app/services/editor/drawing/drawing.service';
@@ -24,6 +25,8 @@ export class CollaborationService {
                     this.drawRectangle(stroke as StrokeRectangle, this.drawingService.baseCtx);
                 } else if (stroke.toolType === 'ellipse') {
                     this.drawEllipse(stroke as StrokeEllipse, this.drawingService.baseCtx);
+                } else if (stroke.toolType === 'pencil') {
+                    this.drawLine(stroke as StrokePencil, this.drawingService.baseCtx);
                 }
             }
         });
@@ -68,6 +71,16 @@ export class CollaborationService {
             ctx.fillStyle = stroke.primaryColor;
         }
         ctx.fill();
+        ctx.stroke();
+    }
+
+    private drawLine(stroke: StrokePencil, ctx: CanvasRenderingContext2D): void {
+        ctx.beginPath();
+        for (const point of stroke.points) {
+            ctx.lineTo(point.x, point.y);
+            ctx.lineWidth = stroke.strokeWidth;
+        }
+        ctx.strokeStyle = stroke.primaryColor;
         ctx.stroke();
     }
 }
