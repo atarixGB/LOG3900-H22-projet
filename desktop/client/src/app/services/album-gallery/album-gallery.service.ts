@@ -11,6 +11,7 @@ export const ALBUM_URL = "http://localhost:3000/albums"
 export class AlbumGalleryService {
   publicAlbums: IAlbum[];
   myAlbums: IAlbum[];
+  currentAlbum: IAlbum;
 
   constructor(private httpClient: HttpClient, private loginService: LoginService) {
     this.publicAlbums = [];

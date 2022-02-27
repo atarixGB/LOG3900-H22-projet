@@ -27,6 +27,7 @@ export class AlbumGalleryComponent implements OnInit {
     console.log(album.name);
     this.isOpened = true;
     let id: string | undefined = album._id;
+    this.albumGalleryService.currentAlbum = album;
     this.albumGalleryService.fetchDrawingsFromSelectedAlbum(id);
   }
 
