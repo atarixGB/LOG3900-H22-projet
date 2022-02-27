@@ -9,8 +9,11 @@ import { CreateAlbumDialogComponent } from '@app/components/album-gallery/create
   styleUrls: ['./album-gallery.component.scss']
 })
 export class AlbumGalleryComponent implements OnInit {
+  isOpened: boolean;
 
-  constructor(public albumGalleryService: AlbumGalleryService, public dialog: MatDialog) { }
+  constructor(public albumGalleryService: AlbumGalleryService, public dialog: MatDialog) {
+    this.isOpened = false;
+  }
 
   ngOnInit(): void {
     this.viewMyAlbums();
@@ -22,8 +25,21 @@ export class AlbumGalleryComponent implements OnInit {
 
   onAlbumClick(album: IAlbum): void {
     console.log(album.name);
+    this.isOpened = true;
     let id: string | undefined = album._id;
     this.albumGalleryService.fetchDrawingsFromSelectedAlbum(id);
+  }
+
+  onChangePageButtonClick(value: boolean): void {
+    this.isOpened = value;
+  }
+
+  openSettingsDialog(): void {
+    console.log("Pop up pour modifier l'album...");
+  }
+
+  leaveAlbumButton(): void {
+    console.log("On quitte l'album et on doit choisir un nouveau propriétaire")
   }
 
   viewAllPublicAlbums(): void {

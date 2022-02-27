@@ -3,24 +3,32 @@
 
   <div fxLayout="column" fxLayoutAlign="space-evenly stretch" fxFlex="auto">
 
-    <div fxLayout="row" fxLayoutAlign="space-evenly center">
+      <mat-grid-list cols="3" rowHeight="3:1" *ngIf="!this.isOpened">
+        <mat-grid-tile *ngFor="let album of this.albumGalleryService.myAlbums">
+          <button mat-icon-button disableRipple="true" (click)="this.onAlbumClick(album)">
+            <div><mat-icon>folder</mat-icon></div>
+            <div>{{album.name}}</div>
+          </button>
+        </mat-grid-tile>
+      </mat-grid-list>
+
+    <div *ngIf="this.isOpened">
+          <app-drawings-view (backToAlbumPageEvent)="this.onChangePageButtonClick($event)"></app-drawings-view>
+    </div>
+
+    <div fxLayout="row" fxLayoutAlign="space-evenly center" *ngIf="!this.isOpened;">
       <button mat-raised-button color="accent" (click)="this.openCreateAlbumDialog()">Créer un nouvel album</button>
       <button mat-raised-button color="primary" routerLink="/all-albums">Voir tous les albums publics</button>
       <button mat-raised-button color="primary" routerLink="/public-gallery">Voir la galerie publique de dessins</button>
     </div>
 
-    <div fxLayout="row" fxLayoutAlign="space-evenly center">
-      <h2>Mes Albums</h2>
-    </div>
+    <div *ngIf="this.isOpened">
+      <div fxLayout="row" fxLayoutAlign="space-evenly center">
+        <button mat-raised-button color="primary" (click)="openSettingsDialog()">Modifer l'album</button>
+        <button mat-raised-button color="accent" (click)="leaveAlbumButton()">Quitter l'album</button>
+      </div>
 
-    <mat-grid-list cols="3" rowHeight="3:1">
-      <mat-grid-tile *ngFor="let album of this.albumGalleryService.myAlbums">
-        <button mat-icon-button disableRipple="true" (click)="this.onAlbumClick(album)">
-          <div><mat-icon>folder</mat-icon></div>
-          <div>{{album.name}}</div>
-        </button>
-      </mat-grid-tile>
-    </mat-grid-list>
+    </div>
 
   </div>
 </div>

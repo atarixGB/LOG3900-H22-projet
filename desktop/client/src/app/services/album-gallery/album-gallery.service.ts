@@ -84,7 +84,7 @@ export class AlbumGalleryService {
   }
 
   fetchDrawingsFromSelectedAlbum(albumId: string | undefined): void {
-    console.log("Fetching draings from album with id: " + albumId);
+    console.log("Fetching drawings from album with id: " + albumId);
     // TODO: fetch album's drawings from db
   }
 }
