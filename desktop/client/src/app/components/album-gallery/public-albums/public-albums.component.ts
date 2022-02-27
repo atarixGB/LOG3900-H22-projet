@@ -18,8 +18,10 @@ export class PublicAlbumsComponent implements OnInit {
 
   onAlbumClick(album: IAlbum): void {
     console.log(album.name);
-    let id: string | undefined = album._id;
-    this.albumGalleryService.fetchDrawingsFromSelectedAlbum(id);
+
+    if (album != null) {
+      this.albumGalleryService.fetchDrawingsFromSelectedAlbum(album);
+    }
   }
 
   ngOnDestroy(): void {

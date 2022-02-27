@@ -84,8 +84,10 @@ export class AlbumGalleryService {
     );
   }
 
-  fetchDrawingsFromSelectedAlbum(albumId: string | undefined): void {
-    console.log("Fetching drawings from album with id: " + albumId);
+  fetchDrawingsFromSelectedAlbum(album: IAlbum): void {
+    console.log("Fetching drawings from album with id: " + album._id);
+    console.log(album);
+
     // TODO: fetch album's drawings from db
   }
 }

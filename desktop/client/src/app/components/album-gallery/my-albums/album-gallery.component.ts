@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { IAlbum } from '@app/interfaces-enums/IAlbum';
 import { AlbumGalleryService } from '@app/services/album-gallery/album-gallery.service'
 import { CreateAlbumDialogComponent } from '@app/components/album-gallery/create-album-dialog/create-album-dialog.component';
+import { ActivatedRoute, Router } from '@angular/router';
 @Component({
   selector: 'app-album-gallery',
   templateUrl: './album-gallery.component.html',
@@ -11,7 +12,7 @@ import { CreateAlbumDialogComponent } from '@app/components/album-gallery/create
 export class AlbumGalleryComponent implements OnInit {
   isOpened: boolean;
 
-  constructor(public albumGalleryService: AlbumGalleryService, public dialog: MatDialog) {
+  constructor(public albumGalleryService: AlbumGalleryService, public dialog: MatDialog, private router: Router, private route: ActivatedRoute) {
     this.isOpened = false;
   }
 
@@ -26,13 +27,19 @@ export class AlbumGalleryComponent implements OnInit {
   onAlbumClick(album: IAlbum): void {
     console.log(album.name);
     this.isOpened = true;
-    let id: string | undefined = album._id;
-    this.albumGalleryService.currentAlbum = album;
-    this.albumGalleryService.fetchDrawingsFromSelectedAlbum(id);
+
+    if(album != null) {
+      this.albumGalleryService.currentAlbum = album;
+      this.albumGalleryService.fetchDrawingsFromSelectedAlbum(album);
+    }
   }
 
   onChangePageButtonClick(value: boolean): void {
     this.isOpened = value;
+  }
+
+  onViewAllAlbumButton(): void {
+    this.router.navigate(['../all-albums'], { relativeTo: this.route });
   }
 
   openSettingsDialog(): void {
