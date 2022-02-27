@@ -4,7 +4,7 @@ import { StrokeRectangle } from './stroke-rectangle';
 import { TypeStyle } from '../../interfaces-enums/type-style';
 
 
-export function drawStrokeRectangle(stroke: StrokeRectangle, ctx: CanvasRenderingContext2D): void {
+export let drawStrokeRectangle = (stroke: StrokeRectangle, ctx: CanvasRenderingContext2D): void => {
    ctx.lineWidth = stroke.strokeWidth;
    ctx.beginPath();
    ctx.rect(stroke.topLeftCorner.x, stroke.topLeftCorner.y, stroke.width, stroke.height);
@@ -22,7 +22,7 @@ export function drawStrokeRectangle(stroke: StrokeRectangle, ctx: CanvasRenderin
    ctx.stroke();
 }
 
-export function drawStrokeEllipse(stroke: StrokeEllipse, ctx: CanvasRenderingContext2D): void {
+export let drawStrokeEllipse = (stroke: StrokeEllipse, ctx: CanvasRenderingContext2D): void => {
    ctx.lineWidth = stroke.strokeWidth;
    ctx.beginPath();
    ctx.ellipse(stroke.center.x, stroke.center.y, stroke.radius.x, stroke.radius.y, 0, 2 * Math.PI, 0);
@@ -41,7 +41,7 @@ export function drawStrokeEllipse(stroke: StrokeEllipse, ctx: CanvasRenderingCon
    ctx.stroke();
 }
 
-export function drawStrokePencil(stroke: StrokePencil, ctx: CanvasRenderingContext2D): void {
+export let drawStrokePencil = (stroke: StrokePencil, ctx: CanvasRenderingContext2D): void => {
    ctx.beginPath();
    if (stroke.isPoint) {
       ctx.arc(stroke.points[0].x, stroke.points[0].y, stroke.strokeWidth, 0, 2 * Math.PI, true);
