@@ -20,13 +20,19 @@ export class CollaborationService {
 
         this.socket.on('receiveStroke', (stroke: Stroke) => {
             if (stroke.sender !== this.socket.id) {
-                console.log('Stroke received');
-                if (stroke.toolType === 'rectangle') {
-                    this.drawRectangle(stroke as StrokeRectangle, this.drawingService.baseCtx);
-                } else if (stroke.toolType === 'ellipse') {
-                    this.drawEllipse(stroke as StrokeEllipse, this.drawingService.baseCtx);
-                } else if (stroke.toolType === 'pencil') {
-                    this.drawLine(stroke as StrokePencil, this.drawingService.baseCtx);
+                switch (stroke.toolType) {
+                    case 'rectangle': {
+                        this.drawRectangle(stroke as StrokeRectangle, this.drawingService.baseCtx);
+                        break;
+                    }
+                    case 'ellipse': {
+                        this.drawEllipse(stroke as StrokeEllipse, this.drawingService.baseCtx);
+                        break;
+                    }
+                    case 'pencil': {
+                        this.drawPencilStroke(stroke as StrokePencil, this.drawingService.baseCtx);
+                        break;
+                    }
                 }
             }
         });
@@ -74,13 +80,19 @@ export class CollaborationService {
         ctx.stroke();
     }
 
-    private drawLine(stroke: StrokePencil, ctx: CanvasRenderingContext2D): void {
+    private drawPencilStroke(stroke: StrokePencil, ctx: CanvasRenderingContext2D): void {
         ctx.beginPath();
-        for (const point of stroke.points) {
-            ctx.lineTo(point.x, point.y);
-            ctx.lineWidth = stroke.strokeWidth;
+        if (stroke.isPoint) {
+            ctx.arc(stroke.points[0].x, stroke.points[0].y, stroke.strokeWidth, 0, 2 * Math.PI, true);
+            ctx.fillStyle = stroke.primaryColor;
+            ctx.fill();
+        } else {
+            for (const point of stroke.points) {
+                ctx.lineTo(point.x, point.y);
+                ctx.lineWidth = stroke.strokeWidth;
+            }
+            ctx.strokeStyle = stroke.primaryColor;
+            ctx.stroke();
         }
-        ctx.strokeStyle = stroke.primaryColor;
-        ctx.stroke();
     }
 }

@@ -38,7 +38,7 @@ export class PencilService extends Tool {
             this.drawLine(this.drawingService.baseCtx, this.pathData);
             this.color = this.colorManager.selectedColor[ColorOrder.PrimaryColor].inString;
 
-            this.broadcastLine();
+            this.broadcastPencil(false);
         }
 
         this.mouseDown = false;
@@ -62,6 +62,7 @@ export class PencilService extends Tool {
             this.mouseDownCoord = this.getPositionFromMouse(event);
             this.pathData.push(this.mouseDownCoord);
             this.drawPoint(this.drawingService.baseCtx, this.pathData);
+            this.broadcastPencil(true);
         }
         this.mouseMove = false;
     }
@@ -89,8 +90,8 @@ export class PencilService extends Tool {
         this.pathData = [];
     }
 
-    private broadcastLine(): void {
-        const pencilStroke = new StrokePencil(this.color, this.pencilThickness, this.pathData);
+    private broadcastPencil(isPoint: boolean): void {
+        const pencilStroke = new StrokePencil(this.color, this.pencilThickness, this.pathData, isPoint);
         this.collaborationService.broadcastStroke(pencilStroke);
     }
 }
