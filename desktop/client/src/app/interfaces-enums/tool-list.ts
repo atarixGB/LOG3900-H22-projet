@@ -5,5 +5,4 @@ export enum ToolList {
     Ellipse = 4,
     Polygon = 6,
     SelectionRectangle = 8,
-    PaintBucket = 10,
 }

@@ -7,7 +7,6 @@ import { EraserService } from './eraser/eraser.service';
 import { PencilService } from './pencil/pencil.service';
 import { PolygonService } from './polygon/polygon.service';
 import { RectangleService } from './rectangle/rectangle.service';
-import { PaintBucketService } from './paint-bucket/paint-bucket.service';
 
 @Injectable({
     providedIn: 'root',
@@ -25,7 +24,6 @@ export class ToolManagerService {
         private ellipseService: EllipseService,
         private rectangleService: RectangleService,
         private polygonService: PolygonService,
-        private paintBucketService: PaintBucketService,
 
     ) {
         this.currentTool = this.pencilService;
@@ -38,8 +36,7 @@ export class ToolManagerService {
             .set(ToolList.Rectangle, this.rectangleService)
             .set(ToolList.Polygon, this.polygonService)
             .set(ToolList.Eraser, this.eraserService)
-            .set(ToolList.PaintBucket, this.paintBucketService)
-            // .set(ToolList.SelectionRectangle, this.selectionService)
+        // .set(ToolList.SelectionRectangle, this.selectionService)
 
         this.keyBindings = new Map<string, Tool>();
         this.keyBindings
@@ -48,7 +45,6 @@ export class ToolManagerService {
             .set('2', this.ellipseService)
             .set('e', this.eraserService)
             .set('3', this.polygonService)
-            .set('b', this.paintBucketService)
     }
 
     private getEnumFromMap(map: Map<ToolList, Tool>, searchValue: Tool | undefined): ToolList | undefined {

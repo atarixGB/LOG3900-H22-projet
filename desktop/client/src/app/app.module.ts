@@ -38,7 +38,6 @@ import { SaveDrawingModalComponent } from './components/editor/save-drawing-moda
 import { EllipseConfigComponent } from './components/editor/sidebar/ellipse-config/ellipse-config.component';
 import { EraserConfigComponent } from './components/editor/sidebar/eraser-config/eraser-config.component';
 import { FileMenuComponent } from './components/editor/sidebar/file-menu/file-menu.component';
-import { PaintConfigComponent } from './components/editor/sidebar/paint-config/paint-config.component';
 import { PencilConfigComponent } from './components/editor/sidebar/pencil-config/pencil-config.component';
 import { PolygonConfigComponent } from './components/editor/sidebar/polygon-config/polygon-config.component';
 import { RectangleConfigComponent } from './components/editor/sidebar/rectangle-config/rectangle-config.component';
@@ -69,7 +68,6 @@ import { SignUpComponent } from './components/sign-up/sign-up.component';
         ExportModalComponent,
         PolygonConfigComponent,
         SaveDrawingModalComponent,
-        PaintConfigComponent,
         LoginComponent,
         ChatMenuComponent,
         MenuComponent,
@@ -113,4 +111,4 @@ import { SignUpComponent } from './components/sign-up/sign-up.component';
     providers: [],
     bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }
