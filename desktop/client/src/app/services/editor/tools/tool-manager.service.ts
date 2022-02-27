@@ -6,6 +6,7 @@ import { EllipseService } from './ellipse/ellipse.service';
 import { EraserService } from './eraser/eraser.service';
 import { PencilService } from './pencil/pencil.service';
 import { RectangleService } from './rectangle/rectangle.service';
+import { SelectionService } from './selection/selection.service';
 
 @Injectable({
     providedIn: 'root',
@@ -22,6 +23,7 @@ export class ToolManagerService {
         private eraserService: EraserService,
         private ellipseService: EllipseService,
         private rectangleService: RectangleService,
+        private selectionService: SelectionService,
 
     ) {
         this.currentTool = this.pencilService;
@@ -33,7 +35,7 @@ export class ToolManagerService {
             .set(ToolList.Ellipse, this.ellipseService)
             .set(ToolList.Rectangle, this.rectangleService)
             .set(ToolList.Eraser, this.eraserService)
-        // .set(ToolList.SelectionRectangle, this.selectionService)
+            .set(ToolList.Selection, this.selectionService)
 
         this.keyBindings = new Map<string, Tool>();
         this.keyBindings

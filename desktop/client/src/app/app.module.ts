@@ -48,6 +48,7 @@ import { SideMenuComponent } from './components/menu/side-menu/side-menu.compone
 import { ProfileSettingsComponent } from './components/profile/profile-settings/profile-settings.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { SignUpComponent } from './components/sign-up/sign-up.component';
+import { SelectionConfigComponent } from './components/editor/sidebar/selection-config/selection-config.component';
 
 @NgModule({
     declarations: [
@@ -76,6 +77,7 @@ import { SignUpComponent } from './components/sign-up/sign-up.component';
         ChatroomComponent,
         ProfileComponent,
         ProfileSettingsComponent,
+        SelectionConfigComponent,
     ],
     imports: [
         BrowserModule,
