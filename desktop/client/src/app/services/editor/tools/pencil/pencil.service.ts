@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { StrokePencil } from '@app/classes/stroke-pencil';
+import { StrokePencil } from '@app/classes/strokes/stroke-pencil';
 import { Tool } from '@app/classes/tool';
 import { Vec2 } from '@app/classes/vec2';
 import { DEFAULT_LINE_THICKNESS, MouseButton } from '@app/constants/constants';

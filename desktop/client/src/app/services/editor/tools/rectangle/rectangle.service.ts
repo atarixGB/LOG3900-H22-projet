@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { StrokeRectangle } from '@app/classes/stroke-rectangle';
+import { StrokeRectangle } from '@app/classes/strokes/stroke-rectangle';
 import { Vec2 } from '@app/classes/vec2';
 import { CollaborationService } from '@app/services/collaboration/collaboration.service';
 import { ColorManagerService } from '@app/services/editor/color-manager/color-manager.service';

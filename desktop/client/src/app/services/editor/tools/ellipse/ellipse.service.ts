@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { StrokeEllipse } from '@app/classes/stroke-ellipse';
+import { StrokeEllipse } from '@app/classes/strokes/stroke-ellipse';
 import { CollaborationService } from '@app/services/collaboration/collaboration.service';
 import { ColorManagerService } from '@app/services/editor/color-manager/color-manager.service';
 import { DrawingService } from '@app/services/editor/drawing/drawing.service';

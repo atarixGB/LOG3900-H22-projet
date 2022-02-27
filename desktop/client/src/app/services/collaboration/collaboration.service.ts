@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Stroke } from '@app/classes/stroke';
-import { StrokeEllipse } from '@app/classes/stroke-ellipse';
-import { StrokePencil } from '@app/classes/stroke-pencil';
-import { StrokeRectangle } from '@app/classes/stroke-rectangle';
-import { TypeStyle } from '@app/interfaces-enums/type-style';
+import * as strokeDrawer from '@app/classes/strokes/stroke-drawer';
+import { StrokeEllipse } from '@app/classes/strokes/stroke-ellipse';
+import { StrokePencil } from '@app/classes/strokes/stroke-pencil';
+import { StrokeRectangle } from '@app/classes/strokes/stroke-rectangle';
 import { DrawingService } from '@app/services/editor/drawing/drawing.service';
 import * as io from 'socket.io-client';
 
@@ -18,19 +17,19 @@ export class CollaborationService {
     enterCollaboration(): void {
         this.socket = io.io('http://localhost:3002/', { transports: ['websocket'] });
 
-        this.socket.on('receiveStroke', (stroke: Stroke) => {
+        this.socket.on('receiveStroke', (stroke: any) => {
             if (stroke.sender !== this.socket.id) {
                 switch (stroke.toolType) {
                     case 'rectangle': {
-                        this.drawRectangle(stroke as StrokeRectangle, this.drawingService.baseCtx);
+                        strokeDrawer.drawStrokeRectangle(stroke as StrokeRectangle, this.drawingService.baseCtx);
                         break;
                     }
                     case 'ellipse': {
-                        this.drawEllipse(stroke as StrokeEllipse, this.drawingService.baseCtx);
+                        strokeDrawer.drawStrokeEllipse(stroke as StrokeEllipse, this.drawingService.baseCtx);
                         break;
                     }
                     case 'pencil': {
-                        this.drawPencilStroke(stroke as StrokePencil, this.drawingService.baseCtx);
+                        strokeDrawer.drawStrokePencil(stroke as StrokePencil, this.drawingService.baseCtx);
                         break;
                     }
                 }
@@ -38,61 +37,8 @@ export class CollaborationService {
         });
     }
 
-    broadcastStroke(stroke: Stroke): void {
+    broadcastStroke(stroke: any): void {
         stroke.sender = this.socket.id;
         this.socket.emit('broadcastStroke', stroke);
-    }
-
-    private drawRectangle(stroke: StrokeRectangle, ctx: CanvasRenderingContext2D): void {
-        ctx.lineWidth = stroke.strokeWidth;
-        ctx.beginPath();
-        ctx.rect(stroke.topLeftCorner.x, stroke.topLeftCorner.y, stroke.width, stroke.height);
-        if (stroke.shapeType === TypeStyle.Stroke) {
-            ctx.strokeStyle = stroke.secondaryColor;
-            ctx.fillStyle = 'rgba(255, 0, 0, 0)';
-        } else if (stroke.shapeType === TypeStyle.Fill) {
-            ctx.strokeStyle = 'rgba(255, 0, 0, 0)';
-            ctx.fillStyle = stroke.primaryColor;
-        } else {
-            ctx.strokeStyle = stroke.secondaryColor;
-            ctx.fillStyle = stroke.primaryColor;
-        }
-        ctx.fill();
-        ctx.stroke();
-    }
-
-    private drawEllipse(stroke: StrokeEllipse, ctx: CanvasRenderingContext2D): void {
-        ctx.lineWidth = stroke.strokeWidth;
-        ctx.beginPath();
-        ctx.ellipse(stroke.center.x, stroke.center.y, stroke.radius.x, stroke.radius.y, 0, 2 * Math.PI, 0);
-
-        if (stroke.shapeType === TypeStyle.Stroke) {
-            ctx.strokeStyle = stroke.secondaryColor;
-            ctx.fillStyle = 'rgba(255, 0, 0, 0)';
-        } else if (stroke.shapeType === TypeStyle.Fill) {
-            ctx.strokeStyle = 'rgba(255, 0, 0, 0)';
-            ctx.fillStyle = stroke.primaryColor;
-        } else {
-            ctx.strokeStyle = stroke.secondaryColor;
-            ctx.fillStyle = stroke.primaryColor;
-        }
-        ctx.fill();
-        ctx.stroke();
-    }
-
-    private drawPencilStroke(stroke: StrokePencil, ctx: CanvasRenderingContext2D): void {
-        ctx.beginPath();
-        if (stroke.isPoint) {
-            ctx.arc(stroke.points[0].x, stroke.points[0].y, stroke.strokeWidth, 0, 2 * Math.PI, true);
-            ctx.fillStyle = stroke.primaryColor;
-            ctx.fill();
-        } else {
-            for (const point of stroke.points) {
-                ctx.lineTo(point.x, point.y);
-                ctx.lineWidth = stroke.strokeWidth;
-            }
-            ctx.strokeStyle = stroke.primaryColor;
-            ctx.stroke();
-        }
     }
 }

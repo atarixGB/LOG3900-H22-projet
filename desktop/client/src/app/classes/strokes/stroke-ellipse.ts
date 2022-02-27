@@ -1,5 +1,5 @@
+import { Vec2 } from '@app/classes/vec2';
 import { Stroke } from './stroke';
-import { Vec2 } from './vec2';
 
 export class StrokeEllipse extends Stroke {
    secondaryColor: string;
