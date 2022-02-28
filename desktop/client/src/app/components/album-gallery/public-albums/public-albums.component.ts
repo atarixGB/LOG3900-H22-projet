@@ -9,8 +9,11 @@ import { LoginService } from '@app/services/login/login.service';
   styleUrls: ['./public-albums.component.scss']
 })
 export class PublicAlbumsComponent implements OnInit {
+  isOpened: boolean;
 
-  constructor(public albumGalleryService: AlbumGalleryService, public loginService: LoginService) { }
+  constructor(public albumGalleryService: AlbumGalleryService, public loginService: LoginService) {
+    this.isOpened = false;
+  }
 
   ngOnInit(): void {
     this.albumGalleryService.fetchAllAlbumsFromDatabase();
@@ -18,10 +21,15 @@ export class PublicAlbumsComponent implements OnInit {
 
   onAlbumClick(album: IAlbum): void {
     console.log(album.name);
+    this.isOpened = true;
 
     if (album != null) {
-      this.albumGalleryService.fetchDrawingsFromSelectedAlbum(album);
+      this.albumGalleryService.currentAlbum = album;
     }
+  }
+
+  onChangePageButtonClick(value: boolean): void {
+    this.isOpened = value;
   }
 
   ngOnDestroy(): void {

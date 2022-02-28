@@ -26,7 +26,6 @@ export class AlbumGalleryService {
       drawingIds: [],
       members: [this.loginService.username],
       isPrivate: isPrivate,
-      isMine: true
     }
 
     this.httpClient.post(ALBUM_URL, newAlbum).subscribe(
@@ -85,7 +84,7 @@ export class AlbumGalleryService {
   }
 
   fetchDrawingsFromSelectedAlbum(album: IAlbum): void {
-    console.log("Fetching drawings from album with id: " + album._id);
+    // console.log("Fetching drawings from album with id: " + album._id);
     console.log(album);
 
     // TODO: fetch album's drawings from db

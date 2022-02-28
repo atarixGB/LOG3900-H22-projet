@@ -30,7 +30,6 @@ export class AlbumGalleryComponent implements OnInit {
 
     if(album != null) {
       this.albumGalleryService.currentAlbum = album;
-      this.albumGalleryService.fetchDrawingsFromSelectedAlbum(album);
     }
   }
 
