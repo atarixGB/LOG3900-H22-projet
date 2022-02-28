@@ -30,6 +30,7 @@ abstract class Tool(context: Context, extraCanvas: Canvas) {
     abstract fun touchMove()
 
     fun touchstart(){
+        path.reset()
         path.moveTo(motionTouchEventX, motionTouchEventY)
         currentX = motionTouchEventX
         currentY = motionTouchEventY

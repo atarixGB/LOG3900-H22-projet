@@ -2737,7 +2737,6 @@ id avatar7
 id avatar8
 id avatar9
 id avatar_selector
-id backButton
 id back_btn
 id barrier
 id baseline
@@ -2768,7 +2767,6 @@ id center_vertical
 id chain
 id chain2
 id chains
-id chatButton
 id chatRooms_btn
 id chatViewOptions
 id checkbox
@@ -2779,7 +2777,6 @@ id chip2
 id chip3
 id chip_group
 id chronometer
-id circleButton
 id circle_center
 id clear_text
 id clip_horizontal
@@ -2857,7 +2854,6 @@ id end
 id endToStart
 id enterAlways
 id enterAlwaysCollapsed
-id eraserButton
 id exitUntilCollapsed
 id expand_activities_button
 id expanded_menu
@@ -3028,7 +3024,6 @@ id password_toggle
 id path
 id pathRelative
 id peekHeight
-id pencilButton
 id percent
 id pin
 id popupTitle
@@ -3039,7 +3034,6 @@ id progress_circular
 id progress_horizontal
 id radio
 id ratio
-id rectangleButton
 id rectangles
 id reverseSawtooth
 id right
@@ -3052,7 +3046,6 @@ id rounded
 id row_index_key
 id rvOutputMsgs
 id rvOutputRooms
-id saveButton
 id save_non_transition_alpha
 id save_overlay_view
 id sawtooth
@@ -3410,6 +3403,7 @@ layout text_view_with_line_height_from_layout
 layout text_view_with_line_height_from_style
 layout text_view_with_theme_line_height
 layout text_view_without_line_height
+layout tool_list
 layout tools_weight_list
 layout userjoined
 menu chatpage_options_menu

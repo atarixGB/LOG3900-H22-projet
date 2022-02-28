@@ -36,7 +36,6 @@ class DrawingZoneFragment : Fragment() {
     class MyCanvasView(context: Context) : View(context) {
 
         // Holds the path you are currently drawing.
-        private var path = Path()
         private val drawColor = ResourcesCompat.getColor(resources, R.color.black, null)
         private val backgroundColor = ResourcesCompat.getColor(resources, R.color.white, null)
         private lateinit var extraCanvas: Canvas
@@ -127,7 +126,6 @@ class DrawingZoneFragment : Fragment() {
          * No need to call invalidate because we are not drawing anything.
          */
         private fun touchStart() {
-            path.reset()
             currentTool.touchstart()
         }
 

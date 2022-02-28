@@ -300,6 +300,10 @@
         "source": "C:\\Users\\Mio\\Desktop\\log3900-203\\mobile\\app\\src\\main\\res\\layout\\activity_dashboard.xml"
     },
     {
+        "merged": "C:\\Users\\Mio\\Desktop\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\layout_tool_list.xml.flat",
+        "source": "C:\\Users\\Mio\\Desktop\\log3900-203\\mobile\\app\\src\\main\\res\\layout\\tool_list.xml"
+    },
+    {
         "merged": "C:\\Users\\Mio\\Desktop\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ic_baseline_search_24.xml.flat",
         "source": "C:\\Users\\Mio\\Desktop\\log3900-203\\mobile\\app\\src\\main\\res\\drawable\\ic_baseline_search_24.xml"
     },
