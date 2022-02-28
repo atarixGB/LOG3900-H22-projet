@@ -16,4 +16,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <GridView
+        android:id="@+id/my_grid_view"
+        android:layout_width="300dp"
+        android:layout_height="match_parent"
+        android:layout_marginTop="24dp"
+        android:horizontalSpacing="10dp"
+        android:numColumns="3"
+        android:verticalSpacing="0dp"
+        android:columnWidth="90dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView"></GridView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

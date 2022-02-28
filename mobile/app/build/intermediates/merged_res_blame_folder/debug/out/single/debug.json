@@ -8,6 +8,10 @@
         "source": "C:\\Users\\Mio\\Desktop\\log3900-203\\mobile\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher_round.png"
     },
     {
+        "merged": "C:\\Users\\Mio\\Desktop\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\drawable_circle24.xml.flat",
+        "source": "C:\\Users\\Mio\\Desktop\\log3900-203\\mobile\\app\\src\\main\\res\\drawable\\circle24.xml"
+    },
+    {
         "merged": "C:\\Users\\Mio\\Desktop\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-hdpi_ic_launcher_foreground.png.flat",
         "source": "C:\\Users\\Mio\\Desktop\\log3900-203\\mobile\\app\\src\\main\\res\\mipmap-hdpi\\ic_launcher_foreground.png"
     },
@@ -26,6 +30,10 @@
     {
         "merged": "C:\\Users\\Mio\\Desktop\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\drawable_statistic.PNG.flat",
         "source": "C:\\Users\\Mio\\Desktop\\log3900-203\\mobile\\app\\src\\main\\res\\drawable\\statistic.PNG"
+    },
+    {
+        "merged": "C:\\Users\\Mio\\Desktop\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\drawable_circle20.xml.flat",
+        "source": "C:\\Users\\Mio\\Desktop\\log3900-203\\mobile\\app\\src\\main\\res\\drawable\\circle20.xml"
     },
     {
         "merged": "C:\\Users\\Mio\\Desktop\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\drawable_monster3.png.flat",
@@ -50,6 +58,10 @@
     {
         "merged": "C:\\Users\\Mio\\Desktop\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-anydpi-v26_ic_launcher_round.xml.flat",
         "source": "C:\\Users\\Mio\\Desktop\\log3900-203\\mobile\\app\\src\\main\\res\\mipmap-anydpi-v26\\ic_launcher_round.xml"
+    },
+    {
+        "merged": "C:\\Users\\Mio\\Desktop\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\drawable_large_dot.png.flat",
+        "source": "C:\\Users\\Mio\\Desktop\\log3900-203\\mobile\\app\\src\\main\\res\\drawable\\large_dot.png"
     },
     {
         "merged": "C:\\Users\\Mio\\Desktop\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\drawable_monster7.png.flat",
@@ -112,6 +124,10 @@
         "source": "C:\\Users\\Mio\\Desktop\\log3900-203\\mobile\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher.png"
     },
     {
+        "merged": "C:\\Users\\Mio\\Desktop\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\drawable_circle4.xml.flat",
+        "source": "C:\\Users\\Mio\\Desktop\\log3900-203\\mobile\\app\\src\\main\\res\\drawable\\circle4.xml"
+    },
+    {
         "merged": "C:\\Users\\Mio\\Desktop\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxhdpi_ic_launcher.png.flat",
         "source": "C:\\Users\\Mio\\Desktop\\log3900-203\\mobile\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher.png"
     },
@@ -144,6 +160,10 @@
         "source": "C:\\Users\\Mio\\Desktop\\log3900-203\\mobile\\app\\src\\main\\res\\drawable\\ic_baseline_launch_24.xml"
     },
     {
+        "merged": "C:\\Users\\Mio\\Desktop\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\drawable_circle8.xml.flat",
+        "source": "C:\\Users\\Mio\\Desktop\\log3900-203\\mobile\\app\\src\\main\\res\\drawable\\circle8.xml"
+    },
+    {
         "merged": "C:\\Users\\Mio\\Desktop\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\drawable_monster1.png.flat",
         "source": "C:\\Users\\Mio\\Desktop\\log3900-203\\mobile\\app\\src\\main\\res\\drawable\\monster1.png"
     },
@@ -154,6 +174,10 @@
     {
         "merged": "C:\\Users\\Mio\\Desktop\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\drawable_pencilp.png.flat",
         "source": "C:\\Users\\Mio\\Desktop\\log3900-203\\mobile\\app\\src\\main\\res\\drawable\\pencilp.png"
+    },
+    {
+        "merged": "C:\\Users\\Mio\\Desktop\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\drawable_circle1.xml.flat",
+        "source": "C:\\Users\\Mio\\Desktop\\log3900-203\\mobile\\app\\src\\main\\res\\drawable\\circle1.xml"
     },
     {
         "merged": "C:\\Users\\Mio\\Desktop\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\layout_activity_pick_avatar.xml.flat",
@@ -204,6 +228,10 @@
         "source": "C:\\Users\\Mio\\Desktop\\log3900-203\\mobile\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher.png"
     },
     {
+        "merged": "C:\\Users\\Mio\\Desktop\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\drawable_mid_dot.png.flat",
+        "source": "C:\\Users\\Mio\\Desktop\\log3900-203\\mobile\\app\\src\\main\\res\\drawable\\mid_dot.png"
+    },
+    {
         "merged": "C:\\Users\\Mio\\Desktop\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\layout_sentmessage.xml.flat",
         "source": "C:\\Users\\Mio\\Desktop\\log3900-203\\mobile\\app\\src\\main\\res\\layout\\sentmessage.xml"
     },
@@ -218,6 +246,10 @@
     {
         "merged": "C:\\Users\\Mio\\Desktop\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\layout_item_room.xml.flat",
         "source": "C:\\Users\\Mio\\Desktop\\log3900-203\\mobile\\app\\src\\main\\res\\layout\\item_room.xml"
+    },
+    {
+        "merged": "C:\\Users\\Mio\\Desktop\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\drawable_circle30.xml.flat",
+        "source": "C:\\Users\\Mio\\Desktop\\log3900-203\\mobile\\app\\src\\main\\res\\drawable\\circle30.xml"
     },
     {
         "merged": "C:\\Users\\Mio\\Desktop\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\layout_activity_drawing.xml.flat",
@@ -256,6 +288,14 @@
         "source": "C:\\Users\\Mio\\Desktop\\log3900-203\\mobile\\app\\src\\main\\res\\mipmap-hdpi\\ic_launcher_round.png"
     },
     {
+        "merged": "C:\\Users\\Mio\\Desktop\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\drawable_circle2.xml.flat",
+        "source": "C:\\Users\\Mio\\Desktop\\log3900-203\\mobile\\app\\src\\main\\res\\drawable\\circle2.xml"
+    },
+    {
+        "merged": "C:\\Users\\Mio\\Desktop\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\drawable_circle12.xml.flat",
+        "source": "C:\\Users\\Mio\\Desktop\\log3900-203\\mobile\\app\\src\\main\\res\\drawable\\circle12.xml"
+    },
+    {
         "merged": "C:\\Users\\Mio\\Desktop\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\layout_activity_dashboard.xml.flat",
         "source": "C:\\Users\\Mio\\Desktop\\log3900-203\\mobile\\app\\src\\main\\res\\layout\\activity_dashboard.xml"
     },
@@ -282,6 +322,10 @@
     {
         "merged": "C:\\Users\\Mio\\Desktop\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ic_baseline_waving_hand_24.xml.flat",
         "source": "C:\\Users\\Mio\\Desktop\\log3900-203\\mobile\\app\\src\\main\\res\\drawable\\ic_baseline_waving_hand_24.xml"
+    },
+    {
+        "merged": "C:\\Users\\Mio\\Desktop\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\drawable_small_dot.png.flat",
+        "source": "C:\\Users\\Mio\\Desktop\\log3900-203\\mobile\\app\\src\\main\\res\\drawable\\small_dot.png"
     },
     {
         "merged": "C:\\Users\\Mio\\Desktop\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ic_baseline_arrow_back_ios_24.xml.flat",
@@ -312,8 +356,16 @@
         "source": "C:\\Users\\Mio\\Desktop\\log3900-203\\mobile\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher_foreground.png"
     },
     {
+        "merged": "C:\\Users\\Mio\\Desktop\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\layout_tools_weight_list.xml.flat",
+        "source": "C:\\Users\\Mio\\Desktop\\log3900-203\\mobile\\app\\src\\main\\res\\layout\\tools_weight_list.xml"
+    },
+    {
         "merged": "C:\\Users\\Mio\\Desktop\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\drawable_monster6.png.flat",
         "source": "C:\\Users\\Mio\\Desktop\\log3900-203\\mobile\\app\\src\\main\\res\\drawable\\monster6.png"
+    },
+    {
+        "merged": "C:\\Users\\Mio\\Desktop\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\drawable_circle15.xml.flat",
+        "source": "C:\\Users\\Mio\\Desktop\\log3900-203\\mobile\\app\\src\\main\\res\\drawable\\circle15.xml"
     },
     {
         "merged": "C:\\Users\\Mio\\Desktop\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\layout_userjoined.xml.flat",

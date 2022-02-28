@@ -2524,6 +2524,15 @@ drawable btn_radio_on_mtrl
 drawable btn_radio_on_to_off_mtrl_animation
 drawable chat
 drawable circle
+drawable circle1
+drawable circle12
+drawable circle15
+drawable circle2
+drawable circle20
+drawable circle24
+drawable circle30
+drawable circle4
+drawable circle8
 drawable customborder
 drawable dashboard_button_box
 drawable design_fab_background
@@ -2560,6 +2569,7 @@ drawable ic_mtrl_checked_circle
 drawable ic_mtrl_chip_checked_black
 drawable ic_mtrl_chip_checked_circle
 drawable ic_mtrl_chip_close_circle
+drawable large_dot
 drawable logopolygram
 drawable logoutlogo
 drawable m3_appbar_background
@@ -2582,6 +2592,7 @@ drawable material_ic_menu_arrow_down_black_24dp
 drawable material_ic_menu_arrow_up_black_24dp
 drawable message_input_box
 drawable met_ic_clear
+drawable mid_dot
 drawable monster1
 drawable monster2
 drawable monster3
@@ -2619,6 +2630,7 @@ drawable pencilp
 drawable placeholder_logo
 drawable rectangle
 drawable save
+drawable small_dot
 drawable statistic
 drawable test_custom_background
 drawable test_level_drawable
@@ -2881,6 +2893,7 @@ id horizontal
 id horizontal_only
 id icon
 id icon_group
+id icons
 id ifRoom
 id ignore
 id ignoreRequest
@@ -2978,6 +2991,7 @@ id mtrl_picker_text_input_range_start
 id mtrl_picker_title_text
 id mtrl_view_tag_bottom_padding
 id multiply
+id my_grid_view
 id navigation_bar_item_active_indicator_view
 id navigation_bar_item_icon_container
 id navigation_bar_item_icon_view
@@ -3396,6 +3410,7 @@ layout text_view_with_line_height_from_layout
 layout text_view_with_line_height_from_style
 layout text_view_with_theme_line_height
 layout text_view_without_line_height
+layout tools_weight_list
 layout userjoined
 menu chatpage_options_menu
 menu example_menu
