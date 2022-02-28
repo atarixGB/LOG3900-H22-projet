@@ -47,7 +47,7 @@ class CustomToolFragment : Fragment(), AdapterView.OnItemClickListener {
     }
 
     override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-       val weightItem:ToolWeightItem = arrayList!!.get(position)
+        val weightItem:ToolWeightItem = arrayList!!.get(position)
         viewModel.changeWeight(weightItem.size!!)
     }
 
