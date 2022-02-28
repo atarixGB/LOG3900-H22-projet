@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
 import { StrokeEllipse } from '@app/classes/strokes/stroke-ellipse';
+import { Vec2 } from '@app/classes/vec2';
 import { CollaborationService } from '@app/services/collaboration/collaboration.service';
 import { ColorManagerService } from '@app/services/editor/color-manager/color-manager.service';
 import { DrawingService } from '@app/services/editor/drawing/drawing.service';
 import { RectangleService } from '@app/services/editor/tools/rectangle/rectangle.service';
+import { SelectionService } from '@app/services/editor/tools/selection/selection.service';
 import { ShapeService } from '@app/services/editor/tools/shape/shape.service';
 @Injectable({
     providedIn: 'root',
@@ -17,6 +19,7 @@ export class EllipseService extends ShapeService {
         private rectangle: RectangleService,
         colorManager: ColorManagerService,
         private collaborationService: CollaborationService,
+        private selectionService: SelectionService,
     ) {
         super(drawingService, colorManager);
     }
@@ -58,7 +61,7 @@ export class EllipseService extends ShapeService {
             this.width = this.size.x / 2;
             this.height = this.size.y / 2;
 
-            this.broadcastEllipse();
+            this.sendEllipseStroke();
         } else {
             this.drawCircle(this.drawingService.baseCtx);
             this.width = this.radius;
@@ -110,8 +113,9 @@ export class EllipseService extends ShapeService {
         }
     }
 
-    private broadcastEllipse(): void {
+    private sendEllipseStroke(): void {
         const ellipseStroke = new StrokeEllipse(
+            this.getBoundingPoints(),
             this.colorPrime,
             this.lineWidth,
             this.colorSecond,
@@ -120,5 +124,12 @@ export class EllipseService extends ShapeService {
             this.selectType,
         );
         this.collaborationService.broadcastStroke(ellipseStroke);
+        this.selectionService.addStroke(ellipseStroke);
+    }
+
+    private getBoundingPoints(): Vec2[] {
+        const topLeft = { x: this.origin.x - this.size.x / 2, y: this.origin.y - this.size.y / 2 };
+        const bottomRight = { x: this.origin.x + this.size.x / 2, y: this.origin.y + this.size.y / 2 };
+        return [topLeft, bottomRight];
     }
 }
