@@ -15,4 +15,6 @@ export abstract class Stroke {
     }
 
     drawStroke(ctx: CanvasRenderingContext2D): void { }
+
+    prepForSelection(): void {}
 }

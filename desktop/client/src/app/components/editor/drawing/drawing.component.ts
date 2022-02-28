@@ -10,6 +10,7 @@ import { DrawingService } from '@app/services/editor/drawing/drawing.service';
 import { ExportService } from '@app/services/editor/export-image/export.service';
 import { KeyHandlerService } from '@app/services/editor/key-handler/key-handler.service';
 import { NewDrawingService } from '@app/services/editor/new-drawing/new-drawing.service';
+import { SelectionService } from '@app/services/editor/tools/selection/selection.service';
 import { ToolManagerService } from '@app/services/editor/tools/tool-manager.service';
 import { DrawingData } from '@common/communication/drawing-data';
 import { Subscription } from 'rxjs';
@@ -28,6 +29,7 @@ export class DrawingComponent implements AfterViewInit, OnDestroy, OnChanges {
     @ViewChild('previewCanvas', { static: false }) private previewCanvas: ElementRef<HTMLCanvasElement>;
     @ViewChild('cursorCanvas', { static: false }) private cursorCanvas: ElementRef<HTMLCanvasElement>;
     @ViewChild('workingArea', { static: false }) private workingArea: ElementRef<HTMLDivElement>;
+    @ViewChild('canvasContainer', { static: false }) private canvasContainer: ElementRef<HTMLDivElement>;
 
     dragPosition: Vec2;
     canvasSize: Vec2;
@@ -49,6 +51,7 @@ export class DrawingComponent implements AfterViewInit, OnDestroy, OnChanges {
         private newDrawingService: NewDrawingService,
         private autoSaveService: AutoSaveService,
         private keyHandlerService: KeyHandlerService,
+        private selectionService: SelectionService,
     ) {
         this.dragPosition = { x: 0, y: 0 };
         this.canvasSize = { x: MIN_SIZE, y: MIN_SIZE };
@@ -102,6 +105,7 @@ export class DrawingComponent implements AfterViewInit, OnDestroy, OnChanges {
         });
 
         this.whiteBackgroundCanvas();
+        this.selectionService.containerDiv = this.canvasContainer.nativeElement;
     }
 
     ngOnChanges(): void {

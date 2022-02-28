@@ -16,4 +16,11 @@ export class StrokePencil extends Stroke {
    drawStroke(ctx: CanvasRenderingContext2D): void {
       drawStrokePencil(this, ctx);
    }
+
+   prepForSelection(): void {
+      for (let i = 0; i < this.points.length; i++) {
+         this.points[i].x = this.points[i].x - this.boundingPoints[0].x;
+         this.points[i].y = this.points[i].y - this.boundingPoints[0].y;
+      }
+  }
 }

@@ -11,6 +11,10 @@ export class SelectionService extends Tool {
   strokes: Stroke[];
   selectedStroke: Stroke;
 
+  containerDiv: HTMLElement;
+  selectionCnv: HTMLCanvasElement;
+  selectionCtx: CanvasRenderingContext2D;
+
   constructor(drawingService: DrawingService) {
     super(drawingService);
     this.strokes = [];
@@ -22,7 +26,7 @@ export class SelectionService extends Tool {
 
   onMouseClick(event: MouseEvent): void {
     if (this.setSelectedStroke(this.getPositionFromMouse(event))) {
-      console.log('Stroke selected: ', this.selectedStroke);
+      this.previewSelection();
 
     } else {
       console.log('no stroke in bounds');
@@ -48,5 +52,35 @@ export class SelectionService extends Tool {
       pointToCheck.y >= topLeftBound.y &&
       pointToCheck.y <= bottomRightBound.y
     );
+  }
+
+  private previewSelection(): void {
+    this.createSelectionCanvas();
+    this.positionSelectionCanvas();
+    this.pasteStrokeOnSelectionCnv();
+  }
+
+  private createSelectionCanvas(): void {
+    const width = this.selectedStroke.boundingPoints[1].x - this.selectedStroke.boundingPoints[0].x;
+    const height = this.selectedStroke.boundingPoints[1].y - this.selectedStroke.boundingPoints[0].y;
+    this.selectionCnv = document.createElement('canvas');
+    this.selectionCnv.id = 'selectionCnv';
+    this.containerDiv.appendChild(this.selectionCnv);
+    this.selectionCnv.style.position = 'relative';
+    this.selectionCnv.style.zIndex = '10'; // Arbitrary value to send it to front
+    this.selectionCnv.width = width;
+    this.selectionCnv.height = height;
+    this.selectionCtx = this.selectionCnv.getContext('2d') as CanvasRenderingContext2D;
+    this.selectionCnv.style.border = '2px solid blue';
+  }
+
+  private positionSelectionCanvas(): void {
+    this.selectionCnv.style.top = this.selectedStroke.boundingPoints[0].y.toString() + 'px';
+    this.selectionCnv.style.left = this.selectedStroke.boundingPoints[0].x.toString() +   'px';
+  }
+  
+  private pasteStrokeOnSelectionCnv(): void {
+    this.selectedStroke.prepForSelection();
+    this.selectedStroke.drawStroke(this.selectionCtx);
   }
 }

@@ -19,4 +19,8 @@ export class StrokeEllipse extends Stroke {
    drawStroke(ctx: CanvasRenderingContext2D): void {
       drawStrokeEllipse(this, ctx);
    }
+
+   prepForSelection(): void {
+      this.center = { x: this.center.x - this.boundingPoints[0].x, y: this.center.y - this.boundingPoints[0].y }
+  }
 }

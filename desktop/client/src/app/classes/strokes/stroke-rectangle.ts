@@ -30,4 +30,8 @@ export class StrokeRectangle extends Stroke {
     drawStroke(ctx: CanvasRenderingContext2D): void {
         drawStrokeRectangle(this, ctx);
     }
+
+    prepForSelection(): void {
+        this.topLeftCorner = {x: 0, y: 0};
+    }
 }
