@@ -124,7 +124,7 @@ export class RectangleService extends ShapeService {
             this.selectType,
         );
         this.collaborationService.broadcastStroke(rectStroke);
-        this.selectionService.addStroke(rectStroke);
+        this.selectionService.selectStroke(rectStroke);
     }
 
     private getBoundingPoints(): Vec2[] {

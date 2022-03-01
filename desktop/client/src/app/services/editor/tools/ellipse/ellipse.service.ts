@@ -124,7 +124,7 @@ export class EllipseService extends ShapeService {
             this.selectType,
         );
         this.collaborationService.broadcastStroke(ellipseStroke);
-        this.selectionService.addStroke(ellipseStroke);
+        this.selectionService.selectStroke(ellipseStroke);
     }
 
     private getBoundingPoints(): Vec2[] {

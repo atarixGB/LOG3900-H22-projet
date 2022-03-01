@@ -1,4 +1,5 @@
 import { Vec2 } from '@app/classes/vec2';
+import { ToolList } from '@app/interfaces-enums/tool-list';
 import { TypeStyle } from '@app/interfaces-enums/type-style';
 import { Stroke } from './stroke';
 
@@ -19,7 +20,7 @@ export class StrokeRectangle extends Stroke {
         height: number,
         shapeType: TypeStyle,
     ) {
-        super('rectangle', boundingPoints, color, strokeWidth);
+        super(ToolList.Rectangle, boundingPoints, color, strokeWidth);
         this.secondaryColor = secondaryColor;
         this.topLeftCorner = topLeftCorner;
         this.width = width;

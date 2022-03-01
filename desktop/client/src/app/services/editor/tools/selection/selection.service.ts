@@ -32,10 +32,15 @@ export class SelectionService extends Tool {
     this.strokes.push(stroke);
   }
 
+  selectStroke(stroke: Stroke): void {
+    this.isActiveSelection = true;
+    this.selectedStroke = stroke;
+    this.previewSelection();
+  }
+
   onMouseClick(event: MouseEvent): void {
-    if (!this.isActiveSelection && this.setSelectedStroke(this.getPositionFromMouse(event))) {
-      this.isActiveSelection = true;
-      this.previewSelection();
+    if (!this.isActiveSelection && this.isStrokeFound(this.getPositionFromMouse(event))) {
+      this.selectStroke(this.strokes[this.selectedIndex]);
       this.redrawAllStrokesExceptSelected();
     } else {
       console.log('no stroke in bounds');
@@ -89,10 +94,9 @@ export class SelectionService extends Tool {
     }
   }
 
-  private setSelectedStroke(clickedPos: Vec2): boolean {
+  private isStrokeFound(clickedPos: Vec2): boolean {
     for (let i = this.strokes.length - 1; i >= 0; i--) {
       if (this.isInBounds(this.strokes[i].boundingPoints, clickedPos)) {
-        this.selectedStroke = this.strokes[i];
         this.selectedIndex = i;
         return true;
       }

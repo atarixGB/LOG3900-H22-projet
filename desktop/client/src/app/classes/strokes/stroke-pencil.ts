@@ -1,4 +1,5 @@
 import { Vec2 } from '@app/classes/vec2';
+import { ToolList } from '@app/interfaces-enums/tool-list';
 import { Stroke } from './stroke';
 
 
@@ -7,7 +8,7 @@ export class StrokePencil extends Stroke {
    isPoint: boolean;
 
    constructor(boundingPoints: Vec2[], color: string, strokeWidth: number, points: Vec2[], isPoint: boolean) {
-      super('pencil', boundingPoints, color, strokeWidth);
+      super(ToolList.Pencil, boundingPoints, color, strokeWidth);
       this.points = points;
       this.isPoint = isPoint;
    }

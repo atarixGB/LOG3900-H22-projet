@@ -1,13 +1,14 @@
 import { Vec2 } from '@app/classes/vec2';
+import { ToolList } from '@app/interfaces-enums/tool-list';
 
 export abstract class Stroke {
     sender: any;
-    toolType: string;
+    toolType: ToolList;
     boundingPoints: Vec2[];
     primaryColor: string;
     strokeWidth: number;
 
-    constructor(tool: string, boundingPoints: Vec2[], color: string, width: number) {
+    constructor(tool: ToolList, boundingPoints: Vec2[], color: string, width: number) {
         this.boundingPoints = boundingPoints;
         this.toolType = tool;
         this.primaryColor = color;

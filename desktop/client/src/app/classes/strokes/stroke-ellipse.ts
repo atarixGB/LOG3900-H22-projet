@@ -1,4 +1,5 @@
 import { Vec2 } from '@app/classes/vec2';
+import { ToolList } from '@app/interfaces-enums/tool-list';
 import { TypeStyle } from '@app/interfaces-enums/type-style';
 import { Stroke } from './stroke';
 
@@ -9,7 +10,7 @@ export class StrokeEllipse extends Stroke {
    shapeType: TypeStyle;
 
    constructor(boundingPoints: Vec2[], color: string, strokeWidth: number, secondaryColor: string, center: Vec2, radius: Vec2, shapeType: TypeStyle) {
-      super('ellipse', boundingPoints, color, strokeWidth);
+      super(ToolList.Ellipse, boundingPoints, color, strokeWidth);
       this.secondaryColor = secondaryColor;
       this.center = center;
       this.radius = radius;

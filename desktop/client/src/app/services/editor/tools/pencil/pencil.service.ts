@@ -130,7 +130,7 @@ export class PencilService extends Tool {
     private sendPencilStroke(isPoint: boolean): void {
         const pencilStroke = new StrokePencil(this.getBoundingPoints(), this.color, this.pencilThickness, this.pathData, isPoint);
         this.collaborationService.broadcastStroke(pencilStroke);
-        this.selectionService.addStroke(pencilStroke);
+        this.selectionService.selectStroke(pencilStroke);
     }
 
     private getBoundingPoints(): Vec2[] {
