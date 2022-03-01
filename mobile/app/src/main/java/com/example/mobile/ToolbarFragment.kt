@@ -5,9 +5,8 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.AdapterView
 import android.widget.GridView
-import android.widget.ImageButton
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
+import com.example.mobile.model.ToolModel
 import com.example.mobile.model.ToolWeight
 
 class ToolbarFragment : Fragment(), AdapterView.OnItemClickListener {
@@ -15,7 +14,7 @@ class ToolbarFragment : Fragment(), AdapterView.OnItemClickListener {
     private var gridView: GridView? = null
     private var arrayList:ArrayList<ToolItem> ? = null
     private var toolAdapter: ToolAdapter ? = null
-    private val viewModel: ToolWeight by activityViewModels()
+    private val toolChange: ToolModel by activityViewModels()
     enum class MenuItem(val position: Int) {
         BACK(0),
         PENCIL(1),
@@ -55,12 +54,16 @@ class ToolbarFragment : Fragment(), AdapterView.OnItemClickListener {
         arrayList!!.set(MenuItem.CIRCLE.position,ToolItem(R.drawable.circle))
         if(position == MenuItem.PENCIL.position){
             arrayList!!.set(MenuItem.PENCIL.position,ToolItem(R.drawable.pencil_clicked))
+            toolChange.changeTool("pencil")
         }else if(position== MenuItem.ERASER.position){
             arrayList!!.set(MenuItem.ERASER.position,ToolItem(R.drawable.eraser_clicked))
+            toolChange.changeTool("eraser")
         }else if(position== MenuItem.RECTANGLE.position){
             arrayList!!.set(MenuItem.RECTANGLE.position,ToolItem(R.drawable.rectangle_clicked))
+            toolChange.changeTool("rectangle")
         } else if(position== MenuItem.CIRCLE.position){
             arrayList!!.set(MenuItem.CIRCLE.position,ToolItem(R.drawable.circle_clicked))
+            toolChange.changeTool("circle")
         }
         toolAdapter!!.notifyDataSetChanged()
     }

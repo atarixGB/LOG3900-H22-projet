@@ -2,12 +2,11 @@ package com.example.mobile
 
 import android.content.Context
 import android.graphics.*
-import android.graphics.Path
-import android.widget.Toast
 
 class Pencil(context: Context, canvas: Canvas) : Tool(context, canvas) {
 
     override fun touchMove() {
+        this.paint.color = drawColor
         val dx = Math.abs(motionTouchEventX - currentX)
         val dy = Math.abs(motionTouchEventY - currentY)
         if (dx >= touchTolerance || dy >= touchTolerance) {

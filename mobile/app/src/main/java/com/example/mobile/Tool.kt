@@ -2,7 +2,6 @@ package com.example.mobile
 
 import android.content.Context
 import android.graphics.*
-import android.view.View
 import android.view.ViewConfiguration
 import androidx.core.content.res.ResourcesCompat
 
@@ -13,8 +12,9 @@ abstract class Tool(context: Context,extraCanvas: Canvas) {
     var currentY = 0f
     var motionTouchEventX = 0f
     var motionTouchEventY = 0f
-    private val drawColor = ResourcesCompat.getColor(context.resources, R.color.black, null)
-    private val backgroundColor = ResourcesCompat.getColor(context.resources, R.color.white, null)
+    protected lateinit var name : String
+    protected val drawColor = ResourcesCompat.getColor(context.resources, R.color.black, null)
+    protected val backgroundColor = ResourcesCompat.getColor(context.resources, R.color.white, null)
     protected val touchTolerance = ViewConfiguration.get(context).scaledTouchSlop
     protected val paint = Paint().apply {
         color = drawColor

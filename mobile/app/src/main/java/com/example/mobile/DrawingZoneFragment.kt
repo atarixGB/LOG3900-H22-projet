@@ -9,11 +9,13 @@ import android.widget.LinearLayout
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import com.example.mobile.model.ToolModel
 import com.example.mobile.model.ToolWeight
 
 class DrawingZoneFragment : Fragment() {
     lateinit var canvasView: MyCanvasView
     private val viewModel: ToolWeight by activityViewModels()
+    private val toolModel: ToolModel by activityViewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_drawing_zone, container, false)
@@ -25,6 +27,9 @@ class DrawingZoneFragment : Fragment() {
         view.findViewById<LinearLayout>(R.id.canvas).addView(canvasView)
         viewModel.weight.observe(viewLifecycleOwner, Observer { weight ->
             canvasView.changeWeight(weight)
+        })
+        toolModel.tool.observe(viewLifecycleOwner, Observer { tool ->
+            canvasView.changeTool(tool)
         })
     }
 
@@ -130,9 +135,7 @@ class DrawingZoneFragment : Fragment() {
             invalidate()
         }
 
-//        private fun changeTool(tool : Tool){
-//            this.currentTool = tool
-//        }
+
 
         private fun touchUp() {
             this.toolManager.currentTool.touchUp()
@@ -140,6 +143,10 @@ class DrawingZoneFragment : Fragment() {
 
         fun changeWeight(width : Float){
             if(this::toolManager.isInitialized) toolManager.currentTool.changeWeight(width)
+        }
+
+        fun changeTool(tool : String){
+            if(this::toolManager.isInitialized) this.toolManager.changeTool(tool)
         }
     }
 }
