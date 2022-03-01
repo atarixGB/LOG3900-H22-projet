@@ -46,7 +46,8 @@ export class AlbumGalleryComponent implements OnInit {
   }
 
   leaveAlbumButton(): void {
-    console.log("Leaving album...");
+    console.log("Leaving album");
+    this.albumGalleryService.leaveAlbum(this.albumGalleryService.currentAlbum._id);
   }
 
   deleteAlbumButton(): void {

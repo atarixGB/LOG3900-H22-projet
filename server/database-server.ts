@@ -158,9 +158,19 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
       })
     });
 
+    //update owner when leaving album
+    app.put("/albums/:id", (request, response, next) => {
+      let albumId = request.params.id;
+      let newOwner = request.body.creator;
+      console.log(albumId, newOwner);
+      DB.collection("albums").findOneAndUpdate( { _id : mongoose.Types.ObjectId(albumId) }, { $set: { creator: newOwner } }, { returnDocument: 'after' }, (err, res) => {
+          response.json(res);
+      })});
+
     //delete album with specific id
     app.delete("/albums/:id", (request, response, next) => {
-      DB.collection("albums").findOneAndDelete({ _id: mongoose.Types.ObjectId(request.params.id) }, (err, res) => {
+      let albumId = request.params.id;
+      DB.collection("albums").findOneAndDelete({ _id: mongoose.Types.ObjectId(albumId) }, (err, res) => {
         console.log(res);
         console.log(`Album with id ${request.params.id} has been deleted successfully!`);
       })
