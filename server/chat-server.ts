@@ -38,8 +38,11 @@ io.on('connection', (socket) => {
         console.log('creation trigged');
         const userName = room_data.userName;
         const roomName = room_data.room;
+        // let usersList = Array<String>(room_data.usersList);
+        // //usersList = Object.assign({}, room_data.usersList)
+        const usersList = room_data.usersList;
 
-        console.log(userName,' has created ', roomName);
+        console.log(userName,' has created ', roomName, 'contains', usersList);
         io.emit('newRoomCreated', room_data);
 
     })

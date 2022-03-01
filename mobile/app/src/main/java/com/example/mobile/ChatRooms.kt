@@ -3,21 +3,24 @@ package com.example.mobile
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mobile.Retrofit.IMyService
 import com.example.mobile.Retrofit.RetrofitClient
+import com.google.gson.Gson
+import com.google.gson.JsonArray
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import io.socket.client.Socket
+import org.json.JSONArray
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Response
 import java.util.ArrayList
-import javax.security.auth.callback.Callback
 
 class ChatRooms : AppCompatActivity(), CreateRoomPopUp.DialogListener, RoomAdapter.RoomAdapterListener {
 
@@ -67,6 +70,8 @@ class ChatRooms : AppCompatActivity(), CreateRoomPopUp.DialogListener, RoomAdapt
         socket = SocketHandler.getSocket()
         socket.connect()
 
+        getRooms()
+
 
         create_room_btn.setOnClickListener {
             //Open Popup Window
@@ -93,14 +98,17 @@ class ChatRooms : AppCompatActivity(), CreateRoomPopUp.DialogListener, RoomAdapt
                 roomData = args[0] as JSONObject
                 val roomName = roomData.get("room") as String
                 val user = roomData.get("userName") as String
-                //val room = Room("1", roomName, user)
+                val usersJsonArray = roomData.get("usersList") as JSONArray
+                val usersList = ArrayList<String>()
+                for (i: Int in 0 until usersJsonArray.length()) {
+                    usersList.add(usersJsonArray.get(i).toString())
+                }
+                val room = Room("1", user, roomName, usersList)
 
-                getRooms()
-
-                if (this.user.equals(user)) {
+                if (this.user == user) {
                     runOnUiThread {
-//                        roomAdapter.addRoom(room)
-//                        roomAdapter.notifyItemInserted((rvOutputRooms.adapter as RoomAdapter).itemCount)
+                        roomAdapter.addRoom(room)
+                        roomAdapter.notifyItemInserted((rvOutputRooms.adapter as RoomAdapter).itemCount)
                     }
                 }
             }
@@ -123,11 +131,10 @@ class ChatRooms : AppCompatActivity(), CreateRoomPopUp.DialogListener, RoomAdapt
 
     override fun popUpListener(roomName: String) {
         this.roomName = roomName
-//        var roomData : JSONObject = JSONObject()
-//        roomData.put("userName", user)
-//        roomData.put("room", roomName)
-//        socket.emit("createRoom", roomData)
-        createRoom(user,this.roomName)
+        var usersList = ArrayList<String>()
+        usersList.add(user)
+        usersList.add("prob")
+        createRoom(user,this.roomName, usersList)
     }
 
     override fun roomAdapterListener(roomName: String) {
@@ -139,16 +146,18 @@ class ChatRooms : AppCompatActivity(), CreateRoomPopUp.DialogListener, RoomAdapt
         openChat()
     }
 
-    private fun createRoom(identifier: String, roomName: String) {
-        compositeDisposable.add(iMyService.createRoom(identifier, roomName)
+    private fun createRoom(identifier: String, roomName: String, usersList: ArrayList<String>) {
+        compositeDisposable.add(iMyService.createRoom(identifier, roomName, usersList)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { result->
                 if(result == "201"){
                     Toast.makeText(this,"creation faite avec succès", Toast.LENGTH_SHORT).show()
+                    var usersJsonArray = JSONArray(Gson().toJson(usersList))
                     var roomData : JSONObject = JSONObject()
                     roomData.put("userName", user)
                     roomData.put("room", roomName)
+                    roomData.put("usersList", usersJsonArray)
                     socket.emit("createRoom", roomData)
                 }else{
                     Toast.makeText(this,"room déjà existante", Toast.LENGTH_SHORT).show()
@@ -159,40 +168,23 @@ class ChatRooms : AppCompatActivity(), CreateRoomPopUp.DialogListener, RoomAdapt
     private fun getRooms() {
         var call: Call<List<Room>> = iMyService.getRooms()
         call.enqueue(object: retrofit2.Callback<List<Room>> {
+
             override fun onResponse(call: Call<List<Room>>, response: Response<List<Room>>) {
-                Toast.makeText(this@ChatRooms, "add", Toast.LENGTH_SHORT).show()
                 for (room in response.body()!!) {
-
-
-                    roomAdapter.addRoom(room)
-                    roomAdapter.notifyItemInserted((rvOutputRooms.adapter as RoomAdapter).itemCount)
+                    if (room.usersList.contains(user)) {
+                        roomAdapter.addRoom(room)
+                        roomAdapter.notifyItemInserted((rvOutputRooms.adapter as RoomAdapter).itemCount)
+                    }
                 }
             }
 
             override fun onFailure(call: Call<List<Room>>, t: Throwable) {
-                TODO("Not yet implemented")
+                Log.d("ChatRooms", "onFailure" +t.message )
             }
 
         })
 
 
     }
-
-//        val call = iMyService.getRooms()
-//
-//        call.enqueue(object: Callback<List<Room>> {
-//
-//                override fun onResponse(call: Call<List<Room>>, response: Response<List<Room>>) {
-//                    if (response.isSuccessful) {
-//                    } else {
-//
-//                    }
-//                }
-//                override fun onFailure(call: Call<RoomList>, t: Throwable) {
-//
-//                }
-//
-//            })
-//    }
 }
 

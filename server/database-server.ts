@@ -135,17 +135,19 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
     
           var identifier = post_data.identifier;
           var roomName = post_data.roomName;
+          var usersList = post_data.usersList;
           
           
     
           var insertJson = {
             identifier: identifier,
             roomName: roomName,
+            usersList: usersList
           };
     
           var db = client.db("PolyGramDB");
     
-          //check if identifier exists
+          //check if room exists
           db.collection("rooms")
             .find({ roomName: roomName })
             .count(function (err, number) {
@@ -171,10 +173,88 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
           db.collection("rooms")
             .find({}).limit(50).toArray(function (err, result) {
               if (err) {
+                console.log("error getting");
                 response.status(400).send("Error fetching rooms");
               } else {
                 response.json(result)
                 console.log("add succes");
+              }
+            });
+        });
+
+        app.post("/joinRoom", (request, response, next) => {
+          var post_data = request.body;
+    
+          var user = post_data.user;
+          var roomName = post_data.roomName;
+          
+    
+          var db = client.db("PolyGramDB");
+
+          db.collection("rooms")
+          .find({ roomName: roomName })
+          .count(function (err, number) {
+            if (number == 0) {
+              response.json(404);
+              console.log("room does not exists");
+            } else {
+              db.collection("rooms").findOneAndUpdate({ roomName: roomName }, {"$push": {usersList: user}},
+                function (error, result) {
+                    response.json(201);
+                    console.log("room updated");
+                }
+              );
+              }
+            });
+        });
+
+        app.post("/quitRoom", (request, response, next) => {
+          var post_data = request.body;
+    
+          var user = post_data.user;
+          var roomName = post_data.roomName;
+          
+    
+          var db = client.db("PolyGramDB");
+
+          db.collection("rooms")
+          .find({ roomName: roomName })
+          .count(function (err, number) {
+            if (number == 0) {
+              response.json(404);
+              console.log("room does not exists");
+            } else {
+              db.collection("rooms").findOneAndUpdate({ roomName: roomName }, {"$pull": {usersList: user}},
+                function (error, result) {
+                    response.json(201);
+                    console.log("room updated");
+                }
+              );
+              }
+            });
+        });
+
+        app.delete("/deleteRoom", (request, response, next) => {
+          var post_data = request.body;
+    
+          var roomName = post_data.roomName;
+          
+    
+          var db = client.db("PolyGramDB");
+
+          db.collection("rooms")
+          .find({ roomName: roomName })
+          .count(function (err, number) {
+            if (number == 0) {
+              response.json(404);
+              console.log("room does not exists");
+            } else {
+              db.collection("rooms").deleteOne({ roomName: roomName },
+                function (error, result) {
+                    response.json(201);
+                    console.log("room deleted");
+                }
+              );
               }
             });
         });

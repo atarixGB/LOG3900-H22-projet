@@ -8,8 +8,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.mobile.Retrofit.IMyService
+import com.example.mobile.Retrofit.RetrofitClient
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import io.socket.client.Socket
 import org.json.JSONObject
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -26,10 +34,16 @@ class ChatPage : AppCompatActivity() {
     private lateinit var chatViewOptions: ImageButton
     private lateinit var roomName : String
 
+    private lateinit var iMyService: IMyService
+    internal var compositeDisposable = CompositeDisposable()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat_page)
+
+        val retrofit = RetrofitClient.getInstance()
+        iMyService = retrofit.create(IMyService::class.java)
 
         chatViewOptions = findViewById<ImageButton>(R.id.chatViewOptions)
         roomName = intent.getStringExtra("roomName").toString()
@@ -55,7 +69,7 @@ class ChatPage : AppCompatActivity() {
         var jo :JSONObject = JSONObject()
 
         btnSend.setOnClickListener{
-            if(messageText.text.length > 0) {
+            if(messageText.text.isNotEmpty()) {
                 if(!messageText.text.isNullOrBlank() ) {
                     var messageData : JSONObject = JSONObject()
                     messageData.put("userName", user)
@@ -129,6 +143,7 @@ class ChatPage : AppCompatActivity() {
                         true
                     }
                     R.id.menu_deleteChat -> {
+                        deleteChat()
                         Toast.makeText(this, "Supprimer", Toast.LENGTH_LONG).show()
                         true
                     }
@@ -153,19 +168,47 @@ class ChatPage : AppCompatActivity() {
 
     fun leaveChat(){
         val intent = Intent(this, ChatRooms::class.java)
+        intent.putExtra("userName", user)
         startActivity(intent)
     }
 
-    /*override fun onStop() {
-        super.onStop()
-        leaveChat()
-    }*/
     fun userLeftChat () {
         var roomData : JSONObject = JSONObject()
         roomData.put("userName", user)
         roomData.put("room", roomName)
         socket.emit("leaveRoom", roomData)
+        updateRooms(user, roomName)
         leaveChat()
+    }
+
+    private fun updateRooms(user: String, roomName: String) {
+        compositeDisposable.add(iMyService.quitRoom(user, roomName)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { result ->
+                if (result == "201") {
+                    Toast.makeText(this, "bye", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this, "erreur", Toast.LENGTH_SHORT).show()
+                }
+            })
+    }
+
+    private fun deleteChat() {
+        var call: Call<Unit> = iMyService.deleteRoom(roomName)
+        call.enqueue(object: Callback<Unit> {
+
+            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+                if (response.isSuccessful) {
+                    leaveChat()
+                }
+            }
+
+            override fun onFailure(call: Call<Unit>, t: Throwable) {
+                Log.d("ChatPage", "onFailure" +t.message )
+            }
+
+        })
     }
 
 }
