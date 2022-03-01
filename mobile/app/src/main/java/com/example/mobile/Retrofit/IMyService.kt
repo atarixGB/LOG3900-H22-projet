@@ -39,12 +39,15 @@ interface IMyService {
     fun quitRoom(@Field("user") user:String,
                  @Field("roomName")roomName:String) : Observable<String>
 
-    @GET("getRooms")
-    fun getRooms():Call<List<Room>>
+    @GET("getAllRooms")
+    fun getAllRooms():Call<List<Room>>
 
-    @DELETE("deleteRoom")
+    @GET("getRoomParameters")
+    fun getRoomParameters(@Query("roomName")roomName:String) : Call<Room>
+
+    @POST("deleteRoom")
     @FormUrlEncoded
-    fun deleteRoom(@Field("roomName")roomName:String): Call<Unit>
+    fun deleteRoom(@Field("roomName")roomName:String): Observable<String>
 
 
 //    @Multipart

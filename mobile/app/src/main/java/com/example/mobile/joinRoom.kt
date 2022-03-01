@@ -147,7 +147,7 @@ class joinRoom : AppCompatActivity(), RoomAdapter.RoomAdapterListener{
 
 
     private fun getRooms() {
-        var call: Call<List<Room>> = iMyService.getRooms()
+        var call: Call<List<Room>> = iMyService.getAllRooms()
         call.enqueue(object: retrofit2.Callback<List<Room>> {
 
             override fun onResponse(call: Call<List<Room>>, response: Response<List<Room>>) {

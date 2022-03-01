@@ -164,7 +164,7 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
             });
         });
 
-        app.get("/getRooms", (request, response, next) => {
+        app.get("/getAllRooms", (request, response, next) => {
           var post_data = request.body;
   
     
@@ -234,7 +234,7 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
             });
         });
 
-        app.delete("/deleteRoom", (request, response, next) => {
+        app.post("/deleteRoom", (request, response, next) => {
           var post_data = request.body;
     
           var roomName = post_data.roomName;
@@ -255,6 +255,25 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
                     console.log("room deleted");
                 }
               );
+              }
+            });
+        });
+
+        app.get("/getRoomParameters", (request, response, next) => {
+
+          var post_data = request.query;
+          var roomName = post_data.roomName;  
+    
+          var db = client.db("PolyGramDB");
+
+          db.collection("rooms")
+            .findOne({ roomName: roomName }, function (err, result) {
+              if (err) {
+                console.log("error getting");
+                response.status(400).send("Error fetching rooms");
+              } else {
+                response.json(result)
+                console.log("Getting One Room");
               }
             });
         });

@@ -33,6 +33,7 @@ class ChatPage : AppCompatActivity() {
     private lateinit var roomNameView : TextView
     private lateinit var chatViewOptions: ImageButton
     private lateinit var roomName : String
+    private lateinit var room: Room
 
     private lateinit var iMyService: IMyService
     internal var compositeDisposable = CompositeDisposable()
@@ -49,6 +50,10 @@ class ChatPage : AppCompatActivity() {
         roomName = intent.getStringExtra("roomName").toString()
         roomNameView = findViewById(R.id.roomName)
         roomNameView.text = roomName.toString()
+
+        if (roomName != "Canal Principal") {
+            getRoomParameters()
+        }
 
         rvOutputMsgs = findViewById(R.id.rvOutputMsgs)
         btnSend = findViewById<Button>(R.id.btnSend)
@@ -130,6 +135,7 @@ class ChatPage : AppCompatActivity() {
                 this,
                 chatViewOptions
             )
+
             popupMenu.setOnMenuItemClickListener { menuItem ->
                 //get id of the item clicked and handle clicks
                 when (menuItem.itemId) {
@@ -150,7 +156,14 @@ class ChatPage : AppCompatActivity() {
                     else -> false
                 }
             }
+
             popupMenu.inflate(R.menu.chatpage_options_menu)
+
+            if (user != room.identifier) {
+                popupMenu.menu.findItem(R.id.menu_deleteChat).isVisible = false
+            } else if (user == room.identifier){
+                popupMenu.menu.findItem(R.id.menu_leaveChat).isVisible = false
+            }
 
             //to show icons for menu
             try {
@@ -195,16 +208,27 @@ class ChatPage : AppCompatActivity() {
     }
 
     private fun deleteChat() {
-        var call: Call<Unit> = iMyService.deleteRoom(roomName)
-        call.enqueue(object: Callback<Unit> {
-
-            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
-                if (response.isSuccessful) {
+        compositeDisposable.add(iMyService.deleteRoom(roomName)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { result ->
+                if (result == "201") {
+                    Toast.makeText(this, "bye", Toast.LENGTH_SHORT).show()
                     leaveChat()
+                } else {
+                    Toast.makeText(this, "erreur", Toast.LENGTH_SHORT).show()
                 }
+            })
+    }
+
+    private fun getRoomParameters () {
+        var call: Call<Room> = iMyService.getRoomParameters(roomName)
+        call.enqueue(object: Callback<Room> {
+            override fun onResponse(call: Call<Room>, response: Response<Room>) {
+                room = response.body()!!
             }
 
-            override fun onFailure(call: Call<Unit>, t: Throwable) {
+            override fun onFailure(call: Call<Room>, t: Throwable) {
                 Log.d("ChatPage", "onFailure" +t.message )
             }
 
