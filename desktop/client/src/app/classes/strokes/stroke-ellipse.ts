@@ -1,6 +1,6 @@
 import { Vec2 } from '@app/classes/vec2';
+import { TypeStyle } from '@app/interfaces-enums/type-style';
 import { Stroke } from './stroke';
-import { drawStrokeEllipse } from './stroke-drawer';
 
 export class StrokeEllipse extends Stroke {
    secondaryColor: string;
@@ -17,7 +17,22 @@ export class StrokeEllipse extends Stroke {
    }
 
    drawStroke(ctx: CanvasRenderingContext2D): void {
-      drawStrokeEllipse(this, ctx);
+      ctx.lineWidth = this.strokeWidth;
+      ctx.beginPath();
+      ctx.ellipse(this.center.x, this.center.y, this.radius.x, this.radius.y, 0, 2 * Math.PI, 0);
+   
+      if (this.shapeType === TypeStyle.Stroke) {
+         ctx.strokeStyle = this.secondaryColor;
+         ctx.fillStyle = 'rgba(255, 0, 0, 0)';
+      } else if (this.shapeType === TypeStyle.Fill) {
+         ctx.strokeStyle = 'rgba(255, 0, 0, 0)';
+         ctx.fillStyle = this.primaryColor;
+      } else {
+         ctx.strokeStyle = this.secondaryColor;
+         ctx.fillStyle = this.primaryColor;
+      }
+      ctx.fill();
+      ctx.stroke();
    }
 
    prepForSelection(): void {

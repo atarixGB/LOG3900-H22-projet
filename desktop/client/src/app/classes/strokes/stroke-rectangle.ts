@@ -1,6 +1,6 @@
 import { Vec2 } from '@app/classes/vec2';
+import { TypeStyle } from '@app/interfaces-enums/type-style';
 import { Stroke } from './stroke';
-import { drawStrokeRectangle } from './stroke-drawer';
 
 export class StrokeRectangle extends Stroke {
     secondaryColor: string;
@@ -28,7 +28,21 @@ export class StrokeRectangle extends Stroke {
     }
 
     drawStroke(ctx: CanvasRenderingContext2D): void {
-        drawStrokeRectangle(this, ctx);
+        ctx.lineWidth = this.strokeWidth;
+        ctx.beginPath();
+        ctx.rect(this.topLeftCorner.x, this.topLeftCorner.y, this.width, this.height);
+        if (this.shapeType === TypeStyle.Stroke) {
+           ctx.strokeStyle = this.secondaryColor;
+           ctx.fillStyle = 'rgba(255, 0, 0, 0)';
+        } else if (this.shapeType === TypeStyle.Fill) {
+           ctx.strokeStyle = 'rgba(255, 0, 0, 0)';
+           ctx.fillStyle = this.primaryColor;
+        } else {
+           ctx.strokeStyle = this.secondaryColor;
+           ctx.fillStyle = this.primaryColor;
+        }
+        ctx.fill();
+        ctx.stroke();
     }
 
     prepForSelection(): void {

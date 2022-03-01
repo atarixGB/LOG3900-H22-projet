@@ -1,6 +1,5 @@
 import { Vec2 } from '@app/classes/vec2';
 import { Stroke } from './stroke';
-import { drawStrokePencil } from './stroke-drawer';
 
 
 export class StrokePencil extends Stroke {
@@ -14,7 +13,19 @@ export class StrokePencil extends Stroke {
    }
 
    drawStroke(ctx: CanvasRenderingContext2D): void {
-      drawStrokePencil(this, ctx);
+      ctx.beginPath();
+      if (this.isPoint) {
+         ctx.arc(this.points[0].x, this.points[0].y, this.strokeWidth, 0, 2 * Math.PI, true);
+         ctx.fillStyle = this.primaryColor;
+         ctx.fill();
+      } else {
+         for (const point of this.points) {
+            ctx.lineTo(point.x, point.y);
+            ctx.lineWidth = this.strokeWidth;
+         }
+         ctx.strokeStyle = this.primaryColor;
+         ctx.stroke();
+      }
    }
 
    prepForSelection(): void {
