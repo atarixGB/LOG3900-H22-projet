@@ -34,4 +34,13 @@ export class StrokePencil extends Stroke {
          this.points[i].y = this.points[i].y - this.boundingPoints[0].y;
       }
   }
+
+  prepForBaseCanvas(selectionTopLeftCorner: Vec2, selectionSize: Vec2): void {
+      for (let i = 0; i < this.points.length; i++) {
+         this.points[i].x = this.points[i].x + selectionTopLeftCorner.x;
+         this.points[i].y = this.points[i].y + selectionTopLeftCorner.y;
+      }
+      const bottomRightCorner = { x: selectionTopLeftCorner.x + selectionSize.x, y: selectionTopLeftCorner.y + selectionSize.y };
+      this.boundingPoints = [selectionTopLeftCorner, bottomRightCorner];
+  }
 }

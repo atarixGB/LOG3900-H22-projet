@@ -12,6 +12,7 @@ import { MoveSelectionService } from './move-selection.service';
 export class SelectionService extends Tool {
   strokes: Stroke[];
   selectedStroke: Stroke;
+  selectedIndex: number;
 
   containerDiv: HTMLElement;
   selectionCnv: HTMLCanvasElement;
@@ -32,10 +33,10 @@ export class SelectionService extends Tool {
   }
 
   onMouseClick(event: MouseEvent): void {
-    this.deleteSelection();
-    if (this.setSelectedStroke(this.getPositionFromMouse(event))) {
-      this.previewSelection();
+    if (!this.isActiveSelection && this.setSelectedStroke(this.getPositionFromMouse(event))) {
       this.isActiveSelection = true;
+      this.previewSelection();
+      this.redrawAllStrokesExceptSelected();
     } else {
       console.log('no stroke in bounds');
     }
@@ -48,7 +49,10 @@ export class SelectionService extends Tool {
           this.isMoving = true;
           this.moveSelectionService.oldMousePos = { x: event.x, y: event.y };
           this.moveSelectionService.setSelectionCnv(this.selectionCnv, this.selectionCtx);
-      } 
+      } else {
+        this.pasteSelection();
+        this.deleteSelection();
+      }
     }
   }
 
@@ -83,6 +87,7 @@ export class SelectionService extends Tool {
     for (let i = this.strokes.length - 1; i >= 0; i--) {
       if (this.isInBounds(this.strokes[i].boundingPoints, clickedPos)) {
         this.selectedStroke = this.strokes[i];
+        this.selectedIndex = i;
         return true;
       }
     }
@@ -128,5 +133,22 @@ export class SelectionService extends Tool {
   private pasteStrokeOnSelectionCnv(): void {
     this.selectedStroke.prepForSelection();
     this.selectedStroke.drawStroke(this.selectionCtx);
+  }
+
+  private redrawAllStrokesExceptSelected(): void {
+    this.strokes.splice(this.selectedIndex, 1);
+    
+    this.drawingService.clearCanvas(this.drawingService.baseCtx);
+    this.strokes.forEach(stroke => {
+      stroke.drawStroke(this.drawingService.baseCtx);
+    });
+  }
+
+  private pasteSelection(): void {
+    const selectionTopLeftCorner = { x: this.selectionCnv.offsetLeft, y: this.selectionCnv.offsetTop }
+    const selectionSize = { x: this.selectionCnv.width, y: this.selectionCnv.height }
+    this.selectedStroke.prepForBaseCanvas(selectionTopLeftCorner, selectionSize);
+    this.selectedStroke.drawStroke(this.drawingService.baseCtx);
+    this.addStroke(this.selectedStroke);
   }
 }

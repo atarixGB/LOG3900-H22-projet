@@ -48,4 +48,10 @@ export class StrokeRectangle extends Stroke {
     prepForSelection(): void {
         this.topLeftCorner = {x: 0, y: 0};
     }
+
+    prepForBaseCanvas(selectionTopLeftCorner: Vec2, selectionSize: Vec2): void {
+        this.topLeftCorner = selectionTopLeftCorner;
+        const bottomRightCorner = { x: selectionTopLeftCorner.x + selectionSize.x, y: selectionTopLeftCorner.y + selectionSize.y };
+        this.boundingPoints = [selectionTopLeftCorner, bottomRightCorner];
+    }
 }

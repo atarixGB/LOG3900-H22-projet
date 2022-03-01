@@ -51,6 +51,7 @@ export class PencilService extends Tool {
             this.color = this.colorManager.selectedColor[ColorOrder.PrimaryColor].inString;
 
             this.sendPencilStroke(false);
+            this.drawingService.clearCanvas(this.drawingService.previewCtx);
         }
 
         this.mouseDown = false;

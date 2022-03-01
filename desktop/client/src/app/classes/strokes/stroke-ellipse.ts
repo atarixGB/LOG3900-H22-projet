@@ -37,5 +37,11 @@ export class StrokeEllipse extends Stroke {
 
    prepForSelection(): void {
       this.center = { x: this.center.x - this.boundingPoints[0].x, y: this.center.y - this.boundingPoints[0].y }
-  }
+   }
+
+   prepForBaseCanvas(selectionTopLeftCorner: Vec2, selectionSize: Vec2): void {
+      this.center = { x: this.center.x + selectionTopLeftCorner.x, y: this.center.y + selectionTopLeftCorner.y }
+      const bottomRightCorner = { x: selectionTopLeftCorner.x + selectionSize.x, y: selectionTopLeftCorner.y + selectionSize.y };
+      this.boundingPoints = [selectionTopLeftCorner, bottomRightCorner];
+   }
 }
