@@ -107,12 +107,6 @@ export class DrawingComponent implements AfterViewInit, OnDestroy, OnChanges {
         });
 
         this.whiteBackgroundCanvas();
-        this.selectionService.containerDiv = this.canvasContainer.nativeElement;
-        this.moveSelectionService.setCanvasCorners(
-            this.baseCanvas.nativeElement.getBoundingClientRect().left,
-            this.baseCanvas.nativeElement.getBoundingClientRect().top,
-            this.baseCanvas.nativeElement.width,
-            this.baseCanvas.nativeElement.height);
     }
 
     ngOnChanges(): void {
@@ -277,6 +271,12 @@ export class DrawingComponent implements AfterViewInit, OnDestroy, OnChanges {
         this.keyHandlerService.baseCtx = this.baseCtx;
         this.keyHandlerService.canvasSize = this.canvasSize;
         this.adjustCanvasSize();
+        this.selectionService.containerDiv = this.canvasContainer.nativeElement;
+        this.moveSelectionService.setCanvasCorners(
+            this.baseCanvas.nativeElement.getBoundingClientRect().left,
+            this.baseCanvas.nativeElement.getBoundingClientRect().top,
+            this.canvasSize.x,
+            this.canvasSize.y);
     }
 
     private adjustCanvasSize(): void {
