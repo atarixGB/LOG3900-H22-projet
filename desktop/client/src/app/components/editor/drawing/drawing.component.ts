@@ -11,6 +11,7 @@ import { ExportService } from '@app/services/editor/export-image/export.service'
 import { KeyHandlerService } from '@app/services/editor/key-handler/key-handler.service';
 import { NewDrawingService } from '@app/services/editor/new-drawing/new-drawing.service';
 import { SelectionService } from '@app/services/editor/tools/selection/selection.service';
+import { MoveSelectionService } from '@app/services/editor/tools/selection/move-selection.service';
 import { ToolManagerService } from '@app/services/editor/tools/tool-manager.service';
 import { DrawingData } from '@common/communication/drawing-data';
 import { Subscription } from 'rxjs';
@@ -52,6 +53,7 @@ export class DrawingComponent implements AfterViewInit, OnDestroy, OnChanges {
         private autoSaveService: AutoSaveService,
         private keyHandlerService: KeyHandlerService,
         private selectionService: SelectionService,
+        private moveSelectionService: MoveSelectionService,
     ) {
         this.dragPosition = { x: 0, y: 0 };
         this.canvasSize = { x: MIN_SIZE, y: MIN_SIZE };
@@ -106,6 +108,11 @@ export class DrawingComponent implements AfterViewInit, OnDestroy, OnChanges {
 
         this.whiteBackgroundCanvas();
         this.selectionService.containerDiv = this.canvasContainer.nativeElement;
+        this.moveSelectionService.setCanvasCorners(
+            this.baseCanvas.nativeElement.getBoundingClientRect().left,
+            this.baseCanvas.nativeElement.getBoundingClientRect().top,
+            this.baseCanvas.nativeElement.width,
+            this.baseCanvas.nativeElement.height);
     }
 
     ngOnChanges(): void {

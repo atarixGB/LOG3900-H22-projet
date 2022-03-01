@@ -2,7 +2,9 @@ import { Injectable } from '@angular/core';
 import { Stroke } from '@app/classes/strokes/stroke';
 import { Tool } from '@app/classes/tool';
 import { Vec2 } from '@app/classes/vec2';
+import { MouseButton } from '@app/constants/constants';
 import { DrawingService } from '@app/services/editor/drawing/drawing.service';
+import { MoveSelectionService } from './move-selection.service';
 
 @Injectable({
   providedIn: 'root',
@@ -15,9 +17,14 @@ export class SelectionService extends Tool {
   selectionCnv: HTMLCanvasElement;
   selectionCtx: CanvasRenderingContext2D;
 
-  constructor(drawingService: DrawingService) {
+  isActiveSelection: boolean;
+  isMoving: boolean;
+
+  constructor(drawingService: DrawingService, private moveSelectionService: MoveSelectionService) {
     super(drawingService);
     this.strokes = [];
+    this.isActiveSelection = false;
+    this.isMoving = false;
   }
 
   addStroke(stroke: Stroke): void {
@@ -25,12 +32,34 @@ export class SelectionService extends Tool {
   }
 
   onMouseClick(event: MouseEvent): void {
+    this.deleteSelection();
     if (this.setSelectedStroke(this.getPositionFromMouse(event))) {
       this.previewSelection();
-
+      this.isActiveSelection = true;
     } else {
       console.log('no stroke in bounds');
     }
+  }
+
+  onMouseDown(event: MouseEvent): void {
+    if (event.button === MouseButton.Left && this.isActiveSelection) {
+      const mouseTarget = event.target as HTMLElement;
+      if (this.isOnSelectionCanvas(mouseTarget)) {
+          this.isMoving = true;
+          this.moveSelectionService.oldMousePos = { x: event.x, y: event.y };
+          this.moveSelectionService.setSelectionCnv(this.selectionCnv, this.selectionCtx);
+      } 
+    }
+  }
+
+  onMouseMove(event: MouseEvent): void {
+    if (this.isActiveSelection && this.isMoving) {
+      this.moveSelectionService.onMouseMove(event);
+    }
+  }
+
+  onMouseUp(event: MouseEvent): void {
+    this.isMoving = false;
   }
 
   handleKeyUp(event: KeyboardEvent): void {
@@ -38,10 +67,15 @@ export class SelectionService extends Tool {
       this.deleteSelection();
     }
   }
+
+  private isOnSelectionCanvas(mouseLocation: HTMLElement): boolean {
+    return mouseLocation.id === 'selectionCnv';
+  }
   
   private deleteSelection(): void {
     if (this.selectionCnv) {
       this.selectionCnv.remove();
+      this.isActiveSelection = false;
     }
   }
 
