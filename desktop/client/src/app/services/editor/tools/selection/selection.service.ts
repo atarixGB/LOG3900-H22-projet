@@ -33,6 +33,18 @@ export class SelectionService extends Tool {
     }
   }
 
+  handleKeyUp(event: KeyboardEvent): void {
+    if (event.key === 'Backspace' || event.key === 'Delete') {
+      this.deleteSelection();
+    }
+  }
+  
+  private deleteSelection(): void {
+    if (this.selectionCnv) {
+      this.selectionCnv.remove();
+    }
+  }
+
   private setSelectedStroke(clickedPos: Vec2): boolean {
     for (let i = this.strokes.length - 1; i >= 0; i--) {
       if (this.isInBounds(this.strokes[i].boundingPoints, clickedPos)) {
@@ -78,7 +90,7 @@ export class SelectionService extends Tool {
     this.selectionCnv.style.top = this.selectedStroke.boundingPoints[0].y.toString() + 'px';
     this.selectionCnv.style.left = this.selectedStroke.boundingPoints[0].x.toString() +   'px';
   }
-  
+
   private pasteStrokeOnSelectionCnv(): void {
     this.selectedStroke.prepForSelection();
     this.selectedStroke.drawStroke(this.selectionCtx);
