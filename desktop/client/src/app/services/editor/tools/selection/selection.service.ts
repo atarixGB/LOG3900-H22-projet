@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
 import { Stroke } from '@app/classes/strokes/stroke';
 import { Tool } from '@app/classes/tool';
 import { Vec2 } from '@app/classes/vec2';
@@ -21,11 +22,20 @@ export class SelectionService extends Tool {
   isActiveSelection: boolean;
   isMoving: boolean;
 
+  shouldBeSelectionTool: Subject<boolean>;
+  toolUpdate$: Observable<boolean>;
+
   constructor(drawingService: DrawingService, private moveSelectionService: MoveSelectionService) {
     super(drawingService);
     this.strokes = [];
+    this.shouldBeSelectionTool = new Subject();
+    this.toolUpdate$ = this.shouldBeSelectionTool.asObservable();
     this.isActiveSelection = false;
     this.isMoving = false;
+  }
+
+  switchToSelectionTool(): void {
+    this.shouldBeSelectionTool.next(true);
   }
 
   addStroke(stroke: Stroke): void {
@@ -36,12 +46,12 @@ export class SelectionService extends Tool {
     this.isActiveSelection = true;
     this.selectedStroke = stroke;
     this.previewSelection();
+    this.redrawAllStrokesExceptSelected();
   }
 
   onMouseClick(event: MouseEvent): void {
     if (!this.isActiveSelection && this.isStrokeFound(this.getPositionFromMouse(event))) {
       this.selectStroke(this.strokes[this.selectedIndex]);
-      this.redrawAllStrokesExceptSelected();
     } else {
       console.log('no stroke in bounds');
     }
@@ -55,8 +65,7 @@ export class SelectionService extends Tool {
           this.moveSelectionService.oldMousePos = { x: event.x, y: event.y };
           this.moveSelectionService.setSelectionCnv(this.selectionCnv, this.selectionCtx);
       } else {
-        this.pasteSelection();
-        this.deleteSelection();
+        this.pasteSelectionOnBaseCnv();
       }
     }
   }
@@ -81,6 +90,15 @@ export class SelectionService extends Tool {
     this.selectedStroke.updateStrokeWidth(newWidth);
     this.drawingService.clearCanvas(this.selectionCtx);
     this.selectedStroke.drawStroke(this.selectionCtx);
+  }
+
+  pasteSelectionOnBaseCnv(): void {
+    const selectionTopLeftCorner = { x: this.selectionCnv.offsetLeft, y: this.selectionCnv.offsetTop }
+    const selectionSize = { x: this.selectionCnv.width, y: this.selectionCnv.height }
+    this.selectedStroke.prepForBaseCanvas(selectionTopLeftCorner, selectionSize);
+    this.selectedStroke.drawStroke(this.drawingService.baseCtx);
+    this.addStroke(this.selectedStroke);
+    this.deleteSelection();
   }
 
   private isOnSelectionCanvas(mouseLocation: HTMLElement): boolean {
@@ -146,19 +164,13 @@ export class SelectionService extends Tool {
   }
 
   private redrawAllStrokesExceptSelected(): void {
-    this.strokes.splice(this.selectedIndex, 1);
-    
+    if (this.strokes.includes(this.selectedStroke)) {
+      this.strokes.splice(this.selectedIndex, 1);
+    }
+
     this.drawingService.clearCanvas(this.drawingService.baseCtx);
     this.strokes.forEach(stroke => {
       stroke.drawStroke(this.drawingService.baseCtx);
     });
-  }
-
-  private pasteSelection(): void {
-    const selectionTopLeftCorner = { x: this.selectionCnv.offsetLeft, y: this.selectionCnv.offsetTop }
-    const selectionSize = { x: this.selectionCnv.width, y: this.selectionCnv.height }
-    this.selectedStroke.prepForBaseCanvas(selectionTopLeftCorner, selectionSize);
-    this.selectedStroke.drawStroke(this.drawingService.baseCtx);
-    this.addStroke(this.selectedStroke);
   }
 }

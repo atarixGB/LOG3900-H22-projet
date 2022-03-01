@@ -14,5 +14,8 @@ export class ToolsListComponent {
 
     onTool(selectedTool: ToolList): void {
         this.toolManagerService.switchTool(selectedTool);
+        if (this.selectionService.isActiveSelection) {
+            this.selectionService.pasteSelectionOnBaseCnv();
+        }
     }
 }

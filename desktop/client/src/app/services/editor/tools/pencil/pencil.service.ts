@@ -50,8 +50,8 @@ export class PencilService extends Tool {
             this.drawLine(this.drawingService.baseCtx, this.pathData);
             this.color = this.colorManager.selectedColor[ColorOrder.PrimaryColor].inString;
 
-            this.sendPencilStroke(false);
             this.drawingService.clearCanvas(this.drawingService.previewCtx);
+            this.sendPencilStroke(false);
         }
 
         this.mouseDown = false;
@@ -131,6 +131,7 @@ export class PencilService extends Tool {
         const pencilStroke = new StrokePencil(this.getBoundingPoints(), this.color, this.pencilThickness, this.pathData, isPoint);
         this.collaborationService.broadcastStroke(pencilStroke);
         this.selectionService.selectStroke(pencilStroke);
+        this.selectionService.switchToSelectionTool();
     }
 
     private getBoundingPoints(): Vec2[] {

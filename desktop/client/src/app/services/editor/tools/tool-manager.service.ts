@@ -43,6 +43,12 @@ export class ToolManagerService {
             .set('1', this.rectangleService)
             .set('2', this.ellipseService)
             .set('e', this.eraserService)
+
+        this.selectionService.toolUpdate$.subscribe((shouldBeSelectionTool: boolean) => {
+            if (shouldBeSelectionTool) {
+                this.switchTool(ToolList.Selection);
+            }
+          });
     }
 
     private getEnumFromMap(map: Map<ToolList, Tool>, searchValue: Tool | undefined): ToolList | undefined {
