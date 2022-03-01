@@ -49,6 +49,7 @@ import { CreateAlbumDialogComponent } from './components/album-gallery/create-al
 import { ChatroomComponent } from './components/chat/chatroom/chatroom.component';
 import { PublicAlbumsComponent } from './components/album-gallery/public-albums/public-albums.component';
 import { DrawingsViewComponent } from './components/album-gallery/drawings-view/drawings-view.component';
+import { PublicDrawingGalleryComponent } from './components/album-gallery/public-drawing-gallery/public-drawing-gallery.component';
 
 @NgModule({
     declarations: [
@@ -78,7 +79,8 @@ import { DrawingsViewComponent } from './components/album-gallery/drawings-view/
         CreateAlbumDialogComponent,
         ChatroomComponent,
         PublicAlbumsComponent,
-        DrawingsViewComponent
+        DrawingsViewComponent,
+        PublicDrawingGalleryComponent
     ],
     imports: [
         BrowserModule,

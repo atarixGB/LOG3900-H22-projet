@@ -3,7 +3,8 @@ import { Injectable } from '@angular/core';
 import { IAlbum } from '@app/interfaces-enums/IAlbum'
 import { LoginService } from '@app/services/login/login.service';
 
-export const ALBUM_URL = "http://localhost:3000/albums"
+export const ALBUM_URL = "http://localhost:3000/albums";
+export const PUBLIC_DRAWINGS_URL = "http://localhost:3000/public-drawings";
 
 @Injectable({
   providedIn: 'root'
@@ -88,5 +89,15 @@ export class AlbumGalleryService {
     console.log(album);
 
     // TODO: fetch album's drawings from db
+  }
+
+  fetchAllPublicDrawings(): void {
+    const url = PUBLIC_DRAWINGS_URL;
+    console.log(url);
+    console.log("Fetching all public drawings from server...");
+    // this.httpClient.get(url).subscribe(
+    //   (result) => {},
+    //   (error) => {}
+    // )
   }
 }
