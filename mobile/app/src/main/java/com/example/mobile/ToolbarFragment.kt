@@ -1,10 +1,8 @@
 package com.example.mobile
 
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.GridView
 import android.widget.ImageButton
@@ -18,6 +16,13 @@ class ToolbarFragment : Fragment(), AdapterView.OnItemClickListener {
     private var arrayList:ArrayList<ToolItem> ? = null
     private var toolAdapter: ToolAdapter ? = null
     private val viewModel: ToolWeight by activityViewModels()
+    enum class MenuItem(val position: Int) {
+        BACK(0),
+        PENCIL(1),
+        ERASER(2),
+        RECTANGLE(3),
+        CIRCLE(4)
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -35,7 +40,8 @@ class ToolbarFragment : Fragment(), AdapterView.OnItemClickListener {
 
     private fun setDataList():ArrayList<ToolItem>{
         val arrayList:ArrayList<ToolItem> = ArrayList()
-        arrayList.add(ToolItem(R.drawable.pencilp))
+        arrayList.add(ToolItem(R.drawable.arrow))
+        arrayList.add(ToolItem(R.drawable.pencil_clicked))
         arrayList.add(ToolItem(R.drawable.eraser))
         arrayList.add(ToolItem(R.drawable.rectangle))
         arrayList.add(ToolItem(R.drawable.circle))
@@ -43,6 +49,19 @@ class ToolbarFragment : Fragment(), AdapterView.OnItemClickListener {
     }
 
     override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        val toolItem:ToolItem = arrayList!!.get(position)
+        arrayList!!.set(MenuItem.PENCIL.position,ToolItem(R.drawable.pencil))
+        arrayList!!.set(MenuItem.ERASER.position,ToolItem(R.drawable.eraser))
+        arrayList!!.set(MenuItem.RECTANGLE.position,ToolItem(R.drawable.rectangle))
+        arrayList!!.set(MenuItem.CIRCLE.position,ToolItem(R.drawable.circle))
+        if(position == MenuItem.PENCIL.position){
+            arrayList!!.set(MenuItem.PENCIL.position,ToolItem(R.drawable.pencil_clicked))
+        }else if(position== MenuItem.ERASER.position){
+            arrayList!!.set(MenuItem.ERASER.position,ToolItem(R.drawable.eraser_clicked))
+        }else if(position== MenuItem.RECTANGLE.position){
+            arrayList!!.set(MenuItem.RECTANGLE.position,ToolItem(R.drawable.rectangle_clicked))
+        } else if(position== MenuItem.CIRCLE.position){
+            arrayList!!.set(MenuItem.CIRCLE.position,ToolItem(R.drawable.circle_clicked))
+        }
+        toolAdapter!!.notifyDataSetChanged()
     }
 }

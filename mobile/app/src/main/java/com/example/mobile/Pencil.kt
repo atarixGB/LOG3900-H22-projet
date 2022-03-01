@@ -5,7 +5,7 @@ import android.graphics.*
 import android.graphics.Path
 import android.widget.Toast
 
-class Pencil(private val extraCanvas: Canvas, context: Context) : Tool(context, extraCanvas) {
+class Pencil(context: Context, canvas: Canvas) : Tool(context, canvas) {
 
     override fun touchMove() {
         val dx = Math.abs(motionTouchEventX - currentX)

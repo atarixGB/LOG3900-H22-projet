@@ -41,7 +41,7 @@ class DrawingZoneFragment : Fragment() {
         private lateinit var extraCanvas: Canvas
         private lateinit var extraBitmap: Bitmap
         private lateinit var frame: Rect
-        private lateinit var currentTool : Tool
+        private lateinit var toolManager: ToolManager
         // Set up the paint with which to draw.
         private val paint = Paint().apply {
             color = drawColor
@@ -60,10 +60,6 @@ class DrawingZoneFragment : Fragment() {
          * If the finger has has moved less than this distance, don't draw. scaledTouchSlop, returns
          * the distance in pixels a touch can wander before we think the user is scrolling.
          */
-        private var currentX = 0f
-        private var currentY = 0f
-        private var motionTouchEventX = 0f
-        private var motionTouchEventY = 0f
         /**
          * Called whenever the view changes size.
          * Since the view starts out with no size, this is also called after
@@ -76,7 +72,7 @@ class DrawingZoneFragment : Fragment() {
             extraBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
             extraCanvas = Canvas(extraBitmap)
             extraCanvas.drawColor(backgroundColor)
-            currentTool = Pencil(extraCanvas, context)
+            toolManager = ToolManager(context, extraCanvas)
 
             // Calculate a rectangular frame around the picture.
             val inset = 1
@@ -107,8 +103,8 @@ class DrawingZoneFragment : Fragment() {
          * does not handle click actions.
          */
         override fun onTouchEvent(event: MotionEvent): Boolean {
-            currentTool.motionTouchEventX = event.x
-            currentTool.motionTouchEventY = event.y
+            this.toolManager.currentTool.motionTouchEventX = event.x
+            this.toolManager.currentTool.motionTouchEventY = event.y
 
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> touchStart()
@@ -126,26 +122,24 @@ class DrawingZoneFragment : Fragment() {
          * No need to call invalidate because we are not drawing anything.
          */
         private fun touchStart() {
-            currentTool.touchstart()
+            this.toolManager.currentTool.touchstart()
         }
 
         private fun touchMove() {
-            currentTool.touchMove()
+            this.toolManager.currentTool.touchMove()
             invalidate()
         }
 
-        private fun changeTool(tool : Tool){
-            this.currentTool = tool
-        }
+//        private fun changeTool(tool : Tool){
+//            this.currentTool = tool
+//        }
 
         private fun touchUp() {
-            currentTool.touchUp()
+            this.toolManager.currentTool.touchUp()
         }
 
         fun changeWeight(width : Float){
-            if(this::currentTool.isInitialized){
-                currentTool.changeWeight(width)
-            }
+            if(this::toolManager.isInitialized) toolManager.currentTool.changeWeight(width)
         }
     }
 }

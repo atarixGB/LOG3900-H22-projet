@@ -2533,6 +2533,7 @@ drawable circle24
 drawable circle30
 drawable circle4
 drawable circle8
+drawable circle_clicked
 drawable customborder
 drawable dashboard_button_box
 drawable design_fab_background
@@ -2541,6 +2542,7 @@ drawable design_ic_visibility_off
 drawable design_password_eye
 drawable design_snackbar_background
 drawable eraser
+drawable eraser_clicked
 drawable ic_baseline_arrow_back_24
 drawable ic_baseline_arrow_back_ios_24
 drawable ic_baseline_arrow_back_ios_new_24
@@ -2626,11 +2628,11 @@ drawable notification_template_icon_low_bg
 drawable notification_tile_bg
 drawable notify_panel_notification_icon_bg
 drawable pencil
-drawable pencilp
+drawable pencil_clicked
 drawable placeholder_logo
 drawable rectangle
+drawable rectangle_clicked
 drawable save
-drawable small_dot
 drawable statistic
 drawable test_custom_background
 drawable test_level_drawable
