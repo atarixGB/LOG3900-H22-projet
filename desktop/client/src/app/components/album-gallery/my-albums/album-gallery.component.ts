@@ -42,19 +42,20 @@ export class AlbumGalleryComponent implements OnInit {
   }
 
   openSettingsDialog(): void {
-    console.log("Pop up pour modifier l'album...");
+    console.log("Open Settings dialog...");
   }
 
   leaveAlbumButton(): void {
-    console.log("On quitte l'album et on doit choisir un nouveau propriétaire")
+    console.log("Leaving album...");
+  }
+
+  deleteAlbumButton(): void {
+    console.log(`Deleted album id : ${this.albumGalleryService.currentAlbum._id}`);
+    this.albumGalleryService.deleteAlbum(this.albumGalleryService.currentAlbum._id);
   }
 
   viewAllPublicAlbums(): void {
     this.albumGalleryService.fetchAllAlbumsFromDatabase();
-  }
-
-  deleteAlbumButton(album: IAlbum): void {
-    this.albumGalleryService.deleteAlbum(album._id);
   }
 
   viewMyAlbums(): void {

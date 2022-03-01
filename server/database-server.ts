@@ -4,7 +4,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const crypto = require("crypto");
-
+const mongoose = require('mongoose');
 //constants
 const DATABASE_URL =
   "mongodb+srv://equipe203:Log3900-H22@polygramcluster.arebt.mongodb.net/PolyGramDB?retryWrites=true&w=majority";
@@ -159,9 +159,9 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
     });
 
     //delete album with specific id
-    app.delete("albums/:id", (request, response, next) => {
-      console.log(request.params.id);
-      DB.collection("albums").findOneAndDelete({ _id: request.params.id }, (err, res) => {
+    app.delete("/albums/:id", (request, response, next) => {
+      DB.collection("albums").findOneAndDelete({ _id: mongoose.Types.ObjectId(request.params.id) }, (err, res) => {
+        console.log(res);
         console.log(`Album with id ${request.params.id} has been deleted successfully!`);
       })
     })

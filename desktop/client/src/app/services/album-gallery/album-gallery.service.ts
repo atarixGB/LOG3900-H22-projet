@@ -42,7 +42,7 @@ export class AlbumGalleryService {
 
   deleteAlbum(albumId: string | undefined): void {
     const url = ALBUM_URL + `/${albumId}`;
-    this.httpClient.delete(url, { responseType: 'text' }).subscribe(
+    this.httpClient.delete<void>(url).subscribe(
       (result) => {
         console.log("Server result: ", result);
       },
