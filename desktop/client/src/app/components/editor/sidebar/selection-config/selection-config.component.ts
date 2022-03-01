@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { SelectionService } from '@app/services/editor/tools/selection/selection.service';
 
 @Component({
   selector: 'app-selection-config',
@@ -7,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SelectionConfigComponent implements OnInit {
 
-  constructor() { }
+  constructor(public selectionService: SelectionService) { }
 
   ngOnInit(): void {
   }

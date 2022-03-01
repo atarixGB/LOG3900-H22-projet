@@ -7,7 +7,7 @@ export class StrokeRectangle extends Stroke {
     topLeftCorner: Vec2;
     width: number;
     height: number;
-    shapeType: string;
+    shapeType: TypeStyle;
 
     constructor(
         boundingPoints: Vec2[],
@@ -17,7 +17,7 @@ export class StrokeRectangle extends Stroke {
         topLeftCorner: Vec2,
         width: number,
         height: number,
-        shapeType: string,
+        shapeType: TypeStyle,
     ) {
         super('rectangle', boundingPoints, color, strokeWidth);
         this.secondaryColor = secondaryColor;

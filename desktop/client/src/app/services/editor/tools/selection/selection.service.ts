@@ -72,6 +72,12 @@ export class SelectionService extends Tool {
     }
   }
 
+  updateSelectionStrokeWidth(newWidth: number): void {
+    this.selectedStroke.updateStrokeWidth(newWidth);
+    this.drawingService.clearCanvas(this.selectionCtx);
+    this.selectedStroke.drawStroke(this.selectionCtx);
+  }
+
   private isOnSelectionCanvas(mouseLocation: HTMLElement): boolean {
     return mouseLocation.id === 'selectionCnv';
   }

@@ -6,9 +6,9 @@ export class StrokeEllipse extends Stroke {
    secondaryColor: string;
    center: Vec2;
    radius: Vec2;
-   shapeType: string;
+   shapeType: TypeStyle;
 
-   constructor(boundingPoints: Vec2[], color: string, strokeWidth: number, secondaryColor: string, center: Vec2, radius: Vec2, shapeType: string) {
+   constructor(boundingPoints: Vec2[], color: string, strokeWidth: number, secondaryColor: string, center: Vec2, radius: Vec2, shapeType: TypeStyle) {
       super('ellipse', boundingPoints, color, strokeWidth);
       this.secondaryColor = secondaryColor;
       this.center = center;

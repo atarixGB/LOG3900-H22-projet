@@ -19,4 +19,8 @@ export abstract class Stroke {
     prepForSelection(): void {}
 
     prepForBaseCanvas(selectionTopLeftCorner: Vec2, selectionSize: Vec2): void {}
+
+    updateStrokeWidth(newWidth: number): void {
+        this.strokeWidth = newWidth;
+    }
 }
