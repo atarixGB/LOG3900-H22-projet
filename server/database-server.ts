@@ -154,7 +154,7 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
     });
 
     //Updating a users data
-    app.post("/profileUpdate", (request, response, next) => {
+    app.post("/profileUpdate", (request, response, next) => { 
       var post_data = request.body;
       var oldUsername = post_data.oldUsername;
       var newUsername = post_data.newUsername;
@@ -163,15 +163,25 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
 
       var db = client.db("PolyGramDB");
 
+      //check if a user already has the new name
       db.collection("users")
-        .updateOne({ identifier: oldUsername }, {
-          $set : {
-            "identifier" : newUsername,
-            "avatar" : avatar,
-            "description" : description
-          },
-        }).then(result => {
-          response.json(result.modifiedCount > 0);
+        .find({ identifier: newUsername })
+        .count(function (err, number) {
+          if (number != 0 && oldUsername != newUsername) {
+            response.json(false);
+            console.log("identifier already exists");
+          } else {
+            // Update user data
+            db.collection("users").updateOne({ identifier: oldUsername }, {
+              $set : {
+                "identifier" : newUsername,
+                "avatar" : avatar,
+                "description" : description
+              },
+            }).then(result => {
+              response.json(result.modifiedCount > 0);
+            });
+          }
         });
     });
 

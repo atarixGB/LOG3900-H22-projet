@@ -26,12 +26,13 @@ export class LoginService {
 
         this.httpClient.post(LOGIN_URL, userCredentials).subscribe(
             (result) => {
-                console.log('Result: ', result);
+                console.log('Login success: ', result);
                 if (result) {
                   this.router.navigate(['../menu'], { relativeTo: this.route });
                   this.profileService.setUsername(this.username);
                 } else {
                   // TODO: Add UI feedback
+                  console.log("Login failed, To Do -> UI error feedback in login service");
                 }
             },
             (error) => {
