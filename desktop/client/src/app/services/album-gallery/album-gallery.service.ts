@@ -43,8 +43,8 @@ export class AlbumGalleryService {
   leaveAlbum(albumId: string | void): void {
     console.log("Leaving album");
     const url = ALBUM_URL + `/${albumId}`;
-    const newOwner = {creator: "temp"}; // TODO Set new ownwer, may be in another function
-    this.httpClient.put<string>(url, newOwner).subscribe(
+    const updateData = {newOwner: "temp", currentOwner: this.loginService.username }; // TODO Set new ownwer, may be in another function
+    this.httpClient.put<string>(url, updateData).subscribe(
       (result) => {
         console.log("Server result:", result);
       },
