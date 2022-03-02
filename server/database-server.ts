@@ -65,11 +65,17 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
       var salt = hash_data.salt;
 
       var identifier = post_data.identifier;
+      var avatar = post_data.avatar;
+      var email = post_data.email;
+      var description = post_data.description;
 
       var insertJson = {
         identifier: identifier,
         password: password,
         salt: salt,
+        avatar: avatar,
+        email: email,
+        description: description,
       };
 
       var db = client.db("PolyGramDB");
@@ -127,6 +133,54 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
                 }
               }
             );
+          }
+        });
+    });
+
+    //Getting a user's data 
+    app.get("/profile/:username", (request, response, next) => {
+      var identifier = request.params.username;
+      console.log(identifier.toString());
+      var db = client.db("PolyGramDB");
+
+      //check if identifier exists
+      db.collection("users").findOne(
+        { identifier: identifier },
+        function (error, user) {
+          response.json(user);
+          console.log("Got user data for profile load: ", identifier);
+        }
+      );
+    });
+
+    //Updating a users data
+    app.post("/profileUpdate", (request, response, next) => { 
+      var post_data = request.body;
+      var oldUsername = post_data.oldUsername;
+      var newUsername = post_data.newUsername;
+      var avatar = post_data.newAvatar;
+      var description = post_data.newDescription;
+
+      var db = client.db("PolyGramDB");
+
+      //check if a user already has the new name
+      db.collection("users")
+        .find({ identifier: newUsername })
+        .count(function (err, number) {
+          if (number != 0 && oldUsername != newUsername) {
+            response.json(false);
+            console.log("identifier already exists");
+          } else {
+            // Update user data
+            db.collection("users").updateOne({ identifier: oldUsername }, {
+              $set : {
+                "identifier" : newUsername,
+                "avatar" : avatar,
+                "description" : description
+              },
+            }).then(result => {
+              response.json(result.modifiedCount > 0);
+            });
           }
         });
     });
