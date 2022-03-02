@@ -14,8 +14,15 @@
         <entry key="..\:/Users/chaim/Documents/GitHub/prototype_leger/ChatRoomMobile/app/src/main/res/layout/message.xml" value="0.36302083333333335" />
         <entry key="..\:/Users/chaim/Documents/GitHub/prototype_leger/ChatRoomMobile/app/src/main/res/layout/receivemessage.xml" value="0.36302083333333335" />
         <entry key="..\:/Users/chaim/Documents/GitHub/prototype_leger/ChatRoomMobile/app/src/main/res/layout/sentmessage.xml" value="0.36302083333333335" />
+        <entry key="..\:/Users/chaim/log3900-203/mobile/app/src/main/res/drawable/message_input_box.xml" value="0.3195" />
         <entry key="..\:/Users/chaim/log3900-203/mobile/app/src/main/res/layout/activity_chat_page.xml" value="0.14666666666666667" />
+        <entry key="..\:/Users/chaim/log3900-203/mobile/app/src/main/res/layout/activity_chat_rooms.xml" value="0.12231848184818482" />
+        <entry key="..\:/Users/chaim/log3900-203/mobile/app/src/main/res/layout/activity_create_room_pop_up.xml" value="0.12231848184818482" />
         <entry key="..\:/Users/chaim/log3900-203/mobile/app/src/main/res/layout/activity_join_room.xml" value="0.1" />
+        <entry key="..\:/Users/chaim/log3900-203/mobile/app/src/main/res/layout/activity_users_list_pop_up.xml" value="0.18151041666666667" />
+        <entry key="..\:/Users/chaim/log3900-203/mobile/app/src/main/res/layout/item_room.xml" value="0.1417079207920792" />
+        <entry key="..\:/Users/chaim/log3900-203/mobile/app/src/main/res/layout/item_user.xml" value="0.18151041666666667" />
+        <entry key="..\:/Users/chaim/log3900-203/mobile/app/src/main/res/layout/receivemessage.xml" value="0.18151041666666667" />
         <entry key="..\:/Users/chaim/log3900-203/mobile/app/src/main/res/menu/chatpage_options_menu.xml" value="0.17291666666666666" />
       </map>
     </option>

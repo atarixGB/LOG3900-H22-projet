@@ -6,6 +6,7 @@ import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mobile.Retrofit.IMyService
@@ -51,7 +52,9 @@ class ChatPage : AppCompatActivity() {
         roomNameView = findViewById(R.id.roomName)
         roomNameView.text = roomName.toString()
 
-        if (roomName != "Canal Principal") {
+        if (roomName == "Canal Principal") {
+            chatViewOptions.isVisible = false
+        } else {
             getRoomParameters()
         }
 
@@ -140,7 +143,9 @@ class ChatPage : AppCompatActivity() {
                 //get id of the item clicked and handle clicks
                 when (menuItem.itemId) {
                     R.id.menu_members -> {
-                        Toast.makeText(this, "Membres", Toast.LENGTH_LONG).show()
+                        //ouvrir le popup window des utilisateurs
+                        var dialog = UsersListPopUp(room)
+                        dialog.show(supportFragmentManager, "customDialog")
                         true
                     }
                     R.id.menu_leaveChat -> {
