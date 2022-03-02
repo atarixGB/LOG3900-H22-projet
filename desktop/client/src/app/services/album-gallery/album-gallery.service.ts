@@ -22,7 +22,7 @@ export class AlbumGalleryService {
   createAlbum(name: string, description: string, isPrivate: boolean): void {
     const newAlbum: IAlbum = {
       name: name,
-      creator: this.loginService.username,
+      owner: this.loginService.username,
       description: description,
       drawingIds: [],
       members: [this.loginService.username],

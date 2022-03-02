@@ -151,7 +151,7 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
 
     //get user albums
     app.get("/albums/:username", (request, response, next) => {
-      DB.collection("albums").find( { creator: request.params.username }).toArray((err, res) => {
+      DB.collection("albums").find( { owner: request.params.username }).toArray((err, res) => {
         console.log(res);
         response.json(res);
         ;
@@ -163,7 +163,7 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
       let albumId = request.params.id;
       let newOwner = request.body.newOwner;
       console.log(albumId, newOwner);
-      DB.collection("albums").findOneAndUpdate({ _id : mongoose.Types.ObjectId(albumId) }, { $set: { creator: newOwner }, $pull: { members: "mik" } }, { returnDocument: 'after' }, (err, res) => {
+      DB.collection("albums").findOneAndUpdate({ _id : mongoose.Types.ObjectId(albumId) }, { $set: { owner: newOwner }, $pull: { members: "mik" } }, { returnDocument: 'after' }, (err, res) => {
         response.json(res)
       })});
 

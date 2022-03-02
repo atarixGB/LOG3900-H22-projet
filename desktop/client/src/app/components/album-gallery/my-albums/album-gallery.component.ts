@@ -14,11 +14,16 @@ export class AlbumGalleryComponent implements OnInit {
   constructor(public albumGalleryService: AlbumGalleryService, public dialog: MatDialog, private router: Router, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
+    this.albumGalleryService.myAlbums = [];
     this.viewMyAlbums();
   }
 
   openCreateAlbumDialog(): void {
-    this.dialog.open(CreateAlbumDialogComponent);
+    const dialogRef = this.dialog.open(CreateAlbumDialogComponent);
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log(result);
+      this.ngOnInit();
+    });
   }
 
   onAlbumClick(album: IAlbum): void {

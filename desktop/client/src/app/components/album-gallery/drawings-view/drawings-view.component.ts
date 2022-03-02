@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlbumGalleryService } from '@app/services/album-gallery/album-gallery.service';
+import { LoginService } from '@app/services/login/login.service';
 
 @Component({
   selector: 'app-drawings-view',
@@ -9,8 +10,12 @@ import { AlbumGalleryService } from '@app/services/album-gallery/album-gallery.s
 })
 export class DrawingsViewComponent {
   @Output() backToAlbumPageEvent = new EventEmitter<boolean>();
+  isCurrentAlbumMine: boolean;
 
-  constructor(public albumGalleryService: AlbumGalleryService, private router: Router, private route: ActivatedRoute) {}
+  constructor(public albumGalleryService: AlbumGalleryService, public loginService: LoginService, private router: Router, private route: ActivatedRoute) {
+    this.isCurrentAlbumMine = this.loginService.username == albumGalleryService.currentAlbum.owner;
+    console.log("iscurrentalbummine:", this.isCurrentAlbumMine);
+  }
 
   ngAfterViewInit(): void {
     this.albumGalleryService.fetchDrawingsFromSelectedAlbum(this.albumGalleryService.currentAlbum);
