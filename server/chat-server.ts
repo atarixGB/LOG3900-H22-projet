@@ -54,6 +54,15 @@ io.on('connection', (socket) => {
 
         room = roomName;
         console.log(userName, ' has joined ', roomName);
+    })
+
+    socket.on('newUserToChatRoom', (room_data) => {
+        console.log('Joined trigged');
+        const userName = room_data.userName;
+        const roomName = room_data.room;
+
+        room = roomName;
+        console.log(userName, ' has joined 1st time', roomName);
         socket.broadcast.to(roomName).emit('newUserToChatRoom', room_data);
     })
 

@@ -2872,6 +2872,7 @@ id group_divider
 id grouping
 id groups
 id guideline
+id hand_wave
 id header_menu
 id header_title
 id hideable

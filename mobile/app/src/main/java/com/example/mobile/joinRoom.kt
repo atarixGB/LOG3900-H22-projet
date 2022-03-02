@@ -127,7 +127,7 @@ class joinRoom : AppCompatActivity(), RoomAdapter.RoomAdapterListener{
         var roomData : JSONObject = JSONObject()
         roomData.put("userName", user)
         roomData.put("room", roomName)
-        socket.emit("joinRoom", roomData)
+        socket.emit("newUserToChatRoom", roomData)
         openChat()
     }
 

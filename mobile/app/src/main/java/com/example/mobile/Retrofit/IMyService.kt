@@ -1,8 +1,8 @@
 package com.example.mobile.Retrofit
 
 import com.example.mobile.Room
-import com.example.mobile.RoomList
 import io.reactivex.Observable
+
 import retrofit2.http.*
 import okhttp3.MultipartBody
 import okhttp3.RequestBody

@@ -9,6 +9,7 @@ import androidx.appcompat.widget.PopupMenu
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.mobile.Room
 import com.example.mobile.Retrofit.IMyService
 import com.example.mobile.Retrofit.RetrofitClient
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -107,7 +108,7 @@ class ChatPage : AppCompatActivity() {
                 val time = messageData.get("time") as String
                 val room = messageData.get("room") as String
                 runOnUiThread{
-                    val msg = Message(message, user, time, room)
+                    val msg = Message(message, user, time, room, false)
                     msgAdapter.addMsg(msg)
                     msgAdapter.notifyItemInserted((rvOutputMsgs.adapter as MessageAdapter).itemCount)
                     rvOutputMsgs.scrollToPosition((rvOutputMsgs.adapter as MessageAdapter).itemCount-1)
@@ -123,7 +124,23 @@ class ChatPage : AppCompatActivity() {
                 val user = messageData.get("userName") as String
                 val room = messageData.get("room") as String
                 runOnUiThread{
-                    val msg = Message(null, user, null, room)
+                   val msg = Message("$user has joined $room", user, null, room, true)
+                    msgAdapter.addMsg(msg)
+                    msgAdapter.notifyItemInserted((rvOutputMsgs.adapter as MessageAdapter).itemCount)
+                    rvOutputMsgs.scrollToPosition((rvOutputMsgs.adapter as MessageAdapter).itemCount-1)
+                    messageText.text.clear()
+                }
+            }
+        }
+
+        socket.on("userLeftChatRoom"){ args ->
+            if(args[0] != null){
+                var messageData : JSONObject = JSONObject()
+                messageData = args[0] as JSONObject
+                val user = messageData.get("userName") as String
+                val room = messageData.get("room") as String
+                runOnUiThread{
+                    val msg = Message("$user has left $room", user, null, room, true)
                     msgAdapter.addMsg(msg)
                     msgAdapter.notifyItemInserted((rvOutputMsgs.adapter as MessageAdapter).itemCount)
                     rvOutputMsgs.scrollToPosition((rvOutputMsgs.adapter as MessageAdapter).itemCount-1)

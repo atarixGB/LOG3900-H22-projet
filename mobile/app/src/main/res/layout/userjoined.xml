@@ -5,6 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ImageView
+        android:id="@+id/hand_wave"
         android:layout_width="57dp"
         android:layout_height="44dp"
         android:src="@drawable/ic_baseline_waving_hand_24"
