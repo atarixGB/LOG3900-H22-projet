@@ -13,9 +13,9 @@
       <h2>Albums publics</h2>
     </div>
 
-    <mat-grid-list cols="3" rowHeight="3:1" *ngIf="!this.isOpened">
+    <mat-grid-list cols="3" rowHeight="3:1">
       <mat-grid-tile *ngFor="let album of this.albumGalleryService.publicAlbums">
-        <button mat-icon-button disableRipple="true" (click)="this.onAlbumClick(album)">
+        <button mat-icon-button disableRipple="true" (click)="this.onAlbumClick(album)" routerLink="/drawing-view">
           <div>
             <mat-icon>folder</mat-icon>
           </div>
@@ -23,10 +23,6 @@
         </button>
       </mat-grid-tile>
     </mat-grid-list>
-
-    <div *ngIf="this.isOpened">
-      <app-drawings-view (backToAlbumPageEvent)="this.onChangePageButtonClick($event)"></app-drawings-view>
-    </div>
 
   </div>
 </div>

@@ -10,11 +10,8 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./album-gallery.component.scss']
 })
 export class AlbumGalleryComponent implements OnInit {
-  isOpened: boolean;
 
-  constructor(public albumGalleryService: AlbumGalleryService, public dialog: MatDialog, private router: Router, private route: ActivatedRoute) {
-    this.isOpened = false;
-  }
+  constructor(public albumGalleryService: AlbumGalleryService, public dialog: MatDialog, private router: Router, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.viewMyAlbums();
@@ -26,33 +23,14 @@ export class AlbumGalleryComponent implements OnInit {
 
   onAlbumClick(album: IAlbum): void {
     console.log(album.name);
-    this.isOpened = true;
 
     if(album != null) {
       this.albumGalleryService.currentAlbum = album;
     }
   }
 
-  onChangePageButtonClick(value: boolean): void {
-    this.isOpened = value;
-  }
-
   onViewAllAlbumButton(): void {
     this.router.navigate(['../all-albums'], { relativeTo: this.route });
-  }
-
-  openSettingsDialog(): void {
-    console.log("Open Settings dialog...");
-  }
-
-  leaveAlbumButton(): void {
-    console.log("Leaving album");
-    this.albumGalleryService.leaveAlbum(this.albumGalleryService.currentAlbum._id);
-  }
-
-  deleteAlbumButton(): void {
-    console.log(`Deleted album id : ${this.albumGalleryService.currentAlbum._id}`);
-    this.albumGalleryService.deleteAlbum(this.albumGalleryService.currentAlbum._id);
   }
 
   viewAllPublicAlbums(): void {

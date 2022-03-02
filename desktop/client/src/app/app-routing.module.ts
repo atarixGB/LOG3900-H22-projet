@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AlbumGalleryComponent } from '@app/components/album-gallery/my-albums/album-gallery.component';
+import { DrawingsViewComponent } from './components/album-gallery/drawings-view/drawings-view.component';
 import { PublicAlbumsComponent } from './components/album-gallery/public-albums/public-albums.component';
 import { PublicDrawingGalleryComponent } from './components/album-gallery/public-drawing-gallery/public-drawing-gallery.component';
 import { ChatMenuComponent } from './components/chat/chat-menu/chat-menu.component';
@@ -21,6 +22,7 @@ const routes: Routes = [
     { path: 'my-albums', component: AlbumGalleryComponent },
     { path: 'all-albums', component: PublicAlbumsComponent },
     { path: 'public-gallery', component: PublicDrawingGalleryComponent },
+    { path: 'drawing-view', component: DrawingsViewComponent },
     { path: '**', redirectTo: '/home' },
 ];
 
