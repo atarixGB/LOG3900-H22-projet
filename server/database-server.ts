@@ -156,10 +156,16 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
       //check if identifier exists
       db.collection("users").findOne(
         { identifier: identifier },
-        function (error, user) {
-          response.json(user);
+        function (error, result) {
+          if (err) {
+            console.log("error getting");
+            response.status(400).send("Error fetching rooms");
+          } else {
+          console.log(result)
+          response.json(result);
           console.log("Got user data for profile load: ", identifier);
         }
+      }
       );
     });
 

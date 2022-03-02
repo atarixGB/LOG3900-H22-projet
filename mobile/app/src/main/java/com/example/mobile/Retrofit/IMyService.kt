@@ -34,8 +34,8 @@ interface IMyService {
         @Field("roomName") password: String
     ): Observable<String>
 
-    @GET("/profile/:username")
-    fun getUserFromDB(@Query("identifier")username:String):Call<User>
+    @GET("/profile/{identifier}")
+    fun getUserFromDB(@Path("identifier")username:String):Call<User>
 
 //    @Multipart
 //    @POST("upload")

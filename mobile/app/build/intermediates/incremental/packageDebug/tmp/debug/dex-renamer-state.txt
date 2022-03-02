@@ -1,7 +1,7 @@
-#Wed Feb 23 23:43:06 EST 2022
-base.0=C\:\\Users\\15149\\Desktop\\git clone final\\log3900-203\\mobile\\app\\build\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes.dex
+#Tue Mar 01 20:28:31 EST 2022
+base.0=C\:\\Users\\chaim\\log3900-203\\mobile\\app\\build\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes.dex
 path.1=classes.dex
 renamed.1=classes2.dex
 path.0=classes.dex
 renamed.0=classes.dex
-base.1=C\:\\Users\\15149\\Desktop\\git clone final\\log3900-203\\mobile\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\classes.dex
+base.1=C\:\\Users\\chaim\\log3900-203\\mobile\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\classes.dex
