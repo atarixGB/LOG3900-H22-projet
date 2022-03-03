@@ -1,0 +1,22 @@
+<div fxLayout="row" fxLayoutAlign="center stretch" fxFlex="100">
+  <app-side-menu fxLayout="column" fxLayoutAlign="start stretch" fxFlex="15%"></app-side-menu>
+
+  <div fxLayout="column" fxLayoutAlign="space-evenly stretch" fxFlex="auto">
+
+      <mat-grid-list cols="3" rowHeight="3:1">
+        <mat-grid-tile *ngFor="let album of this.albumGalleryService.myAlbums">
+          <button mat-icon-button disableRipple="true" (click)="this.onAlbumClick(album)" routerLink="/drawing-view">
+            <div><mat-icon>folder</mat-icon></div>
+            <div>{{album.name}}</div>
+          </button>
+        </mat-grid-tile>
+      </mat-grid-list>
+
+    <div fxLayout="row" fxLayoutAlign="space-evenly center">
+      <button mat-raised-button color="accent" (click)="this.openCreateAlbumDialog()">Créer un nouvel album</button>
+      <button mat-raised-button color="primary" (click)="this.onViewAllAlbumButton()" >Voir tous les albums publics</button>
+      <button mat-raised-button color="primary" routerLink="/public-gallery">Voir la galerie publique de dessins</button>
+    </div>
+
+  </div>
+</div>
