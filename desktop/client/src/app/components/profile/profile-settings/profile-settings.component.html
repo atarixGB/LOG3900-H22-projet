@@ -1,0 +1,65 @@
+<div fxLayout="row" fxLayoutAlign="center stretch" fxFlex="100">
+   <!-- Side Menu -->
+   <app-side-menu fxLayout="column" fxLayoutAlign="start stretch" fxFlex="15"></app-side-menu>
+
+   <!-- Profil settings page -->
+   <div fxLayout="column" fxLayoutAlign="start stretch" fxFlex="auto">
+      <div fxFlex="10"></div>
+      
+      <!-- Header -->
+      <div fxLayout="row" fxLayoutAlign="center center" >
+         <h1 id="title">Paramètres du profil</h1>
+      </div>
+      <div fxFlex="2"></div>
+
+      <!-- Settings -->
+      <div fxLayout="row" fxLayoutAlign="center center">
+         <div fxLayout="column" fxLayoutAlign="start stretch" fxFlex="50">
+
+            <!-- Avatar settings -->
+            <div class="sectionTitleContainer" fxLayout="row" fxLayoutAlign="start center">
+               <span>Avatar</span>
+            </div>
+            <div class="topPadding" fxLayout="row" fxLayoutAlign="space-evenly stretch">
+               <div id="avatarDisplay" fxLayoutAlign="center center">
+                  <img id="avatarImg" src="data:image/png;base64,{{this.profileSettingsService.newAvatarSrc}}">
+               </div>
+               <div fxLayout="column" fxLayoutAlign="space-evenly center" >
+                   <button mat-raised-button color="primary" (click)="this.openAvatarSelectionModal()">Choisir un nouvel avatar</button>
+                   <button mat-raised-button color="primary" (click)="this.openAvatarImportModal()">Importer un nouvel avatar</button>
+               </div>
+            </div>
+
+
+            <!-- Username settings -->
+            <div class="sectionTitleContainer" fxLayout="row" fxLayoutAlign="start center">
+               <span>Pseudonyme</span>
+            </div>
+            <div class="topBottomPadding" fxLayout="row" fxLayoutAlign="space-evenly center">
+               <mat-form-field appearance="outline">
+                  <mat-label>Entrez un nouveau nom</mat-label>
+                  <input matInput [(ngModel)]="this.profileSettingsService.newUsername">
+               </mat-form-field>
+            </div>
+
+             <!-- Description settings -->
+             <div class="sectionTitleContainer" fxLayout="row" fxLayoutAlign="start center">
+               <span>Description</span>
+            </div>
+            <mat-form-field class="topPadding" appearance="outline">
+               <mat-label>Modifiez votre description!</mat-label>
+               <textarea id="descriptionInput" matInput [(ngModel)]="this.profileSettingsService.newDescription"></textarea> 
+            </mat-form-field>
+
+         </div>
+      </div>
+
+      <!-- Confirmation btn -->
+      <div fxFlex="5"></div>
+      <div fxLayout="row" fxLayoutAlign="center start">
+         <button mat-raised-button color="warn" (click)="this.profileSettingsService.saveChanges()">Sauvegarder les changements</button>
+      </div>
+
+   </div>
+</div>
+

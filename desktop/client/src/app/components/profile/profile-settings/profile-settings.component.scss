@@ -1,0 +1,57 @@
+:host {
+    height: 100%;
+}
+
+.sectionTitleContainer {
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    margin-top: 15px;
+}
+
+.topPadding {
+    margin-top: 5px;
+}
+
+.topBottomPadding {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.bordered {
+    border-style: solid;
+    border-width: 1px;
+    border-color: grey;
+    border-radius: 5px;
+    padding: 13px;
+    margin-top: 5px;
+}
+
+#title {
+    text-decoration: underline;
+}
+
+#avatarImg {
+    height: 90%;
+}
+
+#avatarDisplay {
+    width: 150px;
+    height: 150px;
+    border-style: solid;
+    border-width: 5px;
+    border-radius: 50%;
+    overflow: hidden;
+    background-color: black;
+}
+
+#usernameArrow {
+    padding-top: 25px;
+}
+
+#descriptionInput {
+    height: 100px;
+    text-align: justify;
+    white-space: pre-line;
+    -moz-text-align-last: left;
+    text-align-last: left;
+}

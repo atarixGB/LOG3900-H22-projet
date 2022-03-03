@@ -68,11 +68,17 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
       var salt = hash_data.salt;
 
       var identifier = post_data.identifier;
+      var avatar = post_data.avatar;
+      var email = post_data.email;
+      var description = post_data.description;
 
       var insertJson = {
         identifier: identifier,
         password: password,
         salt: salt,
+        avatar: avatar,
+        email: email,
+        description: description,
       };
 
       //check if identifier exists
@@ -135,7 +141,6 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
       DB.collection("albums").insertOne(request.body, (err, res) => {
         request.body._id = res.insertedId.toHexString();
         console.log(`Album "${request.body.name}" created successfully with ID: ${request.body._id}!`);
-        // console.log(request.body);
         response.json(request.body);
       });
     })
@@ -143,7 +148,6 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
     //get all public album
     app.get("/albums", (request, response, next) => {
       DB.collection("albums").find( {isPrivate : false} ).toArray((err, res) => {
-        // console.log(res);
         response.json(res);
         ;
       })
@@ -152,7 +156,6 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
     //get user albums
     app.get("/albums/:username", (request, response, next) => {
       DB.collection("albums").find( { owner: request.params.username }).toArray((err, res) => {
-        console.log(res);
         response.json(res);
         ;
       })
@@ -162,8 +165,8 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
     app.put("/albums/:id", (request, response, next) => {
       let albumId = request.params.id;
       let newOwner = request.body.newOwner;
-      console.log(albumId, newOwner);
-      DB.collection("albums").findOneAndUpdate({ _id : mongoose.Types.ObjectId(albumId) }, { $set: { owner: newOwner }, $pull: { members: "mik" } }, { returnDocument: 'after' }, (err, res) => {
+      let oldOwner = request.body.currentOwner;
+      DB.collection("albums").findOneAndUpdate({ _id : mongoose.Types.ObjectId(albumId) }, { $set: { owner: newOwner }, $pull: { members: oldOwner } }, { returnDocument: 'after' }, (err, res) => {
         response.json(res)
       })});
 
@@ -171,10 +174,55 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
     app.delete("/albums/:id", (request, response, next) => {
       let albumId = request.params.id;
       DB.collection("albums").findOneAndDelete({ _id: mongoose.Types.ObjectId(albumId) }, (err, res) => {
-        console.log(res);
         console.log(`Album with id ${request.params.id} has been deleted successfully!`);
       })
     })
+    //Getting a user's data 
+    app.get("/profile/:username", (request, response, next) => {
+      var identifier = request.params.username;
+      var db = client.db("PolyGramDB");
+
+      //check if identifier exists
+      db.collection("users").findOne(
+        { identifier: identifier },
+        function (error, user) {
+          response.json(user);
+          console.log("Got user data for profile load: ", identifier);
+        }
+      );
+    });
+
+    //Updating a users data
+    app.post("/profileUpdate", (request, response, next) => { 
+      var post_data = request.body;
+      var oldUsername = post_data.oldUsername;
+      var newUsername = post_data.newUsername;
+      var avatar = post_data.newAvatar;
+      var description = post_data.newDescription;
+
+      var db = client.db("PolyGramDB");
+
+      //check if a user already has the new name
+      db.collection("users")
+        .find({ identifier: newUsername })
+        .count(function (err, number) {
+          if (number != 0 && oldUsername != newUsername) {
+            response.json(false);
+            console.log("identifier already exists");
+          } else {
+            // Update user data
+            db.collection("users").updateOne({ identifier: oldUsername }, {
+              $set : {
+                "identifier" : newUsername,
+                "avatar" : avatar,
+                "description" : description
+              },
+            }).then(result => {
+              response.json(result.modifiedCount > 0);
+            });
+          }
+        });
+    });
 
     //start web server
     app.listen(SERVER_PORT, () => {
