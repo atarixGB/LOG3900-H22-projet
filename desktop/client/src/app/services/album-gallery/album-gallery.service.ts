@@ -40,18 +40,21 @@ export class AlbumGalleryService {
 
   }
 
-  leaveAlbum(albumId: string | void): void {
+  leaveAlbum(album: IAlbum): void {
     console.log("Leaving album");
-    const url = ALBUM_URL + `/${albumId}`;
-    const updateData = {newOwner: "temp", currentOwner: this.loginService.username }; // TODO Set new ownwer, may be in another function
-    this.httpClient.put<string>(url, updateData).subscribe(
-      (result) => {
-        console.log("Server result:", result);
-      },
-      (error)=> {
-        console.log(`Impossible de retrouver l'album demandé dans la base de données.\nErreur: ${error}`)
-      }
+    const url = ALBUM_URL + `/${album._id}`;
+
+    if (album.owner != this.loginService.username) {
+      const updateData = { memberToRemove: this.loginService.username }; // TODO Set new ownwer, may be in another function
+      this.httpClient.put<string>(url, updateData).subscribe(
+        (result) => {
+          console.log("Server result:", result);
+        },
+        (error) => {
+          console.log(`Impossible de retrouver l'album demandé dans la base de données.\nErreur: ${error}`)
+        }
       )
+    }
   }
 
   deleteAlbum(albumId: string | undefined): void {

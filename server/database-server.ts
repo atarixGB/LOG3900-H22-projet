@@ -164,9 +164,8 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
     //update owner when leaving album
     app.put("/albums/:id", (request, response, next) => {
       let albumId = request.params.id;
-      let newOwner = request.body.newOwner;
-      let oldOwner = request.body.currentOwner;
-      DB.collection("albums").findOneAndUpdate({ _id : mongoose.Types.ObjectId(albumId) }, { $set: { owner: newOwner }, $pull: { members: oldOwner } }, { returnDocument: 'after' }, (err, res) => {
+      let memberToRemove = request.body.memberToRemove;
+      DB.collection("albums").findOneAndUpdate({ _id : mongoose.Types.ObjectId(albumId) }, { $pull: { members: memberToRemove } }, { returnDocument: 'after' }, (err, res) => {
         response.json(res)
       })});
 
