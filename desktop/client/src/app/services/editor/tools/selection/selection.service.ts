@@ -17,7 +17,7 @@ export class SelectionService extends Tool {
 
   containerDiv: HTMLElement;
   selectionCnv: HTMLCanvasElement;
-  selectionCtx: CanvasRenderingContext2D;
+  zIndex: number;
 
   isActiveSelection: boolean;
   isMoving: boolean;
@@ -30,6 +30,7 @@ export class SelectionService extends Tool {
     this.strokes = [];
     this.shouldBeSelectionTool = new Subject();
     this.toolUpdate$ = this.shouldBeSelectionTool.asObservable();
+    this.zIndex = 10; //Arbitrary value to make sure user selection is put to front
     this.isActiveSelection = false;
     this.isMoving = false;
   }
@@ -45,8 +46,8 @@ export class SelectionService extends Tool {
   selectStroke(stroke: Stroke): void {
     this.isActiveSelection = true;
     this.selectedStroke = stroke;
-    this.previewSelection();
-    this.redrawAllStrokesExceptSelected();
+    this.previewSelection(stroke);
+    this.redrawAllStrokesExceptSelected(stroke);
   }
 
   onMouseClick(event: MouseEvent): void {
@@ -63,7 +64,7 @@ export class SelectionService extends Tool {
       if (this.isOnSelectionCanvas(mouseTarget)) {
           this.isMoving = true;
           this.moveSelectionService.oldMousePos = { x: event.x, y: event.y };
-          this.moveSelectionService.setSelectionCnv(this.selectionCnv, this.selectionCtx);
+          this.moveSelectionService.setSelectionCnv(this.selectionCnv, this.selectionCnv.getContext('2d') as CanvasRenderingContext2D);
       } else {
         this.pasteSelectionOnBaseCnv();
       }
@@ -88,8 +89,8 @@ export class SelectionService extends Tool {
 
   updateSelectionStrokeWidth(newWidth: number): void {
     this.selectedStroke.updateStrokeWidth(newWidth);
-    this.drawingService.clearCanvas(this.selectionCtx);
-    this.selectedStroke.drawStroke(this.selectionCtx);
+    this.drawingService.clearCanvas(this.selectionCnv.getContext('2d') as CanvasRenderingContext2D);
+    this.selectedStroke.drawStroke(this.selectionCnv.getContext('2d') as CanvasRenderingContext2D);
   }
 
   pasteSelectionOnBaseCnv(): void {
@@ -133,39 +134,37 @@ export class SelectionService extends Tool {
     );
   }
 
-  private previewSelection(): void {
-    this.createSelectionCanvas();
-    this.positionSelectionCanvas();
-    this.pasteStrokeOnSelectionCnv();
+  private previewSelection(stroke: Stroke): void {
+    this.selectionCnv = this.createSelectionCanvas(stroke, this.zIndex);
+    this.positionSelectionCanvas(stroke, this.selectionCnv);
+    this.pasteStrokeOnSelectionCnv(stroke, this.selectionCnv.getContext('2d') as CanvasRenderingContext2D);
   }
 
-  private createSelectionCanvas(): void {
-    const width = this.selectedStroke.boundingPoints[1].x - this.selectedStroke.boundingPoints[0].x;
-    const height = this.selectedStroke.boundingPoints[1].y - this.selectedStroke.boundingPoints[0].y;
-    this.selectionCnv = document.createElement('canvas');
-    this.selectionCnv.id = 'selectionCnv';
-    this.containerDiv.appendChild(this.selectionCnv);
-    this.selectionCnv.style.position = 'relative';
-    this.selectionCnv.style.zIndex = '10'; // Arbitrary value to send it to front
-    this.selectionCnv.width = width;
-    this.selectionCnv.height = height;
-    this.selectionCtx = this.selectionCnv.getContext('2d') as CanvasRenderingContext2D;
-    this.selectionCnv.style.border = '2px solid blue';
+  private createSelectionCanvas(stroke: Stroke, zIndex: number): HTMLCanvasElement {
+    let canvas = document.createElement('canvas');
+    canvas.id = 'selectionCnv';
+    this.containerDiv.appendChild(canvas);
+    canvas.style.position = 'relative';
+    canvas.style.zIndex = zIndex.toString();
+    canvas.width = stroke.boundingPoints[1].x - stroke.boundingPoints[0].x;
+    canvas.height = stroke.boundingPoints[1].y - stroke.boundingPoints[0].y;
+    canvas.style.border = '2px solid blue';
+    return canvas;
   }
 
-  private positionSelectionCanvas(): void {
-    this.selectionCnv.style.top = this.selectedStroke.boundingPoints[0].y.toString() + 'px';
-    this.selectionCnv.style.left = this.selectedStroke.boundingPoints[0].x.toString() +   'px';
+  private positionSelectionCanvas(stroke: Stroke, cnv: HTMLCanvasElement): void {
+    cnv.style.top = stroke.boundingPoints[0].y.toString() + 'px';
+    cnv.style.left = stroke.boundingPoints[0].x.toString() + 'px';
   }
 
-  private pasteStrokeOnSelectionCnv(): void {
-    this.selectedStroke.prepForSelection();
-    this.selectedStroke.drawStroke(this.selectionCtx);
+  private pasteStrokeOnSelectionCnv(stroke: Stroke, selectionCtx: CanvasRenderingContext2D): void {
+    stroke.prepForSelection();
+    stroke.drawStroke(selectionCtx);
   }
 
-  private redrawAllStrokesExceptSelected(): void {
-    if (this.strokes.includes(this.selectedStroke)) {
-      this.strokes.splice(this.selectedIndex, 1);
+  private redrawAllStrokesExceptSelected(stroke: Stroke): void {
+    if (this.strokes.includes(stroke)) {
+      this.strokes.splice(this.strokes.indexOf(stroke), 1);
     }
 
     this.drawingService.clearCanvas(this.drawingService.baseCtx);
