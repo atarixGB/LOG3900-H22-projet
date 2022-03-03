@@ -28,10 +28,12 @@ export class SignUpService {
 
         this.httpClient.post(SIGN_UP_URL, userInfos).subscribe(
             (result) => {
-                console.log('Result:', result);
-
+                console.log('Signup success:', result);
                 if (result) {
                     this.router.navigate(['../home'], { relativeTo: this.route });
+                } else {
+                    // TODO: Add UI feedback
+                    console.log("Signup failed because username already exists, To Do -> UI error feedback in signup service");
                 }
             },
             (error) => {

@@ -24,8 +24,6 @@ export class ProfileSettingsService {
     }
 
     saveChanges() : void {
-        console.log('something changed :', this.somethingChanged());
-        
         if(this.somethingChanged()) {
             this.isValidNewUsername() ? this.sendChangesToDB() : console.log('TO DO: Message erreur quand le username est invalid (dans profile-settings component)');
         } else {
@@ -56,6 +54,9 @@ export class ProfileSettingsService {
                 if (isSuccess) {
                     this.profileService.setUsername(this.newUsername);
                     this.router.navigate(['../profile'], { relativeTo: this.route });
+                } else {
+                    // TODO: Add UI feedback
+                    console.log("Update failed because username already exists, To Do -> UI error feedback in profile settings service");
                 }
             },
             (error) => {
