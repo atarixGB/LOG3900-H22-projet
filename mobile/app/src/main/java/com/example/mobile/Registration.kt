@@ -52,6 +52,7 @@ class Registration : AppCompatActivity(),SelectAvatarPopUp.DialogListener {
     private lateinit var avatarPicker: CircularImageView
     private lateinit var cameraBtn : ImageButton
     private lateinit var avatarBtn : ImageButton
+    private lateinit var description:String
 
 
     private val REQUEST_IMAGE_CAMERA = 142
@@ -73,6 +74,7 @@ class Registration : AppCompatActivity(),SelectAvatarPopUp.DialogListener {
         avatarPicker = findViewById(R.id.displaypicture)
         cameraBtn= findViewById(R.id.edt_camera)
         avatarBtn=findViewById(R.id.edt_avatar)
+        description="vide"
 
         //init api
         val retrofit = RetrofitClient.getInstance()
@@ -127,7 +129,7 @@ class Registration : AppCompatActivity(),SelectAvatarPopUp.DialogListener {
         }
 
         registerAccountBtn.setOnClickListener {
-            registerUser(identifiant.text.toString(), pwd.text.toString(),displaypicture,edt_email.text.toString())
+            registerUser(identifiant.text.toString(), pwd.text.toString(),displaypicture,edt_email.text.toString(),description)
         }
 
         loginAccountBtn.setOnClickListener {
@@ -151,10 +153,10 @@ class Registration : AppCompatActivity(),SelectAvatarPopUp.DialogListener {
         }
     }
 
-    private fun registerUser(identifier: String, password: String, avatar:CircularImageView,email: String) {
+    private fun registerUser(identifier: String, password: String, avatar:CircularImageView,email: String,description:String) {
         var avatarByteArray:ByteArray = convertToByteArray(avatar)
         var avatar_str:String = Base64.encodeToString(avatarByteArray,0)
-        compositeDisposable.add(iMyService.registerUser(identifier, password,avatar_str,email)
+        compositeDisposable.add(iMyService.registerUser(identifier, password,avatar_str,email,description)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { result->

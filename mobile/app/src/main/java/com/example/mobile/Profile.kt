@@ -24,10 +24,9 @@ import retrofit2.Response
 class Profile : AppCompatActivity() {
     private lateinit var leave: ImageButton
     private lateinit var modifyProfile: TextView
-    private lateinit var updloadAvatar: TextView
     private lateinit var avatar: CircularImageView
     private lateinit var user: String
-    private lateinit var email: String
+//    private lateinit var email: String
     private lateinit var usernameDisplayed: TextView
     private lateinit var socket: Socket
     private lateinit var iMyService: IMyService
@@ -48,17 +47,17 @@ class Profile : AppCompatActivity() {
         setContentView(R.layout.activity_profile)
         leave = findViewById(R.id.leave)
         usernameDisplayed= findViewById(R.id.username)
-        updloadAvatar = findViewById(R.id.modify_avatar)
         avatar = findViewById(R.id.userAvatar)
+        modifyProfile=findViewById(R.id.modify_label)
         user = intent.getStringExtra("userName").toString()
-        email = intent.getStringExtra("email").toString()
+//        email = intent.getStringExtra("email").toString()
 
 
 
         //username and email sent from registration page displayed
         usernameDisplayed.setText(user)
         title_username.setText(user)
-        user_email.setText(email)
+//        user_email.setText(email)
 
         //init api
         val retrofit = RetrofitClient.getInstance()
@@ -79,6 +78,13 @@ class Profile : AppCompatActivity() {
             startActivity(intent)
         }
 
+        modify_label.setOnClickListener(){
+            val intent = Intent(this, Profile_modification::class.java)
+
+            intent.putExtra("userName",user)
+            startActivity(intent)
+        }
+
     }
 
     private fun getUserFromDB(user:String) {
@@ -86,8 +92,12 @@ class Profile : AppCompatActivity() {
 
         call.enqueue(object: retrofit2.Callback<User> {
             override fun onResponse(call: Call<User>, response: Response<User>) {
-                Toast.makeText(this@Profile, "add", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@Profile, "Bienvenu!", Toast.LENGTH_SHORT).show()
                 userAvatar.setImageBitmap(avatarDecoder(response.body()?.avatar))
+//                title_username.setText(response.body()?.username)
+//                username.setText(response.body()?.username)
+                user_email.setText(response.body()?.email)
+                description_field.setText(response.body()?.description)
 
             }
 

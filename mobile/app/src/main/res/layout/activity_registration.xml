@@ -98,12 +98,12 @@
         android:id="@+id/edt_avatar"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:backgroundTint="@color/white"
-        android:src="@drawable/ic_add_avatar"
         android:layout_below="@id/avatar_selector"
         android:layout_marginLeft="670dp"
         android:layout_marginTop="-60dp"
-        android:layout_marginRight="20dp"/>
+        android:layout_marginRight="20dp"
+        android:backgroundTint="@color/white"
+        android:src="@drawable/ic_add_avatar" />
 
     <Button
         android:id="@+id/edt_registration"

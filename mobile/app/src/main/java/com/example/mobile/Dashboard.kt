@@ -19,6 +19,12 @@ class Dashboard : AppCompatActivity() {
             intent.putExtra("userName",user)
             startActivity(intent)
         }
+        val profile_btn = findViewById<Button>(R.id.profile_btn)
+        profile_btn.setOnClickListener{
+            val intent = Intent(this, Profile::class.java)
+            intent.putExtra("userName",user)
+            startActivity(intent)
+        }
     }
     private fun openSoloDrawing(){
         val intent = Intent(this, DrawingActivity::class.java)

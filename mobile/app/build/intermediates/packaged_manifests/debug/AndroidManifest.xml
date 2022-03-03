@@ -24,6 +24,9 @@
         android:testOnly="true"
         android:theme="@style/Theme.Mobile"
         android:usesCleartextTraffic="true" >
+        <activity
+            android:name="com.example.mobile.Profile_modification"
+            android:exported="false" />
         <activity android:name="com.example.mobile.Dashboard" />
         <activity
             android:name="com.example.mobile.Profile"

@@ -16,6 +16,7 @@ interface IMyService {
         @Field("password") password: String,
         @Field("avatar") avatar: String,
         @Field("email") email: String,
+        @Field("description") description:String,
     ): Observable<String>
 
 
@@ -35,7 +36,17 @@ interface IMyService {
     ): Observable<String>
 
     @GET("/profile/{identifier}")
-    fun getUserFromDB(@Path("identifier")username:String):Call<User>
+    fun getUserFromDB(@Path("identifier") username: String): Call<User>
+
+    @POST("profileUpdate")
+    @FormUrlEncoded
+    fun updateProfile(
+        @Field("oldUsername") oldUsername: String,
+        @Field("newUsername") newUsername: String,
+        @Field("newAvatar") newAvatar: String,
+        @Field("newEmail") newEmail:String,
+        @Field("newDescription") newDescription:String,
+    ): Observable<String>
 
 //    @Multipart
 //    @POST("upload")
