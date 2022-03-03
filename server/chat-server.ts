@@ -76,6 +76,17 @@ io.on('connection', (socket) => {
         socket.leave(roomName);
     })
 
+    socket.on('deleteRoom', (room_data) => {
+        console.log('delete trigged');
+        const userName = room_data.userName;
+        const roomName = room_data.room;
+
+        console.log(userName, ' has deleted ', roomName);
+        io.to(roomName).emit('userDeletedChatRoom', room_data);
+        //socket.delete(roomName);
+        //socket.leave(roomName);
+    })
+
     socket.on('message', (msg) => {
         console.log(msg)
         const roomName = msg.room;

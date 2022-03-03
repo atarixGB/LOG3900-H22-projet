@@ -136,6 +136,8 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
           var identifier = post_data.identifier;
           var roomName = post_data.roomName;
           var usersList = post_data.usersList;
+
+          console.log(usersList);
           
           
     

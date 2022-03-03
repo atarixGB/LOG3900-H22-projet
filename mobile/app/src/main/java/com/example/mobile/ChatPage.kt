@@ -149,8 +149,20 @@ class ChatPage : AppCompatActivity() {
             }
         }
 
+        socket.on("userDeletedChatRoom"){ args ->
+            if(args[0] != null){
+                val intent = Intent(this, ChatRooms::class.java)
+                intent.putExtra("userName", user)
+                startActivity(intent)
+            }
+        }
+
         //handle popup menu options
         chatViewOptions.setOnClickListener {
+            if (roomName != "Canal Principal") {
+                getRoomParameters()
+            }
+
             val popupMenu = PopupMenu(
                 this,
                 chatViewOptions
@@ -171,7 +183,7 @@ class ChatPage : AppCompatActivity() {
                         true
                     }
                     R.id.menu_deleteChat -> {
-                        deleteChat()
+                        deleteChatDB()
                         Toast.makeText(this, "Supprimer", Toast.LENGTH_LONG).show()
                         true
                     }
@@ -230,13 +242,20 @@ class ChatPage : AppCompatActivity() {
     }
 
     private fun deleteChat() {
+        var roomData : JSONObject = JSONObject()
+        roomData.put("userName", user)
+        roomData.put("room", roomName)
+        socket.emit("deleteRoom", roomData)
+    }
+
+    private fun deleteChatDB() {
         compositeDisposable.add(iMyService.deleteRoom(roomName)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { result ->
                 if (result == "201") {
                     Toast.makeText(this, "bye", Toast.LENGTH_SHORT).show()
-                    leaveChat()
+                    deleteChat()
                 } else {
                     Toast.makeText(this, "erreur", Toast.LENGTH_SHORT).show()
                 }
