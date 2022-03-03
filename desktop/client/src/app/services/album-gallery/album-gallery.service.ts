@@ -3,8 +3,8 @@ import { Injectable } from '@angular/core';
 import { IAlbum } from '@app/interfaces-enums/IAlbum'
 import { LoginService } from '@app/services/login/login.service';
 
-export const ALBUM_URL = "http://localhost:3000/albums";
-export const PUBLIC_DRAWINGS_URL = "http://localhost:3000/public-drawings";
+export const ALBUM_URL = "http://localhost:3001/albums";
+export const PUBLIC_DRAWINGS_URL = "http://localhost:3001/public-drawings";
 
 @Injectable({
   providedIn: 'root'
