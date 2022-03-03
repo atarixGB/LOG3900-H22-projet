@@ -4,19 +4,20 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:paddingStart="8dp"
-    android:paddingBottom="8dp">
+    android:paddingTop="8dp">
 
     <Button
         android:id="@+id/item_room_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="#52bcfa"
+        android:background="@color/white"
         android:fontFamily="@font/roboto"
-        android:maxWidth="500dp"
-        android:padding="10dp"
+        android:minWidth="240dp"
         android:text="room"
         android:textColor="@color/black"
-        android:textSize="24sp"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
