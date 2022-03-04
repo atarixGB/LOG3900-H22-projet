@@ -5,18 +5,9 @@
     <div fxFlex="20"></div>
 
     <div fxLayout="row" fxLayoutAlign="space-evenly center">
-      <button mat-raised-button color="primary" (click)="openCreateChatroomDialog()">Créer une conversation</button>
-      <button mat-raised-button color="primary" routerLink="/public-chatrooms">Trouver une conversation</button>
-    </div>
-
-    <div fxLayout="row" fxLayoutAlign="center center">
-      <h2>
-        Mes conversations
-      </h2>
-    </div>
-
-    <div fxLayout="row" fxLayoutAlign="space-evenly center">
-      <button mat-raised-button color="accent" (click)="joinDefaultChannel()">Canal public</button>
+      <button mat-icon-button disableRipple="true" routerLink="/chatmenu">
+        <mat-icon id="back-btn">keyboard_arrow_left</mat-icon> Retour vers Mes Conversations
+      </button>
     </div>
 
     <div fxLayout="column" fxLayoutAlign="center center">
