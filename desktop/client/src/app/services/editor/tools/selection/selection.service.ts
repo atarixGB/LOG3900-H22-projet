@@ -24,6 +24,7 @@ export class SelectionService extends Tool {
   selectionCnv: HTMLCanvasElement;
   zIndex: number;
   borderColor: string;
+  selectionCPs: HTMLElement[];
 
   isActiveSelection: boolean;
   isMoving: boolean;
@@ -38,6 +39,7 @@ export class SelectionService extends Tool {
     this.toolUpdate$ = this.shouldBeSelectionTool.asObservable();
     this.zIndex = 10; //Arbitrary value to make sure user selection is put to front
     this.borderColor = 'blue';
+    this.selectionCPs = [];
     this.isActiveSelection = false; 
     this.isMoving = false;
 
@@ -78,7 +80,7 @@ export class SelectionService extends Tool {
       if (this.isOnSelectionCanvas(mouseTarget)) {
           this.isMoving = true;
           this.moveSelectionService.oldMousePos = { x: event.x, y: event.y };
-          this.moveSelectionService.setSelectionCnv(this.selectionCnv, this.selectionCnv.getContext('2d') as CanvasRenderingContext2D);
+          this.moveSelectionService.setSelectionCnv(this.selectionCnv, this.selectionCnv.getContext('2d') as CanvasRenderingContext2D, this.selectionCPs);
       } else {
         this.pasteSelectionOnBaseCnv();
       }
@@ -104,6 +106,7 @@ export class SelectionService extends Tool {
   handleKeyUp(event: KeyboardEvent): void {
     if (event.key === 'Backspace' || event.key === 'Delete') {
       this.deleteSelection(this.selectionCnv);
+      this.hideSelectionCps();
       this.collaborationService.broadcastDeleteRequest();
       this.isActiveSelection = false;
     }
@@ -126,6 +129,7 @@ export class SelectionService extends Tool {
     this.selectedStroke.drawStroke(this.drawingService.baseCtx);
     this.addStroke(this.selectedStroke);
     this.deleteSelection(this.selectionCnv);
+    this.hideSelectionCps();
     this.isActiveSelection = false;
     this.collaborationService.broadcastPasteRequest();
   }
@@ -166,6 +170,29 @@ export class SelectionService extends Tool {
     const pos = {x: stroke.boundingPoints[0].x, y: stroke.boundingPoints[0].y }
     this.positionSelectionCanvas(pos, this.selectionCnv);
     this.pasteStrokeOnSelectionCnv(stroke, this.selectionCnv.getContext('2d') as CanvasRenderingContext2D);
+    this.adjustCpsToSelection();
+  }
+
+  adjustCpsToSelection(): void {
+    const cpRadius = this.selectionCPs[0].offsetWidth / 2;
+    const topLeftCpPos = { x: this.selectionCnv.offsetLeft - cpRadius, y: this.selectionCnv.offsetTop - cpRadius };
+    const cnvWidth = this.selectionCnv.offsetWidth;
+    const cnvHeight = this.selectionCnv.offsetHeight;
+
+    this.selectionCPs.forEach(cp => {
+      cp.style.zIndex = (this.zIndex + 1).toString();
+      cp.style.visibility = 'visible';
+    });
+
+    this.positionCp(this.selectionCPs[0], topLeftCpPos);
+    this.positionCp(this.selectionCPs[1], {x: topLeftCpPos.x + cnvWidth, y: topLeftCpPos.y });
+    this.positionCp(this.selectionCPs[2], {x: topLeftCpPos.x, y: topLeftCpPos.y + cnvHeight});
+    this.positionCp(this.selectionCPs[3], {x: topLeftCpPos.x + cnvWidth, y: topLeftCpPos.y + cnvHeight});
+  }
+
+  private positionCp(cp: HTMLElement, pos: Vec2): void {
+    cp.style.left = (pos.x).toString() + 'px';
+    cp.style.top = (pos.y).toString() + 'px';
   }
 
   createSelectionCanvas(containerDiv: HTMLElement, stroke: Stroke, zIndex: number, borderColor: string): HTMLCanvasElement {
@@ -222,5 +249,11 @@ export class SelectionService extends Tool {
           break;
       }
     }
+  }
+
+  private hideSelectionCps(): void {
+    this.selectionCPs.forEach(cp => {
+      cp.style.visibility = 'hidden';
+    });
   }
 }

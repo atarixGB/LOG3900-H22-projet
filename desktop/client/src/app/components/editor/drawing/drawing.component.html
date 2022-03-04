@@ -3,5 +3,8 @@
         <canvas id="canvas" #baseCanvas [attr.width]="width" [attr.height]="height"> </canvas>
         <canvas id="previewLayer" #previewCanvas [attr.width]="width" [attr.height]="height"></canvas>
         <canvas id="cursor" #cursorCanvas [attr.width]="width" [attr.height]="height"> </canvas>
+
+        <button *ngFor="let number of [0, 1, 2, 3]"  id="selectionCP" #selectionCP class="selectionCP"    mat-mini-fab></button>
+        
     </div>
 </div>
