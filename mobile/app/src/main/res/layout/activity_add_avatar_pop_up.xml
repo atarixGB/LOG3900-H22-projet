@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    tools:context=".SelectAvatarPopUp">
+
+    <com.mikhaellopez.circularimageview.CircularImageView
+        android:id="@+id/userAvatar"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="100dp"
+        android:src="@drawable/placeholder_logo"
+        app:civ_border_color="@color/purple_500"
+        app:civ_border_width="2dp" />
+
+
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <com.mikhaellopez.circularimageview.CircularImageView
+            android:id="@+id/avatar1"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginRight="15dp"
+            android:src="@drawable/monster1"
+            app:civ_border_color="@color/purple_200"
+            app:civ_border_width="2dp" />
+
+
+        <com.mikhaellopez.circularimageview.CircularImageView
+            android:id="@+id/avatar2"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginRight="5dp"
+            android:src="@drawable/monster2"
+            app:civ_border_color="@color/purple_200"
+            app:civ_border_width="2dp" />
+
+
+
+        <com.mikhaellopez.circularimageview.CircularImageView
+            android:id="@+id/avatar3"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginRight="15dp"
+            android:src="@drawable/monster3"
+            app:civ_border_color="@color/purple_200"
+            app:civ_border_width="2dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_below="@+id/linearLayout1"
+        android:layout_marginTop="-4dp"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/linearLayout1"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="150dp">
+
+
+
+        <com.mikhaellopez.circularimageview.CircularImageView
+            android:id="@+id/avatar4"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="15dp"
+            android:src="@drawable/monster4"
+            app:civ_border_color="@color/purple_200"
+            app:civ_border_width="2dp" />
+
+
+
+        <com.mikhaellopez.circularimageview.CircularImageView
+            android:id="@+id/avatar5"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginRight="15dp"
+            android:src="@drawable/monster5"
+            app:civ_border_color="@color/purple_200"
+            app:civ_border_width="2dp" />
+
+
+
+        <com.mikhaellopez.circularimageview.CircularImageView
+            android:id="@+id/avatar6"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/monster6"
+            app:civ_border_color="@color/purple_200"
+            app:civ_border_width="2dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout3"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_below="@+id/linearLayout2"
+        android:layout_centerHorizontal="true"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+        app:layout_editor_absoluteX="16dp"
+        app:layout_editor_absoluteY="150dp">
+
+
+        <com.mikhaellopez.circularimageview.CircularImageView
+            android:id="@+id/avatar7"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginLeft="-4dp"
+            android:src="@drawable/monster7"
+            app:civ_border_color="@color/purple_200"
+            app:civ_border_width="2dp" />
+
+
+        <com.mikhaellopez.circularimageview.CircularImageView
+            android:id="@+id/avatar8"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginLeft="7dp"
+            android:src="@drawable/monster8"
+            app:civ_border_color="@color/purple_200"
+            app:civ_border_width="2dp" />
+
+
+        <com.mikhaellopez.circularimageview.CircularImageView
+            android:id="@+id/avatar9"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginLeft="20dp"
+            android:src="@drawable/monster9"
+            app:civ_border_color="@color/purple_200"
+            app:civ_border_width="2dp" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/valider"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/userAvatar"
+        android:layout_alignRight="@+id/userAvatar"
+        android:layout_marginEnd="-60dp"
+        android:layout_marginTop="30dp"
+        android:gravity="center"
+        android:text="valider"
+         />
+
+    <Button
+        android:id="@+id/cancelBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/valider"
+        android:layout_alignRight="@+id/userAvatar"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="-60dp"
+        android:text="Annuler"
+        android:textColor="@color/white" />
+
+
+</RelativeLayout>
