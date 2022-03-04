@@ -2,8 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProfileService } from './profile.service';
-
-const PROFILE_UPDATE_URL = 'http://localhost:3001/profileUpdate';
+import { PROFILE_UPDATE_URL } from '@app/constants/api-urls';
 
 @Injectable({
     providedIn: 'root',

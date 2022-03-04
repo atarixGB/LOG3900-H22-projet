@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as io from 'socket.io-client';
+import { CHAT_URL } from '@app/constants/api-urls';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ export class ChatService {
 
   connectUser(): void {
     // this.socket = io.io('https://polygram-app.herokuapp.com/', { transports: ['websocket'] });
-    this.socket = io.io(`http://localhost:3000/`, { transports: ['websocket'] });
+    this.socket = io.io(CHAT_URL, { transports: ['websocket'] });
 
     this.socket.emit('newUser', this.username);
 

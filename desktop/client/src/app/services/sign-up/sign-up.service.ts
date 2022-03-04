@@ -1,8 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-
-const SIGN_UP_URL = 'http://localhost:3001/register';
+import { SIGN_UP_URL } from '@app/constants/api-urls';
 
 @Injectable({
     providedIn: 'root',
