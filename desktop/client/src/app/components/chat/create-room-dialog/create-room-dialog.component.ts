@@ -16,7 +16,7 @@ export class CreateRoomDialogComponent implements OnInit {
 
   createChatroom(): void {
     console.log(`Creating chatroom... "${this.chatroomName}"`);
-
+    this.chatService.createRoom(this.chatroomName);
   }
 
 }
