@@ -1,0 +1,73 @@
+<div fxLayout="row" fxLayoutAlign="center stretch" fxFlex="100">
+   <!-- Side Menu -->
+   <app-side-menu fxLayout="column" fxLayoutAlign="start stretch" fxFlex="15%"></app-side-menu>
+
+   <!-- Profil page -->
+   <div fxLayout="column" fxLayoutAlign="start stretch" fxFlex="auto">
+      <div fxFlex="10"></div>
+      <div fxLayout="row" fxLayoutAlign="center center" >
+         <h1 id="title">Profil</h1>
+      </div>
+      
+      <!-- Avatar, username, email and description -->
+      <div fxLayout="row" fxLayoutAlign="center center" >
+
+         <div fxLayout="column" fxLayoutAlign="center center">
+             <div id="avatarDisplay" fxLayoutAlign="center center">
+                 <img id="avatarImg" src="data:image/png;base64,{{this.profileService.avatarSrc}}">
+             </div>
+             <h2 id="username">{{this.profileService.username}}</h2>
+             <h3 id="email">{{this.profileService.email}}</h3>
+         </div>
+
+         <div fxFlex="2"></div>
+
+         <div fxLayout="column" fxLayoutAlign="start start" fxFlex="50">
+            <span class="sectionTitle">Description:</span>
+            <p id="description">{{this.profileService.description}}</p>
+         </div>
+         
+      </div>
+   
+      <div fxFlex="5"></div>
+
+      <!-- Statistics -->
+      <div fxLayout="row" fxLayoutAlign="center start">
+         <div id="statsContainer" fxLayout="row" fxLayoutAlign="start start" fxFlex="75">
+            <div fxFlex="2"></div>
+
+            <div fxLayout="column" fxLayoutAlign="start stretch" >
+               <span class="sectionTitle">Statistiques:</span>
+               <div fxLayout="row" fxLayoutAlign="start start">
+                  <span>Nombre de collaborations : </span>
+                  <span>69</span>
+               </div>
+               <div fxLayout="row" fxLayoutAlign="start start">
+                  <span>Nombre de dessins créés : </span>
+                  <span>420</span>
+               </div>
+               <div fxLayout="row" fxLayoutAlign="start start">
+                  <span>Nombre d'albums privés : </span>
+                  <span>69420</span>
+               </div>
+               <div fxLayout="row" fxLayoutAlign="start start">
+                  <span>Temps moyen des séances de collaboration : </span>
+                  <span>Couple hours</span>
+               </div>
+               <div fxLayout="row" fxLayoutAlign="start start">
+                  <span>Temps total de collaboration : </span>
+                  <span>Un billion de temps</span>
+               </div>
+            </div>
+         
+            <div fxFlex="2"></div>
+         </div>
+      </div>
+   
+      <!-- Settings -->
+      <div fxFlex="5"></div>
+      <div fxLayout="row" fxLayoutAlign="center start">
+         <button mat-raised-button color="warn" routerLink="/profileSettings">Paramètres du profil</button>
+      </div>
+   </div>
+</div>

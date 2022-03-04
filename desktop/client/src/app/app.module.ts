@@ -1,6 +1,7 @@
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
+import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -21,8 +22,13 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MaterialFileInputModule } from 'ngx-material-file-input';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './components/app/app.component';
+import { AvatarImportModalComponent } from './components/avatar/avatar-import-modal/avatar-import-modal.component';
+import { AvatarSelectionModalComponent } from './components/avatar/avatar-selection-modal/avatar-selection-modal.component';
+import { ChatMenuComponent } from './components/chat/chat-menu/chat-menu.component';
+import { ChatroomComponent } from './components/chat/chatroom/chatroom.component';
 import { ConfigPanelComponent } from './components/editor/config-panel/config-panel.component';
 import { DrawingComponent } from './components/editor/drawing/drawing.component';
 import { EditorComponent } from './components/editor/editor.component';
@@ -39,12 +45,16 @@ import { RectangleConfigComponent } from './components/editor/sidebar/rectangle-
 import { SidebarComponent } from './components/editor/sidebar/sidebar.component';
 import { ToolsListComponent } from './components/editor/sidebar/tools-list/tools-list.component';
 import { LoginComponent } from './components/login/login.component';
-import { FlexLayoutModule } from '@angular/flex-layout';
-import { ChatMenuComponent } from './components/chat/chat-menu/chat-menu.component';
 import { MenuComponent } from './components/menu/menu.component';
 import { SideMenuComponent } from './components/menu/side-menu/side-menu.component';
+import { ProfileSettingsComponent } from './components/profile/profile-settings/profile-settings.component';
+import { ProfileComponent } from './components/profile/profile.component';
 import { SignUpComponent } from './components/sign-up/sign-up.component';
-import { ChatroomComponent } from './components/chat/chatroom/chatroom.component';
+import { AlbumGalleryComponent } from './components/album-gallery/my-albums/album-gallery.component';
+import { CreateAlbumDialogComponent } from './components/album-gallery/create-album-dialog/create-album-dialog.component';
+import { PublicAlbumsComponent } from './components/album-gallery/public-albums/public-albums.component';
+import { DrawingsViewComponent } from './components/album-gallery/drawings-view/drawings-view.component';
+import { PublicDrawingGalleryComponent } from './components/album-gallery/public-drawing-gallery/public-drawing-gallery.component';
 
 @NgModule({
     declarations: [
@@ -70,7 +80,17 @@ import { ChatroomComponent } from './components/chat/chatroom/chatroom.component
         MenuComponent,
         SideMenuComponent,
         SignUpComponent,
-        ChatroomComponent
+        AlbumGalleryComponent,
+        CreateAlbumDialogComponent,
+        ChatroomComponent,
+        PublicAlbumsComponent,
+        DrawingsViewComponent,
+        PublicDrawingGalleryComponent,
+        AvatarSelectionModalComponent,
+        AvatarImportModalComponent,
+        ChatroomComponent,
+        ProfileComponent,
+        ProfileSettingsComponent,
     ],
     imports: [
         BrowserModule,
@@ -99,6 +119,7 @@ import { ChatroomComponent } from './components/chat/chatroom/chatroom.component
         MatRadioModule,
         MatCheckboxModule,
         FlexLayoutModule,
+        MaterialFileInputModule,
     ],
     providers: [],
     bootstrap: [AppComponent],

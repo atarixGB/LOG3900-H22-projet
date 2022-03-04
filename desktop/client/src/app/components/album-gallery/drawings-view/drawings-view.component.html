@@ -1,0 +1,29 @@
+<div fxLayout="row" fxLayoutAlign="center stretch" fxFlex="100">
+  <app-side-menu fxLayout="column" fxLayoutAlign="start stretch" fxFlex="15%"></app-side-menu>
+
+  <div fxLayout="column" fxLayoutAlign="space-evenly stretch" fxFlex="auto">
+
+    <div fxLayout="row" fxLayoutAlign="space-evenly start">
+      <button mat-icon-button disableRipple="true" routerLink="/my-albums">
+        <mat-icon id="back-btn">keyboard_arrow_left</mat-icon> Retour vers Mes Albums
+      </button>
+    </div>
+
+    <div fxLayout="column" fxLayoutAlign="space-evenly center">
+      <p>Les dessins de l'album {{this.albumGalleryService.currentAlbum.name }} apparaîtront ici!</p>
+      <p>ID: {{this.albumGalleryService.currentAlbum._id}},
+        Proprio: {{this.albumGalleryService.currentAlbum.owner}},
+        Description: {{this.albumGalleryService.currentAlbum.description}}</p>
+    </div>
+
+
+    <div>
+      <div fxLayout="row" fxLayoutAlign="space-evenly center">
+        <button mat-raised-button color="primary" (click)="openSettingsDialog()">Modifer l'album</button>
+        <button mat-raised-button color="primary" (click)="leaveAlbumButton()" [disabled]="this.isCurrentAlbumMine">Quitter l'album</button>
+        <button mat-raised-button color="accent" (click)="deleteAlbumButton()" [disabled]="!this.isCurrentAlbumMine">Supprimer l'album</button>
+      </div>
+    </div>
+
+  </div>
+</div>

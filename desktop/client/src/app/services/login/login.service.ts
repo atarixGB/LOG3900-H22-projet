@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ProfileService } from '../profile/profile.service';
 
-const LOGIN_URL = 'http://localhost:3000/login';
+const LOGIN_URL = 'http://localhost:3001/login';
 
 @Injectable({
     providedIn: 'root',
@@ -12,7 +13,7 @@ export class LoginService {
     password: string;
     socket: any;
 
-    constructor(private httpClient: HttpClient, private router: Router, private route: ActivatedRoute) {
+    constructor(private httpClient: HttpClient, private router: Router, private route: ActivatedRoute, private profileService: ProfileService) {
         this.username = '';
         this.password = '';
     }
@@ -25,11 +26,16 @@ export class LoginService {
 
         this.httpClient.post(LOGIN_URL, userCredentials).subscribe(
             (result) => {
-                console.log('Result: ', result);
-                if (result) {
+                if (result == 200) {
+                  console.log(result, "Login sucess")
                   this.router.navigate(['../menu'], { relativeTo: this.route });
-                } else {
+                  this.profileService.setUsername(this.username);
+                } else if (result == 403) {
                   // TODO: Add UI feedback
+                  console.log(result, "Wrong password");
+                } else if (result == 404) {
+                  // TODO: Add UI feedback
+                  console.log(result, "Identifier does not exist.")
                 }
             },
             (error) => {
