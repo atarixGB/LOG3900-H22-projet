@@ -3,6 +3,7 @@ import { Stroke } from '@app/classes/strokes/stroke';
 import { Vec2 } from '@app/classes/vec2';
 import { ICollabSelection } from '@app/interfaces-enums/ICollabSelection';
 import { CollaborationService } from '@app/services/collaboration/collaboration.service';
+import { DrawingService } from '../../drawing/drawing.service';
 import { SelectionService } from './selection.service';
  
 @Injectable({
@@ -15,19 +16,29 @@ export class CollabSelectionService {
   containerDiv: HTMLElement;
   zIndex: number;
 
-  constructor(private selectionService: SelectionService,  private collaborationService: CollaborationService) {
+  constructor(private drawingService: DrawingService, private selectionService: SelectionService,  private collaborationService: CollaborationService) {
     this.selectionStrokes = new Map<string, Stroke>();
     this.selectionCnvs = new Map<string, HTMLCanvasElement>();
     this.zIndex = 0;
 
     this.collaborationService.newSelection$.subscribe((newSelection: any) => {
-      console.log('Selection received in Collab Selection service'); 
       this.addSelectedStroke(newSelection as ICollabSelection);
     });
 
     this.collaborationService.newSelectionPos$.subscribe((newSelectionPos: any) => {
-      console.log('New position received in Collab Selection service'); 
       this.moveUpdate(newSelectionPos.sender, newSelectionPos.pos);
+    });
+
+    this.collaborationService.pasteRequest$.subscribe((pasteReq: any) => {
+      this.pasteSelected(pasteReq.sender);
+    });
+
+    this.collaborationService.deleteRequest$.subscribe((delReq: any) => {
+      this.removeSelected(delReq.sender);
+    });
+
+    this.collaborationService.newStrokeWidth$.subscribe((width: any) => {
+      this.updateSelectionStrokeWidth(width.sender, width.value);
     });
   }
 
@@ -36,22 +47,39 @@ export class CollabSelectionService {
     this.displaySelection(selected);
   }
   
-  moveUpdate(sender: string, newPos: Vec2): void {
+  private moveUpdate(sender: string, newPos: Vec2): void {
     let cnv = this.selectionCnvs.get(sender) as HTMLCanvasElement;
     this.selectionService.positionSelectionCanvas(newPos, cnv);
   }
 
   /*resizeUpdate(): void {
   
-  }
-
-  strokeModificationUpdate(): void {
-
-  }
-
-  pasteSelected(): void {
-
   }*/
+
+  private updateSelectionStrokeWidth(sender: string, newWidth: number): void {
+    let stroke = this.selectionStrokes.get(sender) as Stroke;
+    let cnv = this.selectionCnvs.get(sender) as HTMLCanvasElement;
+    stroke.updateStrokeWidth(newWidth);
+    this.drawingService.clearCanvas(cnv.getContext('2d') as CanvasRenderingContext2D);
+    stroke.drawStroke(cnv.getContext('2d') as CanvasRenderingContext2D);
+  }
+
+  private pasteSelected(sender: string): void {
+    let stroke = this.selectionStrokes.get(sender) as Stroke;
+    let cnv = this.selectionCnvs.get(sender) as HTMLCanvasElement;
+    const selectionTopLeftCorner = { x: cnv.offsetLeft, y: cnv.offsetTop }
+    const selectionSize = { x: cnv.width, y: cnv.height }
+    stroke.prepForBaseCanvas(selectionTopLeftCorner, selectionSize);
+    stroke.drawStroke(this.drawingService.baseCtx);
+    this.selectionService.addStroke(stroke);
+    this.removeSelected(sender);
+  }
+
+  private removeSelected(sender: string): void {
+    this.selectionService.deleteSelection(this.selectionCnvs.get(sender) as HTMLCanvasElement);
+    this.selectionCnvs.delete(sender);
+    this.selectionStrokes.delete(sender);
+  }
 
   private displaySelection(selected: ICollabSelection) {
     let stroke = this.selectionStrokes.get(selected.sender) as Stroke;

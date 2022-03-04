@@ -19,6 +19,15 @@ export class CollaborationService {
     newSelectionPos: Subject<any>;
     newSelectionPos$: Observable<any>;
 
+    pasteRequest: Subject<any>;
+    pasteRequest$: Observable<any>;
+
+    deleteRequest: Subject<any>;
+    deleteRequest$: Observable<any>;
+
+    newStrokeWidth: Subject<any>;
+    newStrokeWidth$: Observable<any>;
+
     constructor(public drawingService: DrawingService) { 
         this.newStroke = new Subject();
         this.newStroke$ = this.newStroke.asObservable();
@@ -28,6 +37,15 @@ export class CollaborationService {
 
         this.newSelectionPos = new Subject();
         this.newSelectionPos$ = this.newSelectionPos.asObservable();
+
+        this.pasteRequest = new Subject();
+        this.pasteRequest$ = this.pasteRequest.asObservable();
+
+        this.deleteRequest = new Subject();
+        this.deleteRequest$ = this.deleteRequest.asObservable();
+
+        this.newStrokeWidth = new Subject();
+        this.newStrokeWidth$ = this.newStrokeWidth.asObservable();
     }
 
     enterCollaboration(): void {
@@ -50,6 +68,24 @@ export class CollaborationService {
                 this.newSelectionPos.next(selectionPos); // this is an observable value that will be read by collab selection service
             }
         });
+
+        this.socket.on('receivePasteRequest', (pasteReq: any) => {
+            if (pasteReq.sender !== this.socket.id) {
+                this.pasteRequest.next(pasteReq); // this is an observable value that will be read by collab selection service
+            }
+        });
+
+        this.socket.on('receiveDeleteRequest', (delReq: any) => {
+            if (delReq.sender !== this.socket.id) {
+                this.deleteRequest.next(delReq); // this is an observable value that will be read by collab selection service
+            }
+        });
+
+        this.socket.on('receiveStrokeWidth', (width: any) => {
+            if (width.sender !== this.socket.id) {
+                this.newStrokeWidth.next(width); // this is an observable value that will be read by collab selection service
+            }
+        });
     } 
 
     broadcastStroke(stroke: any): void {
@@ -65,5 +101,18 @@ export class CollaborationService {
     broadcastSelectionPos(selectionPos: any): void {
         selectionPos.sender = this.socket.id;
         this.socket.emit('broadcastSelectionPos', selectionPos);
+    }
+
+    broadcastPasteRequest(): void {
+        this.socket.emit('broadcastPasteRequest', { sender: this.socket.id });
+    }
+
+    broadcastDeleteRequest(): void {
+        this.socket.emit('broadcastDeleteRequest', { sender: this.socket.id });
+    }
+
+    broadcastNewStrokeWidth(width: any): void {
+        width.sender = this.socket.id;
+        this.socket.emit('broadcastNewStrokeWidth', width);
     }
 }

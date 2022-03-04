@@ -29,4 +29,19 @@ io.on('connection', (socket) => {
       console.log("Broadcasting new selection position : ", posData);
       io.emit('receiveSelectionPos', posData);
     })
+
+    socket.on('broadcastPasteRequest', (posData) => {
+      console.log("Broadcasting paste request from :", posData);
+      io.emit('receivePasteRequest', posData);
+    })
+
+    socket.on('broadcastDeleteRequest', (posData) => {
+      console.log("Broadcasting delete request from :", posData);
+      io.emit('receiveDeleteRequest', posData);
+    })
+
+    socket.on('broadcastNewStrokeWidth', (posData) => {
+      console.log("Broadcasting new stroke width :", posData);
+      io.emit('receiveStrokeWidth', posData);
+    })
 })

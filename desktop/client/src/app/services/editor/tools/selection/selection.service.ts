@@ -42,7 +42,6 @@ export class SelectionService extends Tool {
     this.isMoving = false;
 
     this.collaborationService.newStroke$.subscribe((newStroke: any) => {
-      console.log('Stroke received in selection service');
       this.addIncomingStrokeFromOtherUser(newStroke);
     });
   }
@@ -105,6 +104,7 @@ export class SelectionService extends Tool {
   handleKeyUp(event: KeyboardEvent): void {
     if (event.key === 'Backspace' || event.key === 'Delete') {
       this.deleteSelection(this.selectionCnv);
+      this.collaborationService.broadcastDeleteRequest();
       this.isActiveSelection = false;
     }
   }
@@ -113,6 +113,10 @@ export class SelectionService extends Tool {
     this.selectedStroke.updateStrokeWidth(newWidth);
     this.drawingService.clearCanvas(this.selectionCnv.getContext('2d') as CanvasRenderingContext2D);
     this.selectedStroke.drawStroke(this.selectionCnv.getContext('2d') as CanvasRenderingContext2D);
+    this.collaborationService.broadcastNewStrokeWidth({
+      sender: '',
+      value: newWidth,
+    });
   }
 
   pasteSelectionOnBaseCnv(): void {
@@ -123,6 +127,7 @@ export class SelectionService extends Tool {
     this.addStroke(this.selectedStroke);
     this.deleteSelection(this.selectionCnv);
     this.isActiveSelection = false;
+    this.collaborationService.broadcastPasteRequest();
   }
 
   private isOnSelectionCanvas(mouseLocation: HTMLElement): boolean {
