@@ -1,5 +1,5 @@
 export interface ICollabSelection {
-   selectorID: string,
+   sender: string,
    strokeIndex: number,
  }
  

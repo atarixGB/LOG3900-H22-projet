@@ -24,4 +24,9 @@ io.on('connection', (socket) => {
       console.log("Broadcasting selection : ", selectionData);
       io.emit('receiveSelection', selectionData);
     })
+
+    socket.on('broadcastSelectionPos', (posData) => {
+      console.log("Broadcasting new selection position : ", posData);
+      io.emit('receiveSelectionPos', posData);
+    })
 })

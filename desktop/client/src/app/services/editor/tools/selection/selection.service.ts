@@ -62,7 +62,7 @@ export class SelectionService extends Tool {
     let index = this.strokes.indexOf(stroke);
     this.redrawAllStrokesExceptSelected(stroke);
     this.collaborationService.broadcastSelection({
-      selectorID: '',
+      sender: '',
       strokeIndex: index,
     });
   }
@@ -93,7 +93,13 @@ export class SelectionService extends Tool {
   }
 
   onMouseUp(event: MouseEvent): void {
-    this.isMoving = false;
+    if (this.isMoving) {
+      this.isMoving = false;
+      this.collaborationService.broadcastSelectionPos({
+        sender: '',
+        pos: { x: this.selectionCnv.offsetLeft, y: this.selectionCnv.offsetTop },
+      });
+    }
   }
 
   handleKeyUp(event: KeyboardEvent): void {

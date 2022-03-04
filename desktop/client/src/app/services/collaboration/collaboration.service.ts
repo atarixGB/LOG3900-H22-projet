@@ -16,12 +16,18 @@ export class CollaborationService {
     newSelection: Subject<any>;
     newSelection$: Observable<any>;
 
+    newSelectionPos: Subject<any>;
+    newSelectionPos$: Observable<any>;
+
     constructor(public drawingService: DrawingService) { 
         this.newStroke = new Subject();
         this.newStroke$ = this.newStroke.asObservable();
 
         this.newSelection = new Subject();
         this.newSelection$ = this.newSelection.asObservable();
+
+        this.newSelectionPos = new Subject();
+        this.newSelectionPos$ = this.newSelectionPos.asObservable();
     }
 
     enterCollaboration(): void {
@@ -34,8 +40,14 @@ export class CollaborationService {
         });
 
         this.socket.on('receiveSelection', (selection: any) => {
-            if (selection.selectorID !== this.socket.id) {
+            if (selection.sender !== this.socket.id) {
                 this.newSelection.next(selection); // this is an observable value that will be read by collab selection service
+            }
+        });
+
+        this.socket.on('receiveSelectionPos', (selectionPos: any) => {
+            if (selectionPos.sender !== this.socket.id) {
+                this.newSelectionPos.next(selectionPos); // this is an observable value that will be read by collab selection service
             }
         });
     } 
@@ -46,7 +58,12 @@ export class CollaborationService {
     }
 
     broadcastSelection(selection: ICollabSelection): void {
-        selection.selectorID = this.socket.id;
+        selection.sender = this.socket.id;
         this.socket.emit('broadcastSelection', selection);
+    }
+
+    broadcastSelectionPos(selectionPos: any): void {
+        selectionPos.sender = this.socket.id;
+        this.socket.emit('broadcastSelectionPos', selectionPos);
     }
 }
