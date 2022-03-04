@@ -77,7 +77,7 @@ import { SelectionConfigComponent } from './components/editor/sidebar/selection-
         ChatroomComponent,
         ProfileComponent,
         ProfileSettingsComponent,
-        SelectionConfigComponent,
+        SelectionConfigComponent, 
     ],
     imports: [
         BrowserModule,

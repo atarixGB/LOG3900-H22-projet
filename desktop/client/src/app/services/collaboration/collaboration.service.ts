@@ -1,12 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Stroke } from '@app/classes/strokes/stroke';
-import { StrokeEllipse } from '@app/classes/strokes/stroke-ellipse';
-import { StrokePencil } from '@app/classes/strokes/stroke-pencil';
-import { StrokeRectangle } from '@app/classes/strokes/stroke-rectangle';
-import { ToolList } from '@app/interfaces-enums/tool-list';
+import { ICollabSelection } from '@app/interfaces-enums/ICollabSelection';
 import { DrawingService } from '@app/services/editor/drawing/drawing.service';
 import * as io from 'socket.io-client';
-import { SelectionService } from '../editor/tools/selection/selection.service';
+import { Observable, Subject } from 'rxjs';
 
 @Injectable({
     providedIn: 'root',
@@ -14,39 +10,43 @@ import { SelectionService } from '../editor/tools/selection/selection.service';
 export class CollaborationService {
     socket: any;
 
-    constructor(public drawingService: DrawingService, private selectionService: SelectionService) { }
+    newStroke: Subject<any>;
+    newStroke$: Observable<any>;
+
+    newSelection: Subject<any>;
+    newSelection$: Observable<any>;
+
+    constructor(public drawingService: DrawingService) { 
+        this.newStroke = new Subject();
+        this.newStroke$ = this.newStroke.asObservable();
+
+        this.newSelection = new Subject();
+        this.newSelection$ = this.newSelection.asObservable();
+    }
 
     enterCollaboration(): void {
         this.socket = io.io('http://localhost:3002/', { transports: ['websocket'] });
 
         this.socket.on('receiveStroke', (stroke: any) => {
             if (stroke.sender !== this.socket.id) {
-                switch (stroke.toolType) {
-                    case ToolList.Rectangle: {
-                        const strokeRect: Stroke = new StrokeRectangle(stroke.boundingPoints, stroke.primaryColor, stroke.strokeWidth, stroke.secondaryColor, stroke.topLeftCorner, stroke.width, stroke.height, stroke.shapeType);
-                        strokeRect.drawStroke(this.drawingService.baseCtx);
-                        this.selectionService.addStroke(strokeRect);
-                        break;
-                    }
-                    case ToolList.Ellipse: {
-                        const strokeEllipse: Stroke = new StrokeEllipse(stroke.boundingPoints, stroke.primaryColor, stroke.strokeWidth, stroke.secondaryColor, stroke.center, stroke.radius, stroke.shapeType);
-                        strokeEllipse.drawStroke(this.drawingService.baseCtx);
-                        this.selectionService.addStroke(strokeEllipse);
-                        break;
-                    }
-                    case ToolList.Pencil: {
-                        const strokePencil: Stroke = new StrokePencil(stroke.boundingPoints, stroke.primaryColor, stroke.strokeWidth, stroke.points, stroke.isPoint);
-                        strokePencil.drawStroke(this.drawingService.baseCtx);
-                        this.selectionService.addStroke(strokePencil);
-                        break;
-                    }
-                }
+                this.newStroke.next(stroke); // this is an observable value that will be read by selection service
             }
         });
-    }
+
+        this.socket.on('receiveSelection', (selection: any) => {
+            if (selection.selectorID !== this.socket.id) {
+                this.newSelection.next(selection); // this is an observable value that will be read by collab selection service
+            }
+        });
+    } 
 
     broadcastStroke(stroke: any): void {
         stroke.sender = this.socket.id;
         this.socket.emit('broadcastStroke', stroke);
+    }
+
+    broadcastSelection(selection: ICollabSelection): void {
+        selection.selectorID = this.socket.id;
+        this.socket.emit('broadcastSelection', selection);
     }
 }

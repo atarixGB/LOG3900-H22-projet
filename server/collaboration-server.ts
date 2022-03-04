@@ -16,7 +16,12 @@ io.on('connection', (socket) => {
     console.log("New socket connection in collab : " + socket.id)
 
     socket.on('broadcastStroke', (strokeData) => {
-      console.log("StrokeData : " , strokeData);
+      console.log("Broadcasting stroke : " , strokeData);
       io.emit('receiveStroke', strokeData);
+    })
+
+    socket.on('broadcastSelection', (selectionData) => {
+      console.log("Broadcasting selection : ", selectionData);
+      io.emit('receiveSelection', selectionData);
     })
 })

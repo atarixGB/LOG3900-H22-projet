@@ -6,6 +6,11 @@ import { Vec2 } from '@app/classes/vec2';
 import { MouseButton } from '@app/constants/constants';
 import { DrawingService } from '@app/services/editor/drawing/drawing.service';
 import { MoveSelectionService } from './move-selection.service';
+import { CollaborationService } from '@app/services/collaboration/collaboration.service';
+import { StrokeRectangle } from '@app/classes/strokes/stroke-rectangle';
+import { StrokeEllipse } from '@app/classes/strokes/stroke-ellipse';
+import { StrokePencil } from '@app/classes/strokes/stroke-pencil';
+import { ToolList } from '@app/interfaces-enums/tool-list';
 
 @Injectable({
   providedIn: 'root',
@@ -18,6 +23,7 @@ export class SelectionService extends Tool {
   containerDiv: HTMLElement;
   selectionCnv: HTMLCanvasElement;
   zIndex: number;
+  borderColor: string;
 
   isActiveSelection: boolean;
   isMoving: boolean;
@@ -25,14 +31,20 @@ export class SelectionService extends Tool {
   shouldBeSelectionTool: Subject<boolean>;
   toolUpdate$: Observable<boolean>;
 
-  constructor(drawingService: DrawingService, private moveSelectionService: MoveSelectionService) {
+  constructor(drawingService: DrawingService, private moveSelectionService: MoveSelectionService, private collaborationService: CollaborationService) {
     super(drawingService);
-    this.strokes = [];
+    this.strokes = []; 
     this.shouldBeSelectionTool = new Subject();
     this.toolUpdate$ = this.shouldBeSelectionTool.asObservable();
     this.zIndex = 10; //Arbitrary value to make sure user selection is put to front
-    this.isActiveSelection = false;
+    this.borderColor = 'blue';
+    this.isActiveSelection = false; 
     this.isMoving = false;
+
+    this.collaborationService.newStroke$.subscribe((newStroke: any) => {
+      console.log('Stroke received in selection service');
+      this.addIncomingStrokeFromOtherUser(newStroke);
+    });
   }
 
   switchToSelectionTool(): void {
@@ -47,15 +59,18 @@ export class SelectionService extends Tool {
     this.isActiveSelection = true;
     this.selectedStroke = stroke;
     this.previewSelection(stroke);
+    let index = this.strokes.indexOf(stroke);
     this.redrawAllStrokesExceptSelected(stroke);
+    this.collaborationService.broadcastSelection({
+      selectorID: '',
+      strokeIndex: index,
+    });
   }
 
   onMouseClick(event: MouseEvent): void {
     if (!this.isActiveSelection && this.isStrokeFound(this.getPositionFromMouse(event))) {
       this.selectStroke(this.strokes[this.selectedIndex]);
-    } else {
-      console.log('no stroke in bounds');
-    }
+    } 
   }
 
   onMouseDown(event: MouseEvent): void {
@@ -83,7 +98,8 @@ export class SelectionService extends Tool {
 
   handleKeyUp(event: KeyboardEvent): void {
     if (event.key === 'Backspace' || event.key === 'Delete') {
-      this.deleteSelection();
+      this.deleteSelection(this.selectionCnv);
+      this.isActiveSelection = false;
     }
   }
 
@@ -99,17 +115,17 @@ export class SelectionService extends Tool {
     this.selectedStroke.prepForBaseCanvas(selectionTopLeftCorner, selectionSize);
     this.selectedStroke.drawStroke(this.drawingService.baseCtx);
     this.addStroke(this.selectedStroke);
-    this.deleteSelection();
+    this.deleteSelection(this.selectionCnv);
+    this.isActiveSelection = false;
   }
 
   private isOnSelectionCanvas(mouseLocation: HTMLElement): boolean {
     return mouseLocation.id === 'selectionCnv';
   }
   
-  private deleteSelection(): void {
-    if (this.selectionCnv) {
-      this.selectionCnv.remove();
-      this.isActiveSelection = false;
+  deleteSelection(selection: HTMLCanvasElement): void {
+    if (selection) {
+      selection.remove();
     }
   }
 
@@ -135,34 +151,35 @@ export class SelectionService extends Tool {
   }
 
   private previewSelection(stroke: Stroke): void {
-    this.selectionCnv = this.createSelectionCanvas(stroke, this.zIndex);
-    this.positionSelectionCanvas(stroke, this.selectionCnv);
+    this.selectionCnv = this.createSelectionCanvas(this.containerDiv, stroke, this.zIndex, this.borderColor);
+    const pos = {x: stroke.boundingPoints[0].x, y: stroke.boundingPoints[0].y }
+    this.positionSelectionCanvas(pos, this.selectionCnv);
     this.pasteStrokeOnSelectionCnv(stroke, this.selectionCnv.getContext('2d') as CanvasRenderingContext2D);
   }
 
-  private createSelectionCanvas(stroke: Stroke, zIndex: number): HTMLCanvasElement {
+  createSelectionCanvas(containerDiv: HTMLElement, stroke: Stroke, zIndex: number, borderColor: string): HTMLCanvasElement {
     let canvas = document.createElement('canvas');
     canvas.id = 'selectionCnv';
-    this.containerDiv.appendChild(canvas);
-    canvas.style.position = 'relative';
+    containerDiv.appendChild(canvas);
+    canvas.style.position = 'absolute';
     canvas.style.zIndex = zIndex.toString();
     canvas.width = stroke.boundingPoints[1].x - stroke.boundingPoints[0].x;
     canvas.height = stroke.boundingPoints[1].y - stroke.boundingPoints[0].y;
-    canvas.style.border = '2px solid blue';
+    canvas.style.border = '2px solid ' + borderColor;
     return canvas;
   }
 
-  private positionSelectionCanvas(stroke: Stroke, cnv: HTMLCanvasElement): void {
-    cnv.style.top = stroke.boundingPoints[0].y.toString() + 'px';
-    cnv.style.left = stroke.boundingPoints[0].x.toString() + 'px';
+  positionSelectionCanvas(topLeftPos: Vec2, cnv: HTMLCanvasElement): void {
+    cnv.style.left = topLeftPos.x.toString() + 'px';
+    cnv.style.top = topLeftPos.y.toString() + 'px';
   }
 
-  private pasteStrokeOnSelectionCnv(stroke: Stroke, selectionCtx: CanvasRenderingContext2D): void {
+  pasteStrokeOnSelectionCnv(stroke: Stroke, selectionCtx: CanvasRenderingContext2D): void {
     stroke.prepForSelection();
     stroke.drawStroke(selectionCtx);
   }
 
-  private redrawAllStrokesExceptSelected(stroke: Stroke): void {
+  redrawAllStrokesExceptSelected(stroke: Stroke): void {
     if (this.strokes.includes(stroke)) {
       this.strokes.splice(this.strokes.indexOf(stroke), 1);
     }
@@ -171,5 +188,28 @@ export class SelectionService extends Tool {
     this.strokes.forEach(stroke => {
       stroke.drawStroke(this.drawingService.baseCtx);
     });
+  }
+
+  private addIncomingStrokeFromOtherUser(stroke: any) {
+    switch (stroke.toolType) {
+      case ToolList.Rectangle: {
+          const strokeRect: Stroke = new StrokeRectangle(stroke.boundingPoints, stroke.primaryColor, stroke.strokeWidth, stroke.secondaryColor, stroke.topLeftCorner, stroke.width, stroke.height, stroke.shapeType);
+          strokeRect.drawStroke(this.drawingService.baseCtx);
+          this.addStroke(strokeRect);
+          break;
+      }
+      case ToolList.Ellipse: {
+          const strokeEllipse: Stroke = new StrokeEllipse(stroke.boundingPoints, stroke.primaryColor, stroke.strokeWidth, stroke.secondaryColor, stroke.center, stroke.radius, stroke.shapeType);
+          strokeEllipse.drawStroke(this.drawingService.baseCtx);
+          this.addStroke(strokeEllipse);
+          break;
+      }
+      case ToolList.Pencil: {
+          const strokePencil: Stroke = new StrokePencil(stroke.boundingPoints, stroke.primaryColor, stroke.strokeWidth, stroke.points, stroke.isPoint);
+          strokePencil.drawStroke(this.drawingService.baseCtx);
+          this.addStroke(strokePencil);
+          break;
+      }
+    }
   }
 }
