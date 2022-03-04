@@ -25,6 +25,10 @@
         android:theme="@style/Theme.Mobile"
         android:usesCleartextTraffic="true" >
         <activity
+            android:name="com.example.mobile.usersListPopUp"
+            android:exported="false" />
+        <activity android:name="com.example.mobile.Dashboard" />
+        <activity
             android:name="com.example.mobile.Profile_modification"
             android:exported="false" />
         <activity android:name="com.example.mobile.Dashboard" />
@@ -68,6 +72,11 @@
                 android:name="androidx.lifecycle.ProcessLifecycleInitializer"
                 android:value="androidx.startup" />
         </provider>
+
+        <service
+            android:name="androidx.room.MultiInstanceInvalidationService"
+            android:directBootAware="true"
+            android:exported="false" />
     </application>
 
 </manifest>

@@ -12,12 +12,16 @@
         "source": "C:\\Users\\15149\\Desktop\\git clone final\\log3900-203\\mobile\\app\\src\\main\\res\\drawable\\ic_baseline_text_snippet_24.xml"
     },
     {
+        "merged": "C:\\Users\\15149\\Desktop\\git clone final\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ic_baseline_delete_forever_24.xml.flat",
+        "source": "C:\\Users\\15149\\Desktop\\git clone final\\log3900-203\\mobile\\app\\src\\main\\res\\drawable\\ic_baseline_delete_forever_24.xml"
+    },
+    {
         "merged": "C:\\Users\\15149\\Desktop\\git clone final\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\drawable_monster6.png.flat",
         "source": "C:\\Users\\15149\\Desktop\\git clone final\\log3900-203\\mobile\\app\\src\\main\\res\\drawable\\monster6.png"
     },
     {
-        "merged": "C:\\Users\\15149\\Desktop\\git clone final\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ic_baseline_delete_forever_24.xml.flat",
-        "source": "C:\\Users\\15149\\Desktop\\git clone final\\log3900-203\\mobile\\app\\src\\main\\res\\drawable\\ic_baseline_delete_forever_24.xml"
+        "merged": "C:\\Users\\15149\\Desktop\\git clone final\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ic_baseline_close_24.xml.flat",
+        "source": "C:\\Users\\15149\\Desktop\\git clone final\\log3900-203\\mobile\\app\\src\\main\\res\\drawable\\ic_baseline_close_24.xml"
     },
     {
         "merged": "C:\\Users\\15149\\Desktop\\git clone final\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\layout_activity_dashboard.xml.flat",
@@ -88,6 +92,10 @@
         "source": "C:\\Users\\15149\\Desktop\\git clone final\\log3900-203\\mobile\\app\\src\\main\\res\\mipmap-hdpi\\ic_launcher_foreground.png"
     },
     {
+        "merged": "C:\\Users\\15149\\Desktop\\git clone final\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\layout_item_user.xml.flat",
+        "source": "C:\\Users\\15149\\Desktop\\git clone final\\log3900-203\\mobile\\app\\src\\main\\res\\layout\\item_user.xml"
+    },
+    {
         "merged": "C:\\Users\\15149\\Desktop\\git clone final\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\drawable_bg_btn.xml.flat",
         "source": "C:\\Users\\15149\\Desktop\\git clone final\\log3900-203\\mobile\\app\\src\\main\\res\\drawable\\bg_btn.xml"
     },
@@ -96,12 +104,12 @@
         "source": "C:\\Users\\15149\\Desktop\\git clone final\\log3900-203\\mobile\\app\\src\\main\\res\\drawable\\ic_baseline_search_24.xml"
     },
     {
-        "merged": "C:\\Users\\15149\\Desktop\\git clone final\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxhdpi_ic_launcher_foreground.png.flat",
-        "source": "C:\\Users\\15149\\Desktop\\git clone final\\log3900-203\\mobile\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher_foreground.png"
-    },
-    {
         "merged": "C:\\Users\\15149\\Desktop\\git clone final\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\layout_activity_profile_modification.xml.flat",
         "source": "C:\\Users\\15149\\Desktop\\git clone final\\log3900-203\\mobile\\app\\src\\main\\res\\layout\\activity_profile_modification.xml"
+    },
+    {
+        "merged": "C:\\Users\\15149\\Desktop\\git clone final\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxhdpi_ic_launcher_foreground.png.flat",
+        "source": "C:\\Users\\15149\\Desktop\\git clone final\\log3900-203\\mobile\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher_foreground.png"
     },
     {
         "merged": "C:\\Users\\15149\\Desktop\\git clone final\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\drawable_baseline_visibility_24.xml.flat",
@@ -192,6 +200,10 @@
         "source": "C:\\Users\\15149\\Desktop\\git clone final\\log3900-203\\mobile\\app\\src\\main\\res\\drawable\\ic_launcher_background.xml"
     },
     {
+        "merged": "C:\\Users\\15149\\Desktop\\git clone final\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ic_baseline_draw_24.xml.flat",
+        "source": "C:\\Users\\15149\\Desktop\\git clone final\\log3900-203\\mobile\\app\\src\\main\\res\\drawable\\ic_baseline_draw_24.xml"
+    },
+    {
         "merged": "C:\\Users\\15149\\Desktop\\git clone final\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ic_add_avatar.xml.flat",
         "source": "C:\\Users\\15149\\Desktop\\git clone final\\log3900-203\\mobile\\app\\src\\main\\res\\drawable\\ic_add_avatar.xml"
     },
@@ -214,6 +226,10 @@
     {
         "merged": "C:\\Users\\15149\\Desktop\\git clone final\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ic_baseline_person_24.xml.flat",
         "source": "C:\\Users\\15149\\Desktop\\git clone final\\log3900-203\\mobile\\app\\src\\main\\res\\drawable\\ic_baseline_person_24.xml"
+    },
+    {
+        "merged": "C:\\Users\\15149\\Desktop\\git clone final\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\layout_activity_users_list_pop_up.xml.flat",
+        "source": "C:\\Users\\15149\\Desktop\\git clone final\\log3900-203\\mobile\\app\\src\\main\\res\\layout\\activity_users_list_pop_up.xml"
     },
     {
         "merged": "C:\\Users\\15149\\Desktop\\git clone final\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ic_save.xml.flat",

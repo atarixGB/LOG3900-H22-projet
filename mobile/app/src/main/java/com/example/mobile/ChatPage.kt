@@ -6,10 +6,20 @@ import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.mobile.Room
+import com.example.mobile.Retrofit.IMyService
+import com.example.mobile.Retrofit.RetrofitClient
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import io.socket.client.Socket
 import org.json.JSONObject
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -17,6 +27,7 @@ class ChatPage : AppCompatActivity() {
     private lateinit var rvOutputMsgs: RecyclerView
     private lateinit var  btnSend : Button
     private lateinit var leaveChatBtn: ImageButton
+    private lateinit var drawButton: ImageButton
     private lateinit var  messageText : EditText
     private lateinit var msgAdapter: MessageAdapter
     private lateinit var messages : ArrayList<Message>
@@ -25,20 +36,34 @@ class ChatPage : AppCompatActivity() {
     private lateinit var roomNameView : TextView
     private lateinit var chatViewOptions: ImageButton
     private lateinit var roomName : String
+    private lateinit var room: Room
+
+    private lateinit var iMyService: IMyService
+    internal var compositeDisposable = CompositeDisposable()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat_page)
 
+        val retrofit = RetrofitClient.getInstance()
+        iMyService = retrofit.create(IMyService::class.java)
+
         chatViewOptions = findViewById<ImageButton>(R.id.chatViewOptions)
         roomName = intent.getStringExtra("roomName").toString()
         roomNameView = findViewById(R.id.roomName)
         roomNameView.text = roomName.toString()
 
+        if (roomName == "Canal Principal") {
+            chatViewOptions.isVisible = false
+        } else {
+            getRoomParameters()
+        }
+
         rvOutputMsgs = findViewById(R.id.rvOutputMsgs)
         btnSend = findViewById<Button>(R.id.btnSend)
         leaveChatBtn = findViewById<ImageButton>(R.id.leaveChatBtn)
+        drawButton = findViewById<ImageButton>(R.id.drawButton)
         messageText = findViewById<EditText>(R.id.msgText)
         user=intent.getStringExtra("userName").toString()
         messages = ArrayList()
@@ -55,7 +80,7 @@ class ChatPage : AppCompatActivity() {
         var jo :JSONObject = JSONObject()
 
         btnSend.setOnClickListener{
-            if(messageText.text.length > 0) {
+            if(messageText.text.isNotEmpty()) {
                 if(!messageText.text.isNullOrBlank() ) {
                     var messageData : JSONObject = JSONObject()
                     messageData.put("userName", user)
@@ -75,6 +100,10 @@ class ChatPage : AppCompatActivity() {
             leaveChat()
         }
 
+        drawButton.setOnClickListener {
+            //A implementer: elle nous ramene a l'editeur du dessin
+        }
+
         socket.on("message"){ args ->
 
             if(args[0] != null){
@@ -85,7 +114,7 @@ class ChatPage : AppCompatActivity() {
                 val time = messageData.get("time") as String
                 val room = messageData.get("room") as String
                 runOnUiThread{
-                    val msg = Message(message, user, time, room)
+                    val msg = Message(message, user, time, room, false)
                     msgAdapter.addMsg(msg)
                     msgAdapter.notifyItemInserted((rvOutputMsgs.adapter as MessageAdapter).itemCount)
                     rvOutputMsgs.scrollToPosition((rvOutputMsgs.adapter as MessageAdapter).itemCount-1)
@@ -101,7 +130,7 @@ class ChatPage : AppCompatActivity() {
                 val user = messageData.get("userName") as String
                 val room = messageData.get("room") as String
                 runOnUiThread{
-                    val msg = Message(null, user, null, room)
+                   val msg = Message("$user has joined $room", user, null, room, true)
                     msgAdapter.addMsg(msg)
                     msgAdapter.notifyItemInserted((rvOutputMsgs.adapter as MessageAdapter).itemCount)
                     rvOutputMsgs.scrollToPosition((rvOutputMsgs.adapter as MessageAdapter).itemCount-1)
@@ -110,17 +139,48 @@ class ChatPage : AppCompatActivity() {
             }
         }
 
+        socket.on("userLeftChatRoom"){ args ->
+            if(args[0] != null){
+                var messageData : JSONObject = JSONObject()
+                messageData = args[0] as JSONObject
+                val user = messageData.get("userName") as String
+                val room = messageData.get("room") as String
+                runOnUiThread{
+                    val msg = Message("$user has left $room", user, null, room, true)
+                    msgAdapter.addMsg(msg)
+                    msgAdapter.notifyItemInserted((rvOutputMsgs.adapter as MessageAdapter).itemCount)
+                    rvOutputMsgs.scrollToPosition((rvOutputMsgs.adapter as MessageAdapter).itemCount-1)
+                    messageText.text.clear()
+                }
+            }
+        }
+
+        socket.on("userDeletedChatRoom"){ args ->
+            if(args[0] != null){
+                val intent = Intent(this, ChatRooms::class.java)
+                intent.putExtra("userName", user)
+                startActivity(intent)
+            }
+        }
+
         //handle popup menu options
         chatViewOptions.setOnClickListener {
+            if (roomName != "Canal Principal") {
+                getRoomParameters()
+            }
+
             val popupMenu = PopupMenu(
                 this,
                 chatViewOptions
             )
+
             popupMenu.setOnMenuItemClickListener { menuItem ->
                 //get id of the item clicked and handle clicks
                 when (menuItem.itemId) {
                     R.id.menu_members -> {
-                        Toast.makeText(this, "Membres", Toast.LENGTH_LONG).show()
+                        //ouvrir le popup window des utilisateurs
+                        var dialog = UsersListPopUp(room)
+                        dialog.show(supportFragmentManager, "customDialog")
                         true
                     }
                     R.id.menu_leaveChat -> {
@@ -129,13 +189,21 @@ class ChatPage : AppCompatActivity() {
                         true
                     }
                     R.id.menu_deleteChat -> {
+                        deleteChatDB()
                         Toast.makeText(this, "Supprimer", Toast.LENGTH_LONG).show()
                         true
                     }
                     else -> false
                 }
             }
+
             popupMenu.inflate(R.menu.chatpage_options_menu)
+
+            if (user != room.identifier) {
+                popupMenu.menu.findItem(R.id.menu_deleteChat).isVisible = false
+            } else if (user == room.identifier){
+                popupMenu.menu.findItem(R.id.menu_leaveChat).isVisible = false
+            }
 
             //to show icons for menu
             try {
@@ -153,19 +221,65 @@ class ChatPage : AppCompatActivity() {
 
     fun leaveChat(){
         val intent = Intent(this, ChatRooms::class.java)
+        intent.putExtra("userName", user)
         startActivity(intent)
     }
 
-    /*override fun onStop() {
-        super.onStop()
-        leaveChat()
-    }*/
     fun userLeftChat () {
         var roomData : JSONObject = JSONObject()
         roomData.put("userName", user)
         roomData.put("room", roomName)
         socket.emit("leaveRoom", roomData)
+        updateRooms(user, roomName)
         leaveChat()
+    }
+
+    private fun updateRooms(user: String, roomName: String) {
+        compositeDisposable.add(iMyService.quitRoom(user, roomName)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { result ->
+                if (result == "201") {
+                    Toast.makeText(this, "bye", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this, "erreur", Toast.LENGTH_SHORT).show()
+                }
+            })
+    }
+
+    private fun deleteChat() {
+        var roomData : JSONObject = JSONObject()
+        roomData.put("userName", user)
+        roomData.put("room", roomName)
+        socket.emit("deleteRoom", roomData)
+    }
+
+    private fun deleteChatDB() {
+        compositeDisposable.add(iMyService.deleteRoom(roomName)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { result ->
+                if (result == "201") {
+                    Toast.makeText(this, "bye", Toast.LENGTH_SHORT).show()
+                    deleteChat()
+                } else {
+                    Toast.makeText(this, "erreur", Toast.LENGTH_SHORT).show()
+                }
+            })
+    }
+
+    private fun getRoomParameters () {
+        var call: Call<Room> = iMyService.getRoomParameters(roomName)
+        call.enqueue(object: Callback<Room> {
+            override fun onResponse(call: Call<Room>, response: Response<Room>) {
+                room = response.body()!!
+            }
+
+            override fun onFailure(call: Call<Room>, t: Throwable) {
+                Log.d("ChatPage", "onFailure" +t.message )
+            }
+
+        })
     }
 
 }

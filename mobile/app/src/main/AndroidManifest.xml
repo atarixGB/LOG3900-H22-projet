@@ -16,6 +16,10 @@
         android:theme="@style/Theme.Mobile"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".usersListPopUp"
+            android:exported="false" />
+        <activity android:name=".Dashboard" />
+        <activity
             android:name=".Profile_modification"
             android:exported="false" />
         <activity android:name=".Dashboard" />

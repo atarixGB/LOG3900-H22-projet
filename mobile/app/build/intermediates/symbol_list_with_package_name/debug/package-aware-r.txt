@@ -2538,8 +2538,10 @@ drawable ic_baseline_arrow_back_24
 drawable ic_baseline_arrow_back_ios_24
 drawable ic_baseline_arrow_back_ios_new_24
 drawable ic_baseline_camera_front_24
+drawable ic_baseline_close_24
 drawable ic_baseline_delete_forever_24
 drawable ic_baseline_directions_run_24
+drawable ic_baseline_draw_24
 drawable ic_baseline_edit_24
 drawable ic_baseline_email_24
 drawable ic_baseline_exit_to_app_24
@@ -2710,7 +2712,6 @@ id animateToEnd
 id animateToStart
 id antiClockwise
 id anticipate
-id app_toolbar
 id arc
 id asConfigured
 id async
@@ -2776,6 +2777,7 @@ id clear_text
 id clip_horizontal
 id clip_vertical
 id clockwise
+id closeBtn
 id closest
 id collab_text
 id collapseActionView
@@ -2828,6 +2830,7 @@ id dragLeft
 id dragRight
 id dragStart
 id dragUp
+id drawButton
 id dropdown_menu
 id easeIn
 id easeInOut
@@ -2877,6 +2880,7 @@ id group_divider
 id grouping
 id groups
 id guideline
+id hand_wave
 id header_menu
 id header_title
 id hideable
@@ -2904,6 +2908,7 @@ id item3
 id item4
 id item_room_name
 id item_touch_helper_previous_elevation
+id item_user_name
 id join_room_btn
 id jumpToEnd
 id jumpToStart
@@ -3046,6 +3051,7 @@ id rounded
 id row_index_key
 id rvOutputMsgs
 id rvOutputRooms
+id rvUsersList
 id saveButton
 id save_non_transition_alpha
 id save_overlay_view
@@ -3305,6 +3311,7 @@ layout activity_main
 layout activity_profile
 layout activity_profile_modification
 layout activity_registration
+layout activity_users_list_pop_up
 layout custom_dialog
 layout design_bottom_navigation_item
 layout design_bottom_sheet_dialog
@@ -3325,6 +3332,7 @@ layout fragment_custom_tool
 layout fragment_drawing_zone
 layout fragment_toolbar
 layout item_room
+layout item_user
 layout m3_alert_dialog
 layout m3_alert_dialog_actions
 layout m3_alert_dialog_title
