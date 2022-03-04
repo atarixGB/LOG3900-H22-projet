@@ -12,7 +12,7 @@ export class PublicChatroomsComponent implements OnInit {
   constructor(public chatService: ChatService) { }
 
   ngOnInit(): void {
-    this.chatService.getAllRooms();
+    this.chatService.getAllRooms(false);
   }
 
   ngOnDestroy(): void {

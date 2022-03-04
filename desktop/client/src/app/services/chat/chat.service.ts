@@ -16,7 +16,6 @@ export class ChatService {
   publicRooms: IChatroom[];
 
   constructor(private loginService: LoginService, private httpClient: HttpClient, private router: Router, private route: ActivatedRoute) {
-    this.username = "";
     this.publicRooms = [];
   }
 
@@ -52,12 +51,21 @@ export class ChatService {
       });
   }
 
-  getAllRooms(): void {
+  getAllRooms(mineOnly: boolean): void {
     this.httpClient.get<IChatroom[]>(ALL_ROOMS_URL).subscribe(
       (chatrooms: IChatroom[]) => {
+
         for (let i = 0; i < chatrooms.length; i++) {
-          this.publicRooms.push(chatrooms[i]);
-          console.log(this.publicRooms[i]);
+
+          // Filter current user chatroom only (SUGGESTION: we should do the filtering on the server side)
+          if (mineOnly) {
+            if (chatrooms[i].identifier === this.loginService.username) {
+              this.publicRooms.push(chatrooms[i]);
+            }
+          } else {
+            this.publicRooms.push(chatrooms[i]);
+          }
+
         }
       }
       ,
