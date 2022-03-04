@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ChatService } from '@app/services/chat/chat.service';
+import { IChatroom } from '@app/interfaces-enums/IChatroom'
 
 @Component({
   selector: 'app-public-chatrooms',
@@ -7,9 +9,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PublicChatroomsComponent implements OnInit {
 
-  constructor() { }
+  constructor(public chatService: ChatService) { }
 
   ngOnInit(): void {
+    this.chatService.getAllRooms();
+  }
+
+  ngOnDestroy(): void {
+    this.chatService.publicRooms = [];
+  }
+
+  onChatroomClick(selectedRoom: IChatroom): void {
+    console.log(`ROOM: ${selectedRoom.roomName}\nCREATOR: ${selectedRoom.identifier}\nID: ${selectedRoom._id}\nMEMBERS: ${selectedRoom.usersList}`);
   }
 
 }

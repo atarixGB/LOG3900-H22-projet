@@ -2,7 +2,7 @@
   <app-side-menu fxLayout="column" fxLayoutAlign="start stretch" fxFlex="15%"></app-side-menu>
 
   <div fxLayout="column" fxLayoutAlign="space-evenly stretch" fxFlex="auto">
-    <div fxFlex="20"></div>
+
 
     <div fxLayout="row" fxLayoutAlign="space-evenly center">
       <button mat-icon-button disableRipple="true" routerLink="/chatmenu">
@@ -10,14 +10,18 @@
       </button>
     </div>
 
-    <div fxLayout="column" fxLayoutAlign="center center">
-      <button mat-raised-button color="primary">Convo1</button>
-      <button mat-raised-button color="primary">Convo2</button>
-      <button mat-raised-button color="primary">Convo3</button>
-      <button mat-raised-button color="primary">Convo4</button>
-      <button mat-raised-button color="primary">Convo5</button>
-    </div>
+    <mat-grid-list cols="2" rowHeight="5:1">
+      <mat-grid-tile *ngFor="let room of this.chatService.publicRooms">
 
-    <div fxFlex="20"></div>
+        <div class="roomname-container" mat-raised-button color="primary">
+            {{room.roomName}}
+        </div>
+        <button mat-raised-button color="accent" (click)="this.onChatroomClick(room)">
+          Joindre
+        </button>
+
+      </mat-grid-tile>
+    </mat-grid-list>
+
   </div>
 </div>
