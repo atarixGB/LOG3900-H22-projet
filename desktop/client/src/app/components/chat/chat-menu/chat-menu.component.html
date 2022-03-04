@@ -5,8 +5,8 @@
       <div fxFlex="20"></div>
 
       <div fxLayout="row" fxLayoutAlign="space-evenly center" >
-         <button mat-raised-button color="primary">Créer une conversation</button>
-         <button mat-raised-button color="primary">Joindre une conversation</button>
+         <button mat-raised-button color="primary" (click)="openCreateChatroomDialog()">Créer une conversation</button>
+         <button mat-raised-button color="primary" (click)="joinExistingChatroom()">Joindre une conversation</button>
       </div>
 
       <div fxLayout="row" fxLayoutAlign="space-evenly center" >

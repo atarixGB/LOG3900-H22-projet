@@ -1,0 +1,15 @@
+<h2 mat-dialog-title>Créer une conversation</h2>
+
+<mat-dialog-content class="mat-typography">
+
+  <mat-form-field appearance="fill">
+    <mat-label>Nom de la conversation</mat-label>
+    <input matInput [(ngModel)]="this.chatroomName">
+  </mat-form-field>
+
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close>Annuler</button>
+  <button mat-button [mat-dialog-close]="true" cdkFocusInitial (click)="createChatroom()">Créer</button>
+</mat-dialog-actions>
