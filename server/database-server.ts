@@ -179,7 +179,7 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
                 response.status(400).send("Error fetching rooms");
               } else {
                 response.json(result)
-                console.log("add succes");
+                console.log(result, "add succes");
               }
             });
         });
@@ -243,8 +243,7 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
           console.log("add succes");
         }
       })
-    });
-          
+    });          
             
     app.post("/deleteRoom", (request, response, next) => {
       var post_data = request.body;
@@ -424,49 +423,6 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
           }
         });
     });
-        app.post("/deleteRoom", (request, response, next) => {
-          var post_data = request.body;
-    
-          var roomName = post_data.roomName;
-          
-    
-          var db = client.db("PolyGramDB");
-
-          db.collection("rooms")
-          .find({ roomName: roomName })
-          .count(function (err, number) {
-            if (number == 0) {
-              response.json(404);
-              console.log("room does not exists");
-            } else {
-              db.collection("rooms").deleteOne({ roomName: roomName },
-                function (error, result) {
-                    response.json(201);
-                    console.log("room deleted");
-                }
-              );
-              }
-            });
-        });
-
-        app.get("/getRoomParameters", (request, response, next) => {
-
-          var post_data = request.query;
-          var roomName = post_data.roomName;  
-    
-          var db = client.db("PolyGramDB");
-
-          db.collection("rooms")
-            .findOne({ roomName: roomName }, function (err, result) {
-              if (err) {
-                console.log("error getting");
-                response.status(400).send("Error fetching rooms");
-              } else {
-                response.json(result)
-                console.log("Getting One Room");
-              }
-            });
-        });
 
 
     //start web server

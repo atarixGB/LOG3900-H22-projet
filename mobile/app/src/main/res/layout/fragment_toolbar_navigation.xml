@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.gridlayout.widget.GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="250dp"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="#a8d08c"
+    app:columnCount="1"
+    app:rowCount="6"
+    tools:context="com.example.mobile.ToolbarNavigationFragment">
+
+    <ImageView
+        android:id="@+id/edt_logo"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="25dp"
+        android:layout_marginTop="20dp"
+        app:layout_column="0"
+        app:layout_row="0"
+        android:src="@drawable/logopolygram" />
+
+    <TextView
+        android:id="@+id/dashbord"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="60dp"
+        android:gravity="center"
+        android:drawablePadding="0dp"
+        android:background="@drawable/toolbar_btn"
+        android:layout_marginTop="35dp"
+        android:fontFamily="@font/roboto"
+        android:text="Tableau de bord"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        app:layout_column="0"
+        app:layout_row="1"
+        app:drawableLeftCompat="@drawable/ic_baseline_home_24"
+        app:drawableTint="#e1efd8" />
+
+    <TextView
+        android:id="@+id/chat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="60dp"
+        android:gravity="center"
+        android:background="@drawable/toolbar_btn"
+        android:fontFamily="@font/roboto"
+        android:text="Clavardage"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        app:layout_column="0"
+        app:layout_row="2"
+        app:drawableLeftCompat="@drawable/ic_baseline_chat_bubble_24"
+        app:drawableTint="#e1efd8" />
+
+    <TextView
+        android:id="@+id/draw"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="60dp"
+        android:gravity="center"
+        android:background="@drawable/toolbar_btn"
+        android:fontFamily="@font/roboto"
+        android:text="Zone de dessin"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        app:layout_column="0"
+        app:layout_row="3"
+        app:drawableLeftCompat="@drawable/ic_baseline_draw_24"
+        app:drawableTint="#e1efd8" />
+
+    <TextView
+        android:id="@+id/albums"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="60dp"
+        android:gravity="center"
+        android:background="@drawable/toolbar_btn"
+        android:fontFamily="@font/roboto"
+        android:text="Albums"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        android:textColorHint="#6cab42"
+        app:layout_column="0"
+        app:layout_row="4"
+        app:drawableLeftCompat="@drawable/ic_baseline_photo_library_24"
+        app:drawableTint="#e1efd8" />
+
+    <TextView
+        android:id="@+id/profile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="60dp"
+        android:gravity="center"
+        android:background="@drawable/toolbar_btn"
+        android:fontFamily="@font/roboto"
+        android:text="Mon profil"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        app:layout_column="0"
+        app:layout_row="5"
+        app:drawableLeftCompat="@drawable/ic_baseline_person_24"
+        app:drawableTint="#e1efd8" />
+
+
+
+</androidx.gridlayout.widget.GridLayout>

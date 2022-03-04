@@ -14,6 +14,7 @@ class Dashboard : AppCompatActivity() {
         }
         val chatRooms_btn = findViewById<Button>(R.id.chatRooms_btn)
         user = intent.getStringExtra("userName").toString()
+
         chatRooms_btn.setOnClickListener {
             val intent = Intent(this, ChatRooms::class.java)
             intent.putExtra("userName",user)
