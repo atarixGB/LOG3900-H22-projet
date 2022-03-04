@@ -54,11 +54,11 @@
         android:paddingRight="15dp">
 
         <TextView
+            android:id="@+id/modify_label"
             android:layout_width="180dp"
             android:layout_height="50dp"
             android:layout_marginLeft="-10dp"
             android:background="@drawable/bg_btn"
-            android:id="@+id/modify_label"
             android:drawableLeft="@drawable/ic_baseline_edit_24"
             android:gravity="center"
             android:paddingLeft="10dp"
@@ -230,8 +230,8 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:layout_width="600dp"
                 android:id="@+id/description_field"
+                android:layout_width="600dp"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_gravity="end"

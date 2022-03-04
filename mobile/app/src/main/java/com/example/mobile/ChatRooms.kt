@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -27,7 +28,7 @@ class ChatRooms : AppCompatActivity(), CreateRoomPopUp.DialogListener, RoomAdapt
 
     private lateinit var create_room_btn: Button
     private lateinit var join_room_btn: Button
-    private lateinit var principal_room_btn: Button
+    private lateinit var principal_room_btn: TextView
     private lateinit var rvOutputRooms: RecyclerView
     private lateinit var roomAdapter: RoomAdapter
     private lateinit var rooms : ArrayList<Room>
