@@ -34,11 +34,14 @@ export class ChatMenuComponent implements OnInit {
 
   joinDefaultChannel(): void {
     this.chatService.username = this.loginService.username;
-    this.chatService.joinRoom("default-public-room");
+    this.chatService.currentRoom = "default-public-room";
+    this.chatService.joinRoom(this.chatService.currentRoom);
   }
 
   onOpenChatroom(selectedRoom: IChatroom): void {
-    console.log(`Opening ROOM: ${selectedRoom.roomName}\nCREATOR: ${selectedRoom.identifier}\nID: ${selectedRoom._id}\nMEMBERS: ${selectedRoom.usersList}`);
+    this.chatService.username = this.loginService.username;
+    this.chatService.currentRoom = selectedRoom.roomName;
+    this.chatService.joinRoom(this.chatService.currentRoom);
   }
 
   onDeleteChatroom(selectedRoom: IChatroom): void {

@@ -16,7 +16,7 @@
     </div>
 
     <div fxLayout="row" fxLayoutAlign="space-evenly center">
-      <button mat-raised-button color="accent" (click)="joinDefaultChannel()">Canal public</button>
+      <button mat-raised-button color="accent" (click)="joinDefaultChannel()" routerLink="/chatroom">Canal public</button>
     </div>
 
 
@@ -26,7 +26,7 @@
         <div class="roomname-container" mat-raised-button color="primary">
             {{room.roomName}}
         </div>
-        <button mat-raised-button color="accent" (click)="this.onOpenChatroom(room)">
+        <button mat-raised-button color="accent" (click)="this.onOpenChatroom(room)" routerLink="/chatroom">
           Ouvrir
         </button>
         <button matIcon mat-raised-button color="accent" (click)="this.onDeleteChatroom(room)">

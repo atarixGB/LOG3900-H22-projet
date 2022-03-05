@@ -15,12 +15,15 @@ export class ChatroomComponent implements AfterViewInit {
     userList: string[];
     socket: any;
 
+    currentRoom: string;
+
     constructor(public chatService: ChatService) {
         this.userName = '';
         this.message = '';
         this.messageList = [];
         this.userList = [];
         this.socket = this.chatService.socket;
+        this.currentRoom = this.chatService.currentRoom;
     }
 
     ngAfterViewInit(): void {
@@ -33,9 +36,12 @@ export class ChatroomComponent implements AfterViewInit {
             const data = {
                 message: this.message,
                 userName: this.userName,
-                room: "default-public-room",
+                room: this.currentRoom,
                 time: formatDate(new Date(), 'hh:mm:ss a', 'en-US'),
             };
+
+            console.log("DATA SEND TO SERVER:", data);
+
 
             this.socket.emit('message', data);
             this.message = '';
@@ -46,12 +52,14 @@ export class ChatroomComponent implements AfterViewInit {
     onNewMessage(): void {
         this.socket.on('message', (data: any) => {
             if (data) {
+              console.log("DATA RECEIVED FROM SERVER", data);
                 const isMine = data.userName == this.userName;
                 this.messageList.push({
                     message: data.message,
                     userName: data.userName + (isMine ? ' (moi)' : '') + ' - ' + formatDate(new Date(), 'hh:mm:ss a', 'en-US'),
                     mine: isMine,
                 });
+                console.log(this.messageList)
             }
             this.scrollToBottom();
         });

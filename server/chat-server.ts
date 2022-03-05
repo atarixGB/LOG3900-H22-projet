@@ -53,7 +53,7 @@ io.on('connection', (socket) => {
         const roomName = room_data.room;
 
         room = roomName;
-        console.log(userName, ' has joined ', roomName);
+        console.log(userName, ' has joined ', room);
     })
 
     socket.on('newUserToChatRoom', (room_data) => {

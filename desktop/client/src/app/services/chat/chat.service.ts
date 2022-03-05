@@ -14,13 +14,20 @@ export class ChatService {
   username: string;
   socket: any;
   publicRooms: IChatroom[];
+
   currentRoom: string;
+  messageToSend: string;
 
   constructor(private loginService: LoginService, private httpClient: HttpClient, private router: Router, private route: ActivatedRoute) {
+    this.currentRoom = "default-public-room";
     this.publicRooms = [];
+
   }
 
   joinRoom(roomName: string): void {
+
+    console.log(`${this.username} has joined ${this.currentRoom}`);
+
     // this.socket = io.io('https://polygram-app.herokuapp.com/', { transports: ['websocket'] });
     this.socket = io.io(CHAT_URL, { transports: ['websocket'] });
 
@@ -29,7 +36,10 @@ export class ChatService {
       room: roomName,
     }
 
+    console.log("DATA SEND", data)
+
     this.socket.emit('newUser', data);
+    this.socket.emit("joinRoom", data);
 
     this.socket.on('newUser', (user: string) => {
 
@@ -51,6 +61,19 @@ export class ChatService {
     this.httpClient.post(CREATE_ROOM_URL, chatroomData).subscribe(
       (result) => {
         console.log("Server result:", result);
+
+        // Create a new socket
+        const data = {
+          userName: this.loginService.username,
+          room: roomName,
+          usersList: [this.loginService.username]
+        }
+        this.socket = io.io(CHAT_URL, { transports: ['websocket'] });
+        this.socket.emit("createRoom", data)
+
+        this.socket.on("newRoomCreated", (result: any) => {
+          console.log("newRoomCreated receive", result)
+        })
       },
       (error) => {
         console.log("Server error:", error);
