@@ -11,38 +11,31 @@ import { IChatroom } from '@app/interfaces-enums/IChatroom'
   providedIn: 'root'
 })
 export class ChatService {
-  username: string;
   socket: any;
+  username: string;
   publicRooms: IChatroom[];
-
   currentRoom: string;
-  messageToSend: string;
 
   constructor(private loginService: LoginService, private httpClient: HttpClient, private router: Router, private route: ActivatedRoute) {
-    this.currentRoom = "default-public-room";
+    this.username = '';
+    this.currentRoom = '';
     this.publicRooms = [];
-
   }
 
   joinRoom(roomName: string): void {
-
-    console.log(`${this.username} has joined ${this.currentRoom}`);
-
-    // this.socket = io.io('https://polygram-app.herokuapp.com/', { transports: ['websocket'] });
-    this.socket = io.io(CHAT_URL, { transports: ['websocket'] });
-
     const data = {
       userName: this.username,
       room: roomName,
     }
 
-    console.log("DATA SEND", data)
+    // this.socket = io.io('https://polygram-app.herokuapp.com/', { transports: ['websocket'] });
+    this.socket = io.io(CHAT_URL, { transports: ['websocket'] });
 
     this.socket.emit('newUser', data);
+
     this.socket.emit("joinRoom", data);
 
     this.socket.on('newUser', (user: string) => {
-
       if (this.username == user) {
         this.router.navigate(['../chatroom'], { relativeTo: this.route });
       }
@@ -56,27 +49,23 @@ export class ChatService {
       usersList: [this.loginService.username]
     }
 
-    console.log("chatroomData:", chatroomData);
-
     this.httpClient.post(CREATE_ROOM_URL, chatroomData).subscribe(
       (result) => {
-        console.log("Server result:", result);
+        console.log(`La conversation "${roomName}" a été créée avec succès! Code:`, result);
 
-        // Create a new socket
         const data = {
-          userName: this.loginService.username,
           room: roomName,
+          userName: this.loginService.username,
           usersList: [this.loginService.username]
         }
-        this.socket = io.io(CHAT_URL, { transports: ['websocket'] });
-        this.socket.emit("createRoom", data)
 
-        this.socket.on("newRoomCreated", (result: any) => {
-          console.log("newRoomCreated receive", result)
-        })
+        this.socket = io.io(CHAT_URL, { transports: ['websocket'] });
+        this.socket.emit("createRoom", data);
+        this.socket.on("newRoomCreated", (result: any) => { console.log(result); })
+
       },
       (error) => {
-        console.log("Server error:", error);
+        console.log(`Impossible de créer la conversation "${roomName}".\nErreur:`, error);
       });
   }
 
@@ -86,7 +75,7 @@ export class ChatService {
 
         for (let i = 0; i < chatrooms.length; i++) {
 
-          // Filter current user chatroom only (SUGGESTION: we should do the filtering on the server side)
+          // Filter current user's chatroom only (SUGGESTION: we should do the filtering on the server side)
           if (mineOnly) {
             if (chatrooms[i].identifier === this.loginService.username) {
               this.publicRooms.push(chatrooms[i]);
@@ -99,23 +88,26 @@ export class ChatService {
       }
       ,
       (error: any) => {
-        console.log(`Impossible de retrouver les conversations publiques dans la base de données\nErreur: ${error}`);
+        console.log(`Impossible de retrouver les conversations publiques dans la base de données\nErreur:`, error);
       }
     )
   }
 
   deleteRoom(roomName: string): void {
-
     const data = {
       roomName: roomName
     }
 
     this.httpClient.post<number>(DELETE_ROOM_URL, data).subscribe(
       (result) => {
-        console.log("Server result:", result);
+        if (result == 201) {
+          console.log(`La conversation "${roomName}" a été supprimée avec succès! Code:`, result);
+        } else {
+          console.log(`La conversation "${roomName}" n'a pas pu être supprimée. Veuillez réessayer. Code: `, result);
+        }
       },
       (error) => {
-        console.log("Server error:", error);
+        console.log(`Impossible de supprimer la conversation "${roomName}".\nErreur:`, error);
       })
   }
 

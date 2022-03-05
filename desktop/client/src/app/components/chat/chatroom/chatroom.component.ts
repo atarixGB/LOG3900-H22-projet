@@ -40,8 +40,7 @@ export class ChatroomComponent implements AfterViewInit {
                 time: formatDate(new Date(), 'hh:mm:ss a', 'en-US'),
             };
 
-            console.log("DATA SEND TO SERVER:", data);
-
+            console.log("TO SERVER:", data);
 
             this.socket.emit('message', data);
             this.message = '';
@@ -51,16 +50,18 @@ export class ChatroomComponent implements AfterViewInit {
 
     onNewMessage(): void {
         this.socket.on('message', (data: any) => {
+
             if (data) {
-              console.log("DATA RECEIVED FROM SERVER", data);
+              console.log("FROM SERVER", data);
+
                 const isMine = data.userName == this.userName;
                 this.messageList.push({
                     message: data.message,
-                    userName: data.userName + (isMine ? ' (moi)' : '') + ' - ' + formatDate(new Date(), 'hh:mm:ss a', 'en-US'),
+                    userName: data.userName + ' - ' + formatDate(new Date(), 'hh:mm:ss a', 'en-US'),
                     mine: isMine,
                 });
-                console.log(this.messageList)
             }
+
             this.scrollToBottom();
         });
     }

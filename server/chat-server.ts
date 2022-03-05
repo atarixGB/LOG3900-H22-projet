@@ -53,6 +53,7 @@ io.on('connection', (socket) => {
         const roomName = room_data.room;
 
         room = roomName;
+        socket.join(roomName); 
         console.log(userName, ' has joined ', room);
     })
 
@@ -89,8 +90,7 @@ io.on('connection', (socket) => {
 
     socket.on('message', (msg) => {
         console.log(msg)
-        const roomName = msg.room;
-        io.to(roomName).emit('message', msg);
+        io.to(msg.room).emit('message', msg);
     })
 
     socket.on('disconnectUser', (userName) => {

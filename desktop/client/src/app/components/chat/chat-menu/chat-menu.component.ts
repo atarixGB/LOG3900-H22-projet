@@ -22,17 +22,17 @@ export class ChatMenuComponent implements OnInit {
     this.chatService.publicRooms = [];
   }
 
-  openCreateChatroomDialog(): void {
+  onCreateNewChatroom(): void {
     const dialogRef = this.dialog.open(CreateRoomDialogComponent);
     dialogRef.afterClosed().subscribe((result) => {
-      console.log(result);
-      this.ngOnDestroy();
-      this.ngOnInit();
+      if (result) {
+        this.ngOnDestroy();
+        this.ngOnInit();
+      }
     })
-    console.log("open Create Chatroom Dialog");
   }
 
-  joinDefaultChannel(): void {
+  onOpenDefaultPublicRoom(): void {
     this.chatService.username = this.loginService.username;
     this.chatService.currentRoom = "default-public-room";
     this.chatService.joinRoom(this.chatService.currentRoom);
@@ -45,14 +45,15 @@ export class ChatMenuComponent implements OnInit {
   }
 
   onDeleteChatroom(selectedRoom: IChatroom): void {
-    console.log(`Deleting ROOM: ${selectedRoom.roomName}`);
     const dialogRef = this.dialog.open(DeleteRoomDialogComponent, {
       data: selectedRoom
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      this.ngOnDestroy();
-      this.ngOnInit();
+      if (result) {
+        this.ngOnDestroy();
+        this.ngOnInit();
+      }
     })
   }
 }
