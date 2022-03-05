@@ -3,45 +3,53 @@ import { ChatService } from '@app/services/chat/chat.service';
 import { LoginService } from '@app/services/login/login.service';
 import { MatDialog } from '@angular/material/dialog';
 import { CreateRoomDialogComponent } from '@app/components/chat/create-room-dialog/create-room-dialog.component'
+import { DeleteRoomDialogComponent } from '@app/components/chat/delete-room-dialog/delete-room-dialog.component'
 import { IChatroom } from '@app/interfaces-enums/IChatroom';
 
 @Component({
-    selector: 'app-chat-menu',
-    templateUrl: './chat-menu.component.html',
-    styleUrls: ['./chat-menu.component.scss'],
+  selector: 'app-chat-menu',
+  templateUrl: './chat-menu.component.html',
+  styleUrls: ['./chat-menu.component.scss'],
 })
 export class ChatMenuComponent implements OnInit {
-    constructor(private loginService: LoginService, public chatService: ChatService,  public dialog: MatDialog) {}
+  constructor(private loginService: LoginService, public chatService: ChatService, public dialog: MatDialog) { }
 
-    ngOnInit(): void {
-      this.chatService.getAllRooms(true);
-    }
+  ngOnInit(): void {
+    this.chatService.getAllRooms(true);
+  }
 
-    ngOnDestroy():  void {
-      this.chatService.publicRooms = [];
-    }
+  ngOnDestroy(): void {
+    this.chatService.publicRooms = [];
+  }
 
-    openCreateChatroomDialog(): void {
-      const dialogRef = this.dialog.open(CreateRoomDialogComponent);
-      dialogRef.afterClosed().subscribe((result) => {
-        console.log(result);
-        this.ngOnDestroy();
-        this.ngOnInit();
-      })
-      console.log("open Create Chatroom Dialog");
-    }
+  openCreateChatroomDialog(): void {
+    const dialogRef = this.dialog.open(CreateRoomDialogComponent);
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log(result);
+      this.ngOnDestroy();
+      this.ngOnInit();
+    })
+    console.log("open Create Chatroom Dialog");
+  }
 
-    joinDefaultChannel(): void {
-        this.chatService.username = this.loginService.username;
-        this.chatService.connectUser();
-    }
+  joinDefaultChannel(): void {
+    this.chatService.username = this.loginService.username;
+    this.chatService.connectUser();
+  }
 
-    onOpenChatroom(selectedRoom: IChatroom): void {
-      console.log(`Opening ROOM: ${selectedRoom.roomName}\nCREATOR: ${selectedRoom.identifier}\nID: ${selectedRoom._id}\nMEMBERS: ${selectedRoom.usersList}`);
-    }
+  onOpenChatroom(selectedRoom: IChatroom): void {
+    console.log(`Opening ROOM: ${selectedRoom.roomName}\nCREATOR: ${selectedRoom.identifier}\nID: ${selectedRoom._id}\nMEMBERS: ${selectedRoom.usersList}`);
+  }
 
-    onDeleteChatroom(selectedRoom: IChatroom): void {
-      console.log(`Deleting ROOM: ${selectedRoom.roomName}`);
-      this.chatService.deleteRoom(selectedRoom.roomName);
-    }
+  onDeleteChatroom(selectedRoom: IChatroom): void {
+    console.log(`Deleting ROOM: ${selectedRoom.roomName}`);
+    const dialogRef = this.dialog.open(DeleteRoomDialogComponent, {
+      data: selectedRoom
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      this.ngOnDestroy();
+      this.ngOnInit();
+    })
+  }
 }
