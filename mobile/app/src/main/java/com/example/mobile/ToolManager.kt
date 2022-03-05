@@ -10,6 +10,7 @@ class ToolManager {
     private lateinit var pencil: Pencil
     private lateinit var eraser: Eraser
     private lateinit var rectangle: Rectangle
+    private lateinit var ellipse: Ellipse
 
     constructor(context: Context, baseCanvas : Canvas){
         this.baseCanvas = baseCanvas
@@ -22,11 +23,13 @@ class ToolManager {
         this.pencil = Pencil(context,baseCanvas)
         this.eraser = Eraser(context, baseCanvas)
         this.rectangle = Rectangle(context, baseCanvas)
+        this.ellipse = Ellipse(context, baseCanvas)
     }
 
-    fun changeTool(tool:String) {
-        if (tool == "pencil") this.currentTool = pencil
-        else if (tool == "eraser") this.currentTool = eraser
-        else if (tool == "rectangle") this.currentTool = rectangle
+    fun changeTool(tool: ToolbarFragment.MenuItem) {
+        if (tool == ToolbarFragment.MenuItem.PENCIL) this.currentTool = pencil
+        else if (tool == ToolbarFragment.MenuItem.ERASER) this.currentTool = eraser
+        else if (tool == ToolbarFragment.MenuItem.RECTANGLE) this.currentTool = rectangle
+        else if (tool == ToolbarFragment.MenuItem.OVAL) this.currentTool = ellipse
     }
 }

@@ -5,6 +5,7 @@ import android.graphics.*
 import android.os.Bundle
 import android.util.AttributeSet
 import android.view.*
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -34,12 +35,6 @@ class DrawingZoneFragment : Fragment() {
             mDrawingView.changeTool(tool)
         })
     }
-
-
-    /**
-     * Custom view that follows touch events to draw on a canvas.
-     * This code was inspired by Google Developers Training team. https://developer.android.com/codelabs/advanced-android-kotlin-training-canvas#0
-     */
     class DrawingView @JvmOverloads constructor(
         context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
     ) : View(context, attrs, defStyleAttr) {
@@ -56,6 +51,16 @@ class DrawingZoneFragment : Fragment() {
             mBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
             mCanvas = Canvas(mBitmap!!)
             toolManager = ToolManager(context, mCanvas!!)
+            val borderPaint = Paint().apply {
+                color = ResourcesCompat.getColor(context.resources, R.color.black, null)
+                isAntiAlias = true
+                isDither = true
+                style = Paint.Style.STROKE
+                strokeJoin = Paint.Join.ROUND
+                strokeCap = Paint.Cap.ROUND
+                strokeWidth = 1f
+            }
+            mCanvas!!.drawRect(0f,0f, w.toFloat(), h.toFloat(),borderPaint )
         }
 
         override fun onDraw(canvas: Canvas) {
@@ -97,7 +102,7 @@ class DrawingZoneFragment : Fragment() {
             if(this::toolManager.isInitialized) toolManager.currentTool.changeWeight(width)
         }
 
-        fun changeTool(tool : String){
+        fun changeTool(tool: ToolbarFragment.MenuItem){
             if(this::toolManager.isInitialized) {
                 this.toolManager.changeTool(tool)
                 resetPath()

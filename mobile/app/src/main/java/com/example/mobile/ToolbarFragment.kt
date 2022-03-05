@@ -20,7 +20,7 @@ class ToolbarFragment : Fragment(), AdapterView.OnItemClickListener {
         PENCIL(1),
         ERASER(2),
         RECTANGLE(3),
-        CIRCLE(4)
+        OVAL(4)
     }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,19 +51,23 @@ class ToolbarFragment : Fragment(), AdapterView.OnItemClickListener {
         arrayList!!.set(MenuItem.PENCIL.position,ToolItem(R.drawable.pencil))
         arrayList!!.set(MenuItem.ERASER.position,ToolItem(R.drawable.eraser))
         arrayList!!.set(MenuItem.RECTANGLE.position,ToolItem(R.drawable.rectangle))
-        arrayList!!.set(MenuItem.CIRCLE.position,ToolItem(R.drawable.circle))
+        arrayList!!.set(MenuItem.OVAL.position,ToolItem(R.drawable.circle))
         if(position == MenuItem.PENCIL.position){
             arrayList!!.set(MenuItem.PENCIL.position,ToolItem(R.drawable.pencil_clicked))
-            toolChange.changeTool("pencil")
+            toolChange.changeTool(MenuItem.PENCIL)
+
         }else if(position== MenuItem.ERASER.position){
             arrayList!!.set(MenuItem.ERASER.position,ToolItem(R.drawable.eraser_clicked))
-            toolChange.changeTool("eraser")
+            toolChange.changeTool(MenuItem.ERASER)
+
         }else if(position== MenuItem.RECTANGLE.position){
             arrayList!!.set(MenuItem.RECTANGLE.position,ToolItem(R.drawable.rectangle_clicked))
-            toolChange.changeTool("rectangle")
-        } else if(position== MenuItem.CIRCLE.position){
-            arrayList!!.set(MenuItem.CIRCLE.position,ToolItem(R.drawable.circle_clicked))
-            toolChange.changeTool("circle")
+            toolChange.changeTool(MenuItem.RECTANGLE)
+
+        } else if(position== MenuItem.OVAL.position){
+            arrayList!!.set(MenuItem.OVAL.position,ToolItem(R.drawable.circle_clicked))
+            toolChange.changeTool(MenuItem.OVAL)
+
         }
         toolAdapter!!.notifyDataSetChanged()
     }
