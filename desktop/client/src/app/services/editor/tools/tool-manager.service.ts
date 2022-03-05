@@ -44,10 +44,8 @@ export class ToolManagerService {
             .set('2', this.ellipseService)
             .set('e', this.eraserService)
 
-        this.selectionService.toolUpdate$.subscribe((shouldBeSelectionTool: boolean) => {
-            if (shouldBeSelectionTool) {
-                this.switchTool(ToolList.Selection);
-            }
+        this.selectionService.toolUpdate$.subscribe((toolToSwitchTo: number) => {
+            this.switchTool(toolToSwitchTo);
           });
     }
 

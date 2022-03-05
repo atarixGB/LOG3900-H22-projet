@@ -3,6 +3,7 @@ import { StrokePencil } from '@app/classes/strokes/stroke-pencil';
 import { Tool } from '@app/classes/tool';
 import { Vec2 } from '@app/classes/vec2';
 import { DEFAULT_LINE_THICKNESS, MouseButton } from '@app/constants/constants';
+import { ToolList } from '@app/interfaces-enums/tool-list';
 import { CollaborationService } from '@app/services/collaboration/collaboration.service';
 import { DrawingService } from '@app/services/editor/drawing/drawing.service';
 import { SelectionService } from '@app/services/editor/tools/selection/selection.service';
@@ -132,7 +133,7 @@ export class PencilService extends Tool {
         this.collaborationService.broadcastStroke(pencilStroke);
         this.selectionService.addStroke(pencilStroke);
         this.selectionService.selectStroke(pencilStroke);
-        this.selectionService.switchToSelectionTool();
+        this.selectionService.switchToSelectionTool(ToolList.Pencil);
     }
 
     private getBoundingPoints(): Vec2[] {

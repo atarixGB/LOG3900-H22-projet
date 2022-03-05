@@ -29,14 +29,15 @@ export class SelectionService extends Tool {
   isMoving: boolean;
   isResizing: boolean;
   dimensionsBeforeResize: Vec2;
-  shouldBeSelectionTool: Subject<boolean>;
-  toolUpdate$: Observable<boolean>;
+  toolUpdate: Subject<number>;
+  toolUpdate$: Observable<number>;
+  oldTool: number;
 
   constructor(drawingService: DrawingService, private moveSelectionService: MoveSelectionService, private collaborationService: CollaborationService, private resizeSelectionService: ResizeSelectionService) {
     super(drawingService);
     this.strokes = []; 
-    this.shouldBeSelectionTool = new Subject();
-    this.toolUpdate$ = this.shouldBeSelectionTool.asObservable();
+    this.toolUpdate = new Subject();
+    this.toolUpdate$ = this.toolUpdate.asObservable();
     this.zIndex = 10; //Arbitrary value to make sure user selection is put to front
     this.borderColor = 'blue';
     this.selectionCPs = [];
@@ -49,8 +50,9 @@ export class SelectionService extends Tool {
     });
   }
 
-  switchToSelectionTool(): void {
-    this.shouldBeSelectionTool.next(true);
+  switchToSelectionTool(oldTool: number): void {
+    this.oldTool = oldTool;
+    this.toolUpdate.next(ToolList.Selection);
   }
 
   addStroke(stroke: Stroke): void {
@@ -126,11 +128,16 @@ export class SelectionService extends Tool {
   }
 
   handleKeyUp(event: KeyboardEvent): void {
-    if (event.key === 'Backspace' || event.key === 'Delete') {
-      this.deleteSelection(this.selectionCnv);
-      this.hideSelectionCps();
-      this.collaborationService.broadcastDeleteRequest();
-      this.isActiveSelection = false;
+    if (this.isActiveSelection) {
+      if (event.key === 'Backspace' || event.key === 'Delete') {
+        this.deleteSelection(this.selectionCnv);
+        this.hideSelectionCps();
+        this.collaborationService.broadcastDeleteRequest();
+        this.isActiveSelection = false;
+      } else if (event.key === 'Enter') {
+        this.pasteSelectionOnBaseCnv();
+        this.toolUpdate.next(this.oldTool);
+      }
     }
   }
 

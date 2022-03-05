@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { StrokeEllipse } from '@app/classes/strokes/stroke-ellipse';
 import { Vec2 } from '@app/classes/vec2';
+import { ToolList } from '@app/interfaces-enums/tool-list';
 import { CollaborationService } from '@app/services/collaboration/collaboration.service';
 import { ColorManagerService } from '@app/services/editor/color-manager/color-manager.service';
 import { DrawingService } from '@app/services/editor/drawing/drawing.service';
@@ -126,7 +127,7 @@ export class EllipseService extends ShapeService {
         this.collaborationService.broadcastStroke(ellipseStroke);
         this.selectionService.addStroke(ellipseStroke);
         this.selectionService.selectStroke(ellipseStroke);
-        this.selectionService.switchToSelectionTool();
+        this.selectionService.switchToSelectionTool(ToolList.Ellipse);
     }
 
     private getBoundingPoints(): Vec2[] {

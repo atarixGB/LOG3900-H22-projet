@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { StrokeRectangle } from '@app/classes/strokes/stroke-rectangle';
 import { Vec2 } from '@app/classes/vec2';
+import { ToolList } from '@app/interfaces-enums/tool-list';
 import { CollaborationService } from '@app/services/collaboration/collaboration.service';
 import { ColorManagerService } from '@app/services/editor/color-manager/color-manager.service';
 import { DrawingService } from '@app/services/editor/drawing/drawing.service';
@@ -126,7 +127,7 @@ export class RectangleService extends ShapeService {
         this.collaborationService.broadcastStroke(rectStroke);
         this.selectionService.addStroke(rectStroke);
         this.selectionService.selectStroke(rectStroke);
-        this.selectionService.switchToSelectionTool();
+        this.selectionService.switchToSelectionTool(ToolList.Rectangle);
     }
 
     private getBoundingPoints(): Vec2[] {
