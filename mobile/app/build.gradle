@@ -63,4 +63,5 @@ dependencies {
 
     implementation 'com.mikhaellopez:circularimageview:4.1.1'
     implementation 'androidx.fragment:fragment-ktx:1.2.5'
+
 }

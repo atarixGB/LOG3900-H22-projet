@@ -5,17 +5,18 @@ import android.graphics.*
 import android.view.ViewConfiguration
 import androidx.core.content.res.ResourcesCompat
 
-abstract class Tool(context: Context,extraCanvas: Canvas) {
-    var extraCanvas: Canvas = extraCanvas
+abstract class Tool(context: Context, baseCanvas: Canvas) {
+    var baseCanvas: Canvas = baseCanvas
     var context: Context = context
-    var currentX = 0f
-    var currentY = 0f
-    var motionTouchEventX = 0f
-    var motionTouchEventY = 0f
-    protected lateinit var name : String
+    var mStartX = 0f
+    var mStartY = 0f
+    var mx = 0f
+    var my = 0f
+    var path = Path()
+    val TOUCH_TOLERANCE = 4f
     protected val drawColor = ResourcesCompat.getColor(context.resources, R.color.black, null)
     protected val backgroundColor = ResourcesCompat.getColor(context.resources, R.color.white, null)
-    protected val touchTolerance = ViewConfiguration.get(context).scaledTouchSlop
+
     protected val paint = Paint().apply {
         color = drawColor
         // Smooths out edges of what is drawn without affecting shape.
@@ -27,22 +28,16 @@ abstract class Tool(context: Context,extraCanvas: Canvas) {
         strokeCap = Paint.Cap.ROUND // default: BUTT
         strokeWidth = 1f // default: Hairline-width (really thin)
     }
-    protected var path = Path()
+
+    abstract fun touchStart()
 
     abstract fun touchMove()
 
-    fun touchstart(){
-        path.reset()
-        path.moveTo(motionTouchEventX, motionTouchEventY)
-        currentX = motionTouchEventX
-        currentY = motionTouchEventY
-    }
-
-     fun touchUp(){
-         path.reset()
-     }
+    abstract fun touchUp()
 
     fun changeWeight(width : Float){
         this.paint.strokeWidth = width
     }
+
+    abstract fun onDraw(canvas: Canvas)
 }
