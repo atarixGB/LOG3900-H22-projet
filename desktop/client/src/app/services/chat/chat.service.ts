@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import * as io from 'socket.io-client';
 import { CHAT_URL } from '@app/constants/api-urls';
 import { HttpClient } from '@angular/common/http';
-import { CREATE_ROOM_URL, ALL_ROOMS_URL } from '@app/constants/api-urls';
+import { CREATE_ROOM_URL, ALL_ROOMS_URL, DELETE_ROOM_URL } from '@app/constants/api-urls';
 import { LoginService } from '../login/login.service';
 import { IChatroom } from '@app/interfaces-enums/IChatroom'
 
@@ -73,6 +73,27 @@ export class ChatService {
         console.log(`Impossible de retrouver les conversations publiques dans la base de données\nErreur: ${error}`);
       }
     )
+  }
+
+  deleteRoom(roomName: string): boolean {
+    let hasBeenDeleted = false;
+
+    const data = {
+      roomName: roomName
+    }
+
+    this.httpClient.post<number>(DELETE_ROOM_URL, data).subscribe(
+      (result) => {
+        console.log("Server result:", result);
+        if (result == 201) {
+          hasBeenDeleted = true;
+        }
+      },
+      (error) => {
+        console.log("Server error:", error);
+      })
+
+      return hasBeenDeleted;
   }
 
   disconnect(): void {

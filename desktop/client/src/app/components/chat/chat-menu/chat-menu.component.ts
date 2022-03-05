@@ -36,7 +36,12 @@ export class ChatMenuComponent implements OnInit {
         this.chatService.connectUser();
     }
 
-    onChatroomClick(selectedRoom: IChatroom): void {
-      console.log(`ROOM: ${selectedRoom.roomName}\nCREATOR: ${selectedRoom.identifier}\nID: ${selectedRoom._id}\nMEMBERS: ${selectedRoom.usersList}`);
+    onOpenChatroom(selectedRoom: IChatroom): void {
+      console.log(`Opening ROOM: ${selectedRoom.roomName}\nCREATOR: ${selectedRoom.identifier}\nID: ${selectedRoom._id}\nMEMBERS: ${selectedRoom.usersList}`);
+    }
+
+    onDeleteChatroom(selectedRoom: IChatroom): void {
+      console.log(`Deleting ROOM: ${selectedRoom.roomName}`);
+      this.chatService.deleteRoom(selectedRoom.roomName);
     }
 }

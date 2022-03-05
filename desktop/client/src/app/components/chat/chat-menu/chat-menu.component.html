@@ -26,10 +26,10 @@
         <div class="roomname-container" mat-raised-button color="primary">
             {{room.roomName}}
         </div>
-        <button mat-raised-button color="accent" (click)="this.onChatroomClick(room)">
+        <button mat-raised-button color="accent" (click)="this.onOpenChatroom(room)">
           Ouvrir
         </button>
-        <button matIcon mat-raised-button color="accent" (click)="this.onChatroomClick(room)">
+        <button matIcon mat-raised-button color="accent" (click)="this.onDeleteChatroom(room)">
           <mat-icon>delete</mat-icon>
         </button>
 
