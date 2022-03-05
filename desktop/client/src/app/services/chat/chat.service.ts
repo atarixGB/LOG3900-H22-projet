@@ -14,16 +14,22 @@ export class ChatService {
   username: string;
   socket: any;
   publicRooms: IChatroom[];
+  currentRoom: string;
 
   constructor(private loginService: LoginService, private httpClient: HttpClient, private router: Router, private route: ActivatedRoute) {
     this.publicRooms = [];
   }
 
-  connectUser(): void {
+  joinRoom(roomName: string): void {
     // this.socket = io.io('https://polygram-app.herokuapp.com/', { transports: ['websocket'] });
     this.socket = io.io(CHAT_URL, { transports: ['websocket'] });
 
-    this.socket.emit('newUser', this.username);
+    const data = {
+      userName: this.username,
+      room: roomName,
+    }
+
+    this.socket.emit('newUser', data);
 
     this.socket.on('newUser', (user: string) => {
 
@@ -43,7 +49,7 @@ export class ChatService {
     console.log("chatroomData:", chatroomData);
 
     this.httpClient.post(CREATE_ROOM_URL, chatroomData).subscribe(
-      (result: IChatroom) => {
+      (result) => {
         console.log("Server result:", result);
       },
       (error) => {
@@ -75,8 +81,7 @@ export class ChatService {
     )
   }
 
-  deleteRoom(roomName: string): boolean {
-    let hasBeenDeleted = false;
+  deleteRoom(roomName: string): void {
 
     const data = {
       roomName: roomName
@@ -85,15 +90,10 @@ export class ChatService {
     this.httpClient.post<number>(DELETE_ROOM_URL, data).subscribe(
       (result) => {
         console.log("Server result:", result);
-        if (result == 201) {
-          hasBeenDeleted = true;
-        }
       },
       (error) => {
         console.log("Server error:", error);
       })
-
-      return hasBeenDeleted;
   }
 
   disconnect(): void {

@@ -33,6 +33,7 @@ export class ChatroomComponent implements AfterViewInit {
             const data = {
                 message: this.message,
                 userName: this.userName,
+                room: "default-public-room",
                 time: formatDate(new Date(), 'hh:mm:ss a', 'en-US'),
             };
 

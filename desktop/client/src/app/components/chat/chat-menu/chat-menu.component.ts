@@ -34,7 +34,7 @@ export class ChatMenuComponent implements OnInit {
 
   joinDefaultChannel(): void {
     this.chatService.username = this.loginService.username;
-    this.chatService.connectUser();
+    this.chatService.joinRoom("default-public-room");
   }
 
   onOpenChatroom(selectedRoom: IChatroom): void {
