@@ -6,6 +6,7 @@ import { Vec2 } from '@app/classes/vec2';
 import { MouseButton } from '@app/constants/constants';
 import { DrawingService } from '@app/services/editor/drawing/drawing.service';
 import { MoveSelectionService } from './move-selection.service';
+import { ResizeSelectionService } from '@app/services/editor/tools/selection/resize-selection.service'
 import { CollaborationService } from '@app/services/collaboration/collaboration.service';
 import { StrokeRectangle } from '@app/classes/strokes/stroke-rectangle';
 import { StrokeEllipse } from '@app/classes/strokes/stroke-ellipse';
@@ -28,11 +29,14 @@ export class SelectionService extends Tool {
 
   isActiveSelection: boolean;
   isMoving: boolean;
+  isResizing: boolean;
+
+  dimensionsBeforeResize: Vec2;
 
   shouldBeSelectionTool: Subject<boolean>;
   toolUpdate$: Observable<boolean>;
 
-  constructor(drawingService: DrawingService, private moveSelectionService: MoveSelectionService, private collaborationService: CollaborationService) {
+  constructor(drawingService: DrawingService, private moveSelectionService: MoveSelectionService, private collaborationService: CollaborationService, private resizeSelectionService: ResizeSelectionService) {
     super(drawingService);
     this.strokes = []; 
     this.shouldBeSelectionTool = new Subject();
@@ -42,6 +46,7 @@ export class SelectionService extends Tool {
     this.selectionCPs = [];
     this.isActiveSelection = false; 
     this.isMoving = false;
+    this.isResizing = false;
 
     this.collaborationService.newStroke$.subscribe((newStroke: any) => {
       this.addIncomingStrokeFromOtherUser(newStroke);
@@ -79,17 +84,28 @@ export class SelectionService extends Tool {
       const mouseTarget = event.target as HTMLElement;
       if (this.isOnSelectionCanvas(mouseTarget)) {
           this.isMoving = true;
-          this.moveSelectionService.oldMousePos = { x: event.x, y: event.y };
           this.moveSelectionService.setSelectionCnv(this.selectionCnv, this.selectionCnv.getContext('2d') as CanvasRenderingContext2D, this.selectionCPs);
+          this.moveSelectionService.onMouseDown(event);
+      } else if (this.isOnResizeCp(mouseTarget)) {
+          this.isResizing = true;
+          this.dimensionsBeforeResize = { x: this.selectionCnv.width, y: this.selectionCnv.height}
+          this.resizeSelectionService.setSelectionCnv(this.selectionCnv, this.selectionCnv.getContext('2d') as CanvasRenderingContext2D, this.selectionCPs, this.selectedStroke);
+          this.resizeSelectionService.onMouseDown(event);
       } else {
-        this.pasteSelectionOnBaseCnv();
+          this.pasteSelectionOnBaseCnv();
       }
     }
   }
 
   onMouseMove(event: MouseEvent): void {
-    if (this.isActiveSelection && this.isMoving) {
-      this.moveSelectionService.onMouseMove(event);
+    if (this.isActiveSelection) {
+      if (this.isMoving) {
+        this.moveSelectionService.onMouseMove(event);
+        this.adjustCpsToSelection();
+      } else if (this.isResizing) {
+        this.resizeSelectionService.onMouseMove(event);
+        this.adjustCpsToSelection();
+      } 
     }
   }
 
@@ -99,6 +115,16 @@ export class SelectionService extends Tool {
       this.collaborationService.broadcastSelectionPos({
         sender: '',
         pos: { x: this.selectionCnv.offsetLeft, y: this.selectionCnv.offsetTop },
+      });
+    } else if(this.isResizing) {
+      this.isResizing = false;
+      const currentDimensions = {x: this.selectionCnv.width, y: this.selectionCnv.height};
+      const scale = {x: currentDimensions.x / this.dimensionsBeforeResize.x, y: currentDimensions.y / this.dimensionsBeforeResize.y}
+      this.collaborationService.broadcastSelectionSize({
+        sender: '',
+        newPos: { x: this.selectionCnv.offsetLeft, y: this.selectionCnv.offsetTop },
+        newDimensions: currentDimensions,
+        scale: scale,
       });
     }
   }
@@ -137,6 +163,10 @@ export class SelectionService extends Tool {
   private isOnSelectionCanvas(mouseLocation: HTMLElement): boolean {
     return mouseLocation.id === 'selectionCnv';
   }
+
+  private isOnResizeCp(mouseLocation: HTMLElement): boolean {
+    return mouseLocation.id === 'selectionCP';
+  } 
   
   deleteSelection(selection: HTMLCanvasElement): void {
     if (selection) {

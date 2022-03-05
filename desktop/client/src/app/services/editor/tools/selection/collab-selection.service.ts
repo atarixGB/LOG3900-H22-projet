@@ -29,6 +29,10 @@ export class CollabSelectionService {
       this.moveUpdate(newSelectionPos.sender, newSelectionPos.pos);
     });
 
+    this.collaborationService.newSelectionSize$.subscribe((newSelectionSize: any) => {
+      this.resizeUpdate(newSelectionSize.sender, newSelectionSize.newPos, newSelectionSize.newDimensions, newSelectionSize.scale);
+    });
+
     this.collaborationService.pasteRequest$.subscribe((pasteReq: any) => {
       this.pasteSelected(pasteReq.sender);
     });
@@ -52,9 +56,15 @@ export class CollabSelectionService {
     this.selectionService.positionSelectionCanvas(newPos, cnv);
   }
 
-  /*resizeUpdate(): void {
-  
-  }*/
+  resizeUpdate(sender: string, newPos: Vec2, newDimensions: Vec2, scale: Vec2): void {
+    let stroke = this.selectionStrokes.get(sender) as Stroke;
+    let cnv = this.selectionCnvs.get(sender) as HTMLCanvasElement;
+    this.selectionService.positionSelectionCanvas(newPos, cnv);
+    cnv.width = newDimensions.x;
+    cnv.height = newDimensions.y;
+    stroke.rescale(scale);
+    stroke.drawStroke(cnv.getContext('2d') as CanvasRenderingContext2D);
+  }
 
   private updateSelectionStrokeWidth(sender: string, newWidth: number): void {
     let stroke = this.selectionStrokes.get(sender) as Stroke;

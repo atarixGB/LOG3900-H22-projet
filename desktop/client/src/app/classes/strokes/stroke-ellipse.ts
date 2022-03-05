@@ -45,4 +45,9 @@ export class StrokeEllipse extends Stroke {
       const bottomRightCorner = { x: selectionTopLeftCorner.x + selectionSize.x, y: selectionTopLeftCorner.y + selectionSize.y };
       this.boundingPoints = [selectionTopLeftCorner, bottomRightCorner];
    }
+
+   rescale(scale: Vec2): void {
+      this.center = { x: this.center.x * scale.x, y: this.center.y * scale.y }
+      this.radius = { x: this.radius.x * scale.x, y: this.radius.y * scale.y }
+   }
 }

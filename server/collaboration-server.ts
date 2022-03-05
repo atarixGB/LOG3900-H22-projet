@@ -30,18 +30,23 @@ io.on('connection', (socket) => {
       io.emit('receiveSelectionPos', posData);
     })
 
-    socket.on('broadcastPasteRequest', (posData) => {
-      console.log("Broadcasting paste request from :", posData);
-      io.emit('receivePasteRequest', posData);
+    socket.on('broadcastSelectionSize', (sizeData) => {
+      console.log("Broadcasting new selection size : ", sizeData);
+      io.emit('receiveSelectionSize', sizeData);
     })
 
-    socket.on('broadcastDeleteRequest', (posData) => {
-      console.log("Broadcasting delete request from :", posData);
-      io.emit('receiveDeleteRequest', posData);
+    socket.on('broadcastPasteRequest', (pasteReqData) => {
+      console.log("Broadcasting paste request from :", pasteReqData);
+      io.emit('receivePasteRequest', pasteReqData);
     })
 
-    socket.on('broadcastNewStrokeWidth', (posData) => {
-      console.log("Broadcasting new stroke width :", posData);
-      io.emit('receiveStrokeWidth', posData);
+    socket.on('broadcastDeleteRequest', (delReqData) => {
+      console.log("Broadcasting delete request from :", delReqData);
+      io.emit('receiveDeleteRequest', delReqData);
+    })
+
+    socket.on('broadcastNewStrokeWidth', (widthData) => {
+      console.log("Broadcasting new stroke width :", widthData);
+      io.emit('receiveStrokeWidth', widthData);
     })
 })

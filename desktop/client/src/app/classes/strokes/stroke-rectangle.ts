@@ -55,4 +55,9 @@ export class StrokeRectangle extends Stroke {
         const bottomRightCorner = { x: selectionTopLeftCorner.x + selectionSize.x, y: selectionTopLeftCorner.y + selectionSize.y };
         this.boundingPoints = [selectionTopLeftCorner, bottomRightCorner];
     }
+
+    rescale(scale: Vec2): void {
+        this.width = this.width * scale.x;
+        this.height = this.height * scale.y;
+    }
 }

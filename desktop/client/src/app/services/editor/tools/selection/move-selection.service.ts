@@ -33,6 +33,10 @@ export class MoveSelectionService {
         this.selectionCPs = cps;
     }
 
+    onMouseDown(event: MouseEvent): void {
+        this.oldMousePos = { x: event.x, y: event.y };
+    }
+
     onMouseMove(event: MouseEvent): void {
         const delta = this.calculateMovement(event);
         this.oldMousePos = { x: event.x, y: event.y };
@@ -46,13 +50,13 @@ export class MoveSelectionService {
     private moveSelectionCanvas(delta: Vec2): void {
         this.selectionCnv.style.left = (this.selectionCnv.offsetLeft + delta.x).toString() + 'px';
         this.selectionCnv.style.top = (this.selectionCnv.offsetTop + delta.y).toString() + 'px';
-        this.moveSelectionCps(delta);
+        //this.moveSelectionCps(delta);
     }
 
-    private moveSelectionCps(delta: Vec2) {
+    /*private moveSelectionCps(delta: Vec2) {
         this.selectionCPs.forEach(cp => {
             cp.style.left = (cp.offsetLeft + delta.x).toString() + 'px';
             cp.style.top = (cp.offsetTop + delta.y).toString() + 'px';
         });
-    }
+    }*/
 }

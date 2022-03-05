@@ -19,6 +19,9 @@ export class CollaborationService {
     newSelectionPos: Subject<any>;
     newSelectionPos$: Observable<any>;
 
+    newSelectionSize: Subject<any>;
+    newSelectionSize$: Observable<any>;
+
     pasteRequest: Subject<any>;
     pasteRequest$: Observable<any>;
 
@@ -37,6 +40,9 @@ export class CollaborationService {
 
         this.newSelectionPos = new Subject();
         this.newSelectionPos$ = this.newSelectionPos.asObservable();
+
+        this.newSelectionSize = new Subject();
+        this.newSelectionSize$ = this.newSelectionSize.asObservable();
 
         this.pasteRequest = new Subject();
         this.pasteRequest$ = this.pasteRequest.asObservable();
@@ -66,6 +72,12 @@ export class CollaborationService {
         this.socket.on('receiveSelectionPos', (selectionPos: any) => {
             if (selectionPos.sender !== this.socket.id) {
                 this.newSelectionPos.next(selectionPos); // this is an observable value that will be read by collab selection service
+            }
+        });
+
+        this.socket.on('receiveSelectionSize', (selectionSize: any) => {
+            if (selectionSize.sender !== this.socket.id) {
+                this.newSelectionSize.next(selectionSize); // this is an observable value that will be read by collab selection service
             }
         });
 
@@ -101,6 +113,11 @@ export class CollaborationService {
     broadcastSelectionPos(selectionPos: any): void {
         selectionPos.sender = this.socket.id;
         this.socket.emit('broadcastSelectionPos', selectionPos);
+    }
+
+    broadcastSelectionSize(selectionSize: any): void {
+        selectionSize.sender = this.socket.id;
+        this.socket.emit('broadcastSelectionSize', selectionSize);
     }
 
     broadcastPasteRequest(): void {
