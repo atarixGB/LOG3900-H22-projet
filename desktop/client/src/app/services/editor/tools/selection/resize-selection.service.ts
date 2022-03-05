@@ -14,12 +14,11 @@ export class ResizeSelectionService {
     stroke: Stroke;
     oldMousePos: Vec2;
     scale: Vec2;
-
-    private currentCpIndex: number;
-    private deltaSize: Vec2;
-    private deltaPos: Vec2;
-    private selectionCPs: HTMLElement[];
-    private currentCp: HTMLElement;
+    currentCpIndex: number;
+    deltaSize: Vec2;
+    deltaPos: Vec2;
+    selectionCPs: HTMLElement[];
+    currentCp: HTMLElement;
 
     constructor() {}
 

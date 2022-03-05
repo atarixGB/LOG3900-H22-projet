@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Vec2 } from '@app/classes/vec2';
 
-
 @Injectable({
     providedIn: 'root',
 })
@@ -16,7 +15,6 @@ export class MoveSelectionService {
     selectionCtx: CanvasRenderingContext2D;
     oldMousePos: Vec2;
     selectionCPs: HTMLElement[];
-
 
     constructor() {}
 
@@ -50,13 +48,5 @@ export class MoveSelectionService {
     private moveSelectionCanvas(delta: Vec2): void {
         this.selectionCnv.style.left = (this.selectionCnv.offsetLeft + delta.x).toString() + 'px';
         this.selectionCnv.style.top = (this.selectionCnv.offsetTop + delta.y).toString() + 'px';
-        //this.moveSelectionCps(delta);
     }
-
-    /*private moveSelectionCps(delta: Vec2) {
-        this.selectionCPs.forEach(cp => {
-            cp.style.left = (cp.offsetLeft + delta.x).toString() + 'px';
-            cp.style.top = (cp.offsetTop + delta.y).toString() + 'px';
-        });
-    }*/
 }

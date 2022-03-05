@@ -20,19 +20,15 @@ export class SelectionService extends Tool {
   strokes: Stroke[];
   selectedStroke: Stroke;
   selectedIndex: number;
-
   containerDiv: HTMLElement;
   selectionCnv: HTMLCanvasElement;
   zIndex: number;
   borderColor: string;
   selectionCPs: HTMLElement[];
-
   isActiveSelection: boolean;
   isMoving: boolean;
   isResizing: boolean;
-
   dimensionsBeforeResize: Vec2;
-
   shouldBeSelectionTool: Subject<boolean>;
   toolUpdate$: Observable<boolean>;
 
@@ -160,71 +156,12 @@ export class SelectionService extends Tool {
     this.collaborationService.broadcastPasteRequest();
   }
 
-  private isOnSelectionCanvas(mouseLocation: HTMLElement): boolean {
-    return mouseLocation.id === 'selectionCnv';
-  }
-
-  private isOnResizeCp(mouseLocation: HTMLElement): boolean {
-    return mouseLocation.id === 'selectionCP';
-  } 
-  
   deleteSelection(selection: HTMLCanvasElement): void {
     if (selection) {
       selection.remove();
     }
   }
-
-  private isStrokeFound(clickedPos: Vec2): boolean {
-    for (let i = this.strokes.length - 1; i >= 0; i--) {
-      if (this.isInBounds(this.strokes[i].boundingPoints, clickedPos)) {
-        this.selectedIndex = i;
-        return true;
-      }
-    }
-    return false;
-  }
-
-  private isInBounds(bounds: Vec2[], pointToCheck: Vec2): boolean {
-    const topLeftBound = bounds[0];
-    const bottomRightBound = bounds[1];
-    return (
-      pointToCheck.x >= topLeftBound.x &&
-      pointToCheck.x <= bottomRightBound.x &&
-      pointToCheck.y >= topLeftBound.y &&
-      pointToCheck.y <= bottomRightBound.y
-    );
-  }
-
-  private previewSelection(stroke: Stroke): void {
-    this.selectionCnv = this.createSelectionCanvas(this.containerDiv, stroke, this.zIndex, this.borderColor);
-    const pos = {x: stroke.boundingPoints[0].x, y: stroke.boundingPoints[0].y }
-    this.positionSelectionCanvas(pos, this.selectionCnv);
-    this.pasteStrokeOnSelectionCnv(stroke, this.selectionCnv.getContext('2d') as CanvasRenderingContext2D);
-    this.adjustCpsToSelection();
-  }
-
-  adjustCpsToSelection(): void {
-    const cpRadius = this.selectionCPs[0].offsetWidth / 2;
-    const topLeftCpPos = { x: this.selectionCnv.offsetLeft - cpRadius, y: this.selectionCnv.offsetTop - cpRadius };
-    const cnvWidth = this.selectionCnv.offsetWidth;
-    const cnvHeight = this.selectionCnv.offsetHeight;
-
-    this.selectionCPs.forEach(cp => {
-      cp.style.zIndex = (this.zIndex + 1).toString();
-      cp.style.visibility = 'visible';
-    });
-
-    this.positionCp(this.selectionCPs[0], topLeftCpPos);
-    this.positionCp(this.selectionCPs[1], {x: topLeftCpPos.x + cnvWidth, y: topLeftCpPos.y });
-    this.positionCp(this.selectionCPs[2], {x: topLeftCpPos.x, y: topLeftCpPos.y + cnvHeight});
-    this.positionCp(this.selectionCPs[3], {x: topLeftCpPos.x + cnvWidth, y: topLeftCpPos.y + cnvHeight});
-  }
-
-  private positionCp(cp: HTMLElement, pos: Vec2): void {
-    cp.style.left = (pos.x).toString() + 'px';
-    cp.style.top = (pos.y).toString() + 'px';
-  }
-
+  
   createSelectionCanvas(containerDiv: HTMLElement, stroke: Stroke, zIndex: number, borderColor: string): HTMLCanvasElement {
     let canvas = document.createElement('canvas');
     canvas.id = 'selectionCnv';
@@ -256,6 +193,65 @@ export class SelectionService extends Tool {
     this.strokes.forEach(stroke => {
       stroke.drawStroke(this.drawingService.baseCtx);
     });
+  }
+
+  private isOnSelectionCanvas(mouseLocation: HTMLElement): boolean {
+    return mouseLocation.id === 'selectionCnv';
+  }
+
+  private isOnResizeCp(mouseLocation: HTMLElement): boolean {
+    return mouseLocation.id === 'selectionCP';
+  } 
+
+  private isStrokeFound(clickedPos: Vec2): boolean {
+    for (let i = this.strokes.length - 1; i >= 0; i--) {
+      if (this.isInBounds(this.strokes[i].boundingPoints, clickedPos)) {
+        this.selectedIndex = i;
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private isInBounds(bounds: Vec2[], pointToCheck: Vec2): boolean {
+    const topLeftBound = bounds[0];
+    const bottomRightBound = bounds[1];
+    return (
+      pointToCheck.x >= topLeftBound.x &&
+      pointToCheck.x <= bottomRightBound.x &&
+      pointToCheck.y >= topLeftBound.y &&
+      pointToCheck.y <= bottomRightBound.y
+    );
+  }
+
+  private previewSelection(stroke: Stroke): void {
+    this.selectionCnv = this.createSelectionCanvas(this.containerDiv, stroke, this.zIndex, this.borderColor);
+    const pos = {x: stroke.boundingPoints[0].x, y: stroke.boundingPoints[0].y }
+    this.positionSelectionCanvas(pos, this.selectionCnv);
+    this.pasteStrokeOnSelectionCnv(stroke, this.selectionCnv.getContext('2d') as CanvasRenderingContext2D);
+    this.adjustCpsToSelection();
+  }
+
+  private adjustCpsToSelection(): void {
+    const cpRadius = this.selectionCPs[0].offsetWidth / 2;
+    const topLeftCpPos = { x: this.selectionCnv.offsetLeft - cpRadius, y: this.selectionCnv.offsetTop - cpRadius };
+    const cnvWidth = this.selectionCnv.offsetWidth;
+    const cnvHeight = this.selectionCnv.offsetHeight;
+
+    this.selectionCPs.forEach(cp => {
+      cp.style.zIndex = (this.zIndex + 1).toString();
+      cp.style.visibility = 'visible';
+    });
+
+    this.positionCp(this.selectionCPs[0], topLeftCpPos);
+    this.positionCp(this.selectionCPs[1], {x: topLeftCpPos.x + cnvWidth, y: topLeftCpPos.y });
+    this.positionCp(this.selectionCPs[2], {x: topLeftCpPos.x, y: topLeftCpPos.y + cnvHeight});
+    this.positionCp(this.selectionCPs[3], {x: topLeftCpPos.x + cnvWidth, y: topLeftCpPos.y + cnvHeight});
+  }
+
+  private positionCp(cp: HTMLElement, pos: Vec2): void {
+    cp.style.left = (pos.x).toString() + 'px';
+    cp.style.top = (pos.y).toString() + 'px';
   }
 
   private addIncomingStrokeFromOtherUser(stroke: any) {

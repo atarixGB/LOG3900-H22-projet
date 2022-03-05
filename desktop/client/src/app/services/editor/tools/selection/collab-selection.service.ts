@@ -12,40 +12,18 @@ import { SelectionService } from './selection.service';
 export class CollabSelectionService {
   selectionStrokes: Map<string, Stroke>;
   selectionCnvs: Map<string, HTMLCanvasElement>;
-
   containerDiv: HTMLElement;
   zIndex: number;
+  borderColor: string;
 
   constructor(private drawingService: DrawingService, private selectionService: SelectionService,  private collaborationService: CollaborationService) {
     this.selectionStrokes = new Map<string, Stroke>();
     this.selectionCnvs = new Map<string, HTMLCanvasElement>();
     this.zIndex = 0;
-
-    this.collaborationService.newSelection$.subscribe((newSelection: any) => {
-      this.addSelectedStroke(newSelection as ICollabSelection);
-    });
-
-    this.collaborationService.newSelectionPos$.subscribe((newSelectionPos: any) => {
-      this.moveUpdate(newSelectionPos.sender, newSelectionPos.pos);
-    });
-
-    this.collaborationService.newSelectionSize$.subscribe((newSelectionSize: any) => {
-      this.resizeUpdate(newSelectionSize.sender, newSelectionSize.newPos, newSelectionSize.newDimensions, newSelectionSize.scale);
-    });
-
-    this.collaborationService.pasteRequest$.subscribe((pasteReq: any) => {
-      this.pasteSelected(pasteReq.sender);
-    });
-
-    this.collaborationService.deleteRequest$.subscribe((delReq: any) => {
-      this.removeSelected(delReq.sender);
-    });
-
-    this.collaborationService.newStrokeWidth$.subscribe((width: any) => {
-      this.updateSelectionStrokeWidth(width.sender, width.value);
-    });
+    this.borderColor = 'yellow';
+    this.setSubscriptions();
   }
-
+  
   addSelectedStroke(selected: ICollabSelection): void {
     this.selectionStrokes.set(selected.sender, this.selectionService.strokes[selected.strokeIndex]);
     this.displaySelection(selected);
@@ -56,7 +34,7 @@ export class CollabSelectionService {
     this.selectionService.positionSelectionCanvas(newPos, cnv);
   }
 
-  resizeUpdate(sender: string, newPos: Vec2, newDimensions: Vec2, scale: Vec2): void {
+  private resizeUpdate(sender: string, newPos: Vec2, newDimensions: Vec2, scale: Vec2): void {
     let stroke = this.selectionStrokes.get(sender) as Stroke;
     let cnv = this.selectionCnvs.get(sender) as HTMLCanvasElement;
     this.selectionService.positionSelectionCanvas(newPos, cnv);
@@ -93,11 +71,37 @@ export class CollabSelectionService {
 
   private displaySelection(selected: ICollabSelection) {
     let stroke = this.selectionStrokes.get(selected.sender) as Stroke;
-    let selectionCnv = this.selectionService.createSelectionCanvas(this.containerDiv, stroke, ((++this.zIndex) % 4) + 5, 'pink');
+    let selectionCnv = this.selectionService.createSelectionCanvas(this.containerDiv, stroke, ((++this.zIndex) % 4) + 5, this.borderColor);
     this.selectionCnvs.set(selected.sender, selectionCnv);
     const pos = {x: stroke.boundingPoints[0].x, y: stroke.boundingPoints[0].y }
     this.selectionService.positionSelectionCanvas(pos, selectionCnv);
     this.selectionService.pasteStrokeOnSelectionCnv(stroke, selectionCnv.getContext('2d') as CanvasRenderingContext2D);
     this.selectionService.redrawAllStrokesExceptSelected(stroke);
   } 
+
+  private setSubscriptions(): void {
+    this.collaborationService.newSelection$.subscribe((newSelection: any) => {
+      this.addSelectedStroke(newSelection as ICollabSelection);
+    });
+
+    this.collaborationService.newSelectionPos$.subscribe((newSelectionPos: any) => {
+      this.moveUpdate(newSelectionPos.sender, newSelectionPos.pos);
+    });
+
+    this.collaborationService.newSelectionSize$.subscribe((newSelectionSize: any) => {
+      this.resizeUpdate(newSelectionSize.sender, newSelectionSize.newPos, newSelectionSize.newDimensions, newSelectionSize.scale);
+    });
+
+    this.collaborationService.pasteRequest$.subscribe((pasteReq: any) => {
+      this.pasteSelected(pasteReq.sender);
+    });
+
+    this.collaborationService.deleteRequest$.subscribe((delReq: any) => {
+      this.removeSelected(delReq.sender);
+    });
+
+    this.collaborationService.newStrokeWidth$.subscribe((width: any) => {
+      this.updateSelectionStrokeWidth(width.sender, width.value);
+    });
+  }
 }
