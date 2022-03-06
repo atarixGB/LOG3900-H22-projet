@@ -65,19 +65,32 @@
             android:id="@+id/radioGroup">
 
             <RadioButton
-                android:id="@+id/radio_one"
+                android:id="@+id/radio_public"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="public"
-                android:onClick="checkButton"
-                android:checked="true"/>
+                android:checked="true" />
             <RadioButton
                 android:id="@+id/radio_private"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="privé"
-                android:onClick="checkButton"/>
+                android:text="privé" />
         </RadioGroup>
+        <TextView
+            android:id="@+id/text_view_albumName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="le nom de l'album est :"
+            android:textSize="18dp"/>
+        <TextView
+            android:id="@+id/text_view_visibility"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="la visibilité de l'album est :"
+            android:textSize="18dp"/>
+
     </LinearLayout>
 <LinearLayout
     android:layout_width="wrap_content"
@@ -87,6 +100,7 @@
     android:id="@+id/buttons"
     android:layout_marginLeft="470dp"
     android:layout_marginTop="20dp">
+
     <Button
         android:id="@+id/submitBtn"
         android:layout_width="170dp"
