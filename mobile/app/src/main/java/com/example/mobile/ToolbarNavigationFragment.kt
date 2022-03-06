@@ -8,8 +8,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 
 class ToolbarNavigationFragment: Fragment() {
     private lateinit var dashbord: TextView
@@ -18,6 +21,7 @@ class ToolbarNavigationFragment: Fragment() {
     private lateinit var albums: TextView
     private lateinit var profile: TextView
     private lateinit var user: String
+    private val sharedViewModel: SharedViewModelToolBar by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -26,16 +30,18 @@ class ToolbarNavigationFragment: Fragment() {
     ): View? {
         val rootView = inflater.inflate(R.layout.fragment_toolbar_navigation, container, false)
 
+        sharedViewModel.user.observe(viewLifecycleOwner) {
+            user = it
+        }
+
         dashbord = rootView.findViewById(R.id.dashbord)
         chat = rootView.findViewById(R.id.chat)
         draw = rootView.findViewById(R.id.draw)
         albums = rootView.findViewById(R.id.albums)
         profile = rootView.findViewById(R.id.profile)
-        user = arguments?.get("userName").toString()
-        //user = intent.getStringExtra("userName").toString()
-        //user = "chaima"
 
         dashbord.setOnClickListener {
+            dashbord.setBackgroundResource(R.color.greenOnClick)
             Toast.makeText(context, "dashbord", Toast.LENGTH_SHORT).show()
             val intent = Intent(activity, Dashboard::class.java)
             intent.putExtra("userName",user)
@@ -43,6 +49,7 @@ class ToolbarNavigationFragment: Fragment() {
         }
 
         chat.setOnClickListener {
+            chat.setBackgroundResource(R.color.greenOnClick)
             Toast.makeText(context, "chat", Toast.LENGTH_SHORT).show()
             val intent = Intent(activity, ChatRooms::class.java)
             intent.putExtra("userName",user)
@@ -51,14 +58,17 @@ class ToolbarNavigationFragment: Fragment() {
         }
 
         draw.setOnClickListener {
+            draw.setBackgroundResource(R.color.greenOnClick)
             Toast.makeText(context, "draw", Toast.LENGTH_SHORT).show()
         }
 
         albums.setOnClickListener {
+            albums.setBackgroundResource(R.color.greenOnClick)
             Toast.makeText(context, "albums", Toast.LENGTH_SHORT).show()
         }
 
         profile.setOnClickListener {
+            profile.setBackgroundResource(R.color.greenOnClick)
             Toast.makeText(context, "profile", Toast.LENGTH_SHORT).show()
             val intent = Intent(activity, Profile::class.java)
             intent.putExtra("userName",user)
@@ -67,6 +77,5 @@ class ToolbarNavigationFragment: Fragment() {
 
 
         return rootView
-        //return super.onCreateView(inflater, container, savedInstanceState)
     }
 }

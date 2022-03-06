@@ -264,20 +264,20 @@
         "source": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\src\\main\\res\\layout\\receivemessage.xml"
     },
     {
-        "merged": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\layout_item_room.xml.flat",
-        "source": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\src\\main\\res\\layout\\item_room.xml"
-    },
-    {
-        "merged": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\drawable_statistic.PNG.flat",
-        "source": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\src\\main\\res\\drawable\\statistic.PNG"
-    },
-    {
         "merged": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\drawable_room_btn.xml.flat",
         "source": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\src\\main\\res\\drawable\\room_btn.xml"
     },
     {
         "merged": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ic_baseline_home_24.xml.flat",
         "source": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\src\\main\\res\\drawable\\ic_baseline_home_24.xml"
+    },
+    {
+        "merged": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\layout_item_room.xml.flat",
+        "source": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\src\\main\\res\\layout\\item_room.xml"
+    },
+    {
+        "merged": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\drawable_statistic.PNG.flat",
+        "source": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\src\\main\\res\\drawable\\statistic.PNG"
     },
     {
         "merged": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\drawable_monster1.png.flat",
@@ -300,12 +300,12 @@
         "source": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\src\\main\\res\\layout\\activity_add_avatar_pop_up.xml"
     },
     {
-        "merged": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\layout_fragment_toolbar.xml.flat",
-        "source": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\src\\main\\res\\layout\\fragment_toolbar.xml"
-    },
-    {
         "merged": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\layout_fragment_toolbar_navigation.xml.flat",
         "source": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\src\\main\\res\\layout\\fragment_toolbar_navigation.xml"
+    },
+    {
+        "merged": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\layout_fragment_toolbar.xml.flat",
+        "source": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\src\\main\\res\\layout\\fragment_toolbar.xml"
     },
     {
         "merged": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\drawable_monster8.png.flat",
@@ -328,12 +328,12 @@
         "source": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\src\\main\\res\\layout\\fragment_custom_tool.xml"
     },
     {
-        "merged": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\layout_activity_join_room.xml.flat",
-        "source": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\src\\main\\res\\layout\\activity_join_room.xml"
-    },
-    {
         "merged": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\drawable_save.png.flat",
         "source": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\src\\main\\res\\drawable\\save.png"
+    },
+    {
+        "merged": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\layout_activity_join_room.xml.flat",
+        "source": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\src\\main\\res\\layout\\activity_join_room.xml"
     },
     {
         "merged": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\drawable_logoutlogo.png.flat",
@@ -364,16 +364,16 @@
         "source": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\src\\main\\res\\mipmap-anydpi-v26\\ic_launcher.xml"
     },
     {
+        "merged": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ic_baseline_chat_bubble_24.xml.flat",
+        "source": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\src\\main\\res\\drawable\\ic_baseline_chat_bubble_24.xml"
+    },
+    {
         "merged": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxhdpi_ic_launcher_foreground.png.flat",
         "source": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher_foreground.png"
     },
     {
         "merged": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-hdpi_ic_launcher.png.flat",
         "source": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\src\\main\\res\\mipmap-hdpi\\ic_launcher.png"
-    },
-    {
-        "merged": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ic_baseline_chat_bubble_24.xml.flat",
-        "source": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\src\\main\\res\\drawable\\ic_baseline_chat_bubble_24.xml"
     },
     {
         "merged": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ic_baseline_launch_24.xml.flat",

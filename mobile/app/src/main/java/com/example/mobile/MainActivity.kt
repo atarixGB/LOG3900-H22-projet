@@ -111,12 +111,6 @@ class MainActivity : AppCompatActivity()  {
                 if(result == "404"){
                     Toast.makeText(this, "Utilisateur inexistant", Toast.LENGTH_SHORT).show()
                 }else if(result == "200"){
-                    val fragment = ToolbarNavigationFragment()
-                    val bundle = Bundle()
-                    bundle.putString("userName",identifiant.text.toString())
-                    fragment.arguments = bundle
-                    supportFragmentManager.beginTransaction().replace(R.id.toolbarNavigation, fragment).commit()
-
                     openDashboard()
                 }
                 else{

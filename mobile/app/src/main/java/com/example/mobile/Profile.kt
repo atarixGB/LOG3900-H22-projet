@@ -8,6 +8,7 @@ import android.util.Base64
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.mobile.Interface.User
 import com.example.mobile.Retrofit.IMyService
@@ -32,6 +33,7 @@ class Profile : AppCompatActivity() {
     private lateinit var iMyService: IMyService
     internal var compositeDisposable = CompositeDisposable()
     var userList = mutableListOf<User>()
+    private val sharedViewModel: SharedViewModelToolBar by viewModels()
 
 
     //todo: for the statistic portion we will use fragments i think its better to transmit the information
@@ -50,6 +52,7 @@ class Profile : AppCompatActivity() {
         avatar = findViewById(R.id.userAvatar)
         modifyProfile=findViewById(R.id.modify_label)
         user = intent.getStringExtra("userName").toString()
+        sharedViewModel.setUser(user)
 //        email = intent.getStringExtra("email").toString()
 
 

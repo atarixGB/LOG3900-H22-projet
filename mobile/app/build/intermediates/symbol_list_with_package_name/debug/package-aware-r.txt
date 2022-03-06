@@ -1334,6 +1334,7 @@ color error_color_material_dark
 color error_color_material_light
 color foreground_material_dark
 color foreground_material_light
+color greenOnClick
 color grey
 color highlighted_text_material_dark
 color highlighted_text_material_light
@@ -2768,7 +2769,6 @@ id chain2
 id chains
 id chat
 id chatButton
-id chatRooms_btn
 id chatViewOptions
 id checkbox
 id checked
@@ -3043,7 +3043,6 @@ id position
 id postLayout
 id principal_room_btn
 id profile
-id profile_btn
 id progress_circular
 id progress_horizontal
 id radio

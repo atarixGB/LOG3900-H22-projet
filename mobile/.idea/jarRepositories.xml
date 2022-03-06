@@ -12,6 +12,11 @@
       <option name="url" value="https://repository.jboss.org/nexus/content/repositories/public/" />
     </remote-repository>
     <remote-repository>
+      <option name="id" value="maven" />
+      <option name="name" value="maven" />
+      <option name="url" value="file:/$PROJECT_DIR$/https/jitpack.io" />
+    </remote-repository>
+    <remote-repository>
       <option name="id" value="BintrayJCenter" />
       <option name="name" value="BintrayJCenter" />
       <option name="url" value="https://jcenter.bintray.com/" />
@@ -24,30 +29,7 @@
     <remote-repository>
       <option name="id" value="maven" />
       <option name="name" value="maven" />
-      <option name="url" value="file:/$PROJECT_DIR$/../../../git%20clone/log3900-203/mobile/https/jitpack.io" />
-    </remote-repository>
-    <remote-repository>
-      <option name="id" value="maven" />
-      <option name="name" value="maven" />
-      <option name="url" value="file:/$PROJECT_DIR$/../../../git%20clone/log3900-203/mobile/app/https/jitpack.io" />
-    </remote-repository>
-    <remote-repository>
-      <option name="id" value="maven" />
-      <option name="name" value="maven" />
-<<<<<<< HEAD
-      <option name="url" value="file:/$PROJECT_DIR$/../../../git%20clone%20final/log3900-203/mobile/https/jitpack.io" />
-=======
-      <option name="url" value="file:/$PROJECT_DIR$/https/jitpack.io" />
->>>>>>> mobile/chatRooms_modification
-    </remote-repository>
-    <remote-repository>
-      <option name="id" value="maven" />
-      <option name="name" value="maven" />
-<<<<<<< HEAD
-      <option name="url" value="file:/$PROJECT_DIR$/../../../git%20clone%20final/log3900-203/mobile/app/https/jitpack.io" />
-=======
       <option name="url" value="file:/$PROJECT_DIR$/app/https/jitpack.io" />
->>>>>>> mobile/chatRooms_modification
     </remote-repository>
   </component>
 </project>

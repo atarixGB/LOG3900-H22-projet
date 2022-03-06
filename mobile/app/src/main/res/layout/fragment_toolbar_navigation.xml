@@ -81,7 +81,6 @@
         android:text="Albums"
         android:textColor="@color/white"
         android:textSize="24sp"
-        android:textColorHint="#6cab42"
         app:layout_column="0"
         app:layout_row="4"
         app:drawableLeftCompat="@drawable/ic_baseline_photo_library_24"
