@@ -2,6 +2,7 @@ package com.example.mobile.Retrofit
 
 import com.example.mobile.Interface.User
 import com.example.mobile.Room
+import com.example.mobile.Album
 import io.reactivex.Observable
 
 import retrofit2.http.*
@@ -28,14 +29,6 @@ interface IMyService {
     fun loginUser(
         @Field("identifier") identifier: String,
         @Field("password") password: String
-    ): Observable<String>
-
-
-    @POST("createRoom")
-    @FormUrlEncoded
-    fun createRoom(
-        @Field("identifier") identifier: String,
-        @Field("roomName") password: String
     ): Observable<String>
 
     @GET("/profile/{identifier}")
@@ -76,6 +69,9 @@ interface IMyService {
     @POST("deleteRoom")
     @FormUrlEncoded
     fun deleteRoom(@Field("roomName")roomName:String): Observable<String>
+
+    @GET("albums")
+    fun getAllPublicAlbums():Call<List<Album>>
 
 
 //    @Multipart
