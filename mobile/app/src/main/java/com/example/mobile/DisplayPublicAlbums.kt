@@ -5,24 +5,25 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.ImageButton
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mobile.Retrofit.IMyService
 import com.example.mobile.Retrofit.RetrofitClient
 import io.reactivex.disposables.CompositeDisposable
-import kotlinx.android.synthetic.main.activity_albums.*
 import retrofit2.Call
 import retrofit2.Response
 import java.util.ArrayList
 
-class Albums : AppCompatActivity(), CreateAlbumPopUp.DialogListener ,AlbumAdapter.AlbumAdapterListener {
+class DisplayPublicAlbums : AppCompatActivity(), AlbumAdapter.AlbumAdapterListener {
+
     private lateinit var user: String
     private lateinit var rvOutputAlbums: RecyclerView
     private lateinit var albumAdapter: AlbumAdapter
     private lateinit var albums : ArrayList<Album>
-    private lateinit var displayAlbumsBtn: Button
     private lateinit var iMyService: IMyService
     private lateinit var albumName: String
+    private lateinit var leaveBtn: ImageButton
     internal var compositeDisposable = CompositeDisposable()
 
     override fun onStop() {
@@ -32,9 +33,10 @@ class Albums : AppCompatActivity(), CreateAlbumPopUp.DialogListener ,AlbumAdapte
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_albums)
+        setContentView(R.layout.activity_display_public_albums)
 
         rvOutputAlbums = findViewById(R.id.rvOutputAlbums)
+        leaveBtn = findViewById(R.id.leaveBtn)
 
         val retrofit = RetrofitClient.getInstance()
         iMyService = retrofit.create(IMyService::class.java)
@@ -48,26 +50,16 @@ class Albums : AppCompatActivity(), CreateAlbumPopUp.DialogListener ,AlbumAdapte
         rvOutputAlbums.adapter = albumAdapter
         rvOutputAlbums.layoutManager = GridLayoutManager(this, 3)
 
+        getPublicAlbums()
 
-
-        create_album_btn.setOnClickListener(){
-            //open popup window
-            var dialog=CreateAlbumPopUp()
-            dialog.show(supportFragmentManager,"customDialog")
-        }
-
-        getUserAlbums()
-
-        displayAlbumsBtn.setOnClickListener {
-            val intent = Intent(this, DisplayPublicAlbums::class.java)
-            intent.putExtra("userName",user)
+        leaveBtn.setOnClickListener {
+            val intent = Intent(this, Albums::class.java)
+            intent.putExtra("userName", user)
             startActivity(intent)
         }
-
     }
-
-    private fun getUserAlbums() {
-        var call: Call<List<Album>> = iMyService.getUserAlbums(user)
+    private fun getPublicAlbums() {
+        var call: Call<List<Album>> = iMyService.getAllPublicAlbums()
         call.enqueue(object: retrofit2.Callback<List<Album>> {
 
             override fun onResponse(call: Call<List<Album>>, response: Response<List<Album>>) {
@@ -78,20 +70,12 @@ class Albums : AppCompatActivity(), CreateAlbumPopUp.DialogListener ,AlbumAdapte
             }
 
             override fun onFailure(call: Call<List<Album>>, t: Throwable) {
-                Log.d("Albums", "onFailure" +t.message )
+                Log.d("PublicAlbums", "onFailure" +t.message )
             }
 
         })
 
 
-    }
-
-    override fun popUpListener(albumName: String) {
-        this.albumName = albumName
-//        var usersList = ArrayList<String>()
-//        usersList.add(user)
-//        usersList.add("prob")
-//        createAlbum(user,this.albumName, usersList)
     }
 
     override fun albumAdapterListener(albumName: String) {
