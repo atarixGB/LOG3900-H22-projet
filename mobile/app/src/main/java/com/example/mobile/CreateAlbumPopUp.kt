@@ -1,5 +1,6 @@
 package com.example.mobile
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,11 +12,10 @@ import kotlinx.android.synthetic.main.fragment_create_album_pop_up.view.*
 
 class CreateAlbumPopUp : DialogFragment() {
     private lateinit var radioGroup: RadioGroup
-    private lateinit var radioButton: RadioButton
+    private lateinit var albumName:EditText
     private lateinit var submitButton: Button
     private lateinit var cancelButton: Button
-    private lateinit var textViewAlbumName: TextView
-    private lateinit var textViewVisibility: TextView
+    private lateinit var listener: DialogListener
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -25,8 +25,7 @@ class CreateAlbumPopUp : DialogFragment() {
 
         var rootView: View= inflater.inflate(R.layout.fragment_create_album_pop_up, container, false)
         radioGroup=rootView.findViewById(R.id.radioGroup)
-        textViewAlbumName=rootView.findViewById(R.id.text_view_albumName)
-        textViewVisibility=rootView.findViewById(R.id.text_view_visibility)
+        albumName=rootView.findViewById(R.id.newAlbumName)
         submitButton= rootView.findViewById(R.id.submitBtn)
         cancelButton=rootView.findViewById(R.id.cancelBtn)
 
@@ -39,11 +38,31 @@ class CreateAlbumPopUp : DialogFragment() {
             val radio= rootView.findViewById<RadioButton>(selectedID)
 
             var result=radio.text.toString()
-            Toast.makeText(context, "choix d'accès est $result", Toast.LENGTH_LONG)
+            var name= albumName.text.toString()
+            listener.popUpListener(name)
 
+            Toast.makeText(context, "le nom de votre album est $name choix d'accès est $result", Toast.LENGTH_LONG)
+
+            dismiss()
         }
-        
+
         return rootView
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        listener = try {
+            context as DialogListener
+        } catch (e: ClassCastException) {
+            throw ClassCastException(
+                context.toString() + "must implement DialogListener"
+            )
+        }
+    }
+
+
+    public interface DialogListener {
+        fun popUpListener(albumName: String)
     }
 
 }

@@ -8,11 +8,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.mobile.Retrofit.IMyService
 import com.example.mobile.Retrofit.RetrofitClient
 import io.reactivex.disposables.CompositeDisposable
+import kotlinx.android.synthetic.main.activity_albums.*
 import retrofit2.Call
 import retrofit2.Response
 import java.util.ArrayList
 
-class Albums : AppCompatActivity(), AlbumAdapter.AlbumAdapterListener {
+class Albums : AppCompatActivity(), CreateAlbumPopUp.DialogListener ,AlbumAdapter.AlbumAdapterListener {
     private lateinit var user: String
     private lateinit var rvOutputAlbums: RecyclerView
     private lateinit var albumAdapter: AlbumAdapter
@@ -45,6 +46,12 @@ class Albums : AppCompatActivity(), AlbumAdapter.AlbumAdapterListener {
         rvOutputAlbums.layoutManager = GridLayoutManager(this, 3)
 
         getAlbums()
+
+        create_album_btn.setOnClickListener(){
+            //open popup window
+            var dialog=CreateAlbumPopUp()
+            dialog.show(supportFragmentManager,"customDialog")
+        }
     }
 
     private fun getAlbums() {
@@ -67,6 +74,14 @@ class Albums : AppCompatActivity(), AlbumAdapter.AlbumAdapterListener {
         })
 
 
+    }
+
+    override fun popUpListener(albumName: String) {
+        this.albumName = albumName
+//        var usersList = ArrayList<String>()
+//        usersList.add(user)
+//        usersList.add("prob")
+//        createAlbum(user,this.albumName, usersList)
     }
 
     override fun albumAdapterListener(albumName: String) {

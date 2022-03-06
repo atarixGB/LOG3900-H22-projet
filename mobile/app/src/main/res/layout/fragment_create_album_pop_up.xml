@@ -1,126 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".CreateAlbumPopUp">
+    tools:context=".CreateAlbumPopUp"
+    android:gravity="center">
 
     <TextView
         android:id="@+id/popupTitleAlbum"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="75dp"
-        android:text="Creer un album"
-        android:textSize="36sp"
+        android:layout_marginTop="15dp"
+        android:text="Créer un album"
+        android:textSize="26sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/newAlbumName"
-        android:layout_below="@+id/popupTitleAlbum"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/popupTitleAlbum"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="10dp"
         android:hint="Nom de l'album"
         android:inputType="text"
-        android:textSize="30sp"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
         android:id="@+id/albumDescription"
-        android:layout_below="@+id/newAlbumName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/newAlbumName"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="10dp"
         android:hint="Description"
         android:inputType="text"
-        android:textSize="30sp"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
     <LinearLayout
+        android:id="@+id/radio"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:layout_below="@+id/albumDescription"
-        android:layout_marginLeft="550dp"
         android:layout_marginTop="20dp"
+        android:layout_marginLeft="55dp"
         android:gravity="center"
-        android:id="@+id/radio">
+        android:orientation="vertical">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Accessibilité"
-            android:textSize="30sp"/>
+            android:textSize="20sp" />
+
         <RadioGroup
+            android:id="@+id/radioGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:id="@+id/radioGroup">
+            android:layout_centerInParent="true">
 
             <RadioButton
                 android:id="@+id/radio_public"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="public"
-                android:checked="true" />
+                android:checked="true"
+                android:text="public" />
+
             <RadioButton
                 android:id="@+id/radio_private"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="privé" />
         </RadioGroup>
-        <TextView
-            android:id="@+id/text_view_albumName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:text="le nom de l'album est :"
-            android:textSize="18dp"/>
-        <TextView
-            android:id="@+id/text_view_visibility"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:text="la visibilité de l'album est :"
-            android:textSize="18dp"/>
+
 
     </LinearLayout>
-<LinearLayout
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_below="@+id/radio"
-    android:orientation="horizontal"
-    android:id="@+id/buttons"
-    android:layout_marginLeft="470dp"
-    android:layout_marginTop="20dp">
 
-    <Button
-        android:id="@+id/submitBtn"
-        android:layout_width="170dp"
+    <LinearLayout
+        android:id="@+id/buttons"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@+id/cancelBtn"
-        android:background="@color/black"
-        android:text="Creer"
-        android:textColor="@color/white"
-        android:textSize="25sp" />
+        android:layout_below="@+id/radio"
+        android:orientation="horizontal">
 
-    <Button
-        android:id="@+id/cancelBtn"
-        android:layout_width="170dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:background="@color/black"
-        android:text="Annuler"
-        android:textColor="@color/white"
-        android:textSize="25sp" />
-</LinearLayout>
+        <Button
+            android:id="@+id/submitBtn"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/cancelBtn"
+            android:background="@color/black"
+            android:text="Creer"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+
+        <Button
+            android:id="@+id/cancelBtn"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:background="@color/black"
+            android:text="Annuler"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+    </LinearLayout>
 
 
 </RelativeLayout>

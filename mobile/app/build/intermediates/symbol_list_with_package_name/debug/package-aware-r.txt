@@ -2551,6 +2551,7 @@ drawable ic_baseline_edit_24
 drawable ic_baseline_email_24
 drawable ic_baseline_exit_to_app_24
 drawable ic_baseline_folder_24
+drawable ic_baseline_folder_242
 drawable ic_baseline_launch_24
 drawable ic_baseline_more_vert_24
 drawable ic_baseline_people_24
@@ -3058,8 +3059,8 @@ id progress_circular
 id progress_horizontal
 id radio
 id radioGroup
-id radio_one
 id radio_private
+id radio_public
 id ratio
 id rectangleButton
 id rectangles
