@@ -55,11 +55,15 @@ export class ChatroomComponent implements AfterViewInit {
               console.log("FROM SERVER", data);
 
                 const isMine = data.userName == this.userName;
-                this.messageList.push({
-                    message: data.message,
-                    userName: data.userName + ' - ' + formatDate(new Date(), 'hh:mm:ss a', 'en-US'),
-                    mine: isMine,
-                });
+
+                // This condition is a workaround to not display messages sent from the default public channel in other rooms... Not final code, the problem is still not fixed!
+                if (data.room == this.chatService.currentRoom) {
+                  this.messageList.push({
+                      message: data.message,
+                      userName: data.userName + ' - ' + formatDate(new Date(), 'hh:mm:ss a', 'en-US'),
+                      mine: isMine,
+                  });
+                }
             }
 
             this.scrollToBottom();
