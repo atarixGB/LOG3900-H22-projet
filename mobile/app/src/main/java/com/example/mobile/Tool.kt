@@ -39,5 +39,9 @@ abstract class Tool(context: Context, baseCanvas: Canvas) {
         this.paint.strokeWidth = width
     }
 
+    fun changeColor(color:Int){
+        this.paint.color = color
+    }
+
     abstract fun onDraw(canvas: Canvas)
 }

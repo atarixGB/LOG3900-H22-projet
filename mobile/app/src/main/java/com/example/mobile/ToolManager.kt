@@ -26,6 +26,10 @@ class ToolManager {
         this.ellipse = Ellipse(context, baseCanvas)
     }
 
+    fun isCurrentToolEraser(): Boolean {
+        return this.currentTool == eraser
+    }
+
     fun changeTool(tool: ToolbarFragment.MenuItem) {
         if (tool == ToolbarFragment.MenuItem.PENCIL) this.currentTool = pencil
         else if (tool == ToolbarFragment.MenuItem.ERASER) this.currentTool = eraser

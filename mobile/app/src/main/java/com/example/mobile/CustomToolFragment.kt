@@ -8,31 +8,43 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.GridView
 import androidx.fragment.app.activityViewModels
-import com.example.mobile.model.ToolWeight
+import com.example.mobile.model.ToolParameters
 
 
 class CustomToolFragment : Fragment(), AdapterView.OnItemClickListener {
 
-    private var gridView:GridView ? = null
-    private var arrayList:ArrayList<ToolWeightItem> ? = null
+    private var weightView:GridView ? = null
+    private var weights:ArrayList<ToolWeightItem> ? = null
     private var weightAdapter: ToolWeightAdapter ? = null
-    private val viewModel: ToolWeight by activityViewModels()
+    private val toolParametersModel: ToolParameters by activityViewModels()
+
+    private var colorView:GridView ? = null
+    private var colors:ArrayList<ToolColorItem> ? = null
+    private var colorAdapter: ColorAdapter ? = null
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         val rootView = inflater.inflate(R.layout.fragment_custom_tool, container, false)
-        gridView = rootView.findViewById(R.id.my_grid_view)
-        arrayList = ArrayList()
-        arrayList  = setDataList()
-        weightAdapter = ToolWeightAdapter(activity?.baseContext!!, arrayList!!)
-        gridView?.adapter = weightAdapter
-        gridView?.onItemClickListener = this
+        weightView = rootView.findViewById(R.id.weight_view)
+        weights = ArrayList()
+        weights  = setWeightList()
+        weightAdapter = ToolWeightAdapter(activity?.baseContext!!, weights!!)
+        weightView?.adapter = weightAdapter
+        weightView?.onItemClickListener = this
+
+        colorView = rootView.findViewById(R.id.color_view)
+        colors = ArrayList()
+        colors  = setColortList()
+        colorAdapter = ColorAdapter(activity?.baseContext!!, colors!!)
+        colorView?.adapter = colorAdapter!!
+        colorView?.onItemClickListener = this
         return rootView
     }
 
-    private fun setDataList():ArrayList<ToolWeightItem>{
+    private fun setWeightList():ArrayList<ToolWeightItem>{
         val arrayList:ArrayList<ToolWeightItem> = ArrayList()
         arrayList.add(ToolWeightItem(R.drawable.circle1, 1f))
         arrayList.add(ToolWeightItem(R.drawable.circle2,2f))
@@ -46,9 +58,32 @@ class CustomToolFragment : Fragment(), AdapterView.OnItemClickListener {
         return arrayList
     }
 
+    private fun setColortList():ArrayList<ToolColorItem>{
+        val arrayList:ArrayList<ToolColorItem> = ArrayList()
+        arrayList.add(ToolColorItem(R.drawable.brown_color, resources.getColor(R.color.brown)))
+        arrayList.add(ToolColorItem(R.drawable.white_color, resources.getColor(R.color.white)))
+        arrayList.add(ToolColorItem(R.drawable.black_color, resources.getColor(R.color.black)))
+        arrayList.add(ToolColorItem(R.drawable.red_color, resources.getColor(R.color.red)))
+        arrayList.add(ToolColorItem(R.drawable.red_orange_color, resources.getColor(R.color.red_orange)))
+        arrayList.add(ToolColorItem(R.drawable.orange_color, resources.getColor(R.color.orange)))
+        arrayList.add(ToolColorItem(R.drawable.yellow_color, resources.getColor(R.color.yellow)))
+        arrayList.add(ToolColorItem(R.drawable.yellow_green_color, resources.getColor(R.color.yellow_green)))
+        arrayList.add(ToolColorItem(R.drawable.green_color, resources.getColor(R.color.green)))
+        arrayList.add(ToolColorItem(R.drawable.sky_blue_color, resources.getColor(R.color.sky_blue)))
+        arrayList.add(ToolColorItem(R.drawable.blue_color, resources.getColor(R.color.blue)))
+        arrayList.add(ToolColorItem(R.drawable.purple_color, resources.getColor(R.color.purple)))
+        return arrayList
+    }
+
     override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        val weightItem:ToolWeightItem = arrayList!!.get(position)
-        viewModel.changeWeight(weightItem.size!!)
+        if(parent == weightView){
+            val weightItem:ToolWeightItem = weights!!.get(position)
+            toolParametersModel.changeWeight(weightItem.size!!)
+        }else{
+            val colorItem:ToolColorItem = colors!!.get(position)
+            toolParametersModel.changeColor(colorItem.color!!)
+        }
+
     }
 
 }

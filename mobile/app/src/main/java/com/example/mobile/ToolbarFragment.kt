@@ -7,7 +7,6 @@ import android.widget.AdapterView
 import android.widget.GridView
 import androidx.fragment.app.activityViewModels
 import com.example.mobile.model.ToolModel
-import com.example.mobile.model.ToolWeight
 
 class ToolbarFragment : Fragment(), AdapterView.OnItemClickListener {
 
@@ -28,7 +27,7 @@ class ToolbarFragment : Fragment(), AdapterView.OnItemClickListener {
     ): View? {
         // Inflate the layout for this fragment
         val rootView = inflater.inflate(R.layout.fragment_toolbar, container, false)
-        gridView = rootView.findViewById(R.id.my_grid_view)
+        gridView = rootView.findViewById(R.id.weight_view)
         arrayList = ArrayList()
         arrayList  = setDataList()
         toolAdapter = ToolAdapter(activity?.baseContext!!, arrayList!!)

@@ -10,11 +10,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.example.mobile.model.ToolModel
-import com.example.mobile.model.ToolWeight
+import com.example.mobile.model.ToolParameters
 
 class DrawingZoneFragment : Fragment() {
     private var mDrawingView: DrawingView? = null
-    private val viewModel: ToolWeight by activityViewModels()
+    private val viewModel: ToolParameters by activityViewModels()
     private val toolModel: ToolModel by activityViewModels()
 
     override fun onCreateView(
@@ -30,6 +30,9 @@ class DrawingZoneFragment : Fragment() {
         val mDrawingView = view.findViewById<View>(R.id.drawingView) as DrawingView
         viewModel.weight.observe(viewLifecycleOwner, Observer { weight ->
             mDrawingView.changeWeight(weight)
+        })
+        viewModel.color.observe(viewLifecycleOwner, Observer { color ->
+            mDrawingView.changeColor(color)
         })
         toolModel.tool.observe(viewLifecycleOwner, Observer { tool ->
             mDrawingView.changeTool(tool)
@@ -100,6 +103,13 @@ class DrawingZoneFragment : Fragment() {
         }
         fun changeWeight(width : Float){
             if(this::toolManager.isInitialized) toolManager.currentTool.changeWeight(width)
+        }
+        fun changeColor(color : Int){
+            if(this::toolManager.isInitialized) {
+                if(!toolManager.isCurrentToolEraser()){
+                    toolManager.currentTool.changeColor(color)
+                }
+            }
         }
 
         fun changeTool(tool: ToolbarFragment.MenuItem){

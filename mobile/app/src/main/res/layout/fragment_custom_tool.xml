@@ -17,16 +17,38 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <GridView
-        android:id="@+id/my_grid_view"
+        android:id="@+id/weight_view"
         android:layout_width="300dp"
-        android:layout_height="match_parent"
-        android:layout_marginTop="24dp"
-        android:horizontalSpacing="10dp"
+        android:layout_height="250dp"
+        android:layout_marginTop="4dp"
+        android:horizontalSpacing="0dp"
         android:numColumns="3"
         android:verticalSpacing="0dp"
-        android:columnWidth="90dp"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView"></GridView>
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <TextView
+        android:id="@+id/color_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Couleur :"
+        android:textSize="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/weight_view" />
+
+    <GridView
+        android:id="@+id/color_view"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:columnWidth="50dp"
+        android:horizontalSpacing="0dp"
+        android:numColumns="3"
+        android:verticalSpacing="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/color_text" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
