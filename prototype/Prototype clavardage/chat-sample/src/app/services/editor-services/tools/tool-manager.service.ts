@@ -39,7 +39,7 @@ export class ToolManagerService {
             .set(ToolList.Polygon, this.polygonService)
             .set(ToolList.Eraser, this.eraserService)
             .set(ToolList.PaintBucket, this.paintBucketService)
-            // .set(ToolList.SelectionRectangle, this.selectionService)
+        // .set(ToolList.SelectionRectangle, this.selectionService)
 
         this.keyBindings = new Map<string, Tool>();
         this.keyBindings

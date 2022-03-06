@@ -15,7 +15,6 @@ export abstract class ToolShape extends Tool {
     constructor(protected drawingService: DrawingService) {
         super(drawingService);
     }
-    protected abstract initializePolygonVariables(): void;
 
     onMouseDown(event: MouseEvent): void {
         this.mouseDown = event.button === MouseButton.Left;
@@ -25,7 +24,6 @@ export abstract class ToolShape extends Tool {
             this.height = 0;
         }
     }
-    protected abstract drawPolygon(ctx: CanvasRenderingContext2D): void;
     protected abstract ctxPreviewPerimeter(ctx: CanvasRenderingContext2D): void;
 
     protected squarePoint(startPoint: Vec2, currentPoint: Vec2): Vec2 {

@@ -1,7 +1,12 @@
 import { Injectable } from '@angular/core';
+import { StrokeEllipse } from '@app/classes/strokes/stroke-ellipse';
+import { Vec2 } from '@app/classes/vec2';
+import { ToolList } from '@app/interfaces-enums/tool-list';
+import { CollaborationService } from '@app/services/collaboration/collaboration.service';
 import { ColorManagerService } from '@app/services/editor/color-manager/color-manager.service';
 import { DrawingService } from '@app/services/editor/drawing/drawing.service';
 import { RectangleService } from '@app/services/editor/tools/rectangle/rectangle.service';
+import { SelectionService } from '@app/services/editor/tools/selection/selection.service';
 import { ShapeService } from '@app/services/editor/tools/shape/shape.service';
 @Injectable({
     providedIn: 'root',
@@ -14,6 +19,8 @@ export class EllipseService extends ShapeService {
         protected drawingService: DrawingService,
         private rectangle: RectangleService,
         colorManager: ColorManagerService,
+        private collaborationService: CollaborationService,
+        private selectionService: SelectionService,
     ) {
         super(drawingService, colorManager);
     }
@@ -54,6 +61,8 @@ export class EllipseService extends ShapeService {
             this.drawEllipse(this.drawingService.baseCtx);
             this.width = this.size.x / 2;
             this.height = this.size.y / 2;
+
+            this.sendEllipseStroke();
         } else {
             this.drawCircle(this.drawingService.baseCtx);
             this.width = this.radius;
@@ -103,5 +112,27 @@ export class EllipseService extends ShapeService {
         } else {
             this.origin = { x: this.pathData[0].x + this.size.x / 2, y: this.pathData[0].y + this.size.y / 2 };
         }
+    }
+
+    private sendEllipseStroke(): void {
+        const ellipseStroke = new StrokeEllipse(
+            this.getBoundingPoints(),
+            this.colorPrime,
+            this.lineWidth,
+            this.colorSecond,
+            this.origin,
+            { x: this.size.x / 2, y: this.size.y / 2 },
+            this.selectType,
+        );
+        this.collaborationService.broadcastStroke(ellipseStroke);
+        this.selectionService.addStroke(ellipseStroke);
+        this.selectionService.selectStroke(ellipseStroke);
+        this.selectionService.switchToSelectionTool(ToolList.Ellipse);
+    }
+
+    private getBoundingPoints(): Vec2[] {
+        const topLeft = { x: this.origin.x - this.size.x / 2, y: this.origin.y - this.size.y / 2 };
+        const bottomRight = { x: this.origin.x + this.size.x / 2, y: this.origin.y + this.size.y / 2 };
+        return [topLeft, bottomRight];
     }
 }
