@@ -171,4 +171,19 @@
         app:layout_constraintTop_toBottomOf="@+id/solo_start_btn3"
         app:layout_constraintVertical_bias="0.502" />
 
+    <Button
+        android:id="@+id/albums_btn"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/dashboard_button_box"
+        android:padding="20dp"
+        android:text="Albums"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="@color/black"
+        app:backgroundTint="#C8C0C0"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/chatRooms_btn" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
