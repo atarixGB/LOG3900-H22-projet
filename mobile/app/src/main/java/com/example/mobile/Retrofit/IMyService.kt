@@ -73,6 +73,9 @@ interface IMyService {
     @GET("albums")
     fun getAllPublicAlbums():Call<List<Album>>
 
+    @GET("albums/{identifier}")
+    fun getUserAlbums(@Path("identifier") username: String):Call<List<Album>>
+
 
 //    @Multipart
 //    @POST("upload")

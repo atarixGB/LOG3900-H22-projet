@@ -1,8 +1,10 @@
 package com.example.mobile
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mobile.Retrofit.IMyService
@@ -17,6 +19,7 @@ class Albums : AppCompatActivity(), AlbumAdapter.AlbumAdapterListener {
     private lateinit var rvOutputAlbums: RecyclerView
     private lateinit var albumAdapter: AlbumAdapter
     private lateinit var albums : ArrayList<Album>
+    private lateinit var displayAlbumsBtn: Button
     private lateinit var iMyService: IMyService
     private lateinit var albumName: String
     internal var compositeDisposable = CompositeDisposable()
@@ -31,6 +34,7 @@ class Albums : AppCompatActivity(), AlbumAdapter.AlbumAdapterListener {
         setContentView(R.layout.activity_albums)
 
         rvOutputAlbums = findViewById(R.id.rvOutputAlbums)
+        displayAlbumsBtn = findViewById(R.id.display_albums_btn)
 
         val retrofit = RetrofitClient.getInstance()
         iMyService = retrofit.create(IMyService::class.java)
@@ -44,19 +48,23 @@ class Albums : AppCompatActivity(), AlbumAdapter.AlbumAdapterListener {
         rvOutputAlbums.adapter = albumAdapter
         rvOutputAlbums.layoutManager = GridLayoutManager(this, 3)
 
-        getAlbums()
+        getUserAlbums()
+
+        displayAlbumsBtn.setOnClickListener {
+            val intent = Intent(this, DisplayPublicAlbums::class.java)
+            intent.putExtra("userName",user)
+            startActivity(intent)
+        }
     }
 
-    private fun getAlbums() {
-        var call: Call<List<Album>> = iMyService.getAllPublicAlbums()
+    private fun getUserAlbums() {
+        var call: Call<List<Album>> = iMyService.getUserAlbums(user)
         call.enqueue(object: retrofit2.Callback<List<Album>> {
 
             override fun onResponse(call: Call<List<Album>>, response: Response<List<Album>>) {
                 for (album in response.body()!!) {
-                    if (album.owner == user) {
-                        albumAdapter.addAlbum(album)
-                        albumAdapter.notifyItemInserted((rvOutputAlbums.adapter as AlbumAdapter).itemCount)
-                    }
+                    albumAdapter.addAlbum(album)
+                    albumAdapter.notifyItemInserted((rvOutputAlbums.adapter as AlbumAdapter).itemCount)
                 }
             }
 

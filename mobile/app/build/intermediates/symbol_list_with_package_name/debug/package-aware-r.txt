@@ -2932,6 +2932,7 @@ id jumpToStart
 id labeled
 id layout
 id leave
+id leaveBtn
 id leaveChatBtn
 id left
 id leftToRight
@@ -3331,6 +3332,7 @@ layout activity_chat_page
 layout activity_chat_rooms
 layout activity_create_room_pop_up
 layout activity_dashboard
+layout activity_display_public_albums
 layout activity_drawing
 layout activity_join_room
 layout activity_main
