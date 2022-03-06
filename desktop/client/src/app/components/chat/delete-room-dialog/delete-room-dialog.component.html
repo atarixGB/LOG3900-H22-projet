@@ -1,0 +1,22 @@
+<h2 mat-dialog-title>Supprimer une conversation</h2>
+
+<mat-dialog-content class="mat-typography">
+  <p>
+    Es-tu certain.e de vouloir supprimer la conversation
+    <span class="bold">
+      {{this.data.roomName}} ?
+    </span>
+  </p>
+
+  <p>Les membres ne pourront plus accéder à cette conversation. Membres présent.es:</p>
+  <ul>
+    <li *ngFor="let user of this.data.usersList">
+      {{user}}
+    </li>
+  </ul>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close>Annuler</button>
+  <button mat-button [mat-dialog-close]="true" cdkFocusInitial (click)="onDeleteChatroom()">Supprimer</button>
+</mat-dialog-actions>
