@@ -5,6 +5,7 @@ import { StrokePencil } from '@app/classes/strokes/stroke-pencil';
 import { StrokeRectangle } from '@app/classes/strokes/stroke-rectangle';
 import { DrawingService } from '@app/services/editor/drawing/drawing.service';
 import * as io from 'socket.io-client';
+import { COLLAB_URL } from '@app/constants/api-urls';
 
 @Injectable({
     providedIn: 'root',
@@ -15,14 +16,14 @@ export class CollaborationService {
     constructor(public drawingService: DrawingService) { }
 
     enterCollaboration(): void {
-        this.socket = io.io('http://localhost:3002/', { transports: ['websocket'] });
+        this.socket = io.io(COLLAB_URL, { transports: ['websocket'] });
 
         this.socket.on('receiveStroke', (stroke: any) => {
             if (stroke.sender !== this.socket.id) {
                 switch (stroke.toolType) {
                     case 'rectangle': {
                         strokeDrawer.drawStrokeRectangle(stroke as StrokeRectangle, this.drawingService.baseCtx);
-                        break;
+                        break; 
                     }
                     case 'ellipse': {
                         strokeDrawer.drawStrokeEllipse(stroke as StrokeEllipse, this.drawingService.baseCtx);
