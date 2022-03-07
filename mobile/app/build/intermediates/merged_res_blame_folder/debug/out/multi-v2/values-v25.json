@@ -1,17 +1,10 @@
 {
     "logs": [
         {
-<<<<<<< HEAD
             "outputFile": "C:\\Users\\Mio\\Desktop\\log3900-203\\mobile\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-v25\\values-v25.xml",
             "map": [
                 {
                     "source": "C:\\Users\\Mio\\.gradle\\caches\\transforms-2\\files-2.1\\6e9453ca2f09d68d2153f7f03458c896\\appcompat-1.4.1\\res\\values-v25\\values-v25.xml",
-=======
-            "outputFile": "C:\\Users\\15149\\Desktop\\git clone final\\log3900-203\\mobile\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-v25\\values-v25.xml",
-            "map": [
-                {
-                    "source": "C:\\Users\\15149\\.gradle\\caches\\transforms-2\\files-2.1\\6e9453ca2f09d68d2153f7f03458c896\\appcompat-1.4.1\\res\\values-v25\\values-v25.xml",
->>>>>>> c91d3116b413e034a037621deefc95931c122365
                     "from": {
                         "startLines": "2,3,4,6",
                         "startColumns": "4,4,4,4",

@@ -2556,13 +2556,10 @@ drawable design_ic_visibility_off
 drawable design_password_eye
 drawable design_snackbar_background
 drawable eraser
-<<<<<<< HEAD
 drawable eraser_clicked
 drawable green_color
-=======
 drawable ic_add_avatar
 drawable ic_add_camera
->>>>>>> c91d3116b413e034a037621deefc95931c122365
 drawable ic_baseline_arrow_back_24
 drawable ic_baseline_arrow_back_ios_24
 drawable ic_baseline_arrow_back_ios_new_24
@@ -2593,11 +2590,8 @@ drawable ic_mtrl_checked_circle
 drawable ic_mtrl_chip_checked_black
 drawable ic_mtrl_chip_checked_circle
 drawable ic_mtrl_chip_close_circle
-<<<<<<< HEAD
-drawable large_dot
-=======
 drawable ic_save
->>>>>>> c91d3116b413e034a037621deefc95931c122365
+drawable large_dot
 drawable logopolygram
 drawable logoutlogo
 drawable m3_appbar_background
@@ -2871,11 +2865,8 @@ id dragLeft
 id dragRight
 id dragStart
 id dragUp
-<<<<<<< HEAD
-id drawingView
-=======
 id drawButton
->>>>>>> c91d3116b413e034a037621deefc95931c122365
+id drawingView
 id dropdown_menu
 id easeIn
 id easeInOut
@@ -3095,11 +3086,7 @@ id rounded
 id row_index_key
 id rvOutputMsgs
 id rvOutputRooms
-<<<<<<< HEAD
-=======
 id rvUsersList
-id saveButton
->>>>>>> c91d3116b413e034a037621deefc95931c122365
 id save_non_transition_alpha
 id save_overlay_view
 id sawtooth
@@ -3359,11 +3346,8 @@ layout activity_main
 layout activity_profile
 layout activity_profile_modification
 layout activity_registration
-<<<<<<< HEAD
-layout color_list
-=======
 layout activity_users_list_pop_up
->>>>>>> c91d3116b413e034a037621deefc95931c122365
+layout color_list
 layout custom_dialog
 layout design_bottom_navigation_item
 layout design_bottom_sheet_dialog
