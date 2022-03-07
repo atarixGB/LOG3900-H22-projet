@@ -1338,6 +1338,7 @@ color error_color_material_light
 color foreground_material_dark
 color foreground_material_light
 color green
+color greenOnClick
 color grey
 color highlighted_text_material_dark
 color highlighted_text_material_light
@@ -2564,6 +2565,7 @@ drawable ic_baseline_arrow_back_24
 drawable ic_baseline_arrow_back_ios_24
 drawable ic_baseline_arrow_back_ios_new_24
 drawable ic_baseline_camera_front_24
+drawable ic_baseline_chat_bubble_24
 drawable ic_baseline_close_24
 drawable ic_baseline_delete_forever_24
 drawable ic_baseline_directions_run_24
@@ -2571,10 +2573,12 @@ drawable ic_baseline_draw_24
 drawable ic_baseline_edit_24
 drawable ic_baseline_email_24
 drawable ic_baseline_exit_to_app_24
+drawable ic_baseline_home_24
 drawable ic_baseline_launch_24
 drawable ic_baseline_more_vert_24
 drawable ic_baseline_people_24
 drawable ic_baseline_person_24
+drawable ic_baseline_photo_library_24
 drawable ic_baseline_search_24
 drawable ic_baseline_security_24
 drawable ic_baseline_text_snippet_24
@@ -2656,11 +2660,13 @@ drawable rectangle
 drawable rectangle_clicked
 drawable red_color
 drawable red_orange_color
+drawable room_btn
 drawable save
 drawable sky_blue_color
 drawable statistic
 drawable test_custom_background
 drawable test_level_drawable
+drawable toolbar_btn
 drawable tooltip_frame_dark
 drawable tooltip_frame_light
 drawable white_color
@@ -2738,6 +2744,7 @@ id action_text
 id actions
 id activity_chooser_view_content
 id add
+id albums
 id alertTitle
 id alignBounds
 id alignMargins
@@ -2795,7 +2802,7 @@ id center_vertical
 id chain
 id chain2
 id chains
-id chatRooms_btn
+id chat
 id chatViewOptions
 id checkbox
 id checked
@@ -2834,6 +2841,7 @@ id custom
 id customPanel
 id customToolFragment
 id cut
+id dashbord
 id date_picker_actions
 id decelerate
 id decelerateAndComplete
@@ -2865,6 +2873,7 @@ id dragLeft
 id dragRight
 id dragStart
 id dragUp
+id draw
 id drawButton
 id drawingView
 id dropdown_menu
@@ -3069,7 +3078,7 @@ id popupTitle
 id position
 id postLayout
 id principal_room_btn
-id profile_btn
+id profile
 id progress_circular
 id progress_horizontal
 id radio
@@ -3199,6 +3208,7 @@ id title_template
 id title_username
 id toggle
 id toolBarFragment
+id toolbarNavigation
 id top
 id topPanel
 id top_to_bottom
@@ -3367,6 +3377,7 @@ layout design_text_input_start_icon
 layout fragment_custom_tool
 layout fragment_drawing_zone
 layout fragment_toolbar
+layout fragment_toolbar_navigation
 layout item_room
 layout item_user
 layout m3_alert_dialog
