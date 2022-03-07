@@ -1,43 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:screenOrientation="landscape"
-    tools:context=".PickAvatar">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    tools:context=".SelectAvatarPopUp">
 
     <com.mikhaellopez.circularimageview.CircularImageView
         android:id="@+id/userAvatar"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_marginStart="592dp"
-        android:gravity="center"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="100dp"
         android:src="@drawable/placeholder_logo"
         app:civ_border_color="@color/purple_500"
-        app:civ_border_width="2dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.79" />
+        app:civ_border_width="2dp" />
 
 
     <LinearLayout
         android:id="@+id/linearLayout1"
         android:layout_width="match_parent"
         android:layout_height="120dp"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
         android:orientation="horizontal"
-        android:layout_centerHorizontal="true"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <CheckBox
-            android:id="@+id/select1"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginRight="-10dp"
-            android:onClick="onCheckboxClicked"/>
+
         <com.mikhaellopez.circularimageview.CircularImageView
             android:id="@+id/avatar1"
             android:layout_width="100dp"
@@ -45,15 +36,9 @@
             android:layout_marginRight="15dp"
             android:src="@drawable/monster1"
             app:civ_border_color="@color/purple_200"
-            app:civ_border_width="2dp"/>
+            app:civ_border_width="2dp" />
 
-        <CheckBox
-            android:id="@+id/select2"
-            android:layout_width="30dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="-8dp"
-            android:layout_marginRight="-10dp"
-            android:onClick="onCheckboxClicked"/>
+
         <com.mikhaellopez.circularimageview.CircularImageView
             android:id="@+id/avatar2"
             android:layout_width="100dp"
@@ -61,15 +46,10 @@
             android:layout_marginRight="5dp"
             android:src="@drawable/monster2"
             app:civ_border_color="@color/purple_200"
-            app:civ_border_width="2dp"/>
+            app:civ_border_width="2dp" />
 
-        <CheckBox
-            android:id="@+id/select3"
-            android:layout_width="30dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="-10dp"
-            android:layout_marginRight="-10dp"
-            android:onClick="onCheckboxClicked"/>
+
+
         <com.mikhaellopez.circularimageview.CircularImageView
             android:id="@+id/avatar3"
             android:layout_width="100dp"
@@ -77,7 +57,7 @@
             android:layout_marginRight="15dp"
             android:src="@drawable/monster3"
             app:civ_border_color="@color/purple_200"
-            app:civ_border_width="2dp"/>
+            app:civ_border_width="2dp" />
     </LinearLayout>
 
     <LinearLayout
@@ -85,19 +65,13 @@
         android:layout_width="match_parent"
         android:layout_height="120dp"
         android:layout_below="@+id/linearLayout1"
-        android:layout_centerHorizontal="true"
+        android:layout_marginTop="-4dp"
         android:orientation="horizontal"
         app:layout_constraintTop_toBottomOf="@id/linearLayout1"
         tools:layout_editor_absoluteX="16dp"
         tools:layout_editor_absoluteY="150dp">
 
-        <CheckBox
-            android:id="@+id/select4"
-            android:layout_width="30dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="1dp"
-            android:layout_marginRight="-10dp"
-            android:onClick="onCheckboxClicked" />
+
 
         <com.mikhaellopez.circularimageview.CircularImageView
             android:id="@+id/avatar4"
@@ -107,15 +81,9 @@
             android:layout_marginRight="15dp"
             android:src="@drawable/monster4"
             app:civ_border_color="@color/purple_200"
-            app:civ_border_width="2dp"/>
+            app:civ_border_width="2dp" />
 
-        <CheckBox
-            android:id="@+id/select5"
-            android:layout_width="30dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="-12dp"
-            android:layout_marginRight="-10dp"
-            android:onClick="onCheckboxClicked" />
+
 
         <com.mikhaellopez.circularimageview.CircularImageView
             android:id="@+id/avatar5"
@@ -124,15 +92,9 @@
             android:layout_marginRight="15dp"
             android:src="@drawable/monster5"
             app:civ_border_color="@color/purple_200"
-            app:civ_border_width="2dp"/>
+            app:civ_border_width="2dp" />
 
-        <CheckBox
-            android:id="@+id/select6"
-            android:layout_width="30dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="-18dp"
-            android:layout_marginRight="-10dp"
-            android:onClick="onCheckboxClicked" />
+
 
         <com.mikhaellopez.circularimageview.CircularImageView
             android:id="@+id/avatar6"
@@ -140,26 +102,21 @@
             android:layout_height="100dp"
             android:src="@drawable/monster6"
             app:civ_border_color="@color/purple_200"
-            app:civ_border_width="2dp"/>
+            app:civ_border_width="2dp" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/linearLayout3"
         android:layout_width="match_parent"
-        android:layout_below="@+id/linearLayout2"
         android:layout_height="120dp"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
-        app:layout_editor_absoluteX="16dp"
-        app:layout_editor_absoluteY="150dp"
+        android:layout_below="@+id/linearLayout2"
         android:layout_centerHorizontal="true"
         android:orientation="horizontal"
-        >
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+        app:layout_editor_absoluteX="16dp"
+        app:layout_editor_absoluteY="150dp">
 
-        <CheckBox
-            android:id="@+id/select7"
-            android:layout_width="30dp"
-            android:layout_height="40dp"
-            android:onClick="onCheckboxClicked" />
+
         <com.mikhaellopez.circularimageview.CircularImageView
             android:id="@+id/avatar7"
             android:layout_width="100dp"
@@ -167,34 +124,24 @@
             android:layout_marginLeft="-4dp"
             android:src="@drawable/monster7"
             app:civ_border_color="@color/purple_200"
-            app:civ_border_width="2dp"/>
+            app:civ_border_width="2dp" />
 
-        <CheckBox
-            android:id="@+id/select8"
-            android:layout_width="30dp"
-            android:layout_height="40dp"
 
-            android:onClick="onCheckboxClicked" />
         <com.mikhaellopez.circularimageview.CircularImageView
             android:id="@+id/avatar8"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:layout_marginLeft="-9dp"
+            android:layout_marginLeft="7dp"
             android:src="@drawable/monster8"
             app:civ_border_color="@color/purple_200"
-            app:civ_border_width="2dp"/>
+            app:civ_border_width="2dp" />
 
-        <CheckBox
-            android:id="@+id/select9"
-            android:layout_width="30dp"
-            android:layout_height="40dp"
-            android:onClick="onCheckboxClicked" />
 
         <com.mikhaellopez.circularimageview.CircularImageView
             android:id="@+id/avatar9"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:layout_marginLeft="-8dp"
+            android:layout_marginLeft="20dp"
             android:src="@drawable/monster9"
             app:civ_border_color="@color/purple_200"
             app:civ_border_width="2dp" />
@@ -203,21 +150,26 @@
 
     <Button
         android:id="@+id/valider"
-        android:layout_width="200dp"
-        android:layout_height="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/userAvatar"
-        android:layout_marginTop="49dp"
-        android:layout_marginBottom="30dp"
+        android:layout_alignRight="@+id/userAvatar"
+        android:layout_marginEnd="-60dp"
+        android:layout_marginTop="30dp"
         android:gravity="center"
         android:text="valider"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.549"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/userAvatar"
-        app:layout_constraintVertical_bias="0.967"
-        tools:ignore="MissingConstraints"
-        android:onClick="sendAvatar"/>
+         />
+
+    <Button
+        android:id="@+id/cancelBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/valider"
+        android:layout_alignRight="@+id/userAvatar"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="-60dp"
+        android:text="Annuler"
+        android:textColor="@color/white" />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>

@@ -11,10 +11,10 @@
         android:id="@+id/popupTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="116dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="75dp"
         android:text="Creer une conversation"
         android:textSize="36sp"
-        android:layout_centerHorizontal="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -25,7 +25,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="52dp"
+        android:layout_marginTop="40dp"
         android:hint="Nom de la conversation"
         android:inputType="text"
         android:textSize="30sp"
@@ -35,29 +35,29 @@
 
     <Button
         android:id="@+id/submitBtn"
-        android:layout_width="wrap_content"
+        android:layout_width="170dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/newRoomName"
-        android:layout_alignParentEnd="false"
-        android:layout_marginStart="820dp"
-        android:layout_marginTop="53dp"
-        android:layout_centerHorizontal="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="300dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="20dp"
+        android:layout_toEndOf="@+id/cancelBtn"
         android:background="@color/black"
         android:text="Creer"
         android:textColor="@color/white"
-        android:textSize="30sp" />
+        android:textSize="25sp" />
 
     <Button
         android:id="@+id/cancelBtn"
-        android:layout_width="wrap_content"
+        android:layout_width="170dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/submitBtn"
+        android:layout_marginLeft="20dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="300dp"
         android:background="@color/black"
         android:text="Annuler"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
         android:textColor="@color/white"
-        android:textSize="30sp" />
+        android:textSize="25sp" />
 
 
 </RelativeLayout>

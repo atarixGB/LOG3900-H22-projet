@@ -1,0 +1,40 @@
+<h2 mat-dialog-title>Créer un album</h2>
+
+<mat-dialog-content class="mat-typography">
+
+  <mat-form-field appearance="fill">
+    <mat-label>Nom de l'album</mat-label>
+    <input matInput [(ngModel)]="this.name">
+  </mat-form-field>
+
+  <br>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Description</mat-label>
+    <textarea matInput [(ngModel)]="this.description"></textarea>
+  </mat-form-field>
+
+  <br>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Accessibilité</mat-label>
+    <mat-select (valueChange)="this.changeAccess($event)" value="0">
+      <mat-option value="0">Public</mat-option>
+      <mat-option value="1">Privé</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <div>
+    L'album <span class="bold">{{this.name}}
+    </span> sera <span class="bold">{{this.isPrivate ? "privé" :"public"}}</span>
+    et aura comme description :
+    <br>
+    <span class="italic">{{this.description}}</span>
+  </div>
+
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close>Annuler</button>
+  <button mat-button [mat-dialog-close]="true" cdkFocusInitial (click)="createAlbumButton()">Créer</button>
+</mat-dialog-actions>

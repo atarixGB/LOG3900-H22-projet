@@ -1,36 +1,50 @@
-<div fxLayout="column" fxLayoutAlign="space-evenly center"  fxFlex="auto">
-   <img src="./assets/PolyGramLogo.png" alt="Logo" fxFlex="25">
+<div fxLayout="column" fxLayoutAlign="space-evenly center" fxFlex="auto">
+    <img src="./assets/PolyGramLogo.png" alt="Logo" fxFlex="25" />
 
    <div fxLayout="column" fxLayoutAlign="start center">
-      <h1>Création du compte</h1>
-      <form>
-         <mat-form-field  appearance="fill">
-           <mat-label>Identifiant</mat-label>
-           <input matInput placeholder="Entrez votre nom" [(ngModel)]="this.username" name="username">
-         </mat-form-field>
-      </form>
-      <form>
-         <mat-form-field  appearance="fill">
-           <mat-label>Mot de passe</mat-label>
-           <input matInput placeholder="Entrez votre mot de passe" type="password" [(ngModel)]="this.password" name="password">
-         </mat-form-field>
-      </form>
-      <form>
-         <mat-form-field  appearance="fill">
-           <mat-label>Confirmation du mot de passe</mat-label>
-           <input matInput placeholder="Confirmer votre mot de passe" type="password" [(ngModel)]="this.confirmedPassword" name="confirmedPassword">
-         </mat-form-field>
-      </form>
-      <form>
-         <mat-form-field  appearance="fill">
-           <mat-label>Courriel</mat-label>
-           <input matInput placeholder="Entrez votre courriel" [(ngModel)]="this.email" name="email">
-         </mat-form-field>
-      </form>
-      <button mat-raised-button color="primary">Choisir un avatar</button>
+        <h1>Création du compte</h1>
+        <form>
+           <mat-form-field  appearance="fill">
+             <mat-label>Identifiant</mat-label>
+             <input matInput placeholder="Entrez votre nom" [(ngModel)]="this.username" name="username">
+           </mat-form-field>
+        </form>
+        <form>
+           <mat-form-field  appearance="fill">
+             <mat-label>Mot de passe</mat-label>
+             <input matInput placeholder="Entrez votre mot de passe" type="password" [(ngModel)]="this.password" name="password">
+           </mat-form-field>
+        </form>
+        <form>
+           <mat-form-field  appearance="fill">
+             <mat-label>Confirmation du mot de passe</mat-label>
+             <input matInput placeholder="Confirmer votre mot de passe" type="password" [(ngModel)]="this.confirmedPassword" name="confirmedPassword">
+           </mat-form-field>
+        </form>
+        <form>
+           <mat-form-field  appearance="fill">
+             <mat-label>Courriel</mat-label>
+             <input matInput placeholder="Entrez votre courriel" [(ngModel)]="this.email" name="email">
+           </mat-form-field>
+        </form>
    </div>
 
-   <div fxLayout="column" fxLayoutAlign="start center">
-      <button mat-raised-button color="primary" routerLink="/signup" (click)="this.createAccountButton()">CRÉER SON COMPTE</button>
-   </div>
+   <div fxLayout="column" fxLayoutAlign="center center">
+        <div fxLayout="row" fxLayoutAlign="center center">
+            <button mat-raised-button color="primary" (click)="this.openAvatarSelectionModal()" class="Width200">Choisir un avatar</button>
+            <div fxFlex="20"></div>
+            <button mat-raised-button color="primary" (click)="this.openAvatarImportModal()"  class="Width200">Importer un avatar</button>
+        </div>
+    </div>
+
+    <div fxLayout="column" fxLayoutAlign="center center">
+        <span>Votre avatar : </span> <br>
+        <div id="avatarDisplay" fxLayoutAlign="center center">
+            <img *ngIf="this.signUpService.avatarSrc" id="avatarImg" src="data:image/png;base64,{{this.signUpService.avatarSrc}}">
+        </div>
+    </div>
+
+    <div fxLayout="column" fxLayoutAlign="start center">
+        <button mat-raised-button color="warn" (click)="this.createAccountButton()">CRÉER LE COMPTE</button>
+    </div>
 </div>

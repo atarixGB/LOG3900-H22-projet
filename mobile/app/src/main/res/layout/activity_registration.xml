@@ -52,7 +52,6 @@
         android:layout_below="@+id/edt_pwd"
         android:layout_alignParentEnd="true"
         android:layout_centerHorizontal="true"
-
         android:layout_marginEnd="491dp"
         android:hint="email" />
 
@@ -80,10 +79,31 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="Sélectionner avatar"
-            android:textColor="@color/purple_700"
+            android:textColor="@color/purple_500"
             android:textSize="20dp"
             android:textStyle="normal" />
     </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/edt_camera"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_below="@id/avatar_selector"
+        android:layout_marginTop="-60dp"
+        android:layout_marginLeft="550dp"
+        android:backgroundTint="@color/white"
+        android:src="@drawable/ic_add_camera" />
+
+    <ImageButton
+        android:id="@+id/edt_avatar"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_below="@id/avatar_selector"
+        android:layout_marginLeft="670dp"
+        android:layout_marginTop="-60dp"
+        android:layout_marginRight="20dp"
+        android:backgroundTint="@color/white"
+        android:src="@drawable/ic_add_avatar" />
 
     <Button
         android:id="@+id/edt_registration"
@@ -92,7 +112,7 @@
         android:layout_below="@+id/avatar_selector"
         android:layout_alignParentEnd="false"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="-50dp"
+        android:layout_marginTop="25dp"
         android:text="S'inscrire"
         app:layout_constraintTop_toBottomOf="@+id/avatar_selector" />
 
@@ -103,7 +123,7 @@
         android:layout_below="@+id/edt_registration"
         android:layout_alignParentEnd="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="6dp"
+
         android:layout_marginEnd="495dp"
         android:text="Vous avez déjà un compte? Connectez-vous ici! " />
 
@@ -111,12 +131,11 @@
         android:id="@+id/connect_btn"
         android:layout_width="183dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:layout_below="@id/edt_createAccountText"
         android:layout_alignParentEnd="false"
         android:layout_centerHorizontal="true"
-        android:text="Se connecter" />
 
+        android:text="Se connecter" />
 
 
 </RelativeLayout>

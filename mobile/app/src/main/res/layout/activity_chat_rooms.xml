@@ -4,66 +4,58 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingRight="200dp"
+    android:paddingLeft="450dp"
     android:screenOrientation="landscape"
     tools:context=".ChatRooms">
-
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/app_toolbar"
-        android:layout_width="250dp"
-        android:layout_height="match_parent"
-        android:minHeight="?attr/actionBarSize"
-        android:background="#A67EAC4B"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/create_room_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="450dp"
-        android:layout_marginTop="80dp"
-        android:background="@color/purple_200"
-        android:text="Creer une conversation"
-        android:textColor="@color/black"
+        android:text="Créer une conversation"
+        android:layout_marginTop="40dp"
+        android:textColor="@color/white"
+        android:minHeight="50dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@drawable/message_input_box"/>
 
     <Button
         android:id="@+id/join_room_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
-        android:layout_marginEnd="200dp"
+        android:minHeight="50dp"
         android:text="Joidre une conversation"
+        android:layout_marginTop="40dp"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:textColor="@color/black"
-        android:background="@color/white"/>
+        android:background="@drawable/message_input_box"/>
 
-    <Button
+    <TextView
         android:id="@+id/principal_room_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="96dp"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="40dp"
+        android:gravity="center"
         android:text="Canal Principal"
+        android:textStyle="bold"
         app:iconTint="#888282"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/app_toolbar"
-        app:layout_constraintTop_toBottomOf="@+id/create_room_btn" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/create_room_btn"
+        android:background="@drawable/bg_btn" />
 
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvOutputRooms"
-        android:layout_width="973dp"
-        android:layout_height="281dp"
-        android:layout_marginTop="252dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="220dp"
         android:background="@drawable/message_input_box"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/app_toolbar"
-        app:layout_constraintTop_toBottomOf="@+id/create_room_btn"
-        app:layout_editor_absoluteX="1dp"
-        app:layout_editor_absoluteY="1dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/principal_room_btn" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

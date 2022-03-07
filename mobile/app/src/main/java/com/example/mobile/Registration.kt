@@ -1,20 +1,27 @@
 package com.example.mobile
 
 import android.app.Activity
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
+import android.util.AttributeSet
 import android.util.Base64
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
@@ -30,10 +37,11 @@ import kotlinx.android.synthetic.main.activity_registration.*
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import org.json.JSONObject
 import java.io.ByteArrayOutputStream
 import java.util.jar.Manifest
 
-class Registration : AppCompatActivity() {
+class Registration : AppCompatActivity(),SelectAvatarPopUp.DialogListener {
     private lateinit var iMyService: IMyService
     internal var compositeDisposable = CompositeDisposable()
     private lateinit var identifiant: EditText
@@ -42,6 +50,10 @@ class Registration : AppCompatActivity() {
     private lateinit var registerAccountBtn: Button
     private lateinit var loginAccountBtn: Button
     private lateinit var avatarPicker: CircularImageView
+    private lateinit var cameraBtn : ImageButton
+    private lateinit var avatarBtn : ImageButton
+    private lateinit var description:String
+
 
     private val REQUEST_IMAGE_CAMERA = 142
 
@@ -60,24 +72,20 @@ class Registration : AppCompatActivity() {
         pwd = findViewById(R.id.edt_pwd)
         identifiant = findViewById(R.id.edt_id)
         avatarPicker = findViewById(R.id.displaypicture)
+        cameraBtn= findViewById(R.id.edt_camera)
+        avatarBtn=findViewById(R.id.edt_avatar)
+        description="vide"
 
         //init api
         val retrofit = RetrofitClient.getInstance()
         iMyService = retrofit.create(IMyService::class.java)
 
         //cliquer sur l'avatar pour le changer
-        avatarPicker.setOnClickListener {
+        cameraBtn.setOnClickListener {
             val builder = AlertDialog.Builder(this)
-            builder.setTitle("Select avatar")
-            builder.setMessage("choisi celui qui te plait")
-            builder.setPositiveButton("Avatars") { dialog, which ->
-                dialog.dismiss()
-                val intent = Intent(this, PickAvatar::class.java)
-                //intent.type="image/*"
-                startActivity(intent)
-
-            }
-            builder.setNegativeButton("Camera") { dialog, which ->
+            builder.setTitle("Photo de profile")
+            builder.setMessage("Prends une belle photo! ")
+            builder.setNegativeButton("Lance la caméra") { dialog, which ->
                 dialog.dismiss()
                 Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
                     takePictureIntent.resolveActivity(packageManager).also {
@@ -103,6 +111,12 @@ class Registration : AppCompatActivity() {
 
         }
 
+        //bouton pour avatar predefinis
+        avatarBtn.setOnClickListener{
+            var dialog = SelectAvatarPopUp()
+            dialog.show(supportFragmentManager,"customDialog")
+        }
+
         //bouton qui affiche et qui masque le mdp
         showHideBtn.setOnClickListener {
             if (showHideBtn.text.toString().equals("Show")) {
@@ -115,7 +129,7 @@ class Registration : AppCompatActivity() {
         }
 
         registerAccountBtn.setOnClickListener {
-            registerUser(identifiant.text.toString(), pwd.text.toString(),displaypicture)
+            registerUser(identifiant.text.toString(), pwd.text.toString(),displaypicture,edt_email.text.toString(),description)
         }
 
         loginAccountBtn.setOnClickListener {
@@ -123,16 +137,10 @@ class Registration : AppCompatActivity() {
             startActivity(intent)
         }
 
-        //TODO : ici on va recevoir le byteArray qui est transféré du coté du login donc ici ca marche pas on doit retrieve
-//        val newAvatar:Int= intent.getIntExtra("avatar",0)
-//        avatarPicker.setImageResource(newAvatar)
-        var bmpTransfered: Bitmap
-        var byteArray: ByteArray? = intent.getByteArrayExtra("avatar")
-        if (byteArray != null) {
-            bmpTransfered = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
-            avatarPicker.setImageBitmap(bmpTransfered)
-        }
     }
+
+
+
 
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -145,10 +153,10 @@ class Registration : AppCompatActivity() {
         }
     }
 
-    private fun registerUser(identifier: String, password: String, avatar:CircularImageView) {
+    private fun registerUser(identifier: String, password: String, avatar:CircularImageView,email: String,description:String) {
         var avatarByteArray:ByteArray = convertToByteArray(avatar)
         var avatar_str:String = Base64.encodeToString(avatarByteArray,0)
-        compositeDisposable.add(iMyService.registerUser(identifier, password,avatar_str)
+        compositeDisposable.add(iMyService.registerUser(identifier, password,avatar_str,email,description)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { result->
@@ -156,20 +164,22 @@ class Registration : AppCompatActivity() {
                     Toast.makeText(this,"Enregistrement fait avec succès", Toast.LENGTH_SHORT).show()
                     val intent = Intent(this, Profile::class.java)
                     intent.putExtra("userName",identifiant.text.toString())
+                    intent.putExtra("email",edt_email.text.toString())
                     startActivity(intent)
                 }else{
                     Toast.makeText(this,"Nom d'utilisateur déjà existant", Toast.LENGTH_SHORT).show()
                 }
             })
-
-
     }
-
 
     fun convertToByteArray(imageView: CircularImageView): ByteArray {
         val bitmap = (imageView.drawable as BitmapDrawable).bitmap
         val stream = ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.PNG, 90, stream)
         return stream.toByteArray()
+    }
+
+    override fun popUpListener(avatarChosen: Drawable) {
+            this.avatarPicker.setImageDrawable(avatarChosen)
     }
 }

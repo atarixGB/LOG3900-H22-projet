@@ -2556,14 +2556,21 @@ drawable design_ic_visibility_off
 drawable design_password_eye
 drawable design_snackbar_background
 drawable eraser
+<<<<<<< HEAD
 drawable eraser_clicked
 drawable green_color
+=======
+drawable ic_add_avatar
+drawable ic_add_camera
+>>>>>>> c91d3116b413e034a037621deefc95931c122365
 drawable ic_baseline_arrow_back_24
 drawable ic_baseline_arrow_back_ios_24
 drawable ic_baseline_arrow_back_ios_new_24
 drawable ic_baseline_camera_front_24
+drawable ic_baseline_close_24
 drawable ic_baseline_delete_forever_24
 drawable ic_baseline_directions_run_24
+drawable ic_baseline_draw_24
 drawable ic_baseline_edit_24
 drawable ic_baseline_email_24
 drawable ic_baseline_exit_to_app_24
@@ -2586,7 +2593,11 @@ drawable ic_mtrl_checked_circle
 drawable ic_mtrl_chip_checked_black
 drawable ic_mtrl_chip_checked_circle
 drawable ic_mtrl_chip_close_circle
+<<<<<<< HEAD
 drawable large_dot
+=======
+drawable ic_save
+>>>>>>> c91d3116b413e034a037621deefc95931c122365
 drawable logopolygram
 drawable logoutlogo
 drawable m3_appbar_background
@@ -2744,7 +2755,6 @@ id animateToEnd
 id animateToStart
 id antiClockwise
 id anticipate
-id app_toolbar
 id arc
 id asConfigured
 id async
@@ -2806,6 +2816,7 @@ id clear_text
 id clip_horizontal
 id clip_vertical
 id clockwise
+id closeBtn
 id closest
 id collab_text
 id collapseActionView
@@ -2837,6 +2848,7 @@ id default_activity_button
 id deltaRelative
 id dependency_ordering
 id description_bloc
+id description_field
 id design_bottom_sheet
 id design_menu_item_action_area
 id design_menu_item_action_area_stub
@@ -2859,15 +2871,22 @@ id dragLeft
 id dragRight
 id dragStart
 id dragUp
+<<<<<<< HEAD
 id drawingView
+=======
+id drawButton
+>>>>>>> c91d3116b413e034a037621deefc95931c122365
 id dropdown_menu
 id easeIn
 id easeInOut
 id easeOut
 id east
 id edit_query
+id edt_avatar
+id edt_camera
 id edt_createAccountButton
 id edt_createAccountText
+id edt_description
 id edt_email
 id edt_id
 id edt_identifiant
@@ -2905,6 +2924,7 @@ id group_divider
 id grouping
 id groups
 id guideline
+id hand_wave
 id header_menu
 id header_title
 id hideable
@@ -2934,6 +2954,7 @@ id item3
 id item4
 id item_room_name
 id item_touch_helper_previous_elevation
+id item_user_name
 id join_room_btn
 id jumpToEnd
 id jumpToStart
@@ -3057,6 +3078,7 @@ id popupTitle
 id position
 id postLayout
 id principal_room_btn
+id profile_btn
 id progress_circular
 id progress_horizontal
 id radio
@@ -3073,6 +3095,11 @@ id rounded
 id row_index_key
 id rvOutputMsgs
 id rvOutputRooms
+<<<<<<< HEAD
+=======
+id rvUsersList
+id saveButton
+>>>>>>> c91d3116b413e034a037621deefc95931c122365
 id save_non_transition_alpha
 id save_overlay_view
 id sawtooth
@@ -3094,15 +3121,6 @@ id search_plate
 id search_src_text
 id search_voice_btn
 id section_title_stat
-id select1
-id select2
-id select3
-id select4
-id select5
-id select6
-id select7
-id select8
-id select9
 id select_dialog_listview
 id selected
 id selection_type
@@ -3166,8 +3184,6 @@ id tag_transition_group
 id tag_unhandled_key_event_manager
 id tag_unhandled_key_listeners
 id tag_window_insets_animation_callback
-id testUI1
-id testUI2
 id test_checkbox_android_button_tint
 id test_checkbox_app_button_tint
 id test_radiobutton_android_button_tint
@@ -3193,6 +3209,7 @@ id time
 id title
 id titleDividerNoCustom
 id title_template
+id title_username
 id toggle
 id toolBarFragment
 id top
@@ -3215,9 +3232,12 @@ id unlabeled
 id up
 id useLogo
 id userAvatar
+id userAvatarModif
+id user_email
 id user_joined_chat
 id user_receive_message
 id user_sent_message
+id username
 id username_bloc
 id valider
 id vertical
@@ -3328,6 +3348,7 @@ layout abc_search_dropdown_item_icons_2line
 layout abc_search_view
 layout abc_select_dialog_material
 layout abc_tooltip
+layout activity_add_avatar_pop_up
 layout activity_chat_page
 layout activity_chat_rooms
 layout activity_create_room_pop_up
@@ -3335,10 +3356,14 @@ layout activity_dashboard
 layout activity_drawing
 layout activity_join_room
 layout activity_main
-layout activity_pick_avatar
 layout activity_profile
+layout activity_profile_modification
 layout activity_registration
+<<<<<<< HEAD
 layout color_list
+=======
+layout activity_users_list_pop_up
+>>>>>>> c91d3116b413e034a037621deefc95931c122365
 layout custom_dialog
 layout design_bottom_navigation_item
 layout design_bottom_sheet_dialog
@@ -3359,6 +3384,7 @@ layout fragment_custom_tool
 layout fragment_drawing_zone
 layout fragment_toolbar
 layout item_room
+layout item_user
 layout m3_alert_dialog
 layout m3_alert_dialog_actions
 layout m3_alert_dialog_title

@@ -57,18 +57,18 @@ class MessageAdapter(val context : Context, val msgs: ArrayList<Message>, val ow
             holder.receiveUser.text = currentMsg.user + " - " + currentMsg.time
         } else {
             val viewHolder = holder as UserJoinedViewHolder
-            holder.userJoined.text = currentMsg.user + " has joined " + currentMsg.room
+            holder.userJoined.text = currentMsg.msgText
         }
     }
 
     override fun getItemViewType(position: Int): Int {
         val currentMsg = msgs[position]
 
-        if (currentMsg.msgText == null) {
+        if (currentMsg.isNotif == true) {
             return ITEM_JOINED
         } else if (currentMsg.user!!.compareTo(owner) == 0) {
             return ITEM_SENT
-        }else {
+        } else {
             return ITEM_RECEIVE
         }
     }
