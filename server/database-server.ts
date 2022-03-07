@@ -347,6 +347,7 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
       var newUsername = post_data.newUsername;
       var avatar = post_data.newAvatar;
       var description = post_data.newDescription;
+      var newEmail = post_data.newEmail;
 
       //check if a user already has the new name
       DB.collection("users")
@@ -361,7 +362,8 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
               $set : {
                 "identifier" : newUsername,
                 "avatar" : avatar,
-                "description" : description
+                "description" : description,
+                "email":newEmail
               },
             }).then(result => {
               response.json(200);
@@ -390,42 +392,6 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
       }
       );
     });
-
-     //Updating a users data
-     app.post("/profileUpdate", (request, response, next) => { 
-      var post_data = request.body;
-      var oldUsername = post_data.oldUsername;
-      var newUsername = post_data.newUsername;
-      var avatar = post_data.newAvatar;
-      var newEmail = post_data.newEmail;
-      var description = post_data.newDescription;
-
-      var db = client.db("PolyGramDB");
-
-      //check if a user already has the new name
-      db.collection("users")
-        .find({ identifier: newUsername })
-        .count(function (err, number) {
-          if (number != 0 && oldUsername != newUsername) {
-            response.json(403);
-            console.log("identifier already exists");
-          } else {
-            // Update user data
-            db.collection("users").updateOne({ identifier: oldUsername }, {
-              $set : {
-                "identifier" : newUsername,
-                "avatar" : avatar,
-                "description" : description,
-                "email": newEmail,
-              },
-            }).then(result => {
-              response.json(200);
-              console.log(result)
-            });
-          }
-        });
-    });
-
 
     //start web server
     app.listen(SERVER_PORT, () => {

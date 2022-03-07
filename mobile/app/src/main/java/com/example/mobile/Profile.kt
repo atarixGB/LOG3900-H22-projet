@@ -53,14 +53,10 @@ class Profile : AppCompatActivity() {
         modifyProfile=findViewById(R.id.modify_label)
         user = intent.getStringExtra("userName").toString()
         sharedViewModel.setUser(user)
-//        email = intent.getStringExtra("email").toString()
 
 
-
-        //username and email sent from registration page displayed
+        //username and email sent from registration or login page displayed
         usernameDisplayed.setText(user)
-        title_username.setText(user)
-//        user_email.setText(email)
 
         //init api
         val retrofit = RetrofitClient.getInstance()
@@ -83,8 +79,10 @@ class Profile : AppCompatActivity() {
 
         modify_label.setOnClickListener(){
             val intent = Intent(this, Profile_modification::class.java)
-
+            //to send the old username, we need it in the modification page
             intent.putExtra("userName",user)
+            intent.putExtra("email",user_email.text.toString())
+            intent.putExtra("description",description_field.text.toString())
             startActivity(intent)
         }
 
@@ -97,7 +95,6 @@ class Profile : AppCompatActivity() {
             override fun onResponse(call: Call<User>, response: Response<User>) {
                 Toast.makeText(this@Profile, "Bienvenu!", Toast.LENGTH_SHORT).show()
                 userAvatar.setImageBitmap(avatarDecoder(response.body()?.avatar))
-//                title_username.setText(response.body()?.username)
 //                username.setText(response.body()?.username)
                 user_email.setText(response.body()?.email)
                 description_field.setText(response.body()?.description)

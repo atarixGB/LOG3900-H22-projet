@@ -15,7 +15,7 @@
         android:id="@+id/header_menu">
 
         <ImageView
-            android:id="@+id/back_btn"
+            android:id="@+id/back_btn_modification"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_alignParentLeft="true"
@@ -52,8 +52,7 @@
         <com.mikhaellopez.circularimageview.CircularImageView
             android:id="@+id/userAvatarModif"
             android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:src="@drawable/placeholder_logo" />
+            android:layout_height="120dp"/>
 
 
         <View
