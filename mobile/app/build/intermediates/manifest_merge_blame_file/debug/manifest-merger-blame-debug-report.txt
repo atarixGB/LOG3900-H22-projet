@@ -21,7 +21,7 @@
 13-->C:\Users\15149\Desktop\git clone final\log3900-203\mobile\app\src\main\AndroidManifest.xml:8:22-68
 14
 15    <application
-15-->C:\Users\15149\Desktop\git clone final\log3900-203\mobile\app\src\main\AndroidManifest.xml:10:5-58:19
+15-->C:\Users\15149\Desktop\git clone final\log3900-203\mobile\app\src\main\AndroidManifest.xml:10:5-61:19
 16        android:allowBackup="true"
 16-->C:\Users\15149\Desktop\git clone final\log3900-203\mobile\app\src\main\AndroidManifest.xml:11:9-35
 17        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
@@ -43,115 +43,121 @@
 26-->C:\Users\15149\Desktop\git clone final\log3900-203\mobile\app\src\main\AndroidManifest.xml:17:9-44
 27        <activity
 27-->C:\Users\15149\Desktop\git clone final\log3900-203\mobile\app\src\main\AndroidManifest.xml:18:9-20:40
-28            android:name="com.example.mobile.Albums"
-28-->C:\Users\15149\Desktop\git clone final\log3900-203\mobile\app\src\main\AndroidManifest.xml:19:13-35
+28            android:name="com.example.mobile.DisplayPublicAlbums"
+28-->C:\Users\15149\Desktop\git clone final\log3900-203\mobile\app\src\main\AndroidManifest.xml:19:13-48
 29            android:exported="false" />
 29-->C:\Users\15149\Desktop\git clone final\log3900-203\mobile\app\src\main\AndroidManifest.xml:20:13-37
 30        <activity
 30-->C:\Users\15149\Desktop\git clone final\log3900-203\mobile\app\src\main\AndroidManifest.xml:21:9-23:40
-31            android:name="com.example.mobile.usersListPopUp"
-31-->C:\Users\15149\Desktop\git clone final\log3900-203\mobile\app\src\main\AndroidManifest.xml:22:13-43
+31            android:name="com.example.mobile.Albums"
+31-->C:\Users\15149\Desktop\git clone final\log3900-203\mobile\app\src\main\AndroidManifest.xml:22:13-35
 32            android:exported="false" />
 32-->C:\Users\15149\Desktop\git clone final\log3900-203\mobile\app\src\main\AndroidManifest.xml:23:13-37
-33        <activity android:name="com.example.mobile.Dashboard" />
-33-->C:\Users\15149\Desktop\git clone final\log3900-203\mobile\app\src\main\AndroidManifest.xml:24:9-47
-33-->C:\Users\15149\Desktop\git clone final\log3900-203\mobile\app\src\main\AndroidManifest.xml:24:19-44
-34        <activity
-34-->C:\Users\15149\Desktop\git clone final\log3900-203\mobile\app\src\main\AndroidManifest.xml:25:9-27:40
-35            android:name="com.example.mobile.Profile_modification"
-35-->C:\Users\15149\Desktop\git clone final\log3900-203\mobile\app\src\main\AndroidManifest.xml:26:13-49
-36            android:exported="false" />
-36-->C:\Users\15149\Desktop\git clone final\log3900-203\mobile\app\src\main\AndroidManifest.xml:27:13-37
-37        <activity android:name="com.example.mobile.Dashboard" />
-37-->C:\Users\15149\Desktop\git clone final\log3900-203\mobile\app\src\main\AndroidManifest.xml:24:9-47
-37-->C:\Users\15149\Desktop\git clone final\log3900-203\mobile\app\src\main\AndroidManifest.xml:24:19-44
-38        <activity
-38-->C:\Users\15149\Desktop\git clone final\log3900-203\mobile\app\src\main\AndroidManifest.xml:29:9-31:40
-39            android:name="com.example.mobile.Profile"
-39-->C:\Users\15149\Desktop\git clone final\log3900-203\mobile\app\src\main\AndroidManifest.xml:30:13-36
-40            android:exported="false" />
-40-->C:\Users\15149\Desktop\git clone final\log3900-203\mobile\app\src\main\AndroidManifest.xml:31:13-37
+33        <activity
+33-->C:\Users\15149\Desktop\git clone final\log3900-203\mobile\app\src\main\AndroidManifest.xml:24:9-26:40
+34            android:name="com.example.mobile.usersListPopUp"
+34-->C:\Users\15149\Desktop\git clone final\log3900-203\mobile\app\src\main\AndroidManifest.xml:25:13-43
+35            android:exported="false" />
+35-->C:\Users\15149\Desktop\git clone final\log3900-203\mobile\app\src\main\AndroidManifest.xml:26:13-37
+36        <activity android:name="com.example.mobile.Dashboard" />
+36-->C:\Users\15149\Desktop\git clone final\log3900-203\mobile\app\src\main\AndroidManifest.xml:27:9-47
+36-->C:\Users\15149\Desktop\git clone final\log3900-203\mobile\app\src\main\AndroidManifest.xml:27:19-44
+37        <activity
+37-->C:\Users\15149\Desktop\git clone final\log3900-203\mobile\app\src\main\AndroidManifest.xml:28:9-30:40
+38            android:name="com.example.mobile.Profile_modification"
+38-->C:\Users\15149\Desktop\git clone final\log3900-203\mobile\app\src\main\AndroidManifest.xml:29:13-49
+39            android:exported="false" />
+39-->C:\Users\15149\Desktop\git clone final\log3900-203\mobile\app\src\main\AndroidManifest.xml:30:13-37
+40        <activity android:name="com.example.mobile.Dashboard" />
+40-->C:\Users\15149\Desktop\git clone final\log3900-203\mobile\app\src\main\AndroidManifest.xml:27:9-47
+40-->C:\Users\15149\Desktop\git clone final\log3900-203\mobile\app\src\main\AndroidManifest.xml:27:19-44
 41        <activity
 41-->C:\Users\15149\Desktop\git clone final\log3900-203\mobile\app\src\main\AndroidManifest.xml:32:9-34:40
-42            android:name="com.example.mobile.Registration"
-42-->C:\Users\15149\Desktop\git clone final\log3900-203\mobile\app\src\main\AndroidManifest.xml:33:13-41
+42            android:name="com.example.mobile.Profile"
+42-->C:\Users\15149\Desktop\git clone final\log3900-203\mobile\app\src\main\AndroidManifest.xml:33:13-36
 43            android:exported="false" />
 43-->C:\Users\15149\Desktop\git clone final\log3900-203\mobile\app\src\main\AndroidManifest.xml:34:13-37
 44        <activity
 44-->C:\Users\15149\Desktop\git clone final\log3900-203\mobile\app\src\main\AndroidManifest.xml:35:9-37:40
-45            android:name="com.example.mobile.joinRoom"
-45-->C:\Users\15149\Desktop\git clone final\log3900-203\mobile\app\src\main\AndroidManifest.xml:36:13-37
+45            android:name="com.example.mobile.Registration"
+45-->C:\Users\15149\Desktop\git clone final\log3900-203\mobile\app\src\main\AndroidManifest.xml:36:13-41
 46            android:exported="false" />
 46-->C:\Users\15149\Desktop\git clone final\log3900-203\mobile\app\src\main\AndroidManifest.xml:37:13-37
 47        <activity
-47-->C:\Users\15149\Desktop\git clone final\log3900-203\mobile\app\src\main\AndroidManifest.xml:38:9-41:45
-48            android:name="com.example.mobile.CreateRoomPopUp"
-48-->C:\Users\15149\Desktop\git clone final\log3900-203\mobile\app\src\main\AndroidManifest.xml:39:13-44
+47-->C:\Users\15149\Desktop\git clone final\log3900-203\mobile\app\src\main\AndroidManifest.xml:38:9-40:40
+48            android:name="com.example.mobile.joinRoom"
+48-->C:\Users\15149\Desktop\git clone final\log3900-203\mobile\app\src\main\AndroidManifest.xml:39:13-37
 49            android:exported="false" />
 49-->C:\Users\15149\Desktop\git clone final\log3900-203\mobile\app\src\main\AndroidManifest.xml:40:13-37
 50        <activity
-50-->C:\Users\15149\Desktop\git clone final\log3900-203\mobile\app\src\main\AndroidManifest.xml:42:9-44:40
-51            android:name="com.example.mobile.ChatRooms"
-51-->C:\Users\15149\Desktop\git clone final\log3900-203\mobile\app\src\main\AndroidManifest.xml:43:13-38
+50-->C:\Users\15149\Desktop\git clone final\log3900-203\mobile\app\src\main\AndroidManifest.xml:41:9-44:45
+51            android:name="com.example.mobile.CreateRoomPopUp"
+51-->C:\Users\15149\Desktop\git clone final\log3900-203\mobile\app\src\main\AndroidManifest.xml:42:13-44
 52            android:exported="false" />
-52-->C:\Users\15149\Desktop\git clone final\log3900-203\mobile\app\src\main\AndroidManifest.xml:44:13-37
-53        <activity android:name="com.example.mobile.DrawingActivity" />
-53-->C:\Users\15149\Desktop\git clone final\log3900-203\mobile\app\src\main\AndroidManifest.xml:45:9-53
-53-->C:\Users\15149\Desktop\git clone final\log3900-203\mobile\app\src\main\AndroidManifest.xml:45:19-50
-54        <activity
-54-->C:\Users\15149\Desktop\git clone final\log3900-203\mobile\app\src\main\AndroidManifest.xml:46:9-48:39
-55            android:name="com.example.mobile.ChatPage"
+52-->C:\Users\15149\Desktop\git clone final\log3900-203\mobile\app\src\main\AndroidManifest.xml:43:13-37
+53        <activity
+53-->C:\Users\15149\Desktop\git clone final\log3900-203\mobile\app\src\main\AndroidManifest.xml:45:9-47:40
+54            android:name="com.example.mobile.ChatRooms"
+54-->C:\Users\15149\Desktop\git clone final\log3900-203\mobile\app\src\main\AndroidManifest.xml:46:13-38
+55            android:exported="false" />
 55-->C:\Users\15149\Desktop\git clone final\log3900-203\mobile\app\src\main\AndroidManifest.xml:47:13-37
-56            android:exported="true" />
-56-->C:\Users\15149\Desktop\git clone final\log3900-203\mobile\app\src\main\AndroidManifest.xml:48:13-36
+56        <activity android:name="com.example.mobile.DrawingActivity" />
+56-->C:\Users\15149\Desktop\git clone final\log3900-203\mobile\app\src\main\AndroidManifest.xml:48:9-53
+56-->C:\Users\15149\Desktop\git clone final\log3900-203\mobile\app\src\main\AndroidManifest.xml:48:19-50
 57        <activity
-57-->C:\Users\15149\Desktop\git clone final\log3900-203\mobile\app\src\main\AndroidManifest.xml:49:9-57:20
-58            android:name="com.example.mobile.MainActivity"
-58-->C:\Users\15149\Desktop\git clone final\log3900-203\mobile\app\src\main\AndroidManifest.xml:50:13-41
-59            android:exported="true" >
+57-->C:\Users\15149\Desktop\git clone final\log3900-203\mobile\app\src\main\AndroidManifest.xml:49:9-51:39
+58            android:name="com.example.mobile.ChatPage"
+58-->C:\Users\15149\Desktop\git clone final\log3900-203\mobile\app\src\main\AndroidManifest.xml:50:13-37
+59            android:exported="true" />
 59-->C:\Users\15149\Desktop\git clone final\log3900-203\mobile\app\src\main\AndroidManifest.xml:51:13-36
-60            <intent-filter>
-60-->C:\Users\15149\Desktop\git clone final\log3900-203\mobile\app\src\main\AndroidManifest.xml:52:13-56:29
-61                <action android:name="android.intent.action.MAIN" />
-61-->C:\Users\15149\Desktop\git clone final\log3900-203\mobile\app\src\main\AndroidManifest.xml:53:17-69
-61-->C:\Users\15149\Desktop\git clone final\log3900-203\mobile\app\src\main\AndroidManifest.xml:53:25-66
-62
-63                <category android:name="android.intent.category.LAUNCHER" />
-63-->C:\Users\15149\Desktop\git clone final\log3900-203\mobile\app\src\main\AndroidManifest.xml:55:17-77
-63-->C:\Users\15149\Desktop\git clone final\log3900-203\mobile\app\src\main\AndroidManifest.xml:55:27-74
-64            </intent-filter>
-65        </activity>
-66
-67        <provider
-67-->[androidx.emoji2:emoji2:1.0.0] C:\Users\15149\.gradle\caches\transforms-2\files-2.1\a1db6a0ca78a28b66c64115dbc645d09\jetified-emoji2-1.0.0\AndroidManifest.xml:26:9-34:20
-68            android:name="androidx.startup.InitializationProvider"
-68-->[androidx.emoji2:emoji2:1.0.0] C:\Users\15149\.gradle\caches\transforms-2\files-2.1\a1db6a0ca78a28b66c64115dbc645d09\jetified-emoji2-1.0.0\AndroidManifest.xml:27:13-67
-69            android:authorities="com.example.mobile.androidx-startup"
-69-->[androidx.emoji2:emoji2:1.0.0] C:\Users\15149\.gradle\caches\transforms-2\files-2.1\a1db6a0ca78a28b66c64115dbc645d09\jetified-emoji2-1.0.0\AndroidManifest.xml:28:13-68
-70            android:exported="false" >
-70-->[androidx.emoji2:emoji2:1.0.0] C:\Users\15149\.gradle\caches\transforms-2\files-2.1\a1db6a0ca78a28b66c64115dbc645d09\jetified-emoji2-1.0.0\AndroidManifest.xml:29:13-37
-71            <meta-data
-71-->[androidx.emoji2:emoji2:1.0.0] C:\Users\15149\.gradle\caches\transforms-2\files-2.1\a1db6a0ca78a28b66c64115dbc645d09\jetified-emoji2-1.0.0\AndroidManifest.xml:31:13-33:52
-72                android:name="androidx.emoji2.text.EmojiCompatInitializer"
-72-->[androidx.emoji2:emoji2:1.0.0] C:\Users\15149\.gradle\caches\transforms-2\files-2.1\a1db6a0ca78a28b66c64115dbc645d09\jetified-emoji2-1.0.0\AndroidManifest.xml:32:17-75
-73                android:value="androidx.startup" />
-73-->[androidx.emoji2:emoji2:1.0.0] C:\Users\15149\.gradle\caches\transforms-2\files-2.1\a1db6a0ca78a28b66c64115dbc645d09\jetified-emoji2-1.0.0\AndroidManifest.xml:33:17-49
+60        <activity
+60-->C:\Users\15149\Desktop\git clone final\log3900-203\mobile\app\src\main\AndroidManifest.xml:52:9-60:20
+61            android:name="com.example.mobile.MainActivity"
+61-->C:\Users\15149\Desktop\git clone final\log3900-203\mobile\app\src\main\AndroidManifest.xml:53:13-41
+62            android:exported="true" >
+62-->C:\Users\15149\Desktop\git clone final\log3900-203\mobile\app\src\main\AndroidManifest.xml:54:13-36
+63            <intent-filter>
+63-->C:\Users\15149\Desktop\git clone final\log3900-203\mobile\app\src\main\AndroidManifest.xml:55:13-59:29
+64                <action android:name="android.intent.action.MAIN" />
+64-->C:\Users\15149\Desktop\git clone final\log3900-203\mobile\app\src\main\AndroidManifest.xml:56:17-69
+64-->C:\Users\15149\Desktop\git clone final\log3900-203\mobile\app\src\main\AndroidManifest.xml:56:25-66
+65
+66                <category android:name="android.intent.category.LAUNCHER" />
+66-->C:\Users\15149\Desktop\git clone final\log3900-203\mobile\app\src\main\AndroidManifest.xml:58:17-77
+66-->C:\Users\15149\Desktop\git clone final\log3900-203\mobile\app\src\main\AndroidManifest.xml:58:27-74
+67            </intent-filter>
+68        </activity>
+69
+70        <provider
+70-->[androidx.emoji2:emoji2:1.0.0] C:\Users\15149\.gradle\caches\transforms-2\files-2.1\a1db6a0ca78a28b66c64115dbc645d09\jetified-emoji2-1.0.0\AndroidManifest.xml:26:9-34:20
+71            android:name="androidx.startup.InitializationProvider"
+71-->[androidx.emoji2:emoji2:1.0.0] C:\Users\15149\.gradle\caches\transforms-2\files-2.1\a1db6a0ca78a28b66c64115dbc645d09\jetified-emoji2-1.0.0\AndroidManifest.xml:27:13-67
+72            android:authorities="com.example.mobile.androidx-startup"
+72-->[androidx.emoji2:emoji2:1.0.0] C:\Users\15149\.gradle\caches\transforms-2\files-2.1\a1db6a0ca78a28b66c64115dbc645d09\jetified-emoji2-1.0.0\AndroidManifest.xml:28:13-68
+73            android:exported="false" >
+73-->[androidx.emoji2:emoji2:1.0.0] C:\Users\15149\.gradle\caches\transforms-2\files-2.1\a1db6a0ca78a28b66c64115dbc645d09\jetified-emoji2-1.0.0\AndroidManifest.xml:29:13-37
 74            <meta-data
-74-->[androidx.lifecycle:lifecycle-process:2.4.0] C:\Users\15149\.gradle\caches\transforms-2\files-2.1\33cb0bcbb6de7bcdeaa8d59150e0e237\jetified-lifecycle-process-2.4.0\AndroidManifest.xml:31:13-33:52
-75                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
-75-->[androidx.lifecycle:lifecycle-process:2.4.0] C:\Users\15149\.gradle\caches\transforms-2\files-2.1\33cb0bcbb6de7bcdeaa8d59150e0e237\jetified-lifecycle-process-2.4.0\AndroidManifest.xml:32:17-78
+74-->[androidx.emoji2:emoji2:1.0.0] C:\Users\15149\.gradle\caches\transforms-2\files-2.1\a1db6a0ca78a28b66c64115dbc645d09\jetified-emoji2-1.0.0\AndroidManifest.xml:31:13-33:52
+75                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+75-->[androidx.emoji2:emoji2:1.0.0] C:\Users\15149\.gradle\caches\transforms-2\files-2.1\a1db6a0ca78a28b66c64115dbc645d09\jetified-emoji2-1.0.0\AndroidManifest.xml:32:17-75
 76                android:value="androidx.startup" />
-76-->[androidx.lifecycle:lifecycle-process:2.4.0] C:\Users\15149\.gradle\caches\transforms-2\files-2.1\33cb0bcbb6de7bcdeaa8d59150e0e237\jetified-lifecycle-process-2.4.0\AndroidManifest.xml:33:17-49
-77        </provider>
-78
-79        <service
-79-->[androidx.room:room-runtime:2.3.0] C:\Users\15149\.gradle\caches\transforms-2\files-2.1\405bda75e18cb5884c20e8632461cd46\room-runtime-2.3.0\AndroidManifest.xml:25:9-28:40
-80            android:name="androidx.room.MultiInstanceInvalidationService"
-80-->[androidx.room:room-runtime:2.3.0] C:\Users\15149\.gradle\caches\transforms-2\files-2.1\405bda75e18cb5884c20e8632461cd46\room-runtime-2.3.0\AndroidManifest.xml:26:13-74
-81            android:directBootAware="true"
-81-->[androidx.room:room-runtime:2.3.0] C:\Users\15149\.gradle\caches\transforms-2\files-2.1\405bda75e18cb5884c20e8632461cd46\room-runtime-2.3.0\AndroidManifest.xml:27:13-43
-82            android:exported="false" />
-82-->[androidx.room:room-runtime:2.3.0] C:\Users\15149\.gradle\caches\transforms-2\files-2.1\405bda75e18cb5884c20e8632461cd46\room-runtime-2.3.0\AndroidManifest.xml:28:13-37
-83    </application>
-84
-85</manifest>
+76-->[androidx.emoji2:emoji2:1.0.0] C:\Users\15149\.gradle\caches\transforms-2\files-2.1\a1db6a0ca78a28b66c64115dbc645d09\jetified-emoji2-1.0.0\AndroidManifest.xml:33:17-49
+77            <meta-data
+77-->[androidx.lifecycle:lifecycle-process:2.4.0] C:\Users\15149\.gradle\caches\transforms-2\files-2.1\33cb0bcbb6de7bcdeaa8d59150e0e237\jetified-lifecycle-process-2.4.0\AndroidManifest.xml:31:13-33:52
+78                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+78-->[androidx.lifecycle:lifecycle-process:2.4.0] C:\Users\15149\.gradle\caches\transforms-2\files-2.1\33cb0bcbb6de7bcdeaa8d59150e0e237\jetified-lifecycle-process-2.4.0\AndroidManifest.xml:32:17-78
+79                android:value="androidx.startup" />
+79-->[androidx.lifecycle:lifecycle-process:2.4.0] C:\Users\15149\.gradle\caches\transforms-2\files-2.1\33cb0bcbb6de7bcdeaa8d59150e0e237\jetified-lifecycle-process-2.4.0\AndroidManifest.xml:33:17-49
+80        </provider>
+81
+82        <service
+82-->[androidx.room:room-runtime:2.3.0] C:\Users\15149\.gradle\caches\transforms-2\files-2.1\405bda75e18cb5884c20e8632461cd46\room-runtime-2.3.0\AndroidManifest.xml:25:9-28:40
+83            android:name="androidx.room.MultiInstanceInvalidationService"
+83-->[androidx.room:room-runtime:2.3.0] C:\Users\15149\.gradle\caches\transforms-2\files-2.1\405bda75e18cb5884c20e8632461cd46\room-runtime-2.3.0\AndroidManifest.xml:26:13-74
+84            android:directBootAware="true"
+84-->[androidx.room:room-runtime:2.3.0] C:\Users\15149\.gradle\caches\transforms-2\files-2.1\405bda75e18cb5884c20e8632461cd46\room-runtime-2.3.0\AndroidManifest.xml:27:13-43
+85            android:exported="false" />
+85-->[androidx.room:room-runtime:2.3.0] C:\Users\15149\.gradle\caches\transforms-2\files-2.1\405bda75e18cb5884c20e8632461cd46\room-runtime-2.3.0\AndroidManifest.xml:28:13-37
+86    </application>
+87
+88</manifest>

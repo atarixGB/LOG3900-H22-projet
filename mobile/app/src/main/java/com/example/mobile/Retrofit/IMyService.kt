@@ -76,6 +76,15 @@ interface IMyService {
     @GET("albums/{identifier}")
     fun getUserAlbums(@Path("identifier") username: String):Call<List<Album>>
 
+    @POST("albums")
+    @FormUrlEncoded
+    fun createNewAlbum(@Field("name")albumName:String,
+                       @Field("owner")ownerID:String,
+                       @Field("description")description: String,
+                       @Field("drawingIDs")drawingIDs:ArrayList<String>,
+                       @Field("members")usersList:ArrayList<String>,
+                       @Field("isPrivate")isPrivate:Boolean): Observable<String>
+
 
 //    @Multipart
 //    @POST("upload")

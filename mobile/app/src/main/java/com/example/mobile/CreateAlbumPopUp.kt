@@ -7,12 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.DialogFragment
+import kotlinx.android.synthetic.main.fragment_create_album_pop_up.*
 import kotlinx.android.synthetic.main.fragment_create_album_pop_up.view.*
 
 
 class CreateAlbumPopUp : DialogFragment() {
     private lateinit var radioGroup: RadioGroup
     private lateinit var albumName:EditText
+    private lateinit var albumDescription: EditText
     private lateinit var submitButton: Button
     private lateinit var cancelButton: Button
     private lateinit var listener: DialogListener
@@ -26,6 +28,7 @@ class CreateAlbumPopUp : DialogFragment() {
         var rootView: View= inflater.inflate(R.layout.fragment_create_album_pop_up, container, false)
         radioGroup=rootView.findViewById(R.id.radioGroup)
         albumName=rootView.findViewById(R.id.newAlbumName)
+        albumDescription=rootView.findViewById(R.id.albumDescription)
         submitButton= rootView.findViewById(R.id.submitBtn)
         cancelButton=rootView.findViewById(R.id.cancelBtn)
 
@@ -39,7 +42,9 @@ class CreateAlbumPopUp : DialogFragment() {
 
             var result=radio.text.toString()
             var name= albumName.text.toString()
-            listener.popUpListener(name)
+            var description = albumDescription.text.toString()
+
+            listener.popUpListener(name,description,result)
 
             Toast.makeText(context, "le nom de votre album est $name choix d'accès est $result", Toast.LENGTH_LONG)
 
@@ -62,7 +67,7 @@ class CreateAlbumPopUp : DialogFragment() {
 
 
     public interface DialogListener {
-        fun popUpListener(albumName: String)
+        fun popUpListener(albumName: String,albumDescription:String,visibility: String)
     }
 
 }

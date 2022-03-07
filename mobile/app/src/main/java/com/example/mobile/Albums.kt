@@ -1,19 +1,28 @@
 package com.example.mobile
 
+import android.content.ClipDescription
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mobile.Retrofit.IMyService
 import com.example.mobile.Retrofit.RetrofitClient
+import com.google.gson.Gson
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_albums.*
+import org.json.JSONArray
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Response
+import retrofit2.http.Field
 import java.util.ArrayList
+import kotlin.properties.Delegates
 
 class Albums : AppCompatActivity(), CreateAlbumPopUp.DialogListener ,AlbumAdapter.AlbumAdapterListener {
     private lateinit var user: String
@@ -23,6 +32,8 @@ class Albums : AppCompatActivity(), CreateAlbumPopUp.DialogListener ,AlbumAdapte
     private lateinit var displayAlbumsBtn: Button
     private lateinit var iMyService: IMyService
     private lateinit var albumName: String
+    private lateinit var albumDescription: String
+    private lateinit var owner:String
     internal var compositeDisposable = CompositeDisposable()
 
     override fun onStop() {
@@ -35,6 +46,7 @@ class Albums : AppCompatActivity(), CreateAlbumPopUp.DialogListener ,AlbumAdapte
         setContentView(R.layout.activity_albums)
 
         rvOutputAlbums = findViewById(R.id.rvOutputAlbums)
+        displayAlbumsBtn = findViewById(R.id.display_albums_btn)
 
         val retrofit = RetrofitClient.getInstance()
         iMyService = retrofit.create(IMyService::class.java)
@@ -86,15 +98,44 @@ class Albums : AppCompatActivity(), CreateAlbumPopUp.DialogListener ,AlbumAdapte
 
     }
 
-    override fun popUpListener(albumName: String) {
+    override fun popUpListener(albumName: String,albumDescription:String,visibility: String) {
+        //getting album information from popup
         this.albumName = albumName
-//        var usersList = ArrayList<String>()
-//        usersList.add(user)
-//        usersList.add("prob")
-//        createAlbum(user,this.albumName, usersList)
+        this.albumDescription=albumDescription
+        var isPrivate:Boolean = visibility=="privé"
+        this.owner=user
+        //list of members
+        var usersList = ArrayList<String>()
+        usersList.add(user)
+        usersList.add("prob")
+
+        var drawingIDs = ArrayList<String>()
+        drawingIDs.add("test drawing1")
+        drawingIDs.add("test drawing2")
+
+        createNewAlbum(this.albumName,this.owner,this.albumDescription,drawingIDs,usersList,isPrivate)
     }
 
     override fun albumAdapterListener(albumName: String) {
         this.albumName = albumName
+    }
+
+    private fun createNewAlbum(albumName:String,
+                               ownerID:String,
+                               description: String,
+                               drawingIDs:ArrayList<String>,
+                               usersList:ArrayList<String>,
+                               isPrivate:Boolean) {
+        compositeDisposable.add(iMyService.createNewAlbum(albumName,ownerID,description,drawingIDs,usersList,isPrivate)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { result->
+                if(result == "201"){
+                    Toast.makeText(this,"Album crée avec succès", Toast.LENGTH_SHORT).show()
+
+                }else{
+                    Toast.makeText(this,"Échec de création", Toast.LENGTH_SHORT).show()
+                }
+            })
     }
 }
