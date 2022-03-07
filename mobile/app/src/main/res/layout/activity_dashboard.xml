@@ -6,6 +6,15 @@
     android:layout_height="match_parent"
     tools:context="com.example.mobile.Dashboard">
 
+    <fragment
+        android:id="@+id/toolbarNavigation"
+        android:name="com.example.mobile.ToolbarNavigationFragment"
+        android:layout_width="250dp"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/collab_text"
         android:layout_width="wrap_content"
@@ -14,6 +23,7 @@
         android:text="Mode collaboratif"
         android:textAppearance="@style/TextAppearance.AppCompat.Display2"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.658"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/solo_start_btn" />
 
@@ -21,8 +31,8 @@
         android:id="@+id/view3"
         android:layout_width="0dp"
         android:layout_height="1dp"
-        android:layout_marginStart="50dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginStart="300dp"
+        android:layout_marginEnd="10dp"
         android:background="#C4E0B2"
         app:layout_constraintBottom_toBottomOf="@+id/solo_text"
         app:layout_constraintEnd_toStartOf="@+id/solo_text"
@@ -45,6 +55,7 @@
         android:id="@+id/solo_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="300dp"
         android:layout_marginTop="92dp"
         android:text="Mode solo"
         android:textAppearance="@style/TextAppearance.AppCompat.Display2"
@@ -57,8 +68,8 @@
         android:id="@+id/view4"
         android:layout_width="0dp"
         android:layout_height="1dp"
-        android:layout_marginStart="50dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginStart="300dp"
+        android:layout_marginEnd="10dp"
         android:background="#C4E0B2"
         app:layout_constraintBottom_toBottomOf="@+id/collab_text"
         app:layout_constraintEnd_toStartOf="@+id/collab_text"
@@ -81,14 +92,15 @@
         android:id="@+id/solo_start_btn"
         android:layout_width="350dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="100dp"
         android:layout_marginTop="25dp"
+        android:layout_marginStart="250dp"
         android:background="@drawable/dashboard_button_box"
         android:padding="20dp"
         android:text="Créer un nouveau dessin"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textColor="@color/black"
         app:backgroundTint="#C8C0C0"
+        app:layout_constraintEnd_toStartOf="@+id/solo_continue_btn"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/solo_text" />
 
@@ -96,14 +108,15 @@
         android:id="@+id/solo_start_btn3"
         android:layout_width="350dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="100dp"
         android:layout_marginTop="25dp"
-        android:background = "@drawable/dashboard_button_box"
+        android:layout_marginStart="250dp"
+        android:background="@drawable/dashboard_button_box"
         android:padding="20dp"
         android:text="Créer une session"
-        app:backgroundTint="#C8C0C0"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textColor="@color/black"
+        app:backgroundTint="#C8C0C0"
+        app:layout_constraintEnd_toStartOf="@+id/solo_start_btn4"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/collab_text" />
 
@@ -113,7 +126,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="25dp"
         android:layout_marginEnd="100dp"
-        android:background = "@drawable/dashboard_button_box"
+        android:background="@drawable/dashboard_button_box"
         android:padding="20dp"
         android:text="Joindre une session"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
@@ -128,47 +141,13 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="25dp"
         android:layout_marginEnd="100dp"
-        android:background = "@drawable/dashboard_button_box"
-        app:backgroundTint="#C8C0C0"
+        android:background="@drawable/dashboard_button_box"
         android:padding="20dp"
         android:text="Continuer un dessin"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textColor="@color/black"
+        app:backgroundTint="#C8C0C0"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/solo_text" />
-
-    <Button
-        android:id="@+id/chatRooms_btn"
-        android:layout_width="350dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/dashboard_button_box"
-        android:padding="20dp"
-        android:text="chat Rooms"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:textColor="@color/black"
-        app:backgroundTint="#C8C0C0"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.301"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/solo_start_btn3"
-        app:layout_constraintVertical_bias="0.502" />
-
-    <Button
-        android:id="@+id/profile_btn"
-        android:layout_width="350dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/dashboard_button_box"
-        android:padding="20dp"
-        android:text="Profil"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:textColor="@color/black"
-        app:backgroundTint="#C8C0C0"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.762"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/solo_start_btn3"
-        app:layout_constraintVertical_bias="0.502" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

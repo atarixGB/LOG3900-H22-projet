@@ -6,6 +6,7 @@
     android:layout_height="fill_parent"
     android:screenOrientation="landscape">
 
+
     <ImageView
         android:id="@+id/edt_logo"
         android:layout_width="300dp"

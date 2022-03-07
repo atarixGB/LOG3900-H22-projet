@@ -42,20 +42,38 @@ class MainActivity : AppCompatActivity()  {
         showHideBtn = findViewById(R.id.showHideBtn)
         pwd = findViewById(R.id.edt_password)
 
+
+
+        //Connect to the Server
+
+//        SocketHandler.setSocket()
+//        val socket = SocketHandler.getSocket()
+//        socket.connect()
+
+        //init API
         val retrofit = RetrofitClient.getInstance()
         iMyService = retrofit.create(IMyService::class.java)
 
         loginBtn.setOnClickListener {
             if (identifiant.text.toString().length > 0) {
                 if (!identifiant.text.toString().isNullOrBlank()) {
+                    //socket.emit("newUser", identifiant.text.toString())
                     loginUser(identifiant.text.toString(), pwd.text.toString())
                 }
             }
+//        }
+//        socket.on("newUser") { args ->
+//            openDashboard()
+//            //openChatRooms()
+////            if(args[0] != null && !isDashboardOpen && identifiant.text.toString().length > 0){
+////                openDashboard()
+////            }
         }
 
 
         createAccountBtn.setOnClickListener {
             val intent = Intent(this, Registration::class.java)
+//            intent.putExtra("userName",identifiant.text.toString())
             startActivity(intent)
         }
 
@@ -66,6 +84,12 @@ class MainActivity : AppCompatActivity()  {
             } else {
                 pwd.transformationMethod = PasswordTransformationMethod.getInstance()
                 showHideBtn.text = "Show"
+
+                /*socket.on("newUser") { args ->
+                    if (args[0] != null && !isChatOpen && identifiant.text.toString().length > 0) {
+                        openChatRooms()
+                    }
+                }*/
             }
         }
     }
