@@ -143,7 +143,9 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
           var roomName = post_data.roomName;
           var usersList = post_data.usersList;
 
-          console.log(usersList);
+          console.log("USER", identifier);
+          console.log("ROOM NAME", roomName);
+          console.log("USERS LIST", usersList);
           
           var insertJson = {
             identifier: identifier,

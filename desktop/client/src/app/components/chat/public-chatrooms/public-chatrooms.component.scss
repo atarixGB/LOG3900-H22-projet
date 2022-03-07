@@ -1,0 +1,19 @@
+:host {
+  height: 100%;
+}
+
+mat-icon {
+  color: rgb(144, 238, 221);
+}
+
+#back-btn {
+  transform: scale(2);
+}
+
+.roomname-container {
+  border-radius: 5px;
+  border: 1px solid grey;
+  width: 100px;
+  padding: 10px;
+  margin: 2px;
+}

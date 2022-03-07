@@ -38,9 +38,7 @@ import { SaveDrawingModalComponent } from './components/editor/save-drawing-moda
 import { EllipseConfigComponent } from './components/editor/sidebar/ellipse-config/ellipse-config.component';
 import { EraserConfigComponent } from './components/editor/sidebar/eraser-config/eraser-config.component';
 import { FileMenuComponent } from './components/editor/sidebar/file-menu/file-menu.component';
-import { PaintConfigComponent } from './components/editor/sidebar/paint-config/paint-config.component';
 import { PencilConfigComponent } from './components/editor/sidebar/pencil-config/pencil-config.component';
-import { PolygonConfigComponent } from './components/editor/sidebar/polygon-config/polygon-config.component';
 import { RectangleConfigComponent } from './components/editor/sidebar/rectangle-config/rectangle-config.component';
 import { SidebarComponent } from './components/editor/sidebar/sidebar.component';
 import { ToolsListComponent } from './components/editor/sidebar/tools-list/tools-list.component';
@@ -55,6 +53,10 @@ import { CreateAlbumDialogComponent } from './components/album-gallery/create-al
 import { PublicAlbumsComponent } from './components/album-gallery/public-albums/public-albums.component';
 import { DrawingsViewComponent } from './components/album-gallery/drawings-view/drawings-view.component';
 import { PublicDrawingGalleryComponent } from './components/album-gallery/public-drawing-gallery/public-drawing-gallery.component';
+import { SelectionConfigComponent } from './components/editor/sidebar/selection-config/selection-config.component';
+import { CreateRoomDialogComponent } from './components/chat/create-room-dialog/create-room-dialog.component';
+import { PublicChatroomsComponent } from './components/chat/public-chatrooms/public-chatrooms.component';
+import { DeleteRoomDialogComponent } from './components/chat/delete-room-dialog/delete-room-dialog.component'
 
 @NgModule({
     declarations: [
@@ -72,9 +74,7 @@ import { PublicDrawingGalleryComponent } from './components/album-gallery/public
         RectangleConfigComponent,
         ConfigPanelComponent,
         ExportModalComponent,
-        PolygonConfigComponent,
         SaveDrawingModalComponent,
-        PaintConfigComponent,
         LoginComponent,
         ChatMenuComponent,
         MenuComponent,
@@ -91,6 +91,10 @@ import { PublicDrawingGalleryComponent } from './components/album-gallery/public
         ChatroomComponent,
         ProfileComponent,
         ProfileSettingsComponent,
+        SelectionConfigComponent, 
+        CreateRoomDialogComponent,
+        PublicChatroomsComponent,
+        DeleteRoomDialogComponent,
     ],
     imports: [
         BrowserModule,
@@ -124,4 +128,4 @@ import { PublicDrawingGalleryComponent } from './components/album-gallery/public
     providers: [],
     bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }
