@@ -4,7 +4,6 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
 import android.widget.ImageButton
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -20,7 +19,7 @@ class DisplayPublicAlbums : AppCompatActivity(), AlbumAdapter.AlbumAdapterListen
     private lateinit var user: String
     private lateinit var rvOutputAlbums: RecyclerView
     private lateinit var albumAdapter: AlbumAdapter
-    private lateinit var albums : ArrayList<Album>
+    private lateinit var albums : ArrayList<IAlbum>
     private lateinit var iMyService: IMyService
     private lateinit var albumName: String
     private lateinit var leaveBtn: ImageButton
@@ -50,7 +49,7 @@ class DisplayPublicAlbums : AppCompatActivity(), AlbumAdapter.AlbumAdapterListen
         rvOutputAlbums.adapter = albumAdapter
         rvOutputAlbums.layoutManager = GridLayoutManager(this, 3)
 
-        getPublicAlbums()
+        getAllAvailableAlbums()
 
         leaveBtn.setOnClickListener {
             val intent = Intent(this, Albums::class.java)
@@ -58,18 +57,18 @@ class DisplayPublicAlbums : AppCompatActivity(), AlbumAdapter.AlbumAdapterListen
             startActivity(intent)
         }
     }
-    private fun getPublicAlbums() {
-        var call: Call<List<Album>> = iMyService.getAllPublicAlbums()
-        call.enqueue(object: retrofit2.Callback<List<Album>> {
+    private fun getAllAvailableAlbums() {
+        var call: Call<List<IAlbum>> = iMyService.getAllAvailableAlbums()
+        call.enqueue(object: retrofit2.Callback<List<IAlbum>> {
 
-            override fun onResponse(call: Call<List<Album>>, response: Response<List<Album>>) {
+            override fun onResponse(call: Call<List<IAlbum>>, response: Response<List<IAlbum>>) {
                 for (album in response.body()!!) {
                     albumAdapter.addAlbum(album)
                     albumAdapter.notifyItemInserted((rvOutputAlbums.adapter as AlbumAdapter).itemCount)
                 }
             }
 
-            override fun onFailure(call: Call<List<Album>>, t: Throwable) {
+            override fun onFailure(call: Call<List<IAlbum>>, t: Throwable) {
                 Log.d("PublicAlbums", "onFailure" +t.message )
             }
 

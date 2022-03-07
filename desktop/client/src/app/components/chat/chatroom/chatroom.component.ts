@@ -15,12 +15,15 @@ export class ChatroomComponent implements AfterViewInit {
     userList: string[];
     socket: any;
 
+    currentRoom: string;
+
     constructor(public chatService: ChatService) {
         this.userName = '';
         this.message = '';
         this.messageList = [];
         this.userList = [];
         this.socket = this.chatService.socket;
+        this.currentRoom = this.chatService.currentRoom;
     }
 
     ngAfterViewInit(): void {
@@ -33,8 +36,11 @@ export class ChatroomComponent implements AfterViewInit {
             const data = {
                 message: this.message,
                 userName: this.userName,
+                room: this.currentRoom,
                 time: formatDate(new Date(), 'hh:mm:ss a', 'en-US'),
             };
+
+            console.log("TO SERVER:", data);
 
             this.socket.emit('message', data);
             this.message = '';
@@ -44,14 +50,22 @@ export class ChatroomComponent implements AfterViewInit {
 
     onNewMessage(): void {
         this.socket.on('message', (data: any) => {
+
             if (data) {
+              console.log("FROM SERVER", data);
+
                 const isMine = data.userName == this.userName;
-                this.messageList.push({
-                    message: data.message,
-                    userName: data.userName + (isMine ? ' (moi)' : '') + ' - ' + formatDate(new Date(), 'hh:mm:ss a', 'en-US'),
-                    mine: isMine,
-                });
+
+                // This condition is a workaround to not display messages sent from the default public channel in other rooms... Not final code, the problem is still not fixed!
+                if (data.room == this.chatService.currentRoom) {
+                  this.messageList.push({
+                      message: data.message,
+                      userName: data.userName + ' - ' + formatDate(new Date(), 'hh:mm:ss a', 'en-US'),
+                      mine: isMine,
+                  });
+                }
             }
+
             this.scrollToBottom();
         });
     }

@@ -12,6 +12,16 @@
       <option name="url" value="https://repository.jboss.org/nexus/content/repositories/public/" />
     </remote-repository>
     <remote-repository>
+      <option name="id" value="maven" />
+      <option name="name" value="maven" />
+      <option name="url" value="file:/$PROJECT_DIR$/https/jitpack.io" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="maven" />
+      <option name="name" value="maven" />
+      <option name="url" value="file:/$PROJECT_DIR$/https/jitpack.io" />
+    </remote-repository>
+    <remote-repository>
       <option name="id" value="BintrayJCenter" />
       <option name="name" value="BintrayJCenter" />
       <option name="url" value="https://jcenter.bintray.com/" />
@@ -30,11 +40,6 @@
       <option name="id" value="maven" />
       <option name="name" value="maven" />
       <option name="url" value="file:/$PROJECT_DIR$/../../../git%20clone%20final/log3900-203/mobile/app/https/jitpack.io" />
-    </remote-repository>
-    <remote-repository>
-      <option name="id" value="maven" />
-      <option name="name" value="maven" />
-      <option name="url" value="file:/$PROJECT_DIR$/https/jitpack.io" />
     </remote-repository>
     <remote-repository>
       <option name="id" value="maven" />

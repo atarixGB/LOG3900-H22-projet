@@ -1,6 +1,5 @@
 package com.example.mobile
 
-import android.content.ClipDescription
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -11,24 +10,19 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mobile.Retrofit.IMyService
 import com.example.mobile.Retrofit.RetrofitClient
-import com.google.gson.Gson
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_albums.*
-import org.json.JSONArray
-import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Response
-import retrofit2.http.Field
 import java.util.ArrayList
-import kotlin.properties.Delegates
 
 class Albums : AppCompatActivity(), CreateAlbumPopUp.DialogListener ,AlbumAdapter.AlbumAdapterListener {
     private lateinit var user: String
     private lateinit var rvOutputAlbums: RecyclerView
     private lateinit var albumAdapter: AlbumAdapter
-    private lateinit var albums : ArrayList<Album>
+    private lateinit var albums : ArrayList<IAlbum>
     private lateinit var displayAlbumsBtn: Button
     private lateinit var iMyService: IMyService
     private lateinit var albumName: String
@@ -79,17 +73,17 @@ class Albums : AppCompatActivity(), CreateAlbumPopUp.DialogListener ,AlbumAdapte
     }
 
     private fun getUserAlbums() {
-        var call: Call<List<Album>> = iMyService.getUserAlbums(user)
-        call.enqueue(object: retrofit2.Callback<List<Album>> {
+        var call: Call<List<IAlbum>> = iMyService.getUserAlbums(user)
+        call.enqueue(object: retrofit2.Callback<List<IAlbum>> {
 
-            override fun onResponse(call: Call<List<Album>>, response: Response<List<Album>>) {
+            override fun onResponse(call: Call<List<IAlbum>>, response: Response<List<IAlbum>>) {
                 for (album in response.body()!!) {
                     albumAdapter.addAlbum(album)
                     albumAdapter.notifyItemInserted((rvOutputAlbums.adapter as AlbumAdapter).itemCount)
                 }
             }
 
-            override fun onFailure(call: Call<List<Album>>, t: Throwable) {
+            override fun onFailure(call: Call<List<IAlbum>>, t: Throwable) {
                 Log.d("Albums", "onFailure" +t.message )
             }
 
@@ -98,11 +92,10 @@ class Albums : AppCompatActivity(), CreateAlbumPopUp.DialogListener ,AlbumAdapte
 
     }
 
-    override fun popUpListener(albumName: String,albumDescription:String,visibility: String) {
+    override fun popUpListener(albumName: String,albumDescription:String) {
         //getting album information from popup
         this.albumName = albumName
         this.albumDescription=albumDescription
-        var isPrivate:Boolean = visibility=="privé"
         this.owner=user
         //list of members
         var usersList = ArrayList<String>()
@@ -113,7 +106,11 @@ class Albums : AppCompatActivity(), CreateAlbumPopUp.DialogListener ,AlbumAdapte
         drawingIDs.add("test drawing1")
         drawingIDs.add("test drawing2")
 
-        createNewAlbum(this.albumName,this.owner,this.albumDescription,drawingIDs,usersList,isPrivate)
+        val newAlbum =IAlbum(this.albumName,this.owner,this.albumDescription,drawingIDs,usersList)
+        albumAdapter.addAlbum(newAlbum)
+        albumAdapter.notifyItemInserted((rvOutputAlbums.adapter as AlbumAdapter).itemCount)
+
+        createNewAlbum(this.albumName,this.owner,this.albumDescription,drawingIDs,usersList)
     }
 
     override fun albumAdapterListener(albumName: String) {
@@ -124,9 +121,8 @@ class Albums : AppCompatActivity(), CreateAlbumPopUp.DialogListener ,AlbumAdapte
                                ownerID:String,
                                description: String,
                                drawingIDs:ArrayList<String>,
-                               usersList:ArrayList<String>,
-                               isPrivate:Boolean) {
-        compositeDisposable.add(iMyService.createNewAlbum(albumName,ownerID,description,drawingIDs,usersList,isPrivate)
+                               usersList:ArrayList<String>) {
+        compositeDisposable.add(iMyService.createNewAlbum(albumName,ownerID,description,drawingIDs,usersList)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { result->

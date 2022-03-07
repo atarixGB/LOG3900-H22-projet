@@ -59,3 +59,18 @@ canvas {
     right: -10px;
     cursor: e-resize;
 }
+
+.selectionCP {
+    visibility: hidden;
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    color: aqua;
+    background-color: aqua;
+
+    &::ng-deep .mat-button-wrapper {
+        padding: 0px;
+        display: flex;
+        justify-content: center;
+    }
+}

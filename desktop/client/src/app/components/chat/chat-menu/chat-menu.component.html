@@ -1,26 +1,40 @@
 <div fxLayout="row" fxLayoutAlign="center stretch" fxFlex="100">
-   <app-side-menu fxLayout="column" fxLayoutAlign="start stretch" fxFlex="15%"></app-side-menu>
+  <app-side-menu fxLayout="column" fxLayoutAlign="start stretch" fxFlex="15%"></app-side-menu>
 
-   <div fxLayout="column" fxLayoutAlign="space-evenly stretch"  fxFlex="auto">
-      <div fxFlex="20"></div>
+  <div fxLayout="column" fxLayoutAlign="space-evenly stretch" fxFlex="auto">
+    <div fxFlex="20"></div>
 
-      <div fxLayout="row" fxLayoutAlign="space-evenly center" >
-         <button mat-raised-button color="primary">Créer une conversation</button>
-         <button mat-raised-button color="primary">Joindre une conversation</button>
-      </div>
+    <div fxLayout="row" fxLayoutAlign="space-evenly center">
+      <button mat-raised-button color="primary" (click)="onCreateNewChatroom()">Créer une conversation</button>
+      <button mat-raised-button color="primary"  routerLink="/public-chatrooms">Trouver une conversation</button>
+    </div>
 
-      <div fxLayout="row" fxLayoutAlign="space-evenly center" >
-         <button mat-raised-button color="primary" (click)="joinDefaultChannel()">Convo par défaut</button>
-      </div>
+    <div fxLayout="row" fxLayoutAlign="center center">
+      <h2>
+        Mes conversations
+      </h2>
+    </div>
 
-      <div fxLayout="column" fxLayoutAlign="center center" >
-         <button mat-raised-button color="primary">Convo1</button>
-         <button mat-raised-button color="primary">Convo2</button>
-         <button mat-raised-button color="primary">Convo3</button>
-         <button mat-raised-button color="primary">Convo4</button>
-         <button mat-raised-button color="primary">Convo5</button>
-      </div>
+    <div fxLayout="row" fxLayoutAlign="space-evenly center">
+      <button mat-raised-button color="accent" (click)="onOpenDefaultPublicRoom()" routerLink="/chatroom">Canal public</button>
+    </div>
 
-      <div fxFlex="20"></div>
-   </div>
+    <mat-grid-list cols="2" rowHeight="5:1">
+      <mat-grid-tile *ngFor="let room of this.chatService.publicRooms">
+
+        <div class="roomname-container" mat-raised-button color="primary">
+            {{room.roomName}}
+        </div>
+        <button mat-raised-button color="accent" (click)="this.onOpenChatroom(room)" routerLink="/chatroom">
+          Ouvrir
+        </button>
+        <button matIcon mat-raised-button color="accent" (click)="this.onDeleteChatroom(room)">
+          <mat-icon>delete</mat-icon>
+        </button>
+
+      </mat-grid-tile>
+    </mat-grid-list>
+
+    <div fxFlex="20"></div>
+  </div>
 </div>

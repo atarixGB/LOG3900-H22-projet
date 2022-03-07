@@ -2,15 +2,11 @@ package com.example.mobile.Retrofit
 
 import com.example.mobile.Interface.User
 import com.example.mobile.Room
-import com.example.mobile.Album
+import com.example.mobile.IAlbum
 import io.reactivex.Observable
 
 import retrofit2.http.*
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
-import okhttp3.ResponseBody
 import retrofit2.Call
-import retrofit2.Callback
 
 interface IMyService {
     @POST("register")
@@ -71,10 +67,10 @@ interface IMyService {
     fun deleteRoom(@Field("roomName")roomName:String): Observable<String>
 
     @GET("albums")
-    fun getAllPublicAlbums():Call<List<Album>>
+    fun getAllAvailableAlbums():Call<List<IAlbum>>
 
     @GET("albums/{identifier}")
-    fun getUserAlbums(@Path("identifier") username: String):Call<List<Album>>
+    fun getUserAlbums(@Path("identifier") username: String):Call<List<IAlbum>>
 
     @POST("albums")
     @FormUrlEncoded
@@ -82,8 +78,7 @@ interface IMyService {
                        @Field("owner")ownerID:String,
                        @Field("description")description: String,
                        @Field("drawingIDs")drawingIDs:ArrayList<String>,
-                       @Field("members")usersList:ArrayList<String>,
-                       @Field("isPrivate")isPrivate:Boolean): Observable<String>
+                       @Field("members")usersList:ArrayList<String>): Observable<String>
 
 
 //    @Multipart

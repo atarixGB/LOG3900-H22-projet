@@ -47,50 +47,13 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <LinearLayout
-        android:id="@+id/radio"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/albumDescription"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="55dp"
-        android:gravity="center"
-        android:orientation="vertical">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Accessibilité"
-            android:textSize="20sp" />
-
-        <RadioGroup
-            android:id="@+id/radioGroup"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true">
-
-            <RadioButton
-                android:id="@+id/radio_public"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="true"
-                android:text="public" />
-
-            <RadioButton
-                android:id="@+id/radio_private"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="privé" />
-        </RadioGroup>
-
-
-    </LinearLayout>
-
-    <LinearLayout
         android:id="@+id/buttons"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/radio"
-        android:orientation="horizontal">
+        android:layout_below="@+id/albumDescription"
+        android:orientation="horizontal"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp">
 
         <Button
             android:id="@+id/submitBtn"

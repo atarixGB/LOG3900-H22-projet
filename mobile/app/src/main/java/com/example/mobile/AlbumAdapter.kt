@@ -6,10 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_album.view.*
-import kotlinx.android.synthetic.main.item_room.view.*
 import java.util.ArrayList
 
-class AlbumAdapter (val context : Context, var albums: ArrayList<Album>) : RecyclerView.Adapter<AlbumAdapter.RoomViewHolder>() {
+class AlbumAdapter (val context : Context, var albums: ArrayList<IAlbum>) : RecyclerView.Adapter<AlbumAdapter.RoomViewHolder>() {
 
     private var listener: AlbumAdapterListener = context as AlbumAdapterListener
 
@@ -35,7 +34,7 @@ class AlbumAdapter (val context : Context, var albums: ArrayList<Album>) : Recyc
         }
     }
 
-    fun addAlbum (album: Album) {
+    fun addAlbum (album: IAlbum) {
         albums.add(album)
     }
 

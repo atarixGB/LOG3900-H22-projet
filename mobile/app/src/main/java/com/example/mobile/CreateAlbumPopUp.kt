@@ -12,7 +12,6 @@ import kotlinx.android.synthetic.main.fragment_create_album_pop_up.view.*
 
 
 class CreateAlbumPopUp : DialogFragment() {
-    private lateinit var radioGroup: RadioGroup
     private lateinit var albumName:EditText
     private lateinit var albumDescription: EditText
     private lateinit var submitButton: Button
@@ -26,7 +25,6 @@ class CreateAlbumPopUp : DialogFragment() {
     ): View? {
 
         var rootView: View= inflater.inflate(R.layout.fragment_create_album_pop_up, container, false)
-        radioGroup=rootView.findViewById(R.id.radioGroup)
         albumName=rootView.findViewById(R.id.newAlbumName)
         albumDescription=rootView.findViewById(R.id.albumDescription)
         submitButton= rootView.findViewById(R.id.submitBtn)
@@ -37,16 +35,10 @@ class CreateAlbumPopUp : DialogFragment() {
         }
 
         submitButton.setOnClickListener(){
-            val selectedID=radioGroup.checkedRadioButtonId
-            val radio= rootView.findViewById<RadioButton>(selectedID)
-
-            var result=radio.text.toString()
             var name= albumName.text.toString()
             var description = albumDescription.text.toString()
 
-            listener.popUpListener(name,description,result)
-
-            Toast.makeText(context, "le nom de votre album est $name choix d'accès est $result", Toast.LENGTH_LONG)
+            listener.popUpListener(name,description)
 
             dismiss()
         }
@@ -67,7 +59,7 @@ class CreateAlbumPopUp : DialogFragment() {
 
 
     public interface DialogListener {
-        fun popUpListener(albumName: String,albumDescription:String,visibility: String)
+        fun popUpListener(albumName: String,albumDescription:String)
     }
 
 }
