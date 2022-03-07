@@ -4,11 +4,12 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const crypto = require("crypto");
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
+
 //constants
 const DATABASE_URL =
   "mongodb+srv://equipe203:Log3900-H22@polygramcluster.arebt.mongodb.net/PolyGramDB?retryWrites=true&w=majority";
-const SERVER_PORT = 3000;
+const SERVER_PORT = 3001;
 
 //express service
 var app = express();
@@ -63,14 +64,15 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
 
       var plaint_password = post_data.password;
       var hash_data = salHashPassword(plaint_password);
-
       var password = hash_data.passwordHash;
       var salt = hash_data.salt;
-
       var identifier = post_data.identifier;
       var avatar = post_data.avatar;
       var email = post_data.email;
       var description = post_data.description;
+
+
+      
 
       var insertJson = {
         identifier: identifier,
@@ -86,12 +88,12 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
         .find({ identifier: identifier })
         .count(function (err, number) {
           if (number != 0) {
-            response.json(false);
+            response.json(406);
             console.log("identifier already exists");
           } else {
             //insert data
             DB.collection("users").insertOne(insertJson, function (error, res) {
-              response.json(true);
+              response.json(201);
               console.log("Registration success");
             });
           }
@@ -110,12 +112,10 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
         .find({ identifier: identifier })
         .count(function (err, number) {
           if (number == 0) {
-            response.json(false);
+            response.json(404);
             console.log("identifier does not exists");
           } else {
-            //insert data
-            DB.collection("users").findOne(
-              { identifier: identifier },
+            DB.collection("users").findOne({ identifier: identifier },
               function (error, user) {
                 var salt = user.salt; //get salt from user
                 var hashed_password = checkHashPassword(
@@ -124,14 +124,163 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
                 ).passwordHash; //hash password with salt
                 var encrypted_password = user.password;
                 if (hashed_password == encrypted_password) {
-                  response.json(true);
+                  response.json(200);
                   console.log("login success");
                 } else {
-                  response.json(false);
+                  response.json(403);
                   console.log("wrong password");
                 }
               }
             );
+            }
+          });
+        }
+      );
+        app.post("/createRoom", (request, response, next) => {
+          var post_data = request.body;
+    
+          var identifier = post_data.identifier;
+          var roomName = post_data.roomName;
+          var usersList = post_data.usersList;
+
+          console.log(usersList);
+          
+          var insertJson = {
+            identifier: identifier,
+            roomName: roomName,
+            usersList: usersList
+          };
+  
+    
+          //check if room exists
+          DB.collection("rooms")
+            .find({ roomName: roomName })
+            .count(function (err, number) {
+              if (number != 0) {
+                response.json(406);
+                console.log("room already exists");
+              } else {
+                //insert data
+                DB.collection("rooms").insertOne(insertJson, function (error, res) {
+                  response.json(201);
+                  console.log("Creation success");
+                });
+              }
+            });
+        });
+
+        app.get("/getAllRooms", (request, response, next) => {
+          var post_data = request.body;
+
+          DB.collection("rooms")
+            .find({}).limit(50).toArray(function (err, result) {
+              if (err) {
+                console.log("error getting");
+                response.status(400).send("Error fetching rooms");
+              } else {
+                response.json(result)
+                console.log("add succes");
+              }
+            });
+        });
+
+        app.post("/joinRoom", (request, response, next) => {
+          var post_data = request.body;
+    
+          var user = post_data.user;
+          var roomName = post_data.roomName;
+
+          DB.collection("rooms")
+          .find({ roomName: roomName })
+          .count(function (err, number) {
+            if (number == 0) {
+              response.json(404);
+              console.log("room does not exists");
+            } else {
+              DB.collection("rooms").findOneAndUpdate({ roomName: roomName }, {"$push": {usersList: user}},
+                function (error, result) {
+                    response.json(201);
+                    console.log("room updated");
+                }
+              );
+              }
+            });
+        });
+
+        app.post("/quitRoom", (request, response, next) => {
+          var post_data = request.body;
+    
+          var user = post_data.user;
+          var roomName = post_data.roomName;
+
+          DB.collection("rooms")
+          .find({ roomName: roomName })
+          .count(function (err, number) {
+            if (number == 0) {
+              response.json(404);
+              console.log("room does not exists");
+            } else {
+              DB.collection("rooms").findOneAndUpdate({ roomName: roomName }, {"$pull": {usersList: user}},
+                function (error, result) {
+                    response.json(201);
+                    console.log("room updated");
+                }
+              );
+              }
+            });
+        });
+
+    //Getting a user's data 
+  app.get("/users", (request, response, next) => {
+    
+    var db = client.db("PolyGramDB");
+    db.collection("users")
+      .find({}).limit(50).toArray(function (err, result) {
+        if (err) {
+          response.status(400).send("Error fetching rooms");
+        } else {
+          response.json(result)
+          console.log("add succes");
+        }
+      })
+    });
+          
+            
+    app.post("/deleteRoom", (request, response, next) => {
+      var post_data = request.body;
+
+      var roomName = post_data.roomName;
+
+      DB.collection("rooms")
+      .find({ roomName: roomName })
+      .count(function (err, number) {
+        if (number == 0) {
+          response.json(404);
+          console.log("room does not exists");
+        } else {
+          DB.collection("rooms").deleteOne({ roomName: roomName },
+            function (error, result) {
+                response.json(201);
+                console.log("room deleted");
+            }
+          );
+          }
+        });
+    });
+
+    app.get("/getRoomParameters", (request, response, next) => {
+
+      var post_data = request.query;
+      var roomName = post_data.roomName;  
+
+      DB.collection("rooms")
+        .findOne({ roomName: roomName }, function (err, result) {
+          if (err) {
+            console.log("error getting");
+            response.status(400).send("Error fetching rooms");
+          } else {
+            response.json(result)
+            console.log("Getting One Room");
           }
         });
     });
@@ -179,10 +328,9 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
     //Getting a user's data 
     app.get("/profile/:username", (request, response, next) => {
       var identifier = request.params.username;
-      var db = client.db("PolyGramDB");
 
       //check if identifier exists
-      db.collection("users").findOne(
+      DB.collection("users").findOne(
         { identifier: identifier },
         function (error, user) {
           response.json(user);
@@ -199,10 +347,8 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
       var avatar = post_data.newAvatar;
       var description = post_data.newDescription;
 
-      var db = client.db("PolyGramDB");
-
       //check if a user already has the new name
-      db.collection("users")
+      DB.collection("users")
         .find({ identifier: newUsername })
         .count(function (err, number) {
           if (number != 0 && oldUsername != newUsername) {
@@ -210,18 +356,118 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
             console.log("identifier already exists");
           } else {
             // Update user data
-            db.collection("users").updateOne({ identifier: oldUsername }, {
+            DB.collection("users").updateOne({ identifier: oldUsername }, {
               $set : {
                 "identifier" : newUsername,
                 "avatar" : avatar,
                 "description" : description
               },
             }).then(result => {
-              response.json(result.modifiedCount > 0);
+              response.json(200);
             });
           }
         });
     });
+
+    app.get("/profile/:username", (request, response, next) => {
+    
+      var identifier = request.params.username;
+      console.log(identifier.toString());
+      var db = client.db("PolyGramDB");
+
+      //check if identifier exists
+      db.collection("users").findOne(
+        { identifier: identifier },
+        function (error, result) {
+          if (err) {
+            console.log("error getting");
+            response.status(400).send("Error fetching rooms");
+          } else {
+          response.json(result);
+          console.log("Got user data for profile load: ", identifier);
+        }
+      }
+      );
+    });
+
+     //Updating a users data
+     app.post("/profileUpdate", (request, response, next) => { 
+      var post_data = request.body;
+      var oldUsername = post_data.oldUsername;
+      var newUsername = post_data.newUsername;
+      var avatar = post_data.newAvatar;
+      var newEmail = post_data.newEmail;
+      var description = post_data.newDescription;
+
+      var db = client.db("PolyGramDB");
+
+      //check if a user already has the new name
+      db.collection("users")
+        .find({ identifier: newUsername })
+        .count(function (err, number) {
+          if (number != 0 && oldUsername != newUsername) {
+            response.json(403);
+            console.log("identifier already exists");
+          } else {
+            // Update user data
+            db.collection("users").updateOne({ identifier: oldUsername }, {
+              $set : {
+                "identifier" : newUsername,
+                "avatar" : avatar,
+                "description" : description,
+                "email": newEmail,
+              },
+            }).then(result => {
+              response.json(200);
+              console.log(result)
+            });
+          }
+        });
+    });
+        app.post("/deleteRoom", (request, response, next) => {
+          var post_data = request.body;
+    
+          var roomName = post_data.roomName;
+          
+    
+          var db = client.db("PolyGramDB");
+
+          db.collection("rooms")
+          .find({ roomName: roomName })
+          .count(function (err, number) {
+            if (number == 0) {
+              response.json(404);
+              console.log("room does not exists");
+            } else {
+              db.collection("rooms").deleteOne({ roomName: roomName },
+                function (error, result) {
+                    response.json(201);
+                    console.log("room deleted");
+                }
+              );
+              }
+            });
+        });
+
+        app.get("/getRoomParameters", (request, response, next) => {
+
+          var post_data = request.query;
+          var roomName = post_data.roomName;  
+    
+          var db = client.db("PolyGramDB");
+
+          db.collection("rooms")
+            .findOne({ roomName: roomName }, function (err, result) {
+              if (err) {
+                console.log("error getting");
+                response.status(400).send("Error fetching rooms");
+              } else {
+                response.json(result)
+                console.log("Getting One Room");
+              }
+            });
+        });
+
 
     //start web server
     app.listen(SERVER_PORT, () => {

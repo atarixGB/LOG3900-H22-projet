@@ -1,8 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-
-const SIGN_UP_URL = 'http://localhost:3000/register';
+import { SIGN_UP_URL } from '@app/constants/api-urls';
 
 @Injectable({
     providedIn: 'root',
@@ -28,12 +27,12 @@ export class SignUpService {
 
         this.httpClient.post(SIGN_UP_URL, userInfos).subscribe(
             (result) => {
-                console.log('Signup success:', result);
-                if (result) {
+              if (result == 201) {
+                    console.log(result, 'Signup success');
                     this.router.navigate(['../home'], { relativeTo: this.route });
-                } else {
+                } else if (result == 406) {
                     // TODO: Add UI feedback
-                    console.log("Signup failed because username already exists, To Do -> UI error feedback in signup service");
+                    console.log(result, "Username already exists.");
                 }
             },
             (error) => {

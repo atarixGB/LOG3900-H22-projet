@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.mobile">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
     <application
@@ -13,13 +15,36 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Mobile"
         android:usesCleartextTraffic="true">
-        <activity android:name="com.example.mobile.Dashboard"></activity>
-        <activity android:name="com.example.mobile.Drawing" />
         <activity
-            android:name="com.example.mobile.ChatPage"
+            android:name=".usersListPopUp"
+            android:exported="false" />
+        <activity android:name=".Dashboard" />
+        <activity
+            android:name=".Profile_modification"
+            android:exported="false" />
+        <activity android:name=".Dashboard" />
+        <activity
+            android:name=".Profile"
+            android:exported="false" />
+        <activity
+            android:name=".Registration"
+            android:exported="false" />
+        <activity
+            android:name=".joinRoom"
+            android:exported="false" />
+        <activity
+            android:name=".CreateRoomPopUp"
+            android:exported="false"
+            tools:ignore="Instantiatable" />
+        <activity
+            android:name=".ChatRooms"
+            android:exported="false" />
+        <activity android:name=".DrawingActivity" />
+        <activity
+            android:name=".ChatPage"
             android:exported="true" />
         <activity
-            android:name="com.example.mobile.MainActivity"
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

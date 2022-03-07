@@ -2,8 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProfileService } from './profile.service';
-
-const PROFILE_UPDATE_URL = 'http://localhost:3000/profileUpdate';
+import { PROFILE_UPDATE_URL } from '@app/constants/api-urls';
 
 @Injectable({
     providedIn: 'root',
@@ -41,7 +40,7 @@ export class ProfileSettingsService {
     }
 
     private sendChangesToDB(): void {
-        // POST request to update new profile info 
+        // POST request to update new profile info
         const newInfos = {
             oldUsername: this.profileService.username,
             newUsername: this.newUsername,
@@ -64,5 +63,5 @@ export class ProfileSettingsService {
             },
         );
     }
-    
+
 }

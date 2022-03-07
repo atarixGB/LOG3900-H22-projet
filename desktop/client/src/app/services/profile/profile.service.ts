@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-
-const PROFILE_URL = 'http://localhost:3000/profile';
+import { PROFILE_URL } from '@app/constants/api-urls'
 
 @Injectable({
     providedIn: 'root',
