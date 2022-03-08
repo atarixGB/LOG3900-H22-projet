@@ -291,16 +291,24 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
       DB.collection("albums").insertOne(request.body, (err, res) => {
         request.body._id = res.insertedId.toHexString();
         console.log(`Album "${request.body.name}" created successfully with ID: ${request.body._id}!`);
-        response.json(request.body);
+        response.json(201);
       });
     })
 
-    //get all public album
+    //get all available albums
     app.get("/albums", (request, response, next) => {
-      DB.collection("albums").find().toArray((err, res) => {
-        response.json(res);
-        ;
-      })
+      var post_data = request.body;
+
+      DB.collection("albums")
+        .find({}).limit(50).toArray(function (err, result) {
+          if (err) {
+            console.log("error getting");
+            response.status(400).send("Error fetching albums");
+          } else {
+            response.json(result)
+            console.log(result, "fetching succes");
+          }
+        });
     });
 
     //get user albums
@@ -311,7 +319,17 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
       })
     });
 
-    //update user lists if a member leaves the album
+    //add drawing to an album
+    app.put("/albums/addDrawing/:albumName", (request, response, next) => {
+      let albumName = request.params.albumName;
+      console.log(albumName);
+      let drawingtoAdd = request.body.drawing;
+      DB.collection("albums").findOneAndUpdate({ name : albumName }, { $push: { drawingIDs: drawingtoAdd } }, { returnDocument: 'after' }, (err, res) => {
+        response.json(201)
+        console.log(drawingtoAdd, "is added to ", albumName);
+      })});
+
+    //update owner when leaving album
     app.put("/albums/:id", (request, response, next) => {
       let albumId = request.params.id;
       let memberToRemove = request.body.memberToRemove;
@@ -349,6 +367,7 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
       var description = post_data.newDescription;
       var newEmail = post_data.newEmail;
 
+
       //check if a user already has the new name
       DB.collection("users")
         .find({ identifier: newUsername })
@@ -363,7 +382,7 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
                 "identifier" : newUsername,
                 "avatar" : avatar,
                 "description" : description,
-                "email":newEmail
+                "email": newEmail
               },
             }).then(result => {
               response.json(200);
@@ -384,7 +403,7 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
         function (error, result) {
           if (err) {
             console.log("error getting");
-            response.status(400).send("Error fetching rooms");
+            response.status(400).send("Error fetching users");
           } else {
           response.json(result);
           console.log("Got user data for profile load: ", identifier);
