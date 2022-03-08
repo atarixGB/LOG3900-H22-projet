@@ -32,6 +32,15 @@
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+    <TextView
+        android:id="@+id/drawingNameEmptyError"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Veuillez saisir un nom"
+        android:layout_centerHorizontal="true"
+        android:textSize="15sp"
+        android:textColor="@color/red"
+        android:layout_below="@+id/drawingName"/>
 
     <TextView
         android:id="@+id/accessibilityTitle"
@@ -41,7 +50,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="15dp"
         android:textSize="26sp"
-        android:layout_below="@+id/drawingName"/>
+        android:layout_below="@+id/drawingNameEmptyError"/>
 
     <RadioGroup
         android:id="@+id/accessibilityRadioGroup"
@@ -63,7 +72,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="privé"
-            android:textSize="20dp"/>
+            android:textSize="20sp"/>
 
     </RadioGroup>
 
@@ -76,12 +85,22 @@
         android:layout_centerHorizontal="true"
         android:background="@drawable/message_input_box" />
 
+    <TextView
+        android:id="@+id/albumEmptyError"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Veuillez saisir un album privé"
+        android:layout_centerHorizontal="true"
+        android:textSize="15sp"
+        android:textColor="@color/red"
+        android:layout_below="@+id/rvOutputAlbums"/>
+
 
     <LinearLayout
         android:id="@+id/buttons"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/rvOutputAlbums"
+        android:layout_below="@+id/albumEmptyError"
         android:orientation="horizontal"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="15dp">

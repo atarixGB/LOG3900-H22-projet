@@ -1,6 +1,7 @@
 package com.example.mobile
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,6 +11,7 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mobile.Retrofit.IMyService
@@ -26,17 +28,21 @@ import retrofit2.Call
 import retrofit2.Response
 import java.util.ArrayList
 
-class CreateDrawingPopUp(val user: String) : DialogFragment(), AlbumAdapter.AlbumAdapterListener {
+class CreateDrawingPopUp(val user: String) : DialogFragment() {
 
-    private lateinit var drawingName: String
+    private lateinit var drawingName: EditText
+    private lateinit var drawingNameEmptyError: TextView
+    private lateinit var albumEmptyError: TextView
     private lateinit var radioGroup: RadioGroup
+    private lateinit var publicRB: RadioButton
     private lateinit var rvOutputAlbums: RecyclerView
     private lateinit var albumAdapter: AlbumAdapter
     private lateinit var albums : ArrayList<IAlbum>
     private lateinit var iMyService: IMyService
-    private lateinit var albumName: String
+    private var albumName: String = ""
     internal var compositeDisposable = CompositeDisposable()
     private lateinit var listener: DialogListener
+    private val sharedViewModelCreateDrawingPopUp: SharedViewModelCreateDrawingPopUp by activityViewModels()
 
 
     override fun onCreateView(
@@ -49,10 +55,24 @@ class CreateDrawingPopUp(val user: String) : DialogFragment(), AlbumAdapter.Albu
         val retrofit = RetrofitClient.getInstance()
         iMyService = retrofit.create(IMyService::class.java)
 
-        drawingName = rootView.findViewById<TextView>(R.id.drawingName).text.toString()
+        dialog?.setCanceledOnTouchOutside(false)
+
+        sharedViewModelCreateDrawingPopUp.albumName.observe(viewLifecycleOwner) {
+            albumName = it
+            Toast.makeText(context, "$albumName choisi" , Toast.LENGTH_LONG).show()
+        }
+
+        drawingName = rootView.drawingName
         radioGroup = rootView.accessibilityRadioGroup
+        publicRB = rootView.publicRB
+        drawingNameEmptyError = rootView.drawingNameEmptyError
+        albumEmptyError = rootView.albumEmptyError
         rvOutputAlbums = rootView.rvOutputAlbums
+
         rvOutputAlbums.isVisible = false
+        drawingNameEmptyError.isVisible = false
+        albumEmptyError.isVisible = false
+        publicRB.isChecked = true
 
         albums = ArrayList()
 
@@ -60,8 +80,10 @@ class CreateDrawingPopUp(val user: String) : DialogFragment(), AlbumAdapter.Albu
 
         //Recycler View of rooms
         rvOutputAlbums.adapter = albumAdapter
-        rvOutputAlbums.layoutManager = GridLayoutManager(context, 2)
+        rvOutputAlbums.layoutManager = GridLayoutManager(context, 3)
+
         getUserAlbums()
+
 
         radioGroup.setOnCheckedChangeListener { radioGroup, i ->
             var rb: RadioButton = rootView.findViewById<RadioButton>(i)
@@ -71,23 +93,45 @@ class CreateDrawingPopUp(val user: String) : DialogFragment(), AlbumAdapter.Albu
 
 
         rootView.cancelBtn.setOnClickListener {
-            dismiss()
+            val intent = Intent(activity, Dashboard::class.java)
+            intent.putExtra("userName",user)
+            startActivity(intent)
         }
 
         rootView.submitBtn.setOnClickListener {
             var rb: RadioButton = rootView.findViewById<RadioButton>(radioGroup.checkedRadioButtonId)
-            if (rb.text.toString().equals("privé")) {
-                //add drawing to private album
-                addDrawingToAlbum(albumName, drawingName)
-                Toast.makeText(context, "ajout du dessin a $albumName" , Toast.LENGTH_LONG).show()
-            } else {
-                //add drawing to public album
-                addDrawingToAlbum("Album public", drawingName)
-                Toast.makeText(context, "ajout du dessin a l'album public" , Toast.LENGTH_LONG).show()
+            if (drawingName.text.toString().isNotEmpty()) {
+                drawingNameEmptyError.isVisible = false
+                albumEmptyError.isVisible = false
+                if (rb.text.toString().equals("privé")) {
+                    //add drawing to private album
+                        if (albumName.isNotEmpty()) {
+                            addDrawingToAlbum(albumName, drawingName.text.toString())
+                            Toast.makeText(
+                                context,
+                                "ajout du dessin a $albumName",
+                                Toast.LENGTH_LONG
+                            )
+                                .show()
+                            listener.popUpListener(albumName, drawingName.text.toString())
+                            dismiss()
+                        } else {
+                            // s'il n'a pas choisi un album sors une erreur
+                            albumEmptyError.isVisible = true
 
+                        }
+                } else {
+                    //add drawing to public album
+                    addDrawingToAlbum("Album public", drawingName.text.toString())
+                    Toast.makeText(context, "ajout du dessin a l'album public", Toast.LENGTH_LONG)
+                        .show()
+                    listener.popUpListener(albumName, drawingName.text.toString())
+                    dismiss()
+                }
+            } else {
+                // s'il n'a pas selectionner de drawing name, rend visible le champ d'erreur
+                drawingNameEmptyError.isVisible = true
             }
-            listener.popUpListener(albumName, drawingName)
-            dismiss()
         }
 
         return rootView
@@ -123,10 +167,6 @@ class CreateDrawingPopUp(val user: String) : DialogFragment(), AlbumAdapter.Albu
             }
 
         })
-    }
-
-    override fun albumAdapterListener(albumName: String) {
-        this.albumName = albumName
     }
 
     override fun onAttach(context: Context) {
