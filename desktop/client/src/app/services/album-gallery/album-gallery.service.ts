@@ -11,10 +11,16 @@ export class AlbumGalleryService {
   publicAlbums: IAlbum[];
   myAlbums: IAlbum[];
   currentAlbum: IAlbum;
+  currentDrawing: string; // TODO: change with an interface
 
   constructor(private httpClient: HttpClient, private loginService: LoginService) {
     this.publicAlbums = [];
     this.myAlbums = [];
+  }
+
+  createDrawing(name: string, isPrivate: boolean, album: string): void {
+    console.log(`Create new drawing "${name}" in album "${album}"`);
+    // TODO: send new drawing in the specify album here request here
   }
 
   createAlbum(name: string, description: string): void {

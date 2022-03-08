@@ -29,8 +29,4 @@ export class CreateAlbumDialogComponent {
     return true;
   }
 
-  changeAccess(value: number): void {
-    this.isPrivate = value == 1;
-  }
-
 }
