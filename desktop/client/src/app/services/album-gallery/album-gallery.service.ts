@@ -17,14 +17,13 @@ export class AlbumGalleryService {
     this.myAlbums = [];
   }
 
-  createAlbum(name: string, description: string, isPrivate: boolean): void {
+  createAlbum(name: string, description: string): void {
     const newAlbum: IAlbum = {
       name: name,
       owner: this.loginService.username,
       description: description,
       drawingIds: [],
       members: [this.loginService.username],
-      isPrivate: isPrivate,
     }
 
     this.httpClient.post(ALBUM_URL, newAlbum).subscribe(

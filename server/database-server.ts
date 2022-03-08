@@ -297,7 +297,7 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
 
     //get all public album
     app.get("/albums", (request, response, next) => {
-      DB.collection("albums").find( {isPrivate : false} ).toArray((err, res) => {
+      DB.collection("albums").find().toArray((err, res) => {
         response.json(res);
         ;
       })
@@ -311,7 +311,7 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
       })
     });
 
-    //update owner when leaving album
+    //update user lists if a member leaves the album
     app.put("/albums/:id", (request, response, next) => {
       let albumId = request.params.id;
       let memberToRemove = request.body.memberToRemove;
