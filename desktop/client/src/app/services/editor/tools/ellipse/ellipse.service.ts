@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { StrokeEllipse } from '@app/classes/strokes/stroke-ellipse';
+import { CollaborationService } from '@app/services/collaboration/collaboration.service';
 import { ColorManagerService } from '@app/services/editor/color-manager/color-manager.service';
 import { DrawingService } from '@app/services/editor/drawing/drawing.service';
 import { RectangleService } from '@app/services/editor/tools/rectangle/rectangle.service';
@@ -14,6 +16,7 @@ export class EllipseService extends ShapeService {
         protected drawingService: DrawingService,
         private rectangle: RectangleService,
         colorManager: ColorManagerService,
+        private collaborationService: CollaborationService,
     ) {
         super(drawingService, colorManager);
     }
@@ -54,6 +57,8 @@ export class EllipseService extends ShapeService {
             this.drawEllipse(this.drawingService.baseCtx);
             this.width = this.size.x / 2;
             this.height = this.size.y / 2;
+
+            this.broadcastEllipse();
         } else {
             this.drawCircle(this.drawingService.baseCtx);
             this.width = this.radius;
@@ -103,5 +108,17 @@ export class EllipseService extends ShapeService {
         } else {
             this.origin = { x: this.pathData[0].x + this.size.x / 2, y: this.pathData[0].y + this.size.y / 2 };
         }
+    }
+
+    private broadcastEllipse(): void {
+        const ellipseStroke = new StrokeEllipse(
+            this.colorPrime,
+            this.lineWidth,
+            this.colorSecond,
+            this.origin,
+            { x: this.size.x / 2, y: this.size.y / 2 },
+            this.selectType,
+        );
+        this.collaborationService.broadcastStroke(ellipseStroke);
     }
 }

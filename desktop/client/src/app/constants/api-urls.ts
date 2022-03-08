@@ -1,4 +1,5 @@
 export const CHAT_URL = `http://localhost:3000/`
+export const COLLAB_URL = `http://localhost:3001/`
 
 export const ALBUM_URL = "http://localhost:3001/albums";
 export const PROFILE_UPDATE_URL = 'http://localhost:3001/profileUpdate';

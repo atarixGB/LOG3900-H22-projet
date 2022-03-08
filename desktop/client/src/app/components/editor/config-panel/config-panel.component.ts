@@ -10,13 +10,10 @@ import { ToolManagerService } from '@app/services/editor/tools/tool-manager.serv
 export class ConfigPanelComponent {
     ToolList: typeof ToolList = ToolList;
 
-    constructor(public toolManagerService: ToolManagerService) {}
+    constructor(public toolManagerService: ToolManagerService) { }
 
     includesColorConfiguration(): boolean {
-        if (
-            this.toolManagerService.currentToolEnum !== ToolList.Eraser &&
-            this.toolManagerService.currentToolEnum !== ToolList.SelectionRectangle
-        )
+        if (this.toolManagerService.currentToolEnum !== ToolList.Eraser)
             return true;
         return false;
     }

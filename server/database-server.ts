@@ -5,6 +5,8 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const crypto = require("crypto");
 const mongoose = require("mongoose");
+const socket = require('socket.io');
+
 
 //constants
 const DATABASE_URL =
@@ -469,11 +471,24 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
         });
 
 
-    //start web server
-    app.listen(SERVER_PORT, () => {
+    // Start web server
+    const server = app.listen(SERVER_PORT, () => {
       console.log(
         `connected to MongoDB server, webserver running on port ${SERVER_PORT}`
       );
     });
+
+    // Collaboration
+    const ioCollab = socket(server);
+
+    ioCollab.on('connection', (socket) => {
+      console.log("New socket connection in collab : " + socket.id)
+
+      socket.on('broadcastStroke', (strokeData) => {
+        console.log("StrokeData : " , strokeData);
+        ioCollab.emit('receiveStroke', strokeData);
+      })
+    })
+    
   }
 });

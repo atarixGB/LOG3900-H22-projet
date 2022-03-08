@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
+import { StrokeRectangle } from '@app/classes/strokes/stroke-rectangle';
 import { Vec2 } from '@app/classes/vec2';
+import { CollaborationService } from '@app/services/collaboration/collaboration.service';
 import { ColorManagerService } from '@app/services/editor/color-manager/color-manager.service';
 import { DrawingService } from '@app/services/editor/drawing/drawing.service';
 import { ShapeService } from '@app/services/editor/tools/shape/shape.service';
@@ -12,7 +14,7 @@ export class RectangleService extends ShapeService {
     width: number;
     height: number;
 
-    constructor(protected drawingService: DrawingService, colorManager: ColorManagerService) {
+    constructor(protected drawingService: DrawingService, colorManager: ColorManagerService, private collaborationService: CollaborationService) {
         super(drawingService, colorManager);
     }
 
@@ -31,6 +33,8 @@ export class RectangleService extends ShapeService {
             this.drawRectangle(this.drawingService.baseCtx, false);
             this.width = this.pathData[this.pathData.length - 1].x - this.pathData[0].x;
             this.height = this.pathData[this.pathData.length - 1].y - this.pathData[0].y;
+
+            this.broadcastRectangle();
         } else {
             this.drawSquare(this.drawingService.baseCtx, false);
             this.isShiftShape = false;
@@ -45,7 +49,6 @@ export class RectangleService extends ShapeService {
 
     onMouseMove(event: MouseEvent): void {
         if (this.mouseDown) {
-
             const mousePosition = this.getPositionFromMouse(event);
             this.pathData.push(mousePosition);
             this.drawingService.clearCanvas(this.drawingService.previewCtx);
@@ -101,5 +104,18 @@ export class RectangleService extends ShapeService {
 
     setPath(path: Vec2[]): void {
         this.pathData = path;
+    }
+
+    private broadcastRectangle(): void {
+        const rectStroke = new StrokeRectangle(
+            this.colorPrime,
+            this.lineWidth,
+            this.colorSecond,
+            this.pathData[0],
+            this.width,
+            this.height,
+            this.selectType,
+        );
+        this.collaborationService.broadcastStroke(rectStroke);
     }
 }
