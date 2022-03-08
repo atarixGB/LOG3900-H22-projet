@@ -8,12 +8,12 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_album.view.*
 import java.util.ArrayList
 
-class AlbumAdapter (val context : Context, var albums: ArrayList<IAlbum>) : RecyclerView.Adapter<AlbumAdapter.RoomViewHolder>() {
+class AlbumAdapter(val context: Context?, var albums: ArrayList<IAlbum>) : RecyclerView.Adapter<AlbumAdapter.AlbumViewHolder>() {
 
     private var listener: AlbumAdapterListener = context as AlbumAdapterListener
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RoomViewHolder {
-        return RoomViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AlbumViewHolder {
+        return AlbumViewHolder(
             LayoutInflater.from(parent.context).inflate(
                 R.layout.item_album,
                 parent,
@@ -22,7 +22,7 @@ class AlbumAdapter (val context : Context, var albums: ArrayList<IAlbum>) : Recy
         )
     }
 
-    override fun onBindViewHolder(holder: RoomViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: AlbumViewHolder, position: Int) {
         val currentAlbum = albums[position]
 
         holder.itemView.apply {
@@ -46,5 +46,5 @@ class AlbumAdapter (val context : Context, var albums: ArrayList<IAlbum>) : Recy
         fun albumAdapterListener(albumName: String)
     }
 
-    class RoomViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+    class AlbumViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 }

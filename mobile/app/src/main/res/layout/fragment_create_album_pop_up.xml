@@ -56,24 +56,26 @@
         android:layout_marginTop="15dp">
 
         <Button
+            android:id="@+id/cancelBtn"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/submitBtn"
+            android:background="@color/black"
+            android:text="Annuler"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+
+        <Button
             android:id="@+id/submitBtn"
             android:layout_width="110dp"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@+id/cancelBtn"
+            android:layout_marginLeft="10dp"
             android:background="@color/black"
             android:text="Creer"
             android:textColor="@color/white"
             android:textSize="15sp" />
 
-        <Button
-            android:id="@+id/cancelBtn"
-            android:layout_width="110dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:background="@color/black"
-            android:text="Annuler"
-            android:textColor="@color/white"
-            android:textSize="15sp" />
+
     </LinearLayout>
 
 

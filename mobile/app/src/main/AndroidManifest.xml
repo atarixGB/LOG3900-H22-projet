@@ -16,6 +16,9 @@
         android:theme="@style/Theme.Mobile"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".createDrawingPopUp"
+            android:exported="false" />
+        <activity
             android:name=".DisplayPublicAlbums"
             android:exported="false" />
         <activity

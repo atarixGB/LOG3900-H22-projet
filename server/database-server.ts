@@ -319,6 +319,16 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
       })
     });
 
+    //add drawing to an album
+    app.put("/albums/addDrawing/:albumName", (request, response, next) => {
+      let albumName = request.params.albumName;
+      console.log(albumName);
+      let drawingtoAdd = request.body.drawing;
+      DB.collection("albums").findOneAndUpdate({ name : albumName }, { $push: { drawingIDs: drawingtoAdd } }, { returnDocument: 'after' }, (err, res) => {
+        response.json(201)
+        console.log(drawingtoAdd, "is added to ", albumName);
+      })});
+
     //update owner when leaving album
     app.put("/albums/:id", (request, response, next) => {
       let albumId = request.params.id;

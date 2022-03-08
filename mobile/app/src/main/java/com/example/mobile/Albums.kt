@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mobile.Retrofit.IMyService
@@ -30,6 +31,8 @@ class Albums : AppCompatActivity(), CreateAlbumPopUp.DialogListener ,AlbumAdapte
     private lateinit var owner:String
     internal var compositeDisposable = CompositeDisposable()
 
+    private val sharedViewModel: SharedViewModelToolBar by viewModels()
+
     override fun onStop() {
         compositeDisposable.clear()
         super.onStop()
@@ -47,6 +50,7 @@ class Albums : AppCompatActivity(), CreateAlbumPopUp.DialogListener ,AlbumAdapte
 
         albums = ArrayList()
         user = intent.getStringExtra("userName").toString()
+        sharedViewModel.setUser(user)
 
         albumAdapter = AlbumAdapter(this, albums)
 

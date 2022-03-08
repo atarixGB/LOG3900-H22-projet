@@ -2695,6 +2695,8 @@ id SYM
 id TOP_END
 id TOP_START
 id accelerate
+id accessibilityRadioGroup
+id accessibilityTitle
 id accessibility_action_clickable_span
 id accessibility_custom_action_0
 id accessibility_custom_action_1
@@ -2889,6 +2891,7 @@ id dragStart
 id dragUp
 id draw
 id drawButton
+id drawingName
 id drawingView
 id drawing_gallery_btn
 id dropdown_menu
@@ -3096,12 +3099,15 @@ id percent
 id pin
 id popupTitle
 id popupTitleAlbum
+id popupTitleDrawing
 id position
 id postLayout
 id principal_room_btn
+id privateRB
 id profile
 id progress_circular
 id progress_horizontal
+id publicRB
 id radio
 id ratio
 id rectangles
@@ -3372,6 +3378,7 @@ layout activity_add_avatar_pop_up
 layout activity_albums
 layout activity_chat_page
 layout activity_chat_rooms
+layout activity_create_drawing_pop_up
 layout activity_create_room_pop_up
 layout activity_dashboard
 layout activity_display_public_albums

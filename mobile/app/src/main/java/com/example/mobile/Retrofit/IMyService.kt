@@ -80,6 +80,11 @@ interface IMyService {
                        @Field("drawingIDs")drawingIDs:ArrayList<String>,
                        @Field("members")usersList:ArrayList<String>): Observable<String>
 
+    @PUT("albums/addDrawing/{albumName}")
+    @FormUrlEncoded
+    fun addDrawingToAlbum(@Path("albumName") albumName: String,
+                        @Field("drawing") drawing: String): Observable<String>
+
 
 //    @Multipart
 //    @POST("upload")

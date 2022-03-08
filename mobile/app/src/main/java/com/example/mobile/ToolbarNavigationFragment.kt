@@ -61,6 +61,7 @@ class ToolbarNavigationFragment: Fragment() {
             draw.setBackgroundResource(R.color.greenOnClick)
             Toast.makeText(context, "draw", Toast.LENGTH_SHORT).show()
             val intent = Intent(activity, DrawingActivity::class.java)
+            intent.putExtra("userName",user)
             startActivity(intent)
         }
 
