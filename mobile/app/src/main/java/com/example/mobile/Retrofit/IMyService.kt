@@ -3,6 +3,7 @@ package com.example.mobile.Retrofit
 import com.example.mobile.Interface.User
 import com.example.mobile.Room
 import com.example.mobile.IAlbum
+import com.example.mobile.IDrawing
 import io.reactivex.Observable
 
 import retrofit2.http.*
@@ -72,18 +73,27 @@ interface IMyService {
     @GET("albums/{identifier}")
     fun getUserAlbums(@Path("identifier") username: String):Call<List<IAlbum>>
 
+    @GET("albums/Drawings/{albumName}")
+    fun getAllAlbumDrawings(@Path("albumName") albumName: String):Call<List<String>>
+
     @POST("albums")
     @FormUrlEncoded
     fun createNewAlbum(@Field("name")albumName:String,
                        @Field("owner")ownerID:String,
                        @Field("description")description: String,
                        @Field("drawingIDs")drawingIDs:ArrayList<String>,
-                       @Field("members")usersList:ArrayList<String>): Observable<String>
+                       @Field("members")usersList:ArrayList<String>,
+                       @Field("membershipRequests")membershipRequests:ArrayList<String>): Observable<String>
 
     @PUT("albums/addDrawing/{albumName}")
     @FormUrlEncoded
     fun addDrawingToAlbum(@Path("albumName") albumName: String,
                         @Field("drawing") drawing: String): Observable<String>
+
+    @PUT("albums/sendRequest/{albumName}")
+    @FormUrlEncoded
+    fun sendRequestToJoinAlbum(@Path("albumName") albumName: String,
+                          @Field("identifier") userName: String): Observable<String>
 
 
 //    @Multipart

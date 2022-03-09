@@ -63,8 +63,10 @@ class DisplayPublicAlbums : AppCompatActivity(), AlbumAdapter.AlbumAdapterListen
 
             override fun onResponse(call: Call<List<IAlbum>>, response: Response<List<IAlbum>>) {
                 for (album in response.body()!!) {
-                    albumAdapter.addAlbum(album)
-                    albumAdapter.notifyItemInserted((rvOutputAlbums.adapter as AlbumAdapter).itemCount)
+                    if (!album.members.contains(user)) {
+                        albumAdapter.addAlbum(album)
+                        albumAdapter.notifyItemInserted((rvOutputAlbums.adapter as AlbumAdapter).itemCount)
+                    }
                 }
             }
 
@@ -77,7 +79,14 @@ class DisplayPublicAlbums : AppCompatActivity(), AlbumAdapter.AlbumAdapterListen
 
     }
 
-    override fun albumAdapterListener(albumName: String) {
+    override fun albumAdapterListener(
+        albumName: String,
+        albumsMembers: ArrayList<String>,
+        albumOwner: String
+    ) {
         this.albumName = albumName
+        //Open Popup Window
+        var dialog = JoinAlbumPopUp(albumName, user)
+        dialog.show(supportFragmentManager, "customDialog")
     }
 }

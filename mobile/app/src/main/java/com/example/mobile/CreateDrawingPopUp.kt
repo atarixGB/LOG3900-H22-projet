@@ -82,7 +82,7 @@ class CreateDrawingPopUp(val user: String) : DialogFragment() {
         rvOutputAlbums.adapter = albumAdapter
         rvOutputAlbums.layoutManager = GridLayoutManager(context, 3)
 
-        getUserAlbums()
+        getAllAvailableAlbums()
 
 
         radioGroup.setOnCheckedChangeListener { radioGroup, i ->
@@ -151,14 +151,16 @@ class CreateDrawingPopUp(val user: String) : DialogFragment() {
             })
     }
 
-    private fun getUserAlbums() {
-        var call: Call<List<IAlbum>> = iMyService.getUserAlbums(user)
+    private fun getAllAvailableAlbums() {
+        var call: Call<List<IAlbum>> = iMyService.getAllAvailableAlbums()
         call.enqueue(object: retrofit2.Callback<List<IAlbum>> {
 
             override fun onResponse(call: Call<List<IAlbum>>, response: Response<List<IAlbum>>) {
                 for (album in response.body()!!) {
-                    albumAdapter.addAlbum(album)
-                    albumAdapter.notifyItemInserted((rvOutputAlbums.adapter as AlbumAdapter).itemCount)
+                    if (album.members.contains(user)) {
+                        albumAdapter.addAlbum(album)
+                        albumAdapter.notifyItemInserted((rvOutputAlbums.adapter as AlbumAdapter).itemCount)
+                    }
                 }
             }
 

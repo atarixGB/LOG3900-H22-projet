@@ -179,7 +179,7 @@ class ChatPage : AppCompatActivity() {
                 when (menuItem.itemId) {
                     R.id.menu_members -> {
                         //ouvrir le popup window des utilisateurs
-                        var dialog = UsersListPopUp(room)
+                        var dialog = UsersListPopUp(room.roomName, room.usersList)
                         dialog.show(supportFragmentManager, "customDialog")
                         true
                     }

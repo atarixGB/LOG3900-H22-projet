@@ -66,7 +66,7 @@ class Albums : AppCompatActivity(), CreateAlbumPopUp.DialogListener ,AlbumAdapte
             dialog.show(supportFragmentManager,"customDialog")
         }
 
-        getUserAlbums()
+        getAllAvailableAlbums()
 
         displayAlbumsBtn.setOnClickListener {
             val intent = Intent(this, DisplayPublicAlbums::class.java)
@@ -76,24 +76,23 @@ class Albums : AppCompatActivity(), CreateAlbumPopUp.DialogListener ,AlbumAdapte
 
     }
 
-    private fun getUserAlbums() {
-        var call: Call<List<IAlbum>> = iMyService.getUserAlbums(user)
+    private fun getAllAvailableAlbums() {
+        var call: Call<List<IAlbum>> = iMyService.getAllAvailableAlbums()
         call.enqueue(object: retrofit2.Callback<List<IAlbum>> {
 
             override fun onResponse(call: Call<List<IAlbum>>, response: Response<List<IAlbum>>) {
                 for (album in response.body()!!) {
-                    albumAdapter.addAlbum(album)
-                    albumAdapter.notifyItemInserted((rvOutputAlbums.adapter as AlbumAdapter).itemCount)
+                    if (album.members.contains(user)) {
+                        albumAdapter.addAlbum(album)
+                        albumAdapter.notifyItemInserted((rvOutputAlbums.adapter as AlbumAdapter).itemCount)
+                    }
                 }
             }
 
             override fun onFailure(call: Call<List<IAlbum>>, t: Throwable) {
                 Log.d("Albums", "onFailure" +t.message )
             }
-
         })
-
-
     }
 
     override fun popUpListener(albumName: String,albumDescription:String) {
@@ -110,23 +109,34 @@ class Albums : AppCompatActivity(), CreateAlbumPopUp.DialogListener ,AlbumAdapte
         drawingIDs.add("test drawing1")
         drawingIDs.add("test drawing2")
 
-        val newAlbum =IAlbum(this.albumName,this.owner,this.albumDescription,drawingIDs,usersList)
+        var membershipRequests = ArrayList<String>()
+        membershipRequests.add("test request 1")
+        membershipRequests.add("test request2")
+
+        val newAlbum =IAlbum(this.albumName,this.owner,this.albumDescription,drawingIDs,usersList, membershipRequests)
         albumAdapter.addAlbum(newAlbum)
         albumAdapter.notifyItemInserted((rvOutputAlbums.adapter as AlbumAdapter).itemCount)
 
-        createNewAlbum(this.albumName,this.owner,this.albumDescription,drawingIDs,usersList)
+        createNewAlbum(this.albumName,this.owner,this.albumDescription,drawingIDs,usersList, membershipRequests)
     }
 
-    override fun albumAdapterListener(albumName: String) {
+    override fun albumAdapterListener(albumName: String, albumsMembers: ArrayList<String>, albumOwner: String) {
         this.albumName = albumName
+        val intent = Intent(this, DrawingsCollection::class.java)
+        intent.putExtra("albumName", albumName)
+        intent.putExtra("albumMembers", albumsMembers)
+        intent.putExtra("albumOwner", albumOwner)
+        intent.putExtra("userName", user)
+        startActivity(intent)
     }
 
     private fun createNewAlbum(albumName:String,
                                ownerID:String,
                                description: String,
                                drawingIDs:ArrayList<String>,
-                               usersList:ArrayList<String>) {
-        compositeDisposable.add(iMyService.createNewAlbum(albumName,ownerID,description,drawingIDs,usersList)
+                               usersList:ArrayList<String>,
+                               membershipRequests: ArrayList<String>) {
+        compositeDisposable.add(iMyService.createNewAlbum(albumName,ownerID,description,drawingIDs,usersList, membershipRequests)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { result->

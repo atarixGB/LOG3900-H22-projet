@@ -8,16 +8,16 @@
         "source": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\src\\main\\res\\drawable\\customborder.xml"
     },
     {
-        "merged": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ic_add_camera.xml.flat",
-        "source": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\src\\main\\res\\drawable\\ic_add_camera.xml"
+        "merged": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\drawable_placeholder_logo.png.flat",
+        "source": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\src\\main\\res\\drawable\\placeholder_logo.png"
     },
     {
         "merged": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ic_baseline_exit_to_app_24.xml.flat",
         "source": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\src\\main\\res\\drawable\\ic_baseline_exit_to_app_24.xml"
     },
     {
-        "merged": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\drawable_placeholder_logo.png.flat",
-        "source": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\src\\main\\res\\drawable\\placeholder_logo.png"
+        "merged": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ic_add_camera.xml.flat",
+        "source": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\src\\main\\res\\drawable\\ic_add_camera.xml"
     },
     {
         "merged": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\drawable_white_color.xml.flat",
@@ -30,6 +30,10 @@
     {
         "merged": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\drawable_yellow_color.xml.flat",
         "source": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\src\\main\\res\\drawable\\yellow_color.xml"
+    },
+    {
+        "merged": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ic_baseline_group_add_24.xml.flat",
+        "source": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\src\\main\\res\\drawable\\ic_baseline_group_add_24.xml"
     },
     {
         "merged": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\drawable_circle8.xml.flat",
@@ -84,12 +88,20 @@
         "source": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\src\\main\\res\\drawable\\circle12.xml"
     },
     {
+        "merged": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\layout_activity_join_album_pop_up.xml.flat",
+        "source": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\src\\main\\res\\layout\\activity_join_album_pop_up.xml"
+    },
+    {
         "merged": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\drawable_message_input_box.xml.flat",
         "source": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\src\\main\\res\\drawable\\message_input_box.xml"
     },
     {
         "merged": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\drawable_large_dot.png.flat",
         "source": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\src\\main\\res\\drawable\\large_dot.png"
+    },
+    {
+        "merged": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\layout_activity_drawings_collection.xml.flat",
+        "source": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\src\\main\\res\\layout\\activity_drawings_collection.xml"
     },
     {
         "merged": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ic_baseline_arrow_back_ios_new_24.xml.flat",
@@ -224,8 +236,16 @@
         "source": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\src\\main\\res\\layout\\activity_albums.xml"
     },
     {
+        "merged": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ic_baseline_image_24.xml.flat",
+        "source": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\src\\main\\res\\drawable\\ic_baseline_image_24.xml"
+    },
+    {
         "merged": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\drawable_monster8.png.flat",
         "source": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\src\\main\\res\\drawable\\monster8.png"
+    },
+    {
+        "merged": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ic_baseline_add_photo_alternate_24.xml.flat",
+        "source": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\src\\main\\res\\drawable\\ic_baseline_add_photo_alternate_24.xml"
     },
     {
         "merged": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxhdpi_ic_launcher_round.png.flat",
@@ -308,6 +328,10 @@
         "source": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\src\\main\\res\\drawable\\ic_baseline_camera_front_24.xml"
     },
     {
+        "merged": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\layout_item_drawing.xml.flat",
+        "source": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\src\\main\\res\\layout\\item_drawing.xml"
+    },
+    {
         "merged": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-anydpi-v26_ic_launcher_round.xml.flat",
         "source": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\src\\main\\res\\mipmap-anydpi-v26\\ic_launcher_round.xml"
     },
@@ -366,6 +390,10 @@
     {
         "merged": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\layout_activity_main.xml.flat",
         "source": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\src\\main\\res\\layout\\activity_main.xml"
+    },
+    {
+        "merged": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\menu_drawingscollection_options_menu.xml.flat",
+        "source": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\src\\main\\res\\menu\\drawingscollection_options_menu.xml"
     },
     {
         "merged": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\layout_activity_create_room_pop_up.xml.flat",
@@ -482,6 +510,10 @@
     {
         "merged": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\layout_activity_add_avatar_pop_up.xml.flat",
         "source": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\src\\main\\res\\layout\\activity_add_avatar_pop_up.xml"
+    },
+    {
+        "merged": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ic_baseline_edit_note_24.xml.flat",
+        "source": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\src\\main\\res\\drawable\\ic_baseline_edit_note_24.xml"
     },
     {
         "merged": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ic_baseline_search_24.xml.flat",

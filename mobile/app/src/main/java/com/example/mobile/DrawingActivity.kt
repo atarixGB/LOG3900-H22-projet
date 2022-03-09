@@ -3,6 +3,7 @@ package com.example.mobile
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
+import java.util.ArrayList
 
 class DrawingActivity : AppCompatActivity(), CreateDrawingPopUp.DialogListener, AlbumAdapter.AlbumAdapterListener {
     private lateinit var user: String
@@ -23,7 +24,11 @@ class DrawingActivity : AppCompatActivity(), CreateDrawingPopUp.DialogListener, 
         dialog.show(supportFragmentManager, "customDialog")
     }
 
-    override fun albumAdapterListener(albumName: String) {
+    override fun albumAdapterListener(
+        albumName: String,
+        albumsMembers: ArrayList<String>,
+        albumOwner: String
+    ) {
         this.albumName = albumName
         sharedViewModelCreateDrawingPopUp.setAlbum(albumName)
     }

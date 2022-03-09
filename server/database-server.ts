@@ -319,6 +319,14 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
       })
     });
 
+      //get album drawings
+      app.get("/albums/Drawings/:albumName", (request, response, next) => {
+        DB.collection("albums").findOne( { name: request.params.albumName }, function(err, res) {
+          response.json(res.drawingIDs);
+          console.log(res.drawingIDs);
+        })
+      });
+
     //add drawing to an album
     app.put("/albums/addDrawing/:albumName", (request, response, next) => {
       let albumName = request.params.albumName;
@@ -327,6 +335,16 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
       DB.collection("albums").findOneAndUpdate({ name : albumName }, { $push: { drawingIDs: drawingtoAdd } }, { returnDocument: 'after' }, (err, res) => {
         response.json(201)
         console.log(drawingtoAdd, "is added to ", albumName);
+      })});
+
+    //send request to an album
+    app.put("/albums/sendRequest/:albumName", (request, response, next) => {
+      let albumName = request.params.albumName;
+      console.log(albumName);
+      let usertoAdd = request.body.identifier;
+      DB.collection("albums").findOneAndUpdate({ name : albumName }, { $push: { membershipRequests: usertoAdd } }, { returnDocument: 'after' }, (err, res) => {
+        response.json(201)
+        console.log(usertoAdd, "sent request to join ", albumName);
       })});
 
     //update owner when leaving album
