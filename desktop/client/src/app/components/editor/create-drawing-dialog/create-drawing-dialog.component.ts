@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AlbumGalleryService } from '@app/services/album-gallery/album-gallery.service';
 import { IAlbum } from '@app/interfaces-enums/IAlbum'
 import { MatDialogRef } from '@angular/material/dialog';
+import { LoginService } from '@app/services/login/login.service';
 
 const MAX_NAME_LENGTH = 40;
 @Component({
@@ -12,17 +13,18 @@ const MAX_NAME_LENGTH = 40;
 export class CreateDrawingDialogComponent implements OnInit {
   name: string;
   isPrivate: boolean;
-  selectedAlbum: string;
+  selectedAlbumName: string;
+  selectedAlbumId: string | void;
 
-  constructor(public albumGalleryService: AlbumGalleryService, private currentDialogRef: MatDialogRef<CreateDrawingDialogComponent>) {
+  constructor(public albumGalleryService: AlbumGalleryService, public loginService: LoginService, private currentDialogRef: MatDialogRef<CreateDrawingDialogComponent>) {
     this.name = "dessin1";
     this.isPrivate = false;
-    this.selectedAlbum = "public (par défaut)";
+    this.selectedAlbumName = "public (par défaut)";
+    this.selectedAlbumId = "id";
   }
 
   ngOnInit(): void {
     this.getAlbums();
-    console.log(this.albumGalleryService.myAlbums)
   }
 
   ngOnDestroy(): void {
@@ -32,27 +34,31 @@ export class CreateDrawingDialogComponent implements OnInit {
   changeAccess(value: number): void {
     this.isPrivate = value == 1;
     if (this.isPrivate) {
-      this.selectedAlbum = this.albumGalleryService.myAlbums[0].name;
+      this.selectedAlbumName = this.albumGalleryService.myAlbums[0].name;
+      this.selectedAlbumId = this.albumGalleryService.myAlbums[0]._id;
     } else {
-      this.selectedAlbum = "public (par défaut)";
+      this.selectedAlbumName = "public (par défaut)";
+      this.selectedAlbumId = "id"; // CHANGE FOR PUBLIC ALBUM ID
     }
-    console.log(this.isPrivate? "private" : "public");
   }
 
   createDrawingButton(): void {
+    console.log("createDrawingButton\n",this.name, this.selectedAlbumName, this.selectedAlbumId);
+
     if (this.isValidInput(this.name) && this.name.length <= MAX_NAME_LENGTH) {
-      this.albumGalleryService.createDrawing(this.name, this.isPrivate, this.selectedAlbum);
+      this.albumGalleryService.addDrawingToAlbum(this.name, this.selectedAlbumName, this.selectedAlbumId);
       this.currentDialogRef.close();
     } else {
       // TODO: UI feedback
-      console.log("Le dessin doit avoir un nom ou doit avoir moins de 40 caractères!");
+      console.log("Le dessin doit avoir un nom ou doit avoir moins de 40 caractères.");
       console.log("nb de char:", this.name.length);
     }
   }
 
   onAlbumClick(album: IAlbum): void {
-    this.selectedAlbum = album.name;
-    console.log(album);
+    this.selectedAlbumName = album.name;
+    this.selectedAlbumId = album._id;
+    console.log("onAlbumClick",this.selectedAlbumName, this.selectedAlbumId);
   }
 
   private getAlbums(): void {

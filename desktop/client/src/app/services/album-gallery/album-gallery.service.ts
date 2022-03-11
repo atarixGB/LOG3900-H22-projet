@@ -2,7 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { IAlbum } from '@app/interfaces-enums/IAlbum'
 import { LoginService } from '@app/services/login/login.service';
-import { ALBUM_URL, PUBLIC_DRAWINGS_URL } from '@app/constants/api-urls';
+import { ALBUM_URL, PUBLIC_DRAWINGS_URL, ADD_DRAWING_TO_ALBUM_URL } from '@app/constants/api-urls';
+import { IDrawing } from "@app/interfaces-enums/IDrawing";
 
 @Injectable({
   providedIn: 'root'
@@ -18,9 +19,29 @@ export class AlbumGalleryService {
     this.myAlbums = [];
   }
 
-  createDrawing(name: string, isPrivate: boolean, album: string): void {
-    console.log(`Create new drawing "${name}" in album "${album}"`);
-    // TODO: send new drawing in the specify album here request here
+  createDrawing(drawingName: string, binaryData: string): void {
+    console.log("createDrawing", drawingName, binaryData);
+  }
+
+  addDrawingToAlbum(drawingName: string, albumName: string, albumId: string | void): void {
+    console.log("addDrawingToAlbum", `Create new drawing "${drawingName}" in album "${albumName}" with id ${albumId}`);
+    // TODO: send new drawing in the specify album request here
+    const drawingToAdd: IDrawing = {
+      name: drawingName,
+      creator: this.loginService.username,
+      contributors: [this.loginService.username],
+      data: "data in base 64", // Get data from canvas
+      albumId: albumId,
+    }
+    console.log("drawingToAdd", drawingToAdd);
+    this.httpClient.put(ADD_DRAWING_TO_ALBUM_URL + `/${drawingName}`, drawingToAdd).subscribe(
+      (result)=> {
+        console.log(result);
+
+      },
+      (error)=> {
+        console.log(error);
+      });
   }
 
   createAlbum(name: string, description: string): void {
