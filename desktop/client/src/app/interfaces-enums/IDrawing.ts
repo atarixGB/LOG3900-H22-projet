@@ -3,6 +3,8 @@ export interface IDrawing {
   name: string,
   creator: string,
   contributors: string[],
-  data: string,
-  albumId: string | void,
+  albumId?: string | void,
+  height: number,
+  width: number,
+  data: string | undefined,
 }

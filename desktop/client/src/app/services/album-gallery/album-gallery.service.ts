@@ -2,8 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { IAlbum } from '@app/interfaces-enums/IAlbum'
 import { LoginService } from '@app/services/login/login.service';
-import { ALBUM_URL, PUBLIC_DRAWINGS_URL, ADD_DRAWING_TO_ALBUM_URL } from '@app/constants/api-urls';
-import { IDrawing } from "@app/interfaces-enums/IDrawing";
+import { ALBUM_URL, PUBLIC_DRAWINGS_URL, CREATE_DRAWING_URL } from '@app/constants/api-urls';
+import { DrawingService } from '../editor/drawing/drawing.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,34 +14,53 @@ export class AlbumGalleryService {
   currentAlbum: IAlbum;
   currentDrawing: string; // TODO: change with an interface
 
-  constructor(private httpClient: HttpClient, private loginService: LoginService) {
+  constructor(private httpClient: HttpClient, private loginService: LoginService, private drawingService: DrawingService) {
     this.publicAlbums = [];
     this.myAlbums = [];
   }
 
-  createDrawing(drawingName: string, binaryData: string): void {
-    console.log("createDrawing", drawingName, binaryData);
-  }
+  createDrawing(drawingName: string): void {
+    const drawingData = {
+      name: drawingName,
+      creator: this.loginService.username,
+      contributors: [this.loginService.username],
+      height: this.drawingService.canvas.height,
+      width: this.drawingService.canvas.width,
+      data: this.drawingService.canvas.toDataURL(),
+    }
+
+    console.log(drawingData)
+
+    this.httpClient.post(CREATE_DRAWING_URL, drawingData).subscribe(
+      (result)=>{
+        console.log("Résultat du serveur:", result);
+        // Add drawing to album
+      },
+      (error)=>{
+        console.log("Erreur du serveur", error);
+      });
+
+    }
 
   addDrawingToAlbum(drawingName: string, albumName: string, albumId: string | void): void {
     console.log("addDrawingToAlbum", `Create new drawing "${drawingName}" in album "${albumName}" with id ${albumId}`);
     // TODO: send new drawing in the specify album request here
-    const drawingToAdd: IDrawing = {
-      name: drawingName,
-      creator: this.loginService.username,
-      contributors: [this.loginService.username],
-      data: "data in base 64", // Get data from canvas
-      albumId: albumId,
-    }
-    console.log("drawingToAdd", drawingToAdd);
-    this.httpClient.put(ADD_DRAWING_TO_ALBUM_URL + `/${drawingName}`, drawingToAdd).subscribe(
-      (result)=> {
-        console.log(result);
+    // const drawingToAdd: IDrawing = {
+    //   name: drawingName,
+    //   creator: this.loginService.username,
+    //   contributors: [this.loginService.username],
+    //   data: "data in base 64", // Get data from canvas
+    //   albumId: albumId,
+    // }
+    // console.log("drawingToAdd", drawingToAdd);
+    // this.httpClient.put(ADD_DRAWING_TO_ALBUM_URL + `/${drawingName}`, drawingToAdd).subscribe(
+    //   (result)=> {
+    //     console.log(result);
 
-      },
-      (error)=> {
-        console.log(error);
-      });
+    //   },
+    //   (error)=> {
+    //     console.log(error);
+    //   });
   }
 
   createAlbum(name: string, description: string): void {

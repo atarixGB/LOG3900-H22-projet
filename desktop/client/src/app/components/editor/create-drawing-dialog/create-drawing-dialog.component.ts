@@ -46,7 +46,7 @@ export class CreateDrawingDialogComponent implements OnInit {
     console.log("createDrawingButton\n",this.name, this.selectedAlbumName, this.selectedAlbumId);
 
     if (this.isValidInput(this.name) && this.name.length <= MAX_NAME_LENGTH) {
-      this.albumGalleryService.addDrawingToAlbum(this.name, this.selectedAlbumName, this.selectedAlbumId);
+      this.albumGalleryService.createDrawing(this.name);
       this.currentDialogRef.close();
     } else {
       // TODO: UI feedback
