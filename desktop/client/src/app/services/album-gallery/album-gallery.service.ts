@@ -84,7 +84,7 @@ export class AlbumGalleryService {
 
   }
 
-  joinAlbum(album: IAlbum): void {
+  sendJoinAlbumRequest(album: IAlbum): void {
     const userToAdd = {
       identifier: this.loginService.username
     }

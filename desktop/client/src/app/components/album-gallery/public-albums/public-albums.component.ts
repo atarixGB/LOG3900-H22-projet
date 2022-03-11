@@ -21,6 +21,7 @@ export class PublicAlbumsComponent implements OnInit {
 
     if (album != null) {
       this.albumGalleryService.currentAlbum = album;
+      this.albumGalleryService.sendJoinAlbumRequest(album);
     }
   }
 
