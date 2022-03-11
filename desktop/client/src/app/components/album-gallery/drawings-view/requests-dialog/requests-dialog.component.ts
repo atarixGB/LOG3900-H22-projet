@@ -12,15 +12,19 @@ export class RequestsDialogComponent implements OnInit {
   constructor(public albumGalleryService: AlbumGalleryService, public loginService: LoginService) { }
 
   ngOnInit(): void {
-    console.log(this.albumGalleryService.currentAlbum.membershipRequests);
+    this.albumGalleryService.fetchMyAlbumsFromDatabase();
+  }
+
+  ngOnDestroy(): void {
+    this.albumGalleryService.myAlbums = []
   }
 
   acceptButton(memberName: string): void {
-    console.log(`${memberName} has been accepted in the album ${this.albumGalleryService.currentAlbum.name} by ${this.loginService.username}`);
+    this.albumGalleryService.acceptUser(memberName);
   }
 
   declineButton(memberName: string): void {
-    console.log(`${memberName} has been refused in the album ${this.albumGalleryService.currentAlbum.name} by ${this.loginService.username}`);
+    this.albumGalleryService.declineUser(memberName);
   }
 
 }

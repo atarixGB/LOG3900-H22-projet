@@ -361,6 +361,27 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
       })
     });
 
+    app.put("/albums/request/add", (request, response, next) => {
+      const userToAdd = request.body.userToAdd;
+      const currentUser = request.body.currentUser;
+      const albumName = request.body.albumName;
+      DB.collection("albums").findOneAndUpdate({ name: albumName }, { $push: { members: userToAdd }, $pull: { membershipRequests: userToAdd} }, { returnDocument: 'after' }, (err, res) => {
+        response.json(201)
+        console.log(`${userToAdd} has been accepted in the album ${albumName} by ${currentUser}`);
+    });
+  });
+    
+    app.put("/albums/request/decline", (request, response, next) => {
+      const userToDecline = request.body.userToDecline;
+      const currentUser = request.body.currentUser;
+      const albumName = request.body.albumName;
+      DB.collection("albums").findOneAndUpdate({ name: albumName }, { $pull: { membershipRequests: userToDecline} }, { returnDocument: 'after' }, (err, res) => {
+        response.json(201);
+        console.log(`${userToDecline} has been refused in the album ${albumName} by ${currentUser}`);
+      });
+
+    });
+
     //update owner when leaving album
     app.put("/albums/:id", (request, response, next) => {
       let albumId = request.params.id;

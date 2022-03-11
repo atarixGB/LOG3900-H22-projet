@@ -101,6 +101,40 @@ export class AlbumGalleryService {
     )
   }
 
+  acceptUser(memberName: string): void {
+    const data = {
+      userToAdd: memberName,
+      currentUser: this.loginService.username,
+      albumName: this.currentAlbum.name
+    }
+
+    this.httpClient.put("http://localhost:3001/albums/request/add", data).subscribe(
+      (result)=> {
+        console.log("Résultat serveur", result)
+      },
+      (error)=> {
+        console.log("Erreur serveur", error)
+      })
+    console.log(`${memberName} has been accepted in the album ${this.currentAlbum.name} by ${this.loginService.username}`);
+  }
+
+  declineUser(memberName: string): void {
+    const data = {
+      userToDecline: memberName,
+      currentUser: this.loginService.username,
+      albumName: this.currentAlbum.name
+    }
+
+    this.httpClient.put("http://localhost:3001/albums/request/decline", data).subscribe(
+      (result)=> {
+        console.log("Résultat serveur", result)
+      },
+      (error)=> {
+        console.log("Erreur serveur", error)
+      })
+    console.log(`${memberName} has been refused in the album ${this.currentAlbum.name} by ${this.loginService.username}`);
+  }
+
   leaveAlbum(album: IAlbum): void {
     console.log("Leaving album");
     const url = ALBUM_URL + `/${album._id}`;
