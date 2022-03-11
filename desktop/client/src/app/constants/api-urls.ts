@@ -1,8 +1,9 @@
-export const CHAT_URL = `http://localhost:3000/`
+export const CHAT_URL = `http://localhost:3000/`;
 
 export const ALBUM_URL = "http://localhost:3001/albums";
+export const JOIN_ALBUM_URL = "http://localhost:3001/albums/sendRequest";
 export const CREATE_DRAWING_URL = "http://localhost:3001/drawing/create";
-export const ADD_DRAWING_TO_ALBUM_URL = "http://localhost:3001/albums/addDrawing/";
+export const ADD_DRAWING_TO_ALBUM_URL = "http://localhost:3001/albums/addDrawing";
 
 export const PROFILE_UPDATE_URL = 'http://localhost:3001/profileUpdate';
 export const PROFILE_URL = 'http://localhost:3001/profile';

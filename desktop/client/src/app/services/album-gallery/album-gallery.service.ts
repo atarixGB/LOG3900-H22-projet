@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { IAlbum } from '@app/interfaces-enums/IAlbum'
 import { LoginService } from '@app/services/login/login.service';
-import { ALBUM_URL, PUBLIC_DRAWINGS_URL, CREATE_DRAWING_URL } from '@app/constants/api-urls';
+import { ALBUM_URL, PUBLIC_DRAWINGS_URL, CREATE_DRAWING_URL, JOIN_ALBUM_URL } from '@app/constants/api-urls';
 import { DrawingService } from '../editor/drawing/drawing.service';
 
 @Injectable({
@@ -70,6 +70,7 @@ export class AlbumGalleryService {
       description: description,
       drawingIds: [],
       members: [this.loginService.username],
+      membershipRequests: []
     }
 
     this.httpClient.post(ALBUM_URL, newAlbum).subscribe(
@@ -81,6 +82,23 @@ export class AlbumGalleryService {
       }
     )
 
+  }
+
+  joinAlbum(album: IAlbum): void {
+    const userToAdd = {
+      identifier: this.loginService.username
+    }
+
+    this.httpClient.put(`${JOIN_ALBUM_URL}/${album.name}`, userToAdd).subscribe(
+      (result) => {
+        console.log("Résultat serveur:", result);
+
+      },
+      (error) => {
+        console.log("Erreur serveur:", error);
+
+      }
+    )
   }
 
   leaveAlbum(album: IAlbum): void {

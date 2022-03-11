@@ -57,7 +57,8 @@ import { SelectionConfigComponent } from './components/editor/sidebar/selection-
 import { CreateRoomDialogComponent } from './components/chat/create-room-dialog/create-room-dialog.component';
 import { PublicChatroomsComponent } from './components/chat/public-chatrooms/public-chatrooms.component';
 import { DeleteRoomDialogComponent } from './components/chat/delete-room-dialog/delete-room-dialog.component';
-import { CreateDrawingDialogComponent } from './components/editor/create-drawing-dialog/create-drawing-dialog.component'
+import { CreateDrawingDialogComponent } from './components/editor/create-drawing-dialog/create-drawing-dialog.component';
+import { RequestsDialogComponent } from './components/album-gallery/drawings-view/requests-dialog/requests-dialog.component';
 
 @NgModule({
     declarations: [
@@ -97,6 +98,7 @@ import { CreateDrawingDialogComponent } from './components/editor/create-drawing
         PublicChatroomsComponent,
         DeleteRoomDialogComponent,
         CreateDrawingDialogComponent,
+        RequestsDialogComponent,
     ],
     imports: [
         BrowserModule,

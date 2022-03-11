@@ -5,4 +5,5 @@ export interface IAlbum {
   description: string,
   drawingIds: string[]; // Type to verify
   members: string[]; // Type will probably be an interface IUserInfos later
+  membershipRequests: string[];
 }

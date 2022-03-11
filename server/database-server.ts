@@ -15,7 +15,7 @@ const SERVER_PORT = 3001;
 var app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cors());
+app.use(cors({origin:true,credentials: true}));
 
 //create mongoDB client
 var mongoClient = mongodb.MongoClient;
@@ -353,8 +353,8 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
     //send request to an album
     app.put("/albums/sendRequest/:albumName", (request, response, next) => {
       let albumName = request.params.albumName;
-      console.log(albumName);
       let usertoAdd = request.body.identifier;
+      console.log("USER TO ADD",usertoAdd);
       DB.collection("albums").findOneAndUpdate({ name: albumName }, { $push: { membershipRequests: usertoAdd } }, { returnDocument: 'after' }, (err, res) => {
         response.json(201)
         console.log(usertoAdd, "sent request to join ", albumName);
@@ -377,6 +377,7 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
         console.log(`Album with id ${request.params.id} has been deleted successfully!`);
       })
     })
+
     //Getting a user's data 
     app.get("/profile/:username", (request, response, next) => {
       var identifier = request.params.username;

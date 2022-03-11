@@ -1,0 +1,13 @@
+<h2 mat-dialog-title>Demandes d'adhésion</h2>
+
+<mat-dialog-content class="mat-typography">
+
+<ul>
+  <li *ngFor="let member of this.albumGalleryService.currentAlbum.membershipRequests">
+  {{member}}
+  <button mat-raised-button (click)="acceptButton(member)">Accepter</button>
+  <button mat-raised-button (click)="declineButton(member)">Refuser</button>
+  </li>
+</ul>
+
+</mat-dialog-content>
