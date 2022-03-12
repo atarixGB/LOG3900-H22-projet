@@ -16,4 +16,4 @@ coverage/
 
 # additional custom folder
 build/
-.angular
+.angular/
