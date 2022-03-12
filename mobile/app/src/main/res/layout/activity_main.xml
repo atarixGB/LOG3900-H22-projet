@@ -21,17 +21,62 @@
         android:layout_below="@+id/edt_logo"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="67dp"
-        android:inputType="text"
-        android:hint="Identifiant" />
+        android:hint="Identifiant"
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/edt_password"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/edt_identifiant"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="25dp"
+        android:hint="Mot de passe"
+        android:inputType="textPassword" />
+
+    <Button
+        android:id="@+id/showHideBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/edt_password"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="-4dp"
+        android:layout_toEndOf="@+id/edt_password"
+        android:backgroundTint="@color/design_default_color_secondary"
+        android:text="Show"
+        android:textSize="8dp" />
 
     <Button
         android:id="@+id/connect_btn"
-        android:layout_width="291dp"
-        android:layout_height="80dp"
+        android:layout_width="183dp"
+        android:layout_height="wrap_content"
         android:layout_below="@id/edt_identifiant"
         android:layout_alignParentEnd="false"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="45dp"
+        android:layout_marginTop="68dp"
         android:text="Se connecter" />
+
+    <TextView
+        android:id="@+id/edt_createAccountText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/connect_btn"
+        android:layout_alignParentEnd="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="14dp"
+        android:layout_marginEnd="464dp"
+        android:text="Vous n'avez pas de compte? Inscrivez-vous maintenant!" />
+
+    <Button
+        android:id="@+id/edt_createAccountButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/connect_btn"
+        android:layout_alignParentEnd="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="597dp"
+        android:layout_marginEnd="553dp"
+        android:layout_marginBottom="-96dp"
+        android:text="Creer un compte" />
 
 </RelativeLayout>

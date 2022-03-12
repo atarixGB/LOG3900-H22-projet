@@ -49,6 +49,11 @@ import { ProfileSettingsComponent } from './components/profile/profile-settings/
 import { ProfileComponent } from './components/profile/profile.component';
 import { SignUpComponent } from './components/sign-up/sign-up.component';
 import { SelectionConfigComponent } from './components/editor/sidebar/selection-config/selection-config.component';
+import { AlbumGalleryComponent } from './components/album-gallery/my-albums/album-gallery.component';
+import { CreateAlbumDialogComponent } from './components/album-gallery/create-album-dialog/create-album-dialog.component';
+import { PublicAlbumsComponent } from './components/album-gallery/public-albums/public-albums.component';
+import { DrawingsViewComponent } from './components/album-gallery/drawings-view/drawings-view.component';
+import { PublicDrawingGalleryComponent } from './components/album-gallery/public-drawing-gallery/public-drawing-gallery.component';
 
 @NgModule({
     declarations: [
@@ -72,6 +77,12 @@ import { SelectionConfigComponent } from './components/editor/sidebar/selection-
         MenuComponent,
         SideMenuComponent,
         SignUpComponent,
+        AlbumGalleryComponent,
+        CreateAlbumDialogComponent,
+        ChatroomComponent,
+        PublicAlbumsComponent,
+        DrawingsViewComponent,
+        PublicDrawingGalleryComponent,
         AvatarSelectionModalComponent,
         AvatarImportModalComponent,
         ChatroomComponent,
