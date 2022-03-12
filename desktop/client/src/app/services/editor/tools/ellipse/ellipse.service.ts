@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { StrokeEllipse } from '@app/classes/strokes/stroke-ellipse';
 import { Vec2 } from '@app/classes/vec2';
+import { MouseButton } from '@app/constants/constants';
 import { ToolList } from '@app/interfaces-enums/tool-list';
 import { CollaborationService } from '@app/services/collaboration/collaboration.service';
 import { ColorManagerService } from '@app/services/editor/color-manager/color-manager.service';
@@ -60,8 +61,15 @@ export class EllipseService extends ShapeService {
         }
     }
 
+    onMouseDown(event: MouseEvent): void {
+        super.onMouseDown(event);
+        if (event.button === MouseButton.Left) {
+            this.size = { x: 0, y: 0};
+            this.origin = this.getPositionFromMouse(event);
+        }
+    }
+
     onMouseUp(): void {
-        this.mouseDown = false;
         this.drawingService.clearCanvas(this.drawingService.previewCtx);
         if (!this.isShiftShape) {
             this.drawEllipse(this.drawingService.baseCtx);
@@ -79,6 +87,7 @@ export class EllipseService extends ShapeService {
         this.mouseDown = false;
         this.clearPath();
     }
+    
     onMouseMove(event: MouseEvent): void {
         if (this.mouseDown) {
             const mousePosition = this.getPositionFromMouse(event);

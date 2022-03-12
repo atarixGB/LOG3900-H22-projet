@@ -31,6 +31,8 @@ export class SelectionService extends Tool {
   dimensionsBeforeResize: Vec2;
   toolUpdate: Subject<number>;
   toolUpdate$: Observable<number>;
+  callMouseDown: Subject<MouseEvent>;
+  callMouseDown$: Observable<MouseEvent>;
   oldTool: number;
 
   constructor(drawingService: DrawingService, private moveSelectionService: MoveSelectionService, private collaborationService: CollaborationService, private resizeSelectionService: ResizeSelectionService) {
@@ -38,6 +40,8 @@ export class SelectionService extends Tool {
     this.strokes = []; 
     this.toolUpdate = new Subject();
     this.toolUpdate$ = this.toolUpdate.asObservable();
+    this.callMouseDown = new Subject();
+    this.callMouseDown$ = this.callMouseDown.asObservable();
     this.zIndex = 10; //Arbitrary value to make sure user selection is put to front
     this.borderColor = 'blue';
     this.selectionCPs = [];
@@ -91,6 +95,7 @@ export class SelectionService extends Tool {
           this.resizeSelectionService.onMouseDown(event);
       } else {
           this.pasteSelectionOnBaseCnv();
+          this.callMouseDown.next(event);
       }
     }
   }
@@ -166,6 +171,7 @@ export class SelectionService extends Tool {
   deleteSelection(selection: HTMLCanvasElement): void {
     if (selection) {
       selection.remove();
+      this.toolUpdate.next(this.oldTool);
     }
   }
   

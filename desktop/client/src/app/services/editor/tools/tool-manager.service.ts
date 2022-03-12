@@ -46,7 +46,11 @@ export class ToolManagerService {
 
         this.selectionService.toolUpdate$.subscribe((toolToSwitchTo: number) => {
             this.switchTool(toolToSwitchTo);
-          });
+        });
+
+        this.selectionService.callMouseDown$.subscribe((mouseEvent: MouseEvent) => {
+            this.currentTool?.onMouseDown(mouseEvent);
+        });
     }
 
     private getEnumFromMap(map: Map<ToolList, Tool>, searchValue: Tool | undefined): ToolList | undefined {

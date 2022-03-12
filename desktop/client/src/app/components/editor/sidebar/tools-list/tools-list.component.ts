@@ -17,5 +17,8 @@ export class ToolsListComponent {
         if (this.selectionService.isActiveSelection) {
             this.selectionService.pasteSelectionOnBaseCnv();
         }
+        if (selectedTool === this.ToolList.Selection) {
+            this.selectionService.oldTool = this.ToolList.Selection;
+        }
     }
 }
