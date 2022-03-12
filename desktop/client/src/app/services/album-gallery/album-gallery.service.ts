@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { IAlbum } from '@app/interfaces-enums/IAlbum'
 import { LoginService } from '@app/services/login/login.service';
-import { ALBUM_URL, PUBLIC_DRAWINGS_URL, CREATE_DRAWING_URL, JOIN_ALBUM_URL } from '@app/constants/api-urls';
+import { ALBUM_URL, PUBLIC_DRAWINGS_URL, CREATE_DRAWING_URL, JOIN_ALBUM_URL, DECLINE_MEMBERSHIP_REQUEST_URL, ACCEPT_MEMBERSHIP_REQUEST_URL } from '@app/constants/api-urls';
 import { DrawingService } from '../editor/drawing/drawing.service';
 
 @Injectable({
@@ -108,9 +108,14 @@ export class AlbumGalleryService {
       albumName: this.currentAlbum.name
     }
 
-    this.httpClient.put("http://localhost:3001/albums/request/add", data).subscribe(
+    this.httpClient.put(ACCEPT_MEMBERSHIP_REQUEST_URL, data).subscribe(
       (result)=> {
-        console.log("Résultat serveur", result)
+        console.log("Résultat serveur", result);
+          this.currentAlbum.membershipRequests.forEach((user,index) => {
+            if (user == memberName) {
+              this.currentAlbum.membershipRequests.splice(index, 1);
+            }
+          });
       },
       (error)=> {
         console.log("Erreur serveur", error)
@@ -125,9 +130,15 @@ export class AlbumGalleryService {
       albumName: this.currentAlbum.name
     }
 
-    this.httpClient.put("http://localhost:3001/albums/request/decline", data).subscribe(
+    this.httpClient.put(DECLINE_MEMBERSHIP_REQUEST_URL, data).subscribe(
       (result)=> {
         console.log("Résultat serveur", result)
+
+        this.currentAlbum.membershipRequests.forEach((user,index) => {
+          if (user == memberName) {
+            this.currentAlbum.membershipRequests.splice(index, 1);
+          }
+        });
       },
       (error)=> {
         console.log("Erreur serveur", error)
@@ -165,13 +176,12 @@ export class AlbumGalleryService {
   }
 
   fetchMyAlbumsFromDatabase(): void {
-    const url = `${ALBUM_URL}/${this.loginService.username}`;
-    console.log(url);
-
-    this.httpClient.get<IAlbum[]>(url).subscribe(
+    this.httpClient.get<IAlbum[]>(ALBUM_URL).subscribe(
       (albums: IAlbum[]) => {
         for (let i = 0; i < albums.length; i++) {
-          this.myAlbums.push(albums[i]);
+          if (albums[i].members.includes(this.loginService.username)) {
+            this.myAlbums.push(albums[i]);
+          }
         }
       },
       (error: any) => {

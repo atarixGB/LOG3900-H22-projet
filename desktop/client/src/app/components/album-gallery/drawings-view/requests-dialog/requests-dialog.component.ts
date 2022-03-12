@@ -19,6 +19,10 @@ export class RequestsDialogComponent implements OnInit {
     this.albumGalleryService.myAlbums = []
   }
 
+  checkIfMembershipRequestEmpty(): boolean {
+    return this.albumGalleryService.currentAlbum.membershipRequests.length == 0;
+  }
+
   acceptButton(memberName: string): void {
     this.albumGalleryService.acceptUser(memberName);
   }

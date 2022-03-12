@@ -19,10 +19,10 @@
 
     <div>
       <div fxLayout="row" fxLayoutAlign="space-evenly center">
-        <button mat-raised-button color="primary" (click)="openSettingsDialog()">Modifer l'album</button>
+        <button *ngIf="this.isCurrentAlbumMine" mat-raised-button color="primary" (click)="openSettingsDialog()">Modifer l'album</button>
         <button *ngIf="this.isCurrentAlbumMine" mat-raised-button color="primary" (click)="viewRequests()">Voir les demandes d'adhésion</button>
-        <button mat-raised-button color="primary" (click)="leaveAlbumButton()" [disabled]="this.isCurrentAlbumMine">Quitter l'album</button>
-        <button mat-raised-button color="accent" (click)="deleteAlbumButton()" [disabled]="!this.isCurrentAlbumMine">Supprimer l'album</button>
+        <button *ngIf="!this.isCurrentAlbumMine" mat-raised-button color="primary" (click)="leaveAlbumButton()">Quitter l'album</button>
+        <button *ngIf="this.isCurrentAlbumMine" mat-raised-button color="primary" (click)="deleteAlbumButton()">Supprimer l'album</button>
       </div>
     </div>
 

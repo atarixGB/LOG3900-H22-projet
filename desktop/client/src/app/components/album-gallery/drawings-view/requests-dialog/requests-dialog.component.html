@@ -2,6 +2,10 @@
 
 <mat-dialog-content class="mat-typography">
 
+  <div *ngIf="this.checkIfMembershipRequestEmpty()">
+    Il n'y a aucune demande d'accès actuellement.
+  </div>
+
 <ul>
   <li *ngFor="let member of this.albumGalleryService.currentAlbum.membershipRequests">
   {{member}}
@@ -11,3 +15,7 @@
 </ul>
 
 </mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Fermer</button>
+</mat-dialog-actions>
