@@ -488,6 +488,36 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
         console.log("StrokeData : " , strokeData);
         ioCollab.emit('receiveStroke', strokeData);
       })
+
+      socket.on('broadcastSelection', (selectionData) => {
+        console.log("Broadcasting selection : ", selectionData);
+        ioCollab.emit('receiveSelection', selectionData);
+      })
+  
+      socket.on('broadcastSelectionPos', (posData) => {
+        console.log("Broadcasting new selection position : ", posData);
+        ioCollab.emit('receiveSelectionPos', posData);
+      })
+  
+      socket.on('broadcastSelectionSize', (sizeData) => {
+        console.log("Broadcasting new selection size : ", sizeData);
+        ioCollab.emit('receiveSelectionSize', sizeData);
+      })
+  
+      socket.on('broadcastPasteRequest', (pasteReqData) => {
+        console.log("Broadcasting paste request from :", pasteReqData);
+        ioCollab.emit('receivePasteRequest', pasteReqData);
+      })
+  
+      socket.on('broadcastDeleteRequest', (delReqData) => {
+        console.log("Broadcasting delete request from :", delReqData);
+        ioCollab.emit('receiveDeleteRequest', delReqData);
+      })
+  
+      socket.on('broadcastNewStrokeWidth', (widthData) => {
+        console.log("Broadcasting new stroke width :", widthData);
+        ioCollab.emit('receiveStrokeWidth', widthData);
+      })
     })
     
   }
