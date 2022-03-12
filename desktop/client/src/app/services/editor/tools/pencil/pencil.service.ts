@@ -34,6 +34,12 @@ export class PencilService extends Tool {
         this.pencilThickness = DEFAULT_LINE_THICKNESS;
     }
 
+    getPositionFromMouse(event: MouseEvent): Vec2 {
+        const cnvPos = { x: this.drawingService.canvas.getBoundingClientRect().left, y: this.drawingService.canvas.getBoundingClientRect().top};
+        const mousePos = { x: event.clientX, y: event.clientY };
+        return { x: mousePos.x - cnvPos.x, y: mousePos.y - cnvPos.y };
+    }
+
     onMouseDown(event: MouseEvent): void {
         this.mouseDown = event.button === MouseButton.Left;
         if (this.mouseDown) {

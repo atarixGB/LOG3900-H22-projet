@@ -25,6 +25,12 @@ export class RectangleService extends ShapeService {
         super(drawingService, colorManager);
     }
 
+    getPositionFromMouse(event: MouseEvent): Vec2 {
+        const cnvPos = { x: this.drawingService.canvas.getBoundingClientRect().left, y: this.drawingService.canvas.getBoundingClientRect().top};
+        const mousePos = { x: event.clientX, y: event.clientY };
+        return { x: mousePos.x - cnvPos.x, y: mousePos.y - cnvPos.y };
+    }
+
     drawShape(ctx: CanvasRenderingContext2D, isAnotherShapeBorder?: boolean): void {
         if (!this.isShiftShape) {
             this.drawRectangle(ctx, isAnotherShapeBorder);
