@@ -13,7 +13,17 @@ export class SignUpService {
     description: string;
     avatarSrc: string;
 
-    constructor(private httpClient: HttpClient, private router: Router, private route: ActivatedRoute) {}
+    isExistingUsername: boolean;
+    isUsedEmail: boolean;
+
+    constructor(private httpClient: HttpClient, private router: Router, private route: ActivatedRoute) {
+        this.setBoolsToDefault();
+    }
+
+    setBoolsToDefault(): void {
+        this.isExistingUsername = false;
+        this.isUsedEmail = false;
+    }
 
     signUp(): void {
         // POST resquest to create a new user in the database
@@ -31,11 +41,9 @@ export class SignUpService {
                     console.log(result, 'Signup success');
                     this.router.navigate(['../home'], { relativeTo: this.route });
                 } else if (result == "usernameTaken") {
-                    // TODO: Add UI feedback
-                    console.log(result, "Username already exists.");
+                    this.isExistingUsername = true;
                 }else if (result == "emailUsed") {
-                    // TODO: Add UI feedback
-                    console.log(result, "Email is already associated to another account.");
+                    this.isUsedEmail = true;
                 }
             },
             (error) => {
