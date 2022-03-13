@@ -13,10 +13,18 @@ export class LoginService {
     socket: any;
     username: string;
 
+    isValidEmail: boolean;
+    isValidPW: boolean;
+
     constructor(private httpClient: HttpClient, private router: Router, private route: ActivatedRoute, private profileService: ProfileService) {
         this.email = '';
         this.password = '';
     }
+
+    setBoolsToDefault(): void {
+        this.isValidEmail = true;
+        this.isValidPW = true;
+    } 
 
     connect(): void {
         const userCredentials = {
@@ -31,11 +39,9 @@ export class LoginService {
                   this.router.navigate(['../menu'], { relativeTo: this.route });
                   this.fetchUserInfo();
                 } else if (result == 403) {
-                  // TODO: Add UI feedback
-                  console.log(result, "Wrong password");
+                  this.isValidPW = false;
                 } else if (result == 404) {
-                  // TODO: Add UI feedback
-                  console.log(result, "Email does not exist.")
+                  this.isValidEmail = false;
                 }
             },
             (error) => {

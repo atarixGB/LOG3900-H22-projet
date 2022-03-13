@@ -11,18 +11,27 @@ export class LoginComponent {
     password: string;
     hide: boolean;
 
+    isValidFields: boolean;
+
     constructor(public loginService: LoginService) {
         this.email = '';
         this.password = '';
+        this.setBoolsToDefault();
+    }
+
+    setBoolsToDefault(): void {
+        this.loginService.setBoolsToDefault();
+        this.isValidFields = true;
     }
 
     connect(): void {
+        this.setBoolsToDefault();
         if (this.isValidInput(this.email) && this.isValidInput(this.password)) {
             this.loginService.email = this.email;
             this.loginService.password = this.password;
             this.loginService.connect();
         } else {
-            // TODO: Add UI feedback
+            this.isValidFields = false;
         }
     }
 
