@@ -73,9 +73,6 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
       var email = post_data.email;
       var description = post_data.description;
 
-
-      
-
       var insertJson = {
         identifier: identifier,
         password: password,
@@ -90,13 +87,23 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
         .find({ identifier: identifier })
         .count(function (err, number) {
           if (number != 0) {
-            response.json(406);
+            response.json("usernameTaken");
             console.log("identifier already exists");
           } else {
-            //insert data
-            DB.collection("users").insertOne(insertJson, function (error, res) {
-              response.json(201);
-              console.log("Registration success");
+            //check if email is already used
+            DB.collection("users")
+            .find({ email: email })
+            .count(function (err, number) {
+              if (number != 0) {
+                response.json("emailUsed");
+                console.log("email already used");
+              } else { 
+                //insert data
+                DB.collection("users").insertOne(insertJson, function (error, res) {
+                  response.json("success");
+                  console.log("Registration success");
+                });
+              }
             });
           }
         });

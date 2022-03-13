@@ -27,12 +27,15 @@ export class SignUpService {
 
         this.httpClient.post(SIGN_UP_URL, userInfos).subscribe(
             (result) => {
-              if (result == 201) {
+              if (result == "success") {
                     console.log(result, 'Signup success');
                     this.router.navigate(['../home'], { relativeTo: this.route });
-                } else if (result == 406) {
+                } else if (result == "usernameTaken") {
                     // TODO: Add UI feedback
                     console.log(result, "Username already exists.");
+                }else if (result == "emailUsed") {
+                    // TODO: Add UI feedback
+                    console.log(result, "Email is already associated to another account.");
                 }
             },
             (error) => {
