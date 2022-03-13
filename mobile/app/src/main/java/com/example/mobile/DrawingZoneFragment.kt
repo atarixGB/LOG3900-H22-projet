@@ -58,14 +58,14 @@ class DrawingZoneFragment : Fragment() {
         val boundingPointsData = drawEvent["boundingPoints"] as JSONArray
         for (i in 0 until boundingPointsData.length()) {
             val obj = boundingPointsData[i] as JSONObject
-            boundingPoints.add(Point(obj["x"] as Int, obj["x"] as Int))
+            boundingPoints.add(Point(obj["x"] as Int, obj["y"] as Int))
         }
 
         var points = ArrayList<Point>()
         val pointsData = drawEvent["points"] as JSONArray
         for (i in 0 until pointsData.length() ) {
             val obj = pointsData[i] as JSONObject
-            points.add(Point(obj["x"] as Int, obj["x"] as Int))
+            points.add(Point(obj["x"] as Int, obj["y"] as Int))
         }
         val stroke = IPencilStroke(boundingPoints,1, 1f,points   )
         mDrawingView!!.onStrokeReceive(stroke)

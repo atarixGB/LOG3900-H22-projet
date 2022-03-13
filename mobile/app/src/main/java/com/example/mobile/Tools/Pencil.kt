@@ -18,6 +18,7 @@ class Pencil(context: Context, baseCanvas: Canvas, val socket : DrawingCollabora
     var highestCoord: Int = 0;
 
     override fun touchStart() {
+        points.clear()
         mStartX = mx
         mStartY = my
         path!!.reset()
@@ -33,13 +34,14 @@ class Pencil(context: Context, baseCanvas: Canvas, val socket : DrawingCollabora
             mStartX = mx
             mStartY = my
         }
-        this.checkEdgeCoords(Point(my.toInt(), my.toInt()))
+        this.checkEdgeCoords(Point(mx.toInt(), my.toInt()))
         points.add(Point(mx.toInt(), my.toInt()))
         baseCanvas!!.drawPath(path!!, paint!!)
     }
 
     override fun touchUp() {
         path!!.lineTo(mStartX, mStartY)
+        points.add(Point(mStartX.toInt(), mStartY.toInt()))
         this.sendPencilStroke()
         baseCanvas!!.drawPath(path!!, paint!!)
         path!!.reset()
@@ -49,17 +51,21 @@ class Pencil(context: Context, baseCanvas: Canvas, val socket : DrawingCollabora
 
     override fun onStrokeReceive(stroke: IPencilStroke) {
         path.reset()
+        var startX = stroke.points.get(0).x.toFloat()
+        var startY = stroke.points.get(0).y.toFloat()
         Log.d("message", "my point" + (stroke.points.get(0).x.toFloat()))
-        path.moveTo(stroke.points.get(0).x.toFloat(), stroke.points.get(0).x.toFloat() )
+        path.moveTo(startX, startY)
         for(points in stroke.points){
             path.quadTo(
-                points.x.toFloat(),
-                points.y.toFloat(),
-                (stroke.points.get(0).x.toFloat() + points.x.toFloat()) / 2,
-                (stroke.points.get(0).y.toFloat() + points.y.toFloat())/ 2
+                startX,
+                startY,
+                (points.x.toFloat() + startX) / 2,
+                (points.y.toFloat()+ startY)/ 2
             )
+            startX = points.x.toFloat()
+            startY = points.y.toFloat()
         }
-        path!!.lineTo(stroke.points.get(0).x.toFloat(), stroke.points.get(0).x.toFloat())
+        path!!.lineTo(startX, startY)
         baseCanvas!!.drawPath(path!!, paint!!)
         path!!.reset()
     }
