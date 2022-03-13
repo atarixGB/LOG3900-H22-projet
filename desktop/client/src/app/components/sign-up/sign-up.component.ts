@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { AfterContentInit, Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { SignUpService } from '@app/services/sign-up/sign-up.service';
 import { AvatarImportModalComponent } from '../avatar/avatar-import-modal/avatar-import-modal.component';
@@ -9,7 +9,7 @@ import { AvatarSelectionModalComponent } from '../avatar/avatar-selection-modal/
     templateUrl: './sign-up.component.html',
     styleUrls: ['./sign-up.component.scss'],
 })
-export class SignUpComponent {
+export class SignUpComponent implements AfterContentInit {
     username: string;
     password: string;
     confirmedPassword: string;
@@ -25,6 +25,10 @@ export class SignUpComponent {
         this.password = '';
         this.email = '';
         this.setBoolsToDefault();
+    }
+
+    ngAfterContentInit(): void {
+        this.signUpService.avatarSrc = '';
     }
 
     createAccountButton(): void {
