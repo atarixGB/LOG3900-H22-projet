@@ -82,7 +82,8 @@ class DisplayPublicAlbums : AppCompatActivity(), AlbumAdapter.AlbumAdapterListen
     override fun albumAdapterListener(
         albumName: String,
         albumsMembers: ArrayList<String>,
-        albumOwner: String
+        albumOwner: String,
+        albumMembershipRequests: ArrayList<String>
     ) {
         this.albumName = albumName
         //Open Popup Window

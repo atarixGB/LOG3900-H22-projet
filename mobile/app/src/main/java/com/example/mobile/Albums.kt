@@ -31,7 +31,7 @@ class Albums : AppCompatActivity(), CreateAlbumPopUp.DialogListener ,AlbumAdapte
     private lateinit var owner:String
     internal var compositeDisposable = CompositeDisposable()
 
-    private val sharedViewModel: SharedViewModelToolBar by viewModels()
+    private val sharedViewModelToolBar: SharedViewModelToolBar by viewModels()
 
     override fun onStop() {
         compositeDisposable.clear()
@@ -50,7 +50,7 @@ class Albums : AppCompatActivity(), CreateAlbumPopUp.DialogListener ,AlbumAdapte
 
         albums = ArrayList()
         user = intent.getStringExtra("userName").toString()
-        sharedViewModel.setUser(user)
+        sharedViewModelToolBar.setUser(user)
 
         albumAdapter = AlbumAdapter(this, albums)
 
@@ -106,26 +106,29 @@ class Albums : AppCompatActivity(), CreateAlbumPopUp.DialogListener ,AlbumAdapte
         usersList.add("prob")
 
         var drawingIDs = ArrayList<String>()
-        drawingIDs.add("test drawing1")
-        drawingIDs.add("test drawing2")
+//        drawingIDs.add("test drawing1")
+//        drawingIDs.add("test drawing2")
 
         var membershipRequests = ArrayList<String>()
         membershipRequests.add("test request 1")
         membershipRequests.add("test request2")
 
-        val newAlbum =IAlbum(this.albumName,this.owner,this.albumDescription,drawingIDs,usersList, membershipRequests)
+        val newAlbum =IAlbum(_id = null,this.albumName,this.owner,this.albumDescription,drawingIDs,usersList, membershipRequests)
         albumAdapter.addAlbum(newAlbum)
         albumAdapter.notifyItemInserted((rvOutputAlbums.adapter as AlbumAdapter).itemCount)
 
         createNewAlbum(this.albumName,this.owner,this.albumDescription,drawingIDs,usersList, membershipRequests)
     }
 
-    override fun albumAdapterListener(albumName: String, albumsMembers: ArrayList<String>, albumOwner: String) {
+    override fun albumAdapterListener(
+        albumName: String,
+        albumsMembers: ArrayList<String>,
+        albumOwner: String,
+        albumMembershipRequests: ArrayList<String>
+    ) {
         this.albumName = albumName
         val intent = Intent(this, DrawingsCollection::class.java)
         intent.putExtra("albumName", albumName)
-        intent.putExtra("albumMembers", albumsMembers)
-        intent.putExtra("albumOwner", albumOwner)
         intent.putExtra("userName", user)
         startActivity(intent)
     }

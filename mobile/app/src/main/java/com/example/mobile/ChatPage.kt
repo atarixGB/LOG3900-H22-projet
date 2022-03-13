@@ -23,7 +23,7 @@ import retrofit2.Response
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-class ChatPage : AppCompatActivity() {
+class ChatPage : AppCompatActivity(), UserAdapter.UserAdapterListener {
     private lateinit var rvOutputMsgs: RecyclerView
     private lateinit var  btnSend : Button
     private lateinit var leaveChatBtn: ImageButton
@@ -280,6 +280,10 @@ class ChatPage : AppCompatActivity() {
             }
 
         })
+    }
+
+    override fun userAdapterListener(userName: String) {
+        TODO("Not yet implemented")
     }
 
 }

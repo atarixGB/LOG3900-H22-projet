@@ -2699,6 +2699,7 @@ id SYM
 id TOP_END
 id TOP_START
 id accelerate
+id acceptButton
 id accessibilityRadioGroup
 id accessibilityTitle
 id accessibility_action_clickable_span
@@ -3393,6 +3394,7 @@ layout abc_search_dropdown_item_icons_2line
 layout abc_search_view
 layout abc_select_dialog_material
 layout abc_tooltip
+layout activity_accept_membership_requests_pop_up
 layout activity_add_avatar_pop_up
 layout activity_albums
 layout activity_chat_page

@@ -28,7 +28,7 @@ import retrofit2.Call
 import retrofit2.Response
 import java.util.ArrayList
 
-class CreateDrawingPopUp(val user: String) : DialogFragment() {
+class CreateDrawingPopUp(val user: String, val isAlbumAlreadySelected: Boolean) : DialogFragment() {
 
     private lateinit var drawingName: EditText
     private lateinit var drawingNameEmptyError: TextView
@@ -74,6 +74,9 @@ class CreateDrawingPopUp(val user: String) : DialogFragment() {
         albumEmptyError.isVisible = false
         publicRB.isChecked = true
 
+        rootView.accessibilityTitle.isVisible = !isAlbumAlreadySelected
+        radioGroup.isVisible = !isAlbumAlreadySelected
+
         albums = ArrayList()
 
         albumAdapter = AlbumAdapter(context, albums)
@@ -93,9 +96,16 @@ class CreateDrawingPopUp(val user: String) : DialogFragment() {
 
 
         rootView.cancelBtn.setOnClickListener {
-            val intent = Intent(activity, Dashboard::class.java)
-            intent.putExtra("userName",user)
-            startActivity(intent)
+            if (isAlbumAlreadySelected) {
+                val intent = Intent(activity, DrawingsCollection::class.java)
+                intent.putExtra("userName", user)
+                intent.putExtra("albumName", albumName)
+                startActivity(intent)
+            } else {
+                val intent = Intent(activity, Dashboard::class.java)
+                intent.putExtra("userName", user)
+                startActivity(intent)
+            }
         }
 
         rootView.submitBtn.setOnClickListener {
@@ -103,10 +113,20 @@ class CreateDrawingPopUp(val user: String) : DialogFragment() {
             if (drawingName.text.toString().isNotEmpty()) {
                 drawingNameEmptyError.isVisible = false
                 albumEmptyError.isVisible = false
-                if (rb.text.toString().equals("privé")) {
+                if (isAlbumAlreadySelected) {
+                    createDrawing(albumName, drawingName.text.toString(), user)
+                    Toast.makeText(
+                        context,
+                        "ajout du dessin a $albumName",
+                        Toast.LENGTH_LONG
+                    )
+                        .show()
+                    listener.popUpListener(albumName, drawingName.text.toString())
+                    dismiss()
+                } else if (rb.text.toString().equals("privé")) {
                     //add drawing to private album
                         if (albumName.isNotEmpty()) {
-                            addDrawingToAlbum(albumName, drawingName.text.toString())
+                            createDrawing(albumName, drawingName.text.toString(), user)
                             Toast.makeText(
                                 context,
                                 "ajout du dessin a $albumName",
@@ -122,7 +142,8 @@ class CreateDrawingPopUp(val user: String) : DialogFragment() {
                         }
                 } else {
                     //add drawing to public album
-                    addDrawingToAlbum("Album public", drawingName.text.toString())
+                    createDrawing("Album public", drawingName.text.toString(), user)
+//                    addDrawingToAlbum("Album public", drawingName.text.toString())
                     Toast.makeText(context, "ajout du dessin a l'album public", Toast.LENGTH_LONG)
                         .show()
                     listener.popUpListener(albumName, drawingName.text.toString())
@@ -138,8 +159,23 @@ class CreateDrawingPopUp(val user: String) : DialogFragment() {
 
     }
 
-    private fun addDrawingToAlbum(albumName: String, drawingName: String) {
-        compositeDisposable.add(iMyService.addDrawingToAlbum(albumName, drawingName)
+    private fun createDrawing(albumName: String, drawingName: String, owner: String) {
+        compositeDisposable.add(iMyService.createDrawing(drawingName, owner)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { result ->
+                //result est drawingID
+                addDrawingToAlbum(albumName, result)
+//                if (result == "201") {
+////                    Toast.makeText(context, "added", Toast.LENGTH_SHORT).show()
+//                } else {
+//                    Toast.makeText(context, "erreur", Toast.LENGTH_SHORT).show()
+//                }
+            })
+    }
+
+    private fun addDrawingToAlbum(albumName: String, drawingId: String) {
+        compositeDisposable.add(iMyService.addDrawingToAlbum(albumName, drawingId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { result ->

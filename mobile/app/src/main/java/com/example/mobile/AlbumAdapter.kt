@@ -29,7 +29,7 @@ class AlbumAdapter(val context: Context?, var albums: ArrayList<IAlbum>) : Recyc
             albumName.text = currentAlbum.name
 
             imgAlbum.setOnClickListener {
-                listener.albumAdapterListener(albumName.text.toString(), albums[position].members, albums[position].owner)
+                listener.albumAdapterListener(albumName.text.toString(), albums[position].members, albums[position].owner, albums[position].membershipRequests)
             }
         }
     }
@@ -43,7 +43,7 @@ class AlbumAdapter(val context: Context?, var albums: ArrayList<IAlbum>) : Recyc
     }
 
     public interface AlbumAdapterListener {
-        fun albumAdapterListener(albumName: String, albumsMembers: ArrayList<String>, albumOwner: String)
+        fun albumAdapterListener(albumName: String, albumsMembers: ArrayList<String>, albumOwner: String, albumMembershipRequests: ArrayList<String>)
     }
 
     class AlbumViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)

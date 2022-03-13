@@ -85,15 +85,37 @@ interface IMyService {
                        @Field("members")usersList:ArrayList<String>,
                        @Field("membershipRequests")membershipRequests:ArrayList<String>): Observable<String>
 
-    @PUT("albums/addDrawing/{albumName}")
+    @POST("drawing/create")
     @FormUrlEncoded
-    fun addDrawingToAlbum(@Path("albumName") albumName: String,
+    fun createDrawing(@Field("name")drawingName:String,
+                       @Field("owner")ownerID:String): Observable<String>
+
+    @PUT("albums/addDrawing/{albumId}")
+    @FormUrlEncoded
+    fun addDrawingToAlbum(@Path("albumId") albumId: String,
                         @Field("drawing") drawing: String): Observable<String>
 
     @PUT("albums/sendRequest/{albumName}")
     @FormUrlEncoded
     fun sendRequestToJoinAlbum(@Path("albumName") albumName: String,
                           @Field("identifier") userName: String): Observable<String>
+
+    @PUT("albums/request/add")
+    @FormUrlEncoded
+    fun acceptMemberRequest(@Field("userToAdd") userToAdd: String,
+                            @Field("currentUser") currentUser: String,
+                            @Field("albumName") albumName: String): Observable<String>
+
+    @GET("getAlbumParameters")
+    fun getAlbumParameters(@Query("albumName")albumName:String) : Call<IAlbum>
+
+    @PUT("/albums/{id}")
+    @FormUrlEncoded
+    fun leaveAlbum (@Path("id") albumId: String,
+                 @Field("memberToRemove")memberToRemove:String) : Observable<String>
+
+    @GET("getDrawingName")
+    fun getDrawingName(@Query("drawingId") drawingId: String):Call<String>
 
 
 //    @Multipart
