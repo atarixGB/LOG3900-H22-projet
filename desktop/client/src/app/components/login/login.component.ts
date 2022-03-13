@@ -7,18 +7,18 @@ import { LoginService } from '@app/services/login/login.service';
     styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent {
-    username: string;
+    email: string;
     password: string;
     hide: boolean;
 
     constructor(public loginService: LoginService) {
-        this.username = '';
+        this.email = '';
         this.password = '';
     }
 
     connect(): void {
-        if (this.isValidInput(this.username) && this.isValidInput(this.password)) {
-            this.loginService.username = this.username;
+        if (this.isValidInput(this.email) && this.isValidInput(this.password)) {
+            this.loginService.email = this.email;
             this.loginService.password = this.password;
             this.loginService.connect();
         } else {

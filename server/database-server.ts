@@ -113,18 +113,18 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
     app.post("/login", (request, response, next) => {
       var post_data = request.body;
 
-      var identifier = post_data.identifier;
+      var email = post_data.email;
       var userPassword = post_data.password;
 
       //check if identifier exists
       DB.collection("users")
-        .find({ identifier: identifier })
+        .find({ email: email })
         .count(function (err, number) {
           if (number == 0) {
             response.json(404);
-            console.log("identifier does not exists");
+            console.log("email does not exists");
           } else {
-            DB.collection("users").findOne({ identifier: identifier },
+            DB.collection("users").findOne({ email: email },
               function (error, user) {
                 var salt = user.salt; //get salt from user
                 var hashed_password = checkHashPassword(
@@ -145,7 +145,23 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
           });
         }
       );
-        app.post("/createRoom", (request, response, next) => {
+
+      //Getting a user's data with email
+      app.get("/login/:email", (request, response, next) => {
+        var email = request.params.email;
+
+        //check if identifier exists
+        DB.collection("users").findOne(
+          { email: email },
+          function (error, user) {
+            response.json(user.identifier);
+            console.log("Got username after login: ", user.identifier);
+          }
+        );
+      });
+      
+      //Rooms
+      app.post("/createRoom", (request, response, next) => {
           var post_data = request.body;
     
           var identifier = post_data.identifier;
@@ -334,6 +350,8 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
         console.log(`Album with id ${request.params.id} has been deleted successfully!`);
       })
     })
+
+    // Profile
     //Getting a user's data 
     app.get("/profile/:username", (request, response, next) => {
       var identifier = request.params.username;

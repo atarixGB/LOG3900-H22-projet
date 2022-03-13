@@ -1,8 +1,11 @@
-export const CHAT_URL = `http://localhost:3000/`
-export const COLLAB_URL = `http://localhost:3001/`
+export const DATABASE_URL = `http://localhost:3001`
+export const CHAT_URL = `http://localhost:3000`
 
-export const ALBUM_URL = "http://localhost:3001/albums";
-export const PROFILE_UPDATE_URL = 'http://localhost:3001/profileUpdate';
-export const PROFILE_URL = 'http://localhost:3001/profile';
-export const PUBLIC_DRAWINGS_URL = "http://localhost:3001/public-drawings";
-export const SIGN_UP_URL = 'http://localhost:3001/register';
+export const ALBUM_URL = `${DATABASE_URL}/albums`;
+
+export const PROFILE_UPDATE_URL = `${DATABASE_URL}/profileUpdate`;
+export const PROFILE_URL = `${DATABASE_URL}/profile`;
+export const PUBLIC_DRAWINGS_URL = `${DATABASE_URL}/public-drawings`;
+export const SIGN_UP_URL = `${DATABASE_URL}/register`;
+export const LOGIN_URL = `${DATABASE_URL}/login`;
+
