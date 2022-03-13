@@ -1,10 +1,12 @@
-package com.example.mobile
+package com.example.mobile.Tools
 
 import android.content.Context
 import android.graphics.Canvas
+import com.example.mobile.DrawingCollaboration
+import java.util.*
 import kotlin.math.abs
 
-class Eraser(context: Context, baseCanvas: Canvas) : Tool(context, baseCanvas) {
+class Eraser(context: Context, baseCanvas: Canvas, socket : DrawingCollaboration) : Tool(context, baseCanvas, socket) {
 
     init{
         paint.color = backgroundColor
@@ -35,5 +37,9 @@ class Eraser(context: Context, baseCanvas: Canvas) : Tool(context, baseCanvas) {
 
     override fun onDraw(canvas: Canvas) {
 
+    }
+
+    override fun onStrokeReceive() {
+        TODO("Not yet implemented")
     }
 }

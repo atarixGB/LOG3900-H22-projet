@@ -1,14 +1,11 @@
-package com.example.mobile
+package com.example.mobile.Tools
 
-import android.content.ContentValues
-import android.content.ContentValues.TAG
 import android.content.Context
 import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Path
-import android.util.Log
+import com.example.mobile.DrawingCollaboration
+import java.util.*
 
-class Rectangle (context: Context, baseCanvas: Canvas) : Tool(context, baseCanvas) {
+class Rectangle (context: Context, baseCanvas: Canvas, socket : DrawingCollaboration) : Tool(context, baseCanvas, socket) {
 
     override fun touchStart(){
         mStartX = mx
@@ -30,5 +27,9 @@ class Rectangle (context: Context, baseCanvas: Canvas) : Tool(context, baseCanva
         val bottom = if (mStartY > my) mStartY else my
         val top = if (mStartY > my) my else mStartY
         canvas!!.drawRect(left, top, right, bottom, paint!!)
+    }
+
+    override fun onStrokeReceive() {
+        TODO("Not yet implemented")
     }
 }

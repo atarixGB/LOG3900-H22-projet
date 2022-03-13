@@ -4,18 +4,24 @@ import android.content.Context
 import android.graphics.*
 import android.os.Bundle
 import android.util.AttributeSet
+import android.util.Log
 import android.view.*
+import android.widget.LinearLayout
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import com.example.mobile.Tools.ToolManager
+import com.example.mobile.Tools.ToolbarFragment
 import com.example.mobile.model.ToolModel
 import com.example.mobile.model.ToolParameters
+import io.socket.emitter.Emitter
 
 class DrawingZoneFragment : Fragment() {
-    private var mDrawingView: DrawingView? = null
+    private lateinit var mDrawingView: DrawingView
     private val viewModel: ToolParameters by activityViewModels()
     private val toolModel: ToolModel by activityViewModels()
+    var socket = DrawingCollaboration()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -27,7 +33,9 @@ class DrawingZoneFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val mDrawingView = view.findViewById<View>(R.id.drawingView) as DrawingView
+        mDrawingView = DrawingView(requireContext(),this.socket)
+        socket.init()
+        socket.socket.on("receiveStroke", onReceiveStroke)
         viewModel.weight.observe(viewLifecycleOwner, Observer { weight ->
             mDrawingView.changeWeight(weight)
         })
@@ -37,23 +45,28 @@ class DrawingZoneFragment : Fragment() {
         toolModel.tool.observe(viewLifecycleOwner, Observer { tool ->
             mDrawingView.changeTool(tool)
         })
-    }
-    class DrawingView @JvmOverloads constructor(
-        context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-    ) : View(context, attrs, defStyleAttr) {
-        private lateinit var toolManager: ToolManager
 
+        view.findViewById<LinearLayout>(R.id.drawingView).addView(mDrawingView)
+    }
+    private var onReceiveStroke = Emitter.Listener {
+        mDrawingView!!.onStrokeReceive()
+    }
+
+    class DrawingView (context: Context, val socket: DrawingCollaboration) : View(context){
+        private lateinit var toolManager: ToolManager
         private var mPaint: Paint? = null
         private var mBitmap: Bitmap? = null
         private var mCanvas: Canvas? = null
         private var isDrawing = false
 
+        fun onStrokeReceive(){
+            toolManager.currentTool.onStrokeReceive()
+        }
 
         override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
             super.onSizeChanged(w, h, oldw, oldh)
             mBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
             mCanvas = Canvas(mBitmap!!)
-            toolManager = ToolManager(context, mCanvas!!)
             val borderPaint = Paint().apply {
                 color = ResourcesCompat.getColor(context.resources, R.color.black, null)
                 isAntiAlias = true
@@ -64,6 +77,7 @@ class DrawingZoneFragment : Fragment() {
                 strokeWidth = 1f
             }
             mCanvas!!.drawRect(0f,0f, w.toFloat(), h.toFloat(),borderPaint )
+            toolManager = ToolManager(context, mCanvas!!, this.socket)
         }
 
         override fun onDraw(canvas: Canvas) {

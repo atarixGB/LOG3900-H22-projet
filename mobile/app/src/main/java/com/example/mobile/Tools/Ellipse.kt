@@ -1,9 +1,11 @@
-package com.example.mobile
+package com.example.mobile.Tools
 
 import android.content.Context
 import android.graphics.Canvas
+import com.example.mobile.DrawingCollaboration
+import java.util.*
 
-class  Ellipse(context: Context, baseCanvas: Canvas) : Tool(context, baseCanvas) {
+class  Ellipse(context: Context, baseCanvas: Canvas, socket : DrawingCollaboration) : Tool(context, baseCanvas, socket) {
     override fun touchStart() {
         mStartX = mx
         mStartY = my
@@ -21,5 +23,9 @@ class  Ellipse(context: Context, baseCanvas: Canvas) : Tool(context, baseCanvas)
         val bottom = if (mStartY > my) mStartY else my
         val top = if (mStartY > my) my else mStartY
         canvas!!.drawOval(left, top, right, bottom, paint!!)
+    }
+
+    override fun onStrokeReceive() {
+        TODO("Not yet implemented")
     }
 }

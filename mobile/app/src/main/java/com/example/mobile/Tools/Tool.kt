@@ -1,11 +1,13 @@
-package com.example.mobile
+package com.example.mobile.Tools
 
 import android.content.Context
 import android.graphics.*
-import android.view.ViewConfiguration
 import androidx.core.content.res.ResourcesCompat
+import com.example.mobile.DrawingCollaboration
+import com.example.mobile.R
+import kotlin.collections.ArrayList
 
-abstract class Tool(context: Context, baseCanvas: Canvas) {
+abstract class Tool(context: Context, baseCanvas: Canvas, socket: DrawingCollaboration) {
     var baseCanvas: Canvas = baseCanvas
     var context: Context = context
     var mStartX = 0f
@@ -16,6 +18,7 @@ abstract class Tool(context: Context, baseCanvas: Canvas) {
     val TOUCH_TOLERANCE = 4f
     protected val drawColor = ResourcesCompat.getColor(context.resources, R.color.black, null)
     protected val backgroundColor = ResourcesCompat.getColor(context.resources, R.color.white, null)
+    var points : ArrayList<Point> = ArrayList<Point>()
 
     protected val paint = Paint().apply {
         color = drawColor
@@ -44,4 +47,6 @@ abstract class Tool(context: Context, baseCanvas: Canvas) {
     }
 
     abstract fun onDraw(canvas: Canvas)
+
+    abstract fun onStrokeReceive()
 }
