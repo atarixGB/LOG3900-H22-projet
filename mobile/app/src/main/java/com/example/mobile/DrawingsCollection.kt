@@ -129,7 +129,10 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
                         true
                     }
                     R.id.menu_deleteAlbum -> {
-                        Toast.makeText(this, "Supprimer Album", Toast.LENGTH_LONG).show()
+                        deleteAlbum(currentAlbum._id!!)
+                        val intent = Intent(this, Albums::class.java)
+                        intent.putExtra("userName", user)
+                        startActivity(intent)
                         true
                     }
                     else -> false
@@ -240,5 +243,18 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
                 Log.d("Albums", "onFailure" +t.message )
             }
         })
+    }
+
+    private fun deleteAlbum(albumId: String) {
+        compositeDisposable.add(iMyService.deleteAlbum(albumId)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { result ->
+                if (result == "201") {
+                    Toast.makeText(this, "album supprimé", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this, "erreur de suppression d'album", Toast.LENGTH_SHORT).show()
+                }
+            })
     }
 }

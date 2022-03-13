@@ -408,8 +408,8 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
         // console.log("leave album", res);
         // response.json(res)
         console.log(memberToRemove, "has left album ", albumId);
-        response.json(201)
-      })
+        response.json(201);
+      });
     });
 
     //delete album with specific id
@@ -417,8 +417,9 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
       let albumId = request.params.id;
       DB.collection("albums").findOneAndDelete({ _id: mongoose.Types.ObjectId(albumId) }, (err, res) => {
         console.log(`Album with id ${request.params.id} has been deleted successfully!`);
-      })
-    })
+        response.json(201)
+      });
+    });
 
     //Getting album parameters
     app.get("/getAlbumParameters", (request, response, next) => {

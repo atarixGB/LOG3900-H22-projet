@@ -1,7 +1,9 @@
 import { Component, EventEmitter, Output } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlbumGalleryService } from '@app/services/album-gallery/album-gallery.service';
 import { LoginService } from '@app/services/login/login.service';
+import { RequestsDialogComponent } from './requests-dialog/requests-dialog.component';
 
 @Component({
   selector: 'app-drawings-view',
@@ -12,7 +14,7 @@ export class DrawingsViewComponent {
   @Output() backToAlbumPageEvent = new EventEmitter<boolean>();
   isCurrentAlbumMine: boolean;
 
-  constructor(public albumGalleryService: AlbumGalleryService, public loginService: LoginService, private router: Router, private route: ActivatedRoute) {
+  constructor(public albumGalleryService: AlbumGalleryService, public loginService: LoginService, private router: Router, private route: ActivatedRoute, public dialog: MatDialog) {
     this.isCurrentAlbumMine = this.loginService.username == albumGalleryService.currentAlbum.owner;
     console.log("iscurrentalbummine:", this.isCurrentAlbumMine);
   }
@@ -23,6 +25,10 @@ export class DrawingsViewComponent {
 
   openSettingsDialog(): void {
     console.log("Open Settings dialog...");
+  }
+
+  viewRequests(): void {
+    this.dialog.open(RequestsDialogComponent, {});
   }
 
   leaveAlbumButton(): void {

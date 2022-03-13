@@ -1,0 +1,21 @@
+<h2 mat-dialog-title>Demandes d'adhésion</h2>
+
+<mat-dialog-content class="mat-typography">
+
+  <div *ngIf="this.checkIfMembershipRequestEmpty()">
+    Il n'y a aucune demande d'accès actuellement.
+  </div>
+
+<ul>
+  <li *ngFor="let member of this.albumGalleryService.currentAlbum.membershipRequests">
+  {{member}}
+  <button mat-raised-button (click)="acceptButton(member)">Accepter</button>
+  <button mat-raised-button (click)="declineButton(member)">Refuser</button>
+  </li>
+</ul>
+
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Fermer</button>
+</mat-dialog-actions>

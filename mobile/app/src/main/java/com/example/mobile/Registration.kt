@@ -74,7 +74,7 @@ class Registration : AppCompatActivity(),SelectAvatarPopUp.DialogListener {
         avatarPicker = findViewById(R.id.displaypicture)
         cameraBtn= findViewById(R.id.edt_camera)
         avatarBtn=findViewById(R.id.edt_avatar)
-        description="vide"
+        description="Accédez aux paramètres du profil pour ajouter une description!"
 
         //init api
         val retrofit = RetrofitClient.getInstance()

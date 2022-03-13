@@ -117,6 +117,9 @@ interface IMyService {
     @GET("getDrawingName")
     fun getDrawingName(@Query("drawingId") drawingId: String):Call<String>
 
+    @DELETE("/albums/{id}")
+    fun deleteAlbum(@Path("id")albumID:String): Observable<String>
+
 
 //    @Multipart
 //    @POST("upload")
