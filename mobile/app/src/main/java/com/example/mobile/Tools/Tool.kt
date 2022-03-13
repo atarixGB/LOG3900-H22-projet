@@ -5,6 +5,7 @@ import android.graphics.*
 import androidx.core.content.res.ResourcesCompat
 import com.example.mobile.DrawingCollaboration
 import com.example.mobile.Interface.IPencilStroke
+import com.example.mobile.Interface.IVec2
 import com.example.mobile.R
 import kotlin.collections.ArrayList
 
@@ -19,7 +20,7 @@ abstract class Tool(context: Context, baseCanvas: Canvas, socket: DrawingCollabo
     val TOUCH_TOLERANCE = 4f
     protected val drawColor = ResourcesCompat.getColor(context.resources, R.color.black, null)
     protected val backgroundColor = ResourcesCompat.getColor(context.resources, R.color.white, null)
-    var points : ArrayList<Point> = ArrayList<Point>()
+    var points : ArrayList<IVec2> = ArrayList<IVec2>()
 
     protected val paint = Paint().apply {
         color = drawColor

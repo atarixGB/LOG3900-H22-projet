@@ -39,11 +39,11 @@ class ToolbarFragment : Fragment(), AdapterView.OnItemClickListener {
 
     private fun setDataList():ArrayList<ToolItem>{
         val arrayList:ArrayList<ToolItem> = ArrayList()
-        arrayList.add(ToolItem(R.drawable.arrow))
         arrayList.add(ToolItem(R.drawable.pencil_clicked))
         arrayList.add(ToolItem(R.drawable.eraser))
         arrayList.add(ToolItem(R.drawable.rectangle))
         arrayList.add(ToolItem(R.drawable.circle))
+        arrayList.add(ToolItem(R.drawable.arrow))
         return arrayList
     }
 

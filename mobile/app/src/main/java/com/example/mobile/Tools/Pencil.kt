@@ -5,6 +5,7 @@ import android.graphics.*
 import android.util.Log
 import com.example.mobile.DrawingCollaboration
 import com.example.mobile.Interface.IPencilStroke
+import com.example.mobile.Interface.IVec2
 import com.google.gson.Gson
 import org.json.JSONArray
 import org.json.JSONObject
@@ -12,10 +13,10 @@ import java.util.*
 import kotlin.math.abs
 
 class Pencil(context: Context, baseCanvas: Canvas, val socket : DrawingCollaboration) : Tool(context, baseCanvas, socket){
-    var leftestCoord: Int = 0;
-    var rightestCoord: Int = 0;
-    var lowestCoord: Int = 0;
-    var highestCoord: Int = 0;
+    var leftestCoord: Float = 0F;
+    var rightestCoord: Float = 0F;
+    var lowestCoord: Float = 0F;
+    var highestCoord: Float = 0F;
 
     override fun touchStart() {
         points.clear()
@@ -23,7 +24,7 @@ class Pencil(context: Context, baseCanvas: Canvas, val socket : DrawingCollabora
         mStartY = my
         path!!.reset()
         path!!.moveTo(mx, my)
-        points.add(Point(mx.toInt(), my.toInt()) )
+        points.add(IVec2(mx,my))
     }
 
     override fun touchMove() {
@@ -34,14 +35,14 @@ class Pencil(context: Context, baseCanvas: Canvas, val socket : DrawingCollabora
             mStartX = mx
             mStartY = my
         }
-        this.checkEdgeCoords(Point(mx.toInt(), my.toInt()))
-        points.add(Point(mx.toInt(), my.toInt()))
+        this.checkEdgeCoords(IVec2(mx, my))
+        points.add(IVec2(mx, my))
         baseCanvas!!.drawPath(path!!, paint!!)
     }
 
     override fun touchUp() {
         path!!.lineTo(mStartX, mStartY)
-        points.add(Point(mStartX.toInt(), mStartY.toInt()))
+        points.add(IVec2(mStartX, mStartY))
         this.sendPencilStroke()
         baseCanvas!!.drawPath(path!!, paint!!)
         path!!.reset()
@@ -50,27 +51,37 @@ class Pencil(context: Context, baseCanvas: Canvas, val socket : DrawingCollabora
     override fun onDraw(canvas: Canvas) {}
 
     override fun onStrokeReceive(stroke: IPencilStroke) {
+        val upcomingPaint = Paint().apply {
+            color = stroke.color
+            strokeWidth = stroke.strokeWidth
+            isAntiAlias = true
+            // Dithering affects how colors with higher-precision than the device are down-sampled.
+            isDither = true
+            style = Paint.Style.STROKE // default: FILL
+            strokeJoin = Paint.Join.ROUND // default: MITER
+            strokeCap = Paint.Cap.ROUND // default: BUTT
+        }
         path.reset()
-        var startX = stroke.points.get(0).x.toFloat()
-        var startY = stroke.points.get(0).y.toFloat()
-        Log.d("message", "my point" + (stroke.points.get(0).x.toFloat()))
+        var startX = stroke.points.get(0).x
+        var startY = stroke.points.get(0).y
         path.moveTo(startX, startY)
         for(points in stroke.points){
             path.quadTo(
                 startX,
                 startY,
-                (points.x.toFloat() + startX) / 2,
-                (points.y.toFloat()+ startY)/ 2
+                (points.x + startX) / 2,
+                (points.y+ startY)/ 2
             )
-            startX = points.x.toFloat()
-            startY = points.y.toFloat()
+            startX = points.x
+            startY = points.y
         }
         path!!.lineTo(startX, startY)
-        baseCanvas!!.drawPath(path!!, paint!!)
+        baseCanvas!!.drawPath(path!!, upcomingPaint!!)
         path!!.reset()
     }
 
     private fun sendPencilStroke(){
+        //convert into the right json format
         var bounding = JSONArray()
         var pointsStr = JSONArray()
         for(pts in this.getBoundingPoints()){
@@ -86,7 +97,7 @@ class Pencil(context: Context, baseCanvas: Canvas, val socket : DrawingCollabora
             pointsStr.put(arr)
         }
 
-        var jo : JSONObject = JSONObject()
+        var jo = JSONObject()
         jo.put("boundingPoints", bounding)
         jo.put("toolType", 0)
         jo.put("primaryColor", this.paint.color)
@@ -96,16 +107,16 @@ class Pencil(context: Context, baseCanvas: Canvas, val socket : DrawingCollabora
         socket.socket.emit("broadcastStroke", jo )
     }
 
-    private fun getBoundingPoints():ArrayList<Point>{
-        val topLeftPoint = Point(this.leftestCoord, this.highestCoord)
-        val bottomRightPoint = Point(this.rightestCoord, this.lowestCoord)
-        val points = ArrayList<Point>()
+    private fun getBoundingPoints():ArrayList<IVec2>{
+        val topLeftPoint = IVec2(this.leftestCoord, this.highestCoord)
+        val bottomRightPoint = IVec2(this.rightestCoord, this.lowestCoord)
+        val points = ArrayList<IVec2>()
         points.add(topLeftPoint)
         points.add(bottomRightPoint)
         return points
     }
 
-    private fun checkEdgeCoords(currentPos: Point) {
+    private fun checkEdgeCoords(currentPos: IVec2) {
         if (currentPos.x < this.leftestCoord) {
             this.leftestCoord = currentPos.x;
         }

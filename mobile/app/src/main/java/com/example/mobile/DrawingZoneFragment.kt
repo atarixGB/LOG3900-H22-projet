@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.example.mobile.Interface.IPencilStroke
+import com.example.mobile.Interface.IVec2
 import com.example.mobile.Tools.ToolManager
 import com.example.mobile.Tools.ToolbarFragment
 import com.example.mobile.model.ToolModel
@@ -19,6 +20,7 @@ import com.example.mobile.model.ToolParameters
 import io.socket.emitter.Emitter
 import org.json.JSONArray
 import org.json.JSONObject
+import java.math.BigDecimal
 
 class DrawingZoneFragment : Fragment() {
     private lateinit var mDrawingView: DrawingView
@@ -54,20 +56,23 @@ class DrawingZoneFragment : Fragment() {
     private var onReceiveStroke = Emitter.Listener {
         val drawEvent = it[0] as JSONObject
 
-        var boundingPoints = ArrayList<Point>()
-        val boundingPointsData = drawEvent["boundingPoints"] as JSONArray
+        var boundingPoints = ArrayList<IVec2>()
+        val boundingPointsData = drawEvent["boundingPoints"]  as JSONArray
         for (i in 0 until boundingPointsData.length()) {
             val obj = boundingPointsData[i] as JSONObject
-            boundingPoints.add(Point(obj["x"] as Int, obj["y"] as Int))
+            boundingPoints.add( IVec2(obj.getDouble("x").toFloat(), obj.getDouble("y").toFloat()) )
         }
 
-        var points = ArrayList<Point>()
+        var points = ArrayList<IVec2>()
         val pointsData = drawEvent["points"] as JSONArray
         for (i in 0 until pointsData.length() ) {
             val obj = pointsData[i] as JSONObject
-            points.add(Point(obj["x"] as Int, obj["y"] as Int))
+            points.add(IVec2(obj.getDouble("x").toFloat(), obj.getDouble("y").toFloat()))
         }
-        val stroke = IPencilStroke(boundingPoints,1, 1f,points   )
+        val stroke = IPencilStroke(boundingPoints,
+            drawEvent.getInt("primaryColor"),
+            drawEvent.getDouble("strokeWidth").toFloat(),
+            points)
         mDrawingView!!.onStrokeReceive(stroke)
     }
 
