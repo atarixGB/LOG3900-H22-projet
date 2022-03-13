@@ -2,14 +2,16 @@ package com.example.mobile.Tools
 
 import android.content.Context
 import android.graphics.*
+import android.util.Log
 import com.example.mobile.DrawingCollaboration
 import com.example.mobile.Interface.IPencilStroke
+import com.google.gson.Gson
 import org.json.JSONArray
 import org.json.JSONObject
 import java.util.*
 import kotlin.math.abs
 
-class Pencil(context: Context, baseCanvas: Canvas, socket : DrawingCollaboration) : Tool(context, baseCanvas, socket){
+class Pencil(context: Context, baseCanvas: Canvas, val socket : DrawingCollaboration) : Tool(context, baseCanvas, socket){
     var leftestCoord: Int = 0;
     var rightestCoord: Int = 0;
     var lowestCoord: Int = 0;
@@ -44,31 +46,48 @@ class Pencil(context: Context, baseCanvas: Canvas, socket : DrawingCollaboration
     }
 
     override fun onDraw(canvas: Canvas) {}
-    override fun onStrokeReceive() {
-        TODO("Not yet implemented")
+
+    override fun onStrokeReceive(stroke: IPencilStroke) {
+        path.reset()
+        Log.d("message", "my point" + (stroke.points.get(0).x.toFloat()))
+        path.moveTo(stroke.points.get(0).x.toFloat(), stroke.points.get(0).x.toFloat() )
+        for(points in stroke.points){
+            path.quadTo(
+                points.x.toFloat(),
+                points.y.toFloat(),
+                (stroke.points.get(0).x.toFloat() + points.x.toFloat()) / 2,
+                (stroke.points.get(0).y.toFloat() + points.y.toFloat())/ 2
+            )
+        }
+        path!!.lineTo(stroke.points.get(0).x.toFloat(), stroke.points.get(0).x.toFloat())
+        baseCanvas!!.drawPath(path!!, paint!!)
+        path!!.reset()
     }
 
     private fun sendPencilStroke(){
-        val pencilStroke = IPencilStroke(this.getBoundingPoints(), this.paint.color,  this.paint.strokeWidth, points)
         var bounding = JSONArray()
         var pointsStr = JSONArray()
         for(pts in this.getBoundingPoints()){
-            var arr = JSONArray()
-            arr.put(pts.x)
-            arr.put(pts.y)
+            var arr = JSONObject()
+            arr.put("x",pts.x)
+            arr.put("y",pts.y)
             bounding.put(arr)
         }
         for(pts in points){
-            var arr = JSONArray()
-            arr.put(pts.x)
-            arr.put(pts.y)
+            var arr = JSONObject()
+            arr.put("x",pts.x)
+            arr.put("y",pts.y)
             pointsStr.put(arr)
         }
+
         var jo : JSONObject = JSONObject()
         jo.put("boundingPoints", bounding)
-        jo.put("color", this.paint.color)
-        jo.put("stroke", this.paint.strokeWidth)
+        jo.put("toolType", 0)
+        jo.put("primaryColor", this.paint.color)
+        jo.put("strokeWidth", this.paint.strokeWidth)
         jo.put("points", pointsStr)
+        jo.put("sender", socket.socket.id())
+        socket.socket.emit("broadcastStroke", jo )
     }
 
     private fun getBoundingPoints():ArrayList<Point>{

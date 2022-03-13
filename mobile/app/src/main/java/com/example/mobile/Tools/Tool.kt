@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.*
 import androidx.core.content.res.ResourcesCompat
 import com.example.mobile.DrawingCollaboration
+import com.example.mobile.Interface.IPencilStroke
 import com.example.mobile.R
 import kotlin.collections.ArrayList
 
@@ -48,5 +49,5 @@ abstract class Tool(context: Context, baseCanvas: Canvas, socket: DrawingCollabo
 
     abstract fun onDraw(canvas: Canvas)
 
-    abstract fun onStrokeReceive()
+    abstract fun onStrokeReceive(stroke : IPencilStroke)
 }

@@ -3,6 +3,7 @@ package com.example.mobile.Tools
 import android.content.Context
 import android.graphics.Canvas
 import com.example.mobile.DrawingCollaboration
+import com.example.mobile.Interface.IPencilStroke
 import java.util.*
 
 class Rectangle (context: Context, baseCanvas: Canvas, socket : DrawingCollaboration) : Tool(context, baseCanvas, socket) {
@@ -29,7 +30,8 @@ class Rectangle (context: Context, baseCanvas: Canvas, socket : DrawingCollabora
         canvas!!.drawRect(left, top, right, bottom, paint!!)
     }
 
-    override fun onStrokeReceive() {
+    override fun onStrokeReceive(stroke: IPencilStroke) {
         TODO("Not yet implemented")
     }
+
 }

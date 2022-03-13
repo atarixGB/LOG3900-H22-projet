@@ -11,11 +11,14 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import com.example.mobile.Interface.IPencilStroke
 import com.example.mobile.Tools.ToolManager
 import com.example.mobile.Tools.ToolbarFragment
 import com.example.mobile.model.ToolModel
 import com.example.mobile.model.ToolParameters
 import io.socket.emitter.Emitter
+import org.json.JSONArray
+import org.json.JSONObject
 
 class DrawingZoneFragment : Fragment() {
     private lateinit var mDrawingView: DrawingView
@@ -49,7 +52,23 @@ class DrawingZoneFragment : Fragment() {
         view.findViewById<LinearLayout>(R.id.drawingView).addView(mDrawingView)
     }
     private var onReceiveStroke = Emitter.Listener {
-        mDrawingView!!.onStrokeReceive()
+        val drawEvent = it[0] as JSONObject
+
+        var boundingPoints = ArrayList<Point>()
+        val boundingPointsData = drawEvent["boundingPoints"] as JSONArray
+        for (i in 0 until boundingPointsData.length()) {
+            val obj = boundingPointsData[i] as JSONObject
+            boundingPoints.add(Point(obj["x"] as Int, obj["x"] as Int))
+        }
+
+        var points = ArrayList<Point>()
+        val pointsData = drawEvent["points"] as JSONArray
+        for (i in 0 until pointsData.length() ) {
+            val obj = pointsData[i] as JSONObject
+            points.add(Point(obj["x"] as Int, obj["x"] as Int))
+        }
+        val stroke = IPencilStroke(boundingPoints,1, 1f,points   )
+        mDrawingView!!.onStrokeReceive(stroke)
     }
 
     class DrawingView (context: Context, val socket: DrawingCollaboration) : View(context){
@@ -59,8 +78,9 @@ class DrawingZoneFragment : Fragment() {
         private var mCanvas: Canvas? = null
         private var isDrawing = false
 
-        fun onStrokeReceive(){
-            toolManager.currentTool.onStrokeReceive()
+        fun onStrokeReceive(stroke: IPencilStroke){
+            toolManager.currentTool.onStrokeReceive(stroke)
+            invalidate()
         }
 
         override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
