@@ -1,11 +1,7 @@
 {
     "logs": [
         {
-<<<<<<< HEAD
             "outputFile": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-sr\\values-sr.xml",
-=======
-            "outputFile": "C:\\Users\\15149\\Desktop\\clone album\\log3900-203\\mobile\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-sr\\values-sr.xml",
->>>>>>> 772e70edcd8795a9041588ca7da02ccc9fcc486e
             "map": [
                 {
                     "source": "C:\\Users\\chaim\\.gradle\\caches\\transforms-2\\files-2.1\\dd4743fb1b1bc90ef9708ae6d3a9b706\\material-1.5.0\\res\\values-sr\\values-sr.xml",

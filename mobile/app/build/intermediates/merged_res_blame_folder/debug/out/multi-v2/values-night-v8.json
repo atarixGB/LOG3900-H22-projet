@@ -1,7 +1,6 @@
 {
     "logs": [
         {
-<<<<<<< HEAD
             "outputFile": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-night-v8\\values-night-v8.xml",
             "map": [
                 {
@@ -23,12 +22,6 @@
                 },
                 {
                     "source": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\src\\main\\res\\values-night\\themes.xml",
-=======
-            "outputFile": "C:\\Users\\15149\\Desktop\\clone album\\log3900-203\\mobile\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-night-v8\\values-night-v8.xml",
-            "map": [
-                {
-                    "source": "C:\\Users\\15149\\Desktop\\clone album\\log3900-203\\mobile\\app\\src\\main\\res\\values-night\\themes.xml",
->>>>>>> 772e70edcd8795a9041588ca7da02ccc9fcc486e
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",

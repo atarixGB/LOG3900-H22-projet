@@ -1,20 +1,10 @@
-<<<<<<< HEAD
-#Sun Mar 13 23:31:07 EDT 2022
-=======
-#Sun Mar 13 21:39:08 EDT 2022
->>>>>>> 772e70edcd8795a9041588ca7da02ccc9fcc486e
+#Mon Mar 14 13:17:58 EDT 2022
 path.2=classes2.dex
 path.1=classes.dex
 path.0=classes.dex
 renamed.2=classes3.dex
 renamed.1=classes2.dex
 renamed.0=classes.dex
-<<<<<<< HEAD
 base.2=C\:\\Users\\chaim\\log3900-203\\mobile\\app\\build\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes2.dex
 base.1=C\:\\Users\\chaim\\log3900-203\\mobile\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\classes.dex
 base.0=C\:\\Users\\chaim\\log3900-203\\mobile\\app\\build\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes.dex
-=======
-base.2=C\:\\Users\\15149\\Desktop\\clone album\\log3900-203\\mobile\\app\\build\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes2.dex
-base.1=C\:\\Users\\15149\\Desktop\\clone album\\log3900-203\\mobile\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\classes.dex
-base.0=C\:\\Users\\15149\\Desktop\\clone album\\log3900-203\\mobile\\app\\build\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes.dex
->>>>>>> 772e70edcd8795a9041588ca7da02ccc9fcc486e
