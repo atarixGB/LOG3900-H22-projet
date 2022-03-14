@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "C:\\Users\\15149\\Desktop\\git clone final\\log3900-203\\mobile\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values\\values.xml",
+            "outputFile": "C:\\Users\\15149\\Desktop\\clone album\\log3900-203\\mobile\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values\\values.xml",
             "map": [
                 {
                     "source": "C:\\Users\\15149\\.gradle\\caches\\transforms-2\\files-2.1\\651fae681d612f946ba633b4054a3431\\coordinatorlayout-1.1.0\\res\\values\\values.xml",
@@ -57,20 +57,22 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\15149\\Desktop\\git clone final\\log3900-203\\mobile\\app\\src\\main\\res\\values\\strings.xml",
+                    "source": "C:\\Users\\15149\\Desktop\\clone album\\log3900-203\\mobile\\app\\src\\main\\res\\values\\preloaded_fonts.xml",
                     "from": {
-                        "startLines": "1,3",
-                        "startColumns": "4,4",
-                        "startOffsets": "16,120",
-                        "endColumns": "45,69",
-                        "endOffsets": "57,185"
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "57",
+                        "endLines": "4",
+                        "endColumns": "12",
+                        "endOffsets": "157"
                     },
                     "to": {
-                        "startLines": "1638,1651",
-                        "startColumns": "4,4",
-                        "startOffsets": "101966,103424",
-                        "endColumns": "45,69",
-                        "endOffsets": "102007,103489"
+                        "startLines": "16",
+                        "startColumns": "4",
+                        "startOffsets": "3667",
+                        "endLines": "18",
+                        "endColumns": "12",
+                        "endOffsets": "3765"
                     }
                 },
                 {
@@ -90,6 +92,25 @@
                         "endLines": "953,10476,10593",
                         "endColumns": "42,24,24",
                         "endOffsets": "57429,671811,677520"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\15149\\Desktop\\clone album\\log3900-203\\mobile\\app\\src\\main\\res\\values\\themes.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "102",
+                        "endLines": "14",
+                        "endColumns": "12",
+                        "endOffsets": "827"
+                    },
+                    "to": {
+                        "startLines": "5730",
+                        "startColumns": "4",
+                        "startOffsets": "394790",
+                        "endLines": "5742",
+                        "endColumns": "12",
+                        "endOffsets": "395501"
                     }
                 },
                 {
@@ -164,6 +185,23 @@
                         "startOffsets": "93389,93429,94511,94693,94748,96244,96298,96350,96399,96460",
                         "endColumns": "39,46,42,54,46,53,51,48,60,49",
                         "endOffsets": "93424,93471,94549,94743,94790,96293,96345,96394,96455,96505"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\15149\\Desktop\\clone album\\log3900-203\\mobile\\app\\src\\main\\res\\values\\colors.xml",
+                    "from": {
+                        "startLines": "7,10,19,11,17,21,9,14,20,2,3,4,12,13,18,5,6,8,15,16",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "293,419,830,474,741,916,379,603,872,57,105,153,516,556,784,201,247,336,647,691",
+                        "endColumns": "41,53,40,40,41,46,38,42,42,46,46,46,38,45,44,44,44,41,42,48",
+                        "endOffsets": "330,468,866,510,778,958,413,641,910,99,147,195,550,597,824,241,287,373,685,735"
+                    },
+                    "to": {
+                        "startLines": "603,604,605,612,662,663,664,821,830,831,832,833,834,835,842,847,848,852,853,854",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "33419,33461,33515,34081,37454,37495,37542,48892,49522,49564,49611,49658,49705,49743,50199,50529,50574,50782,50824,50866",
+                        "endColumns": "41,53,39,39,40,46,38,41,41,46,46,46,37,44,43,44,44,41,41,47",
+                        "endOffsets": "33456,33510,33550,34116,37490,37537,37576,48929,49559,49606,49653,49700,49738,49783,50238,50569,50614,50819,50861,50909"
                     }
                 },
                 {
@@ -260,7 +298,24 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\15149\\Desktop\\git clone final\\log3900-203\\mobile\\app\\src\\main\\res\\values\\font_certs.xml",
+                    "source": "C:\\Users\\15149\\Desktop\\clone album\\log3900-203\\mobile\\app\\src\\main\\res\\values\\ic_launcher_background.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "57",
+                        "endColumns": "56",
+                        "endOffsets": "109"
+                    },
+                    "to": {
+                        "startLines": "667",
+                        "startColumns": "4",
+                        "startOffsets": "37716",
+                        "endColumns": "56",
+                        "endOffsets": "37768"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\15149\\Desktop\\clone album\\log3900-203\\mobile\\app\\src\\main\\res\\values\\font_certs.xml",
                     "from": {
                         "startLines": "2,6,11",
                         "startColumns": "4,4,4",
@@ -276,6 +331,23 @@
                         "endLines": "5,10,15",
                         "endColumns": "12,19,19",
                         "endOffsets": "347,2072,3662"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\15149\\Desktop\\clone album\\log3900-203\\mobile\\app\\src\\main\\res\\values\\strings.xml",
+                    "from": {
+                        "startLines": "1,3",
+                        "startColumns": "4,4",
+                        "startOffsets": "17,123",
+                        "endColumns": "45,69",
+                        "endOffsets": "58,188"
+                    },
+                    "to": {
+                        "startLines": "1638,1651",
+                        "startColumns": "4,4",
+                        "startOffsets": "101966,103424",
+                        "endColumns": "45,69",
+                        "endOffsets": "102007,103489"
                     }
                 },
                 {
@@ -312,44 +384,6 @@
                         "startOffsets": "96678",
                         "endColumns": "53",
                         "endOffsets": "96727"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\15149\\Desktop\\git clone final\\log3900-203\\mobile\\app\\src\\main\\res\\values\\themes.xml",
-                    "from": {
-                        "startLines": "2",
-                        "startColumns": "4",
-                        "startOffsets": "102",
-                        "endLines": "14",
-                        "endColumns": "12",
-                        "endOffsets": "827"
-                    },
-                    "to": {
-                        "startLines": "5730",
-                        "startColumns": "4",
-                        "startOffsets": "394790",
-                        "endLines": "5742",
-                        "endColumns": "12",
-                        "endOffsets": "395501"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\15149\\Desktop\\git clone final\\log3900-203\\mobile\\app\\src\\main\\res\\values\\preloaded_fonts.xml",
-                    "from": {
-                        "startLines": "2",
-                        "startColumns": "4",
-                        "startOffsets": "57",
-                        "endLines": "4",
-                        "endColumns": "12",
-                        "endOffsets": "157"
-                    },
-                    "to": {
-                        "startLines": "16",
-                        "startColumns": "4",
-                        "startOffsets": "3667",
-                        "endLines": "18",
-                        "endColumns": "12",
-                        "endOffsets": "3765"
                     }
                 },
                 {
@@ -405,40 +439,6 @@
                         "startOffsets": "56475,56528,57434,57487,60973,61640,61695,61744,700619",
                         "endColumns": "52,47,52,49,55,54,48,49,1722",
                         "endOffsets": "56523,56571,57482,57532,61024,61690,61739,61789,702337"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\15149\\Desktop\\git clone final\\log3900-203\\mobile\\app\\src\\main\\res\\values\\colors.xml",
-                    "from": {
-                        "startLines": "7,10,19,11,17,21,9,14,20,2,3,4,12,13,18,5,6,8,15,16",
-                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
-                        "startOffsets": "293,419,830,474,741,916,379,603,872,57,105,153,516,556,784,201,247,336,647,691",
-                        "endColumns": "41,53,40,40,41,46,38,42,42,46,46,46,38,45,44,44,44,41,42,48",
-                        "endOffsets": "330,468,866,510,778,958,413,641,910,99,147,195,550,597,824,241,287,373,685,735"
-                    },
-                    "to": {
-                        "startLines": "603,604,605,612,662,663,664,821,830,831,832,833,834,835,842,847,848,852,853,854",
-                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
-                        "startOffsets": "33419,33461,33515,34081,37454,37495,37542,48892,49522,49564,49611,49658,49705,49743,50199,50529,50574,50782,50824,50866",
-                        "endColumns": "41,53,39,39,40,46,38,41,41,46,46,46,37,44,43,44,44,41,41,47",
-                        "endOffsets": "33456,33510,33550,34116,37490,37537,37576,48929,49559,49606,49653,49700,49738,49783,50238,50569,50614,50819,50861,50909"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\15149\\Desktop\\git clone final\\log3900-203\\mobile\\app\\src\\main\\res\\values\\ic_launcher_background.xml",
-                    "from": {
-                        "startLines": "2",
-                        "startColumns": "4",
-                        "startOffsets": "57",
-                        "endColumns": "56",
-                        "endOffsets": "109"
-                    },
-                    "to": {
-                        "startLines": "667",
-                        "startColumns": "4",
-                        "startOffsets": "37716",
-                        "endColumns": "56",
-                        "endOffsets": "37768"
                     }
                 },
                 {
