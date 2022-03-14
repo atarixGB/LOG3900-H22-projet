@@ -45,8 +45,11 @@ class JoinAlbumPopUp(val albumName: String, val user: String) : DialogFragment()
         }
 
         rootView.submitBtn.setOnClickListener {
-            sendRequestToJoinAlbum(albumName, user)
-            Toast.makeText(context, "demande envoyée", Toast.LENGTH_SHORT).show()
+            if (sendRequestToJoinAlbum(albumName, user)) {
+                Toast.makeText(context, "demande envoyée", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(context, "Vous avez deja soumis une demande", Toast.LENGTH_SHORT).show()
+            }
             dismiss()
         }
 
@@ -54,16 +57,14 @@ class JoinAlbumPopUp(val albumName: String, val user: String) : DialogFragment()
 
     }
 
-    private fun sendRequestToJoinAlbum(albumName: String, userName: String) {
+    private fun sendRequestToJoinAlbum(albumName: String, userName: String): Boolean {
+        var requestSent: Boolean= false
         compositeDisposable.add(iMyService.sendRequestToJoinAlbum(albumName, userName)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { result ->
-                if (result == "201") {
-//                    Toast.makeText(context, "demande envoyée", Toast.LENGTH_SHORT).show()
-                } else {
-                    Toast.makeText(context, "erreur", Toast.LENGTH_SHORT).show()
-                }
+                requestSent = result == "201"
             })
+        return requestSent
     }
 }

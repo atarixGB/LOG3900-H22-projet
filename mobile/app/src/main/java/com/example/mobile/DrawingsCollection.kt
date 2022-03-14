@@ -115,8 +115,19 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
                     }
                     R.id.menu_acceptRequestMembership -> {
                         //ouvrir le popup window des utilisateurs
-                        dialogAcceptMembershipRequest = AcceptMembershipRequestsPopUp(albumName, currentAlbum.membershipRequests, user)
-                        dialogAcceptMembershipRequest.show(supportFragmentManager, "customDialog")
+                        if (!currentAlbum.membershipRequests.isNullOrEmpty()) {
+                            dialogAcceptMembershipRequest = AcceptMembershipRequestsPopUp(
+                                albumName,
+                                currentAlbum.membershipRequests,
+                                user
+                            )
+                            dialogAcceptMembershipRequest.show(
+                                supportFragmentManager,
+                                "customDialog"
+                            )
+                        } else {
+                            Toast.makeText(this, "Aucune demande a accepter", Toast.LENGTH_LONG).show()
+                        }
 
                         true
                     }

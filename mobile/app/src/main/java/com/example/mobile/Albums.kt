@@ -82,7 +82,7 @@ class Albums : AppCompatActivity(), CreateAlbumPopUp.DialogListener ,AlbumAdapte
 
             override fun onResponse(call: Call<List<IAlbum>>, response: Response<List<IAlbum>>) {
                 for (album in response.body()!!) {
-                    if(album._id!="622e9aebadd3a8e29906fe33"){
+                    if(album._id!="622f77abc04d88938c916084"){
                         if (album.members.contains(user)) {
                             albumAdapter.addAlbum(album)
                             albumAdapter.notifyItemInserted((rvOutputAlbums.adapter as AlbumAdapter).itemCount)
@@ -105,15 +105,15 @@ class Albums : AppCompatActivity(), CreateAlbumPopUp.DialogListener ,AlbumAdapte
         //list of members
         var usersList = ArrayList<String>()
         usersList.add(user)
-        usersList.add("prob")
+        //usersList.add("prob")
 
         var drawingIDs = ArrayList<String>()
 //        drawingIDs.add("test drawing1")
 //        drawingIDs.add("test drawing2")
 
         var membershipRequests = ArrayList<String>()
-        membershipRequests.add("test request 1")
-        membershipRequests.add("test request2")
+//        membershipRequests.add("test request 1")
+//        membershipRequests.add("test request2")
 
         val newAlbum =IAlbum(_id = null,this.albumName,this.owner,this.albumDescription,drawingIDs,usersList, membershipRequests)
         albumAdapter.addAlbum(newAlbum)

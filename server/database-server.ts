@@ -316,6 +316,15 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
 
     //create new album
     app.post("/albums", (request, response, next) => {
+      var post_data = request.body;
+      var members = post_data.members
+
+      console.log("avanntt", request.body.members);
+      if (typeof members === 'string' || members instanceof String) {
+        request.body.members = [post_data.members];
+        console.log("apress", request.body.members);
+      }
+
       DB.collection("albums").insertOne(request.body, (err, res) => {
         request.body._id = res.insertedId.toHexString();
         console.log(`Album "${request.body.name}" created successfully with ID: ${request.body._id}!`);
@@ -373,9 +382,16 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
       let albumName = request.params.albumName;
       let usertoAdd = request.body.identifier;
       console.log("USER TO ADD",usertoAdd);
-      DB.collection("albums").findOneAndUpdate({ name: albumName }, { $push: { membershipRequests: usertoAdd } }, { returnDocument: 'after' }, (err, res) => {
-        response.json(201)
-        console.log(usertoAdd, "sent request to join ", albumName);
+      DB.collection("albums").find({ name: albumName }).toArray(function (err, res) {
+        console.log(res[0].membershipRequests);
+        if (res[0].membershipRequests.includes(usertoAdd)) {
+          response.json(400);
+        } else {
+          DB.collection("albums").updateOne({ name: albumName }, { $push: { membershipRequests: usertoAdd } }, { returnDocument: 'after' }, (err, res) => {
+          response.json(201)
+          console.log(usertoAdd, "sent request to join ", albumName);
+        });
+      }
       })
     });
 
