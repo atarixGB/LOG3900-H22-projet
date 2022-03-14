@@ -27,6 +27,7 @@ class Albums : AppCompatActivity(), CreateAlbumPopUp.DialogListener ,AlbumAdapte
     private lateinit var displayAlbumsBtn: Button
     private lateinit var iMyService: IMyService
     private lateinit var albumName: String
+    private lateinit var publicGalleryBtn : Button
     private lateinit var albumDescription: String
     private lateinit var owner:String
     internal var compositeDisposable = CompositeDisposable()
@@ -44,6 +45,7 @@ class Albums : AppCompatActivity(), CreateAlbumPopUp.DialogListener ,AlbumAdapte
 
         rvOutputAlbums = findViewById(R.id.rvOutputAlbums)
         displayAlbumsBtn = findViewById(R.id.display_albums_btn)
+        publicGalleryBtn= findViewById(R.id.drawing_gallery_btn)
 
         val retrofit = RetrofitClient.getInstance()
         iMyService = retrofit.create(IMyService::class.java)
@@ -74,6 +76,14 @@ class Albums : AppCompatActivity(), CreateAlbumPopUp.DialogListener ,AlbumAdapte
             startActivity(intent)
         }
 
+        publicGalleryBtn.setOnClickListener{
+            val intent = Intent(this, DrawingsCollection::class.java)
+            intent.putExtra("albumName", "album public")
+            intent.putExtra("userName", user)
+            startActivity(intent)
+        }
+
+
     }
 
     private fun getAllAvailableAlbums() {
@@ -82,8 +92,8 @@ class Albums : AppCompatActivity(), CreateAlbumPopUp.DialogListener ,AlbumAdapte
 
             override fun onResponse(call: Call<List<IAlbum>>, response: Response<List<IAlbum>>) {
                 for (album in response.body()!!) {
-                    if(album._id!="622f77abc04d88938c916084"){
-                        if (album.members.contains(user)) {
+                    if (album._id != "622f77abc04d88938c916084") {
+                        if (album.members.contains(user)!!) {
                             albumAdapter.addAlbum(album)
                             albumAdapter.notifyItemInserted((rvOutputAlbums.adapter as AlbumAdapter).itemCount)
                         }
@@ -108,8 +118,7 @@ class Albums : AppCompatActivity(), CreateAlbumPopUp.DialogListener ,AlbumAdapte
         //usersList.add("prob")
 
         var drawingIDs = ArrayList<String>()
-//        drawingIDs.add("test drawing1")
-//        drawingIDs.add("test drawing2")
+
 
         var membershipRequests = ArrayList<String>()
 //        membershipRequests.add("test request 1")

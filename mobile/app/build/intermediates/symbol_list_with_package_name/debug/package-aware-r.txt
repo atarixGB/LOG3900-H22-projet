@@ -3040,6 +3040,8 @@ id menu_members
 id message
 id middle
 id mini
+id modifiedAlbumName
+id modifyAlbumBtn
 id modify_avatar
 id modify_label
 id month_grid
@@ -3084,6 +3086,7 @@ id navigation_header_container
 id never
 id neverCompleteToEnd
 id neverCompleteToStart
+id newAlbumDescription
 id newAlbumName
 id newRoomName
 id newRoomsSearchView
@@ -3119,6 +3122,7 @@ id popupTitle
 id popupTitleAlbum
 id popupTitleDrawing
 id popupTitleJoinAlbum
+id popupTitleModifAlbum
 id position
 id postLayout
 id principal_room_btn
@@ -3426,6 +3430,7 @@ layout design_navigation_menu
 layout design_navigation_menu_item
 layout design_text_input_end_icon
 layout design_text_input_start_icon
+layout fragment_album_attribute_modification_pop_up
 layout fragment_create_album_pop_up
 layout fragment_custom_tool
 layout fragment_drawing_zone

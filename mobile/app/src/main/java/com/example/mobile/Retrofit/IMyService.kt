@@ -120,6 +120,14 @@ interface IMyService {
     @DELETE("/albums/{id}")
     fun deleteAlbum(@Path("id")albumID:String): Observable<String>
 
+    @POST("albumUpdate")
+    @FormUrlEncoded
+    fun updateAlbum(
+        @Field("oldAlbumName") oldUsername: String,
+        @Field("newAlbumName") newUsername: String,
+        @Field("newDescription") newAvatar: String,
+    ): Observable<String>
+
 
 //    @Multipart
 //    @POST("upload")

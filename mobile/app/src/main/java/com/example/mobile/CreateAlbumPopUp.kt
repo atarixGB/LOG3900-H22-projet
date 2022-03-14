@@ -35,12 +35,18 @@ class CreateAlbumPopUp : DialogFragment() {
         }
 
         submitButton.setOnClickListener(){
-            var name= albumName.text.toString()
-            var description = albumDescription.text.toString()
+            if(albumName.text.toString()!="album public"){
+                var name= albumName.text.toString()
+                var description = albumDescription.text.toString()
 
-            listener.popUpListener(name,description)
+                listener.popUpListener(name,description)
 
-            dismiss()
+                dismiss()
+            }
+            else {
+                Toast.makeText(context,"Album public est un nom reservé", Toast.LENGTH_SHORT).show()
+            }
+
         }
 
         return rootView
