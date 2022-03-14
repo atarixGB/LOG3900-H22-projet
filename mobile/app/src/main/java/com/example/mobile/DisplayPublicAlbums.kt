@@ -63,10 +63,13 @@ class DisplayPublicAlbums : AppCompatActivity(), AlbumAdapter.AlbumAdapterListen
 
             override fun onResponse(call: Call<List<IAlbum>>, response: Response<List<IAlbum>>) {
                 for (album in response.body()!!) {
-                    if (!album.members.contains(user)) {
-                        albumAdapter.addAlbum(album)
-                        albumAdapter.notifyItemInserted((rvOutputAlbums.adapter as AlbumAdapter).itemCount)
+                    if(album._id!="622e9aebadd3a8e29906fe33"){
+                        if (!album.members.contains(user)) {
+                            albumAdapter.addAlbum(album)
+                            albumAdapter.notifyItemInserted((rvOutputAlbums.adapter as AlbumAdapter).itemCount)
+                        }
                     }
+
                 }
             }
 
