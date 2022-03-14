@@ -384,7 +384,7 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
       console.log("USER TO ADD",usertoAdd);
       DB.collection("albums").find({ name: albumName }).toArray(function (err, res) {
         console.log(res[0].membershipRequests);
-        if (res[0].membershipRequests.includes(usertoAdd)) {
+        if (res[0].membershipRequests != undefined && res[0].membershipRequests.includes(usertoAdd)) {
           response.json(400);
         } else {
           DB.collection("albums").updateOne({ name: albumName }, { $push: { membershipRequests: usertoAdd } }, { returnDocument: 'after' }, (err, res) => {

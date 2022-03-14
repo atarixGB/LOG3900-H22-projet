@@ -1,14 +1,10 @@
 {
     "logs": [
         {
-<<<<<<< HEAD
             "outputFile": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-de\\values-de.xml",
-=======
-            "outputFile": "C:\\Users\\15149\\Desktop\\clone album\\log3900-203\\mobile\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-de\\values-de.xml",
->>>>>>> 79598f3831ac1ed72579d933f5520e83a5cd8c4b
             "map": [
                 {
-                    "source": "C:\\Users\\15149\\.gradle\\caches\\transforms-2\\files-2.1\\6e9453ca2f09d68d2153f7f03458c896\\appcompat-1.4.1\\res\\values-de\\values-de.xml",
+                    "source": "C:\\Users\\chaim\\.gradle\\caches\\transforms-2\\files-2.1\\6e9453ca2f09d68d2153f7f03458c896\\appcompat-1.4.1\\res\\values-de\\values-de.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
@@ -25,7 +21,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\15149\\.gradle\\caches\\transforms-2\\files-2.1\\dd4743fb1b1bc90ef9708ae6d3a9b706\\material-1.5.0\\res\\values-de\\values-de.xml",
+                    "source": "C:\\Users\\chaim\\.gradle\\caches\\transforms-2\\files-2.1\\dd4743fb1b1bc90ef9708ae6d3a9b706\\material-1.5.0\\res\\values-de\\values-de.xml",
                     "from": {
                         "startLines": "2,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
@@ -44,7 +40,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\15149\\.gradle\\caches\\transforms-2\\files-2.1\\a431b63830e255b80e0dcda496eb99b4\\core-1.7.0\\res\\values-de\\values-de.xml",
+                    "source": "C:\\Users\\chaim\\.gradle\\caches\\transforms-2\\files-2.1\\a431b63830e255b80e0dcda496eb99b4\\core-1.7.0\\res\\values-de\\values-de.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",

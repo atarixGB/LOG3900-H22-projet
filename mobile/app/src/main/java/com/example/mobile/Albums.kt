@@ -131,12 +131,7 @@ class Albums : AppCompatActivity(), CreateAlbumPopUp.DialogListener ,AlbumAdapte
         createNewAlbum(this.albumName,this.owner,this.albumDescription,drawingIDs,usersList, membershipRequests)
     }
 
-    override fun albumAdapterListener(
-        albumName: String,
-        albumsMembers: ArrayList<String>,
-        albumOwner: String,
-        albumMembershipRequests: ArrayList<String>
-    ) {
+    override fun albumAdapterListener(albumName: String) {
         this.albumName = albumName
         val intent = Intent(this, DrawingsCollection::class.java)
         intent.putExtra("albumName", albumName)

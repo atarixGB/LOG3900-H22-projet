@@ -132,7 +132,7 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
                         if (!currentAlbum.membershipRequests.isNullOrEmpty()) {
                             dialogAcceptMembershipRequest = AcceptMembershipRequestsPopUp(
                                 albumName,
-                                currentAlbum.membershipRequests,
+                                currentAlbum.membershipRequests!!,
                                 user
                             )
                             dialogAcceptMembershipRequest.show(

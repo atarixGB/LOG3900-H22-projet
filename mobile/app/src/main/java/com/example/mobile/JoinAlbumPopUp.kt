@@ -1,5 +1,6 @@
 package com.example.mobile
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -45,11 +46,12 @@ class JoinAlbumPopUp(val albumName: String, val user: String) : DialogFragment()
         }
 
         rootView.submitBtn.setOnClickListener {
-            if (sendRequestToJoinAlbum(albumName, user)) {
-                Toast.makeText(context, "demande envoyée", Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(context, "Vous avez deja soumis une demande", Toast.LENGTH_SHORT).show()
-            }
+//            if (sendRequestToJoinAlbum(albumName, user)) {
+//                Toast.makeText(context, "demande envoyée", Toast.LENGTH_SHORT).show()
+//            } else {
+//                Toast.makeText(context, "Vous avez deja soumis une demande", Toast.LENGTH_SHORT).show()
+//            }
+            sendRequestToJoinAlbum(albumName, user, requireContext())
             dismiss()
         }
 
@@ -57,13 +59,18 @@ class JoinAlbumPopUp(val albumName: String, val user: String) : DialogFragment()
 
     }
 
-    private fun sendRequestToJoinAlbum(albumName: String, userName: String): Boolean {
+    private fun sendRequestToJoinAlbum(albumName: String, userName: String, context: Context): Boolean {
         var requestSent: Boolean= false
         compositeDisposable.add(iMyService.sendRequestToJoinAlbum(albumName, userName)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { result ->
                 requestSent = result == "201"
+                if (result == "201") {
+                    Toast.makeText(context, "demande envoyée", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(context, "Vous avez deja soumis une demande", Toast.LENGTH_SHORT).show()
+                }
             })
         return requestSent
     }
