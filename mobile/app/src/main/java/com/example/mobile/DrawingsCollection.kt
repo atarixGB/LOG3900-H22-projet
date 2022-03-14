@@ -9,6 +9,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.widget.PopupMenu
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -63,6 +64,11 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
         user = intent.getStringExtra("userName").toString()
         albumName = intent.getStringExtra("albumName").toString()
         getAlbumParameters(albumName)
+
+        if(albumName=="album public"){
+            albumViewOptions.isVisible=false
+            membersListButton.isVisible=false
+        }
 
         drawings = java.util.ArrayList()
 

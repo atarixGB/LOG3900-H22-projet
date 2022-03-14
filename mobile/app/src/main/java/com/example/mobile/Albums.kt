@@ -27,6 +27,7 @@ class Albums : AppCompatActivity(), CreateAlbumPopUp.DialogListener ,AlbumAdapte
     private lateinit var displayAlbumsBtn: Button
     private lateinit var iMyService: IMyService
     private lateinit var albumName: String
+    private lateinit var publicGalleryBtn : Button
     private lateinit var albumDescription: String
     private lateinit var owner:String
     internal var compositeDisposable = CompositeDisposable()
@@ -44,6 +45,7 @@ class Albums : AppCompatActivity(), CreateAlbumPopUp.DialogListener ,AlbumAdapte
 
         rvOutputAlbums = findViewById(R.id.rvOutputAlbums)
         displayAlbumsBtn = findViewById(R.id.display_albums_btn)
+        publicGalleryBtn= findViewById(R.id.drawing_gallery_btn)
 
         val retrofit = RetrofitClient.getInstance()
         iMyService = retrofit.create(IMyService::class.java)
@@ -73,6 +75,14 @@ class Albums : AppCompatActivity(), CreateAlbumPopUp.DialogListener ,AlbumAdapte
             intent.putExtra("userName",user)
             startActivity(intent)
         }
+
+        publicGalleryBtn.setOnClickListener{
+            val intent = Intent(this, DrawingsCollection::class.java)
+            intent.putExtra("albumName", "album public")
+            intent.putExtra("userName", user)
+            startActivity(intent)
+        }
+
 
     }
 
@@ -104,8 +114,8 @@ class Albums : AppCompatActivity(), CreateAlbumPopUp.DialogListener ,AlbumAdapte
         this.owner=user
         //list of members
         var usersList = ArrayList<String>()
-        usersList.add(user)
-        usersList.add("prob")
+//        usersList.add(user)
+//        usersList.add("prob")
 
         var drawingIDs = ArrayList<String>()
 //        drawingIDs.add("test drawing1")
