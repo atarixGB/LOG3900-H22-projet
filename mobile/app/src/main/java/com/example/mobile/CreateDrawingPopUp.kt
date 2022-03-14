@@ -193,9 +193,11 @@ class CreateDrawingPopUp(val user: String, val isAlbumAlreadySelected: Boolean) 
 
             override fun onResponse(call: Call<List<IAlbum>>, response: Response<List<IAlbum>>) {
                 for (album in response.body()!!) {
-                    if (album.members.contains(user)) {
-                        albumAdapter.addAlbum(album)
-                        albumAdapter.notifyItemInserted((rvOutputAlbums.adapter as AlbumAdapter).itemCount)
+                    if (album._id != "622f77abc04d88938c916084"){
+                        if (album.members.contains(user)) {
+                            albumAdapter.addAlbum(album)
+                            albumAdapter.notifyItemInserted((rvOutputAlbums.adapter as AlbumAdapter).itemCount)
+                        }
                     }
                 }
             }
