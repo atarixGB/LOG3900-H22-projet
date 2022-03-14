@@ -441,6 +441,35 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
         });
     });
 
+    //update album attributes
+    app.post("/albumUpdate", (request, response, next) => {
+      var post_data = request.body;
+      var oldAlbumName = post_data.oldAlbumName;
+      var newAlbumName = post_data.newAlbumName;
+      var newDescription = post_data.newDescription;
+    
+      //check if an album already has the new name
+      DB.collection("albums")
+        .find({ name: newAlbumName })
+        .count(function (err, number) {
+          if (number != 0 && oldAlbumName != newAlbumName) {
+            response.json(false);
+            console.log("album name already used");
+          } else {
+            // Update album data
+            DB.collection("albums").updateOne({ name: oldAlbumName }, {
+              $set: {
+                "name": newAlbumName,
+                "description": newDescription,
+              },
+            }).then(result => {
+              response.json(200);
+            });
+          }
+        });
+    });
+
+
     //Getting a user's data 
     app.get("/profile/:username", (request, response, next) => {
       var identifier = request.params.username;

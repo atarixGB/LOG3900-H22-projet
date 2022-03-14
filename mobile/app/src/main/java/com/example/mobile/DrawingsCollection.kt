@@ -3,6 +3,7 @@ package com.example.mobile
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Base64
 import android.util.Log
 import android.widget.ImageButton
 import android.widget.TextView
@@ -15,14 +16,17 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mobile.Retrofit.IMyService
 import com.example.mobile.Retrofit.RetrofitClient
+import com.mikhaellopez.circularimageview.CircularImageView
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import kotlinx.android.synthetic.main.activity_profile_modification.*
+import kotlinx.android.synthetic.main.fragment_create_album_pop_up.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterListener, UserAdapter.UserAdapterListener {
+class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterListener, UserAdapter.UserAdapterListener,AlbumAttributeModificationPopUp.DialogListener {
     private lateinit var leaveAlbumBtn: ImageButton
     private lateinit var albumNameTextView: TextView
     private lateinit var currentAlbum: IAlbum
@@ -37,6 +41,8 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
     private lateinit var drawingName: String
     private lateinit var userNameAccepted: String
     private lateinit var dialogAcceptMembershipRequest: AcceptMembershipRequestsPopUp
+    private lateinit var dialogEditAlbumAttributes: AlbumAttributeModificationPopUp
+
 
 
     private lateinit var iMyService: IMyService
@@ -116,7 +122,9 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
                 //get id of the item clicked and handle clicks
                 when (menuItem.itemId) {
                     R.id.menu_editAlbumParameters -> {
-                        Toast.makeText(this, "Modifier Album", Toast.LENGTH_LONG).show()
+                        //ouvrir pop up modification attributs d'album
+                        dialogEditAlbumAttributes= AlbumAttributeModificationPopUp()
+                        dialogEditAlbumAttributes.show(supportFragmentManager, "customDialog")
                         true
                     }
                     R.id.menu_acceptRequestMembership -> {
@@ -168,6 +176,23 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
         }
     }
 
+    override fun popUpListener(albumName: String,albumDescription:String) {
+        updateAlbum(this.albumName,albumName,albumDescription)
+    }
+
+    private fun updateAlbum(oldAlbumName: String, newAlbumName:String,newDescription:String) {
+        compositeDisposable.add(iMyService.updateAlbum(oldAlbumName,newAlbumName,newDescription)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { result->
+                if(result == "200"){
+                    Toast.makeText(this,"Modification faite avec succès", Toast.LENGTH_SHORT).show()
+
+                }else{
+                    Toast.makeText(this,"Échec de modification", Toast.LENGTH_SHORT).show()
+                }
+            })
+    }
     private fun getAllAlbumDrawings(albumName: String) {
         var call: Call<List<String>> = iMyService.getAllAlbumDrawings(albumName)
         call.enqueue(object: retrofit2.Callback<List<String>> {
