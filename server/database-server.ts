@@ -405,8 +405,13 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
       let albumId = request.params.id;
       let memberToRemove = request.body.memberToRemove;
       DB.collection("albums").findOneAndUpdate({ _id: mongoose.Types.ObjectId(albumId) }, { $pull: { members: memberToRemove } }, { returnDocument: 'after' }, (err, res) => {
-        // console.log("leave album", res);
-        // response.json(res)
+        
+        let albumOwner = res.value.owner
+        res.value.drawingIDs.forEach(element => {
+          DB.collection("drawings").findOneAndUpdate({ _id: mongoose.Types.ObjectId(element.replaceAll(/"/g, '')), owner: memberToRemove }, { $set: { owner: albumOwner } }, { returnDocument: 'after' }, (err, res) => {
+            //console.log(albumOwner, "is the new owner of", res.value.name);
+          });
+        });
         console.log(memberToRemove, "has left album ", albumId);
         response.json(201);
       });
