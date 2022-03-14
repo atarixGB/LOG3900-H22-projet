@@ -12,12 +12,12 @@ import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import kotlinx.android.synthetic.main.fragment_album_attribute_modification_pop_up.*
 
-class AlbumAttributeModificationPopUp : DialogFragment() {
+class AlbumAttributeModificationPopUp(val oldAlbumName: String,val oldDescription:String) : DialogFragment() {
     private lateinit var albumName: EditText
     private lateinit var albumDescription: EditText
     private lateinit var submitButton: Button
     private lateinit var cancelButton: Button
-    private lateinit var listener: CreateAlbumPopUp.DialogListener
+    private lateinit var listener: AlbumAttributeModificationPopUp.DialogListener
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -25,7 +25,9 @@ class AlbumAttributeModificationPopUp : DialogFragment() {
     ): View? {
         var rootView: View= inflater.inflate(R.layout.fragment_album_attribute_modification_pop_up, container, false)
         albumName=rootView.findViewById(R.id.modifiedAlbumName)
+        albumName.setText(oldAlbumName)
         albumDescription=rootView.findViewById(R.id.newAlbumDescription)
+        albumDescription.setText(oldDescription)
         submitButton= rootView.findViewById(R.id.modifyAlbumBtn)
         cancelButton=rootView.findViewById(R.id.cancelBtn)
 
@@ -54,7 +56,7 @@ class AlbumAttributeModificationPopUp : DialogFragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         listener = try {
-            context as CreateAlbumPopUp.DialogListener
+            context as AlbumAttributeModificationPopUp.DialogListener
         } catch (e: ClassCastException) {
             throw ClassCastException(
                 context.toString() + "must implement DialogListener"

@@ -123,7 +123,7 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
                 when (menuItem.itemId) {
                     R.id.menu_editAlbumParameters -> {
                         //ouvrir pop up modification attributs d'album
-                        dialogEditAlbumAttributes= AlbumAttributeModificationPopUp()
+                        dialogEditAlbumAttributes= AlbumAttributeModificationPopUp(albumName,currentAlbum.description!!)
                         dialogEditAlbumAttributes.show(supportFragmentManager, "customDialog")
                         true
                     }
@@ -176,9 +176,9 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
         }
     }
 
-    override fun popUpListener(albumName: String,albumDescription:String) {
-        updateAlbum(this.albumName,albumName,albumDescription)
-    }
+//    override fun popUpListener(albumName: String,albumDescription:String) {
+//        updateAlbum(this.albumName,albumName,albumDescription)
+//    }
 
     private fun updateAlbum(oldAlbumName: String, newAlbumName:String,newDescription:String) {
         compositeDisposable.add(iMyService.updateAlbum(oldAlbumName,newAlbumName,newDescription)
@@ -287,5 +287,11 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
                     Toast.makeText(this, "erreur de suppression d'album", Toast.LENGTH_SHORT).show()
                 }
             })
+    }
+
+    override fun popUpListener(albumName: String, albumDescription: String) {
+        this.albumNameTextView.text=albumName
+        updateAlbum(this.albumName,albumName,albumDescription)
+        this.albumName=albumName
     }
 }

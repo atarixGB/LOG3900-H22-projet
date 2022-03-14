@@ -92,8 +92,8 @@ class Albums : AppCompatActivity(), CreateAlbumPopUp.DialogListener ,AlbumAdapte
 
             override fun onResponse(call: Call<List<IAlbum>>, response: Response<List<IAlbum>>) {
                 for (album in response.body()!!) {
-                    if(album._id!="622e9aebadd3a8e29906fe33"){
-                        if (album.members.contains(user)) {
+                    if (album._id != "622e9aebadd3a8e29906fe33") {
+                        if (album.members.contains(user)!!) {
                             albumAdapter.addAlbum(album)
                             albumAdapter.notifyItemInserted((rvOutputAlbums.adapter as AlbumAdapter).itemCount)
                         }
@@ -114,12 +114,11 @@ class Albums : AppCompatActivity(), CreateAlbumPopUp.DialogListener ,AlbumAdapte
         this.owner=user
         //list of members
         var usersList = ArrayList<String>()
-//        usersList.add(user)
-//        usersList.add("prob")
+        usersList.add(user)
+        usersList.add("prob")
 
         var drawingIDs = ArrayList<String>()
-//        drawingIDs.add("test drawing1")
-//        drawingIDs.add("test drawing2")
+
 
         var membershipRequests = ArrayList<String>()
         membershipRequests.add("test request 1")
