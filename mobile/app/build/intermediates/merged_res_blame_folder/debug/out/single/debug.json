@@ -164,6 +164,10 @@
         "source": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\src\\main\\res\\drawable\\circle30.xml"
     },
     {
+        "merged": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ic_baseline_save_alt_24.xml.flat",
+        "source": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\src\\main\\res\\drawable\\ic_baseline_save_alt_24.xml"
+    },
+    {
         "merged": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\drawable_orange_color.xml.flat",
         "source": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\src\\main\\res\\drawable\\orange_color.xml"
     },

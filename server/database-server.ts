@@ -314,6 +314,24 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
         });
     });
 
+    //Save drawing data
+    app.put("/drawing/:drawingId", (request, response, next) => {
+
+      var drawingId = request.params.drawingId.replaceAll(/"/g, '');
+      var data =  request.body.data;
+
+      console.log(drawingId);
+      console.log(data);
+
+      DB.collection("drawings").findOneAndUpdate({ _id: mongoose.Types.ObjectId(drawingId) }, { $set: {"data": data}}, { returnDocument: 'after' }, (err, res) => {
+        response.json(200);
+        console.log(drawingId);
+        console.log(data);
+        console.log(res);
+      });
+    });
+    
+
     //create new album
     app.post("/albums", (request, response, next) => {
       var post_data = request.body;

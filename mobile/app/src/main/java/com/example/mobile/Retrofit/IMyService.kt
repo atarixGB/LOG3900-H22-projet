@@ -128,6 +128,10 @@ interface IMyService {
         @Field("newDescription") newAvatar: String,
     ): Observable<String>
 
+    @PUT("drawings/{drawingId}")
+    @FormUrlEncoded
+    fun saveDrawing(@Path("drawingId") drawingId: String,
+                    @Field("data") data: String): Observable<String>
 
 //    @Multipart
 //    @POST("upload")

@@ -2590,6 +2590,7 @@ drawable ic_baseline_more_vert_24
 drawable ic_baseline_people_24
 drawable ic_baseline_person_24
 drawable ic_baseline_photo_library_24
+drawable ic_baseline_save_alt_24
 drawable ic_baseline_search_24
 drawable ic_baseline_security_24
 drawable ic_baseline_text_snippet_24
@@ -2793,6 +2794,7 @@ id avatar7
 id avatar8
 id avatar9
 id avatar_selector
+id backBtn
 id back_btn_modification
 id barrier
 id baseline
@@ -3148,6 +3150,7 @@ id rvOutputDrawings
 id rvOutputMsgs
 id rvOutputRooms
 id rvUsersList
+id saveDrawingBtn
 id save_non_transition_alpha
 id save_overlay_view
 id sawtooth

@@ -4,24 +4,40 @@ import android.content.Context
 import android.graphics.*
 import android.os.Bundle
 import android.util.AttributeSet
+import android.util.Base64
 import android.view.*
+import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import com.example.mobile.Retrofit.IMyService
+import com.example.mobile.Retrofit.RetrofitClient
 import com.example.mobile.model.ToolModel
 import com.example.mobile.model.ToolParameters
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
+import java.io.ByteArrayOutputStream
 
 class DrawingZoneFragment : Fragment() {
     private var mDrawingView: DrawingView? = null
     private val viewModel: ToolParameters by activityViewModels()
     private val toolModel: ToolModel by activityViewModels()
+    private val sharedViewModelToolBar: SharedViewModelToolBar by activityViewModels()
+
+    private lateinit var iMyService: IMyService
+    internal var compositeDisposable = CompositeDisposable()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        val retrofit = RetrofitClient.getInstance()
+        iMyService = retrofit.create(IMyService::class.java)
+
         return inflater.inflate(R.layout.fragment_drawing_zone, container, false)
     }
 
@@ -37,7 +53,21 @@ class DrawingZoneFragment : Fragment() {
         toolModel.tool.observe(viewLifecycleOwner, Observer { tool ->
             mDrawingView.changeTool(tool)
         })
+
+//        toolModel.img.observe(viewLifecycleOwner, Observer { img ->
+//            mDrawingView.saveImg()
+//        })
+
+        sharedViewModelToolBar.drawingId.observe(viewLifecycleOwner, Observer { drawingId ->
+            mDrawingView.setDrawingId(drawingId)
+        })
+
+        toolModel.onClick.observe(viewLifecycleOwner, Observer { onClick ->
+            mDrawingView.saveImg(compositeDisposable, iMyService)
+        })
+
     }
+
     class DrawingView @JvmOverloads constructor(
         context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
     ) : View(context, attrs, defStyleAttr) {
@@ -47,6 +77,11 @@ class DrawingZoneFragment : Fragment() {
         private var mBitmap: Bitmap? = null
         private var mCanvas: Canvas? = null
         private var isDrawing = false
+        private lateinit var drawingId : String
+
+
+//        private lateinit var iMyService: IMyService
+//        internal var compositeDisposable = CompositeDisposable()
 
 
         override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
@@ -117,6 +152,33 @@ class DrawingZoneFragment : Fragment() {
                 this.toolManager.changeTool(tool)
                 resetPath()
             }
+        }
+
+        fun setDrawingId(drawingId: String){
+            this.drawingId = drawingId
+        }
+
+        fun saveImg(compositeDisposable: CompositeDisposable, iMyService: IMyService) {
+            if (mBitmap != null) {
+                var drawingByteArray: ByteArray = convertToByteArray(mBitmap!!)
+                var drawing_str: String = Base64.encodeToString(drawingByteArray, 0)
+                compositeDisposable.add(iMyService.saveDrawing(drawingId, drawing_str)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe { result ->
+                        if (result == "201") {
+                            Toast.makeText(context, "l'image a ete sauvegarder", Toast.LENGTH_SHORT).show()
+                        } else {
+                            Toast.makeText(context, "erreur", Toast.LENGTH_SHORT).show()
+                        }
+                    })
+            }
+        }
+
+        fun convertToByteArray(bitmap: Bitmap): ByteArray {
+            val stream = ByteArrayOutputStream()
+            bitmap.compress(Bitmap.CompressFormat.PNG, 90, stream)
+            return stream.toByteArray()
         }
     }
 }

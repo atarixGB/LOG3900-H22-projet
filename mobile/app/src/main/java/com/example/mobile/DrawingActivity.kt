@@ -35,8 +35,12 @@ class DrawingActivity : AppCompatActivity(), CreateDrawingPopUp.DialogListener, 
         sharedViewModelCreateDrawingPopUp.setAlbum(albumName)
     }
 
-    override fun popUpListener(albumName: String, drawingName: String) {
+    override fun popUpListener(albumName: String, drawingName: String, drawingId: String) {
         this.albumName = albumName
         this.drawingName = drawingName
+    }
+
+    override fun drawingIdPopUpListener(drawingId: String) {
+        sharedViewModelToolBar.setDrawingId(drawingId)
     }
 }
