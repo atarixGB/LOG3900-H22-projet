@@ -20,8 +20,8 @@ class DrawingActivity : AppCompatActivity(), CreateDrawingPopUp.DialogListener, 
         sharedViewModelToolBar.setUser(user)
 
         //Open Popup Window
-        var dialog = CreateDrawingPopUp(user)
-        dialog.show(supportFragmentManager, "customDialog")
+//        var dialog = CreateDrawingPopUp(user)
+//        dialog.show(supportFragmentManager, "customDialog")
     }
 
     override fun albumAdapterListener(

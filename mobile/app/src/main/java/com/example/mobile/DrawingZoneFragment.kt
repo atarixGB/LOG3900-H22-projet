@@ -3,6 +3,7 @@ package com.example.mobile
 import android.content.Context
 import android.graphics.*
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.LinearLayout
 import androidx.core.content.res.ResourcesCompat
@@ -60,9 +61,10 @@ class DrawingZoneFragment : Fragment() {
         private var isDrawing = false
 
         fun onStrokeReceive(stroke: JSONObject){
-            if(stroke.getInt("toolType") == ToolbarFragment.MenuItem.PENCIL.ordinal){
+            Log.d("ici", "allo")
+            if(stroke.getInt("toolType") == 0){
                 toolManager.pencil.onStrokeReceived(stroke)
-            }else if(stroke.getInt("toolType") == ToolbarFragment.MenuItem.RECTANGLE.ordinal){
+            }else if(stroke.getInt("toolType") == 1){
                 toolManager.rectangle.onStrokeReceived(stroke)
             }
             invalidate()

@@ -2,6 +2,7 @@ package com.example.mobile.Tools
 
 import android.content.Context
 import android.graphics.Canvas
+import android.graphics.Color
 import android.graphics.Paint
 import com.example.mobile.DrawingCollaboration
 import com.example.mobile.Interface.IPencilStroke
@@ -10,14 +11,17 @@ import com.example.mobile.Interface.IVec2
 import org.json.JSONArray
 import org.json.JSONObject
 import java.util.*
+import kotlin.math.abs
 
 class Rectangle (context: Context, baseCanvas: Canvas, val socket : DrawingCollaboration) : Tool(context, baseCanvas, socket) {
 
+    var top = 0F
+    var right = 0F
+    var bottom = 0F
+    var left = 0F
     override fun touchStart(){
-        points.clear()
         mStartX = mx
         mStartY = my
-        points.add(IVec2(mx,my))
     }
 
     override fun touchMove() {}
@@ -25,45 +29,51 @@ class Rectangle (context: Context, baseCanvas: Canvas, val socket : DrawingColla
 
     override fun touchUp(){
         onDraw(baseCanvas)
+        this.sendRectangleStroke(left, top, right, bottom)
     }
 
     override fun onStrokeReceived(stroke: JSONObject) {
-        TODO("Not yet implemented")
+        var boundingPoints = ArrayList<IVec2>()
+        val boundingPointsData = stroke["boundingPoints"]  as JSONArray
+        val topCornerData = stroke.get("topLeftCorner") as JSONObject
+        var topLeftCorner = IVec2(topCornerData.getDouble("x").toFloat(), topCornerData.getDouble("y").toFloat())
+        val iRectangleStroke = IRectangleStroke(boundingPoints,
+            stroke.getInt("primaryColor"),
+            Color.WHITE, //to change
+            stroke.getDouble("strokeWidth").toFloat(),
+            stroke.getDouble("width").toFloat(),
+            stroke.getDouble("height").toFloat(),
+            topLeftCorner)
+        draw(iRectangleStroke)
     }
 
     override fun onDraw(canvas: Canvas) {
-        val right = if (mStartX > mx) mStartX else mx
-        val left = if (mStartX > mx) mx else mStartX
-        val bottom = if (mStartY > my) mStartY else my
-        val top = if (mStartY > my) my else mStartY
+        right = if (mStartX > mx) mStartX else mx
+        left = if (mStartX > mx) mx else mStartX
+        bottom = if (mStartY > my) mStartY else my
+        top = if (mStartY > my) my else mStartY
         canvas!!.drawRect(left, top, right, bottom, paint!!)
-        points.add(IVec2(mx,my))
-        this.sendRectangleStroke()
     }
 
-    fun sendRectangleStroke(){
+    private fun sendRectangleStroke(left : Float, top: Float, right: Float, bottom: Float){
         var bounding = JSONArray()
-        for(pts in this.getBoundingPoints()){
-            var arr = JSONObject()
-            arr.put("x",pts.x)
-            arr.put("y",pts.y)
-            bounding.put(arr)
-        }
-        var startingCoord = JSONObject()
-        startingCoord.put("x", points.get(0).x)
-        startingCoord.put("x",points.get(0).y)
+        var topLeftCorner = JSONObject()
+        topLeftCorner.put("x", left)
+        topLeftCorner.put("y",top)
 
         var jo = JSONObject()
-        jo.put("boundingPoints", bounding)
-        jo.put("toolType", 0)
+        jo.put("boundingPoints", bounding) //TODO
+        jo.put("toolType", 1)
         jo.put("primaryColor", this.paint.color)
         jo.put("strokeWidth", this.paint.strokeWidth)
-        jo.put("topLeftCorner", startingCoord)
-        jo.put("width", startingCoord)
-        jo.put("height", startingCoord)
+        jo.put("topLeftCorner", topLeftCorner)
+        jo.put("width", abs(left-right))
+        jo.put("height", abs(top-bottom))
         jo.put("sender", socket.socket.id())
+        socket.socket.emit("broadcastStroke", jo )
     }
-    fun onStrokeReceive(stroke: IRectangleStroke) {
+
+    private fun draw(stroke: IRectangleStroke) {
         val upcomingPaint = Paint().apply {
             color = stroke.color
             strokeWidth = stroke.strokeWidth
@@ -74,7 +84,11 @@ class Rectangle (context: Context, baseCanvas: Canvas, val socket : DrawingColla
             strokeJoin = Paint.Join.ROUND // default: MITER
             strokeCap = Paint.Cap.ROUND // default: BUTT
         }
-        //TODO
+        baseCanvas!!.drawRect(stroke.topLeftCorner.x,
+            stroke.topLeftCorner.y,
+            stroke.topLeftCorner.x + stroke.width,
+            stroke.topLeftCorner.y + stroke.height,
+            upcomingPaint!!)
     }
 
     private fun getBoundingPoints():ArrayList<IVec2>{
