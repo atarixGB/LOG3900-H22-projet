@@ -217,20 +217,27 @@ class DrawingZoneFragment : Fragment() {
                     fos.flush();
                     fos.close();
 
-                    var requestBody: RequestBody = RequestBody.create(MediaType.parse("image/*"), file)
-                    var parts: MultipartBody.Part =
-                        MultipartBody.Part.createFormData("upload", file.name, requestBody)
+                    var reqFile: RequestBody = RequestBody.create(MediaType.parse("image/*"), file)
+                    var body: MultipartBody.Part =
+                        MultipartBody.Part.createFormData("upload", file.name, reqFile)
 
                     var name: RequestBody = RequestBody.create(MediaType.parse("text/plain"), "upload");
 
-                    var call = myService.saveDrawing(drawingId, parts, name)
+                    var call = myService.saveDrawing(drawingId, body, name)
                     call.enqueue(object : retrofit2.Callback<ResponseBody> {
                         override fun onResponse(
                             call: Call<ResponseBody>,
                             response: Response<ResponseBody>
                         ) {
-                            Toast.makeText(context, "l'image a ete sauvegarder", Toast.LENGTH_SHORT)
-                                .show()
+                            if(response.code() == 200) {
+                                Toast.makeText(
+                                    context,
+                                    "l'image a ete sauvegarder",
+                                    Toast.LENGTH_SHORT
+                                )
+                                    .show()
+                            }
+                            Toast.makeText(context, "${response.code()}", Toast.LENGTH_SHORT).show();
                         }
 
                         override fun onFailure(call: Call<ResponseBody>, t: Throwable) {

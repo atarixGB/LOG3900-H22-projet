@@ -8,6 +8,9 @@ const mongoose = require("mongoose");
 const multer = require('multer')
 const path = require('path');
 
+// Include the node file module
+var fs = require('fs');
+
 const storage = multer.diskStorage({
   destination: './uploads/',
   filename: function(req, file, cb) {
@@ -328,7 +331,7 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
         });
     });
 
-    //Save drawing data
+    // Save drawing data
     // app.put("/drawing/:drawingId", (request, response, next) => {
     //   console.log("save to databave");
 
@@ -346,21 +349,38 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
     //   });
     // });
 
-    // app.post("/drawing/:drawingId", (request, response, next) => 
-    //   multer({
-    //     storage: storage,
-    //   }).DB.collection("drawings").findOneAndUpdate({ _id: mongoose.Types.ObjectId(request.params.drawingId.replaceAll(/"/g, '')) }, { $set: {"data": storage}}, { returnDocument: 'after' }, (err, res) => {
-    //       res.json(200);
-    //       console.log(res);
-    //     });
-      // single('drawings'), function(req, res) {
-      //   console.log(req.file);
-      //   console.log(req.body);
-      //   res.redirect("/uploads/" + req.file.filename);
-      //   console.log(req.file.filename);
-      //   return res.status(200).end();
-      // });
+    const upload = multer({dest: '/public/data/uploads/'});
 
+    // Post files
+app.post(
+  "/upload/:drawingId",
+  multer({
+    storage: storage
+  }).single('upload'), function(req, res) {
+    //console.log(req.file);
+    console.log(req.body);
+    res.redirect("/uploads/" + req.file.filename);
+    console.log(req.file.filename);
+    DB.collection("drawings").findOneAndUpdate({ _id: mongoose.Types.ObjectId(req.params.drawingId.replaceAll(/"/g, '')) }, { $set: {"data": req.file.filename}}, { returnDocument: 'after' }, (err, res) => {
+      });
+    return res.status(200).end();
+  });
+
+  //get image from DB
+   app.get('/drawings/:drawingId', function (req, res){
+    DB.collection("drawings")
+    .findOne({ _id: mongoose.Types.ObjectId(req.params.drawingId.replaceAll(/"/g, '')) }, function (err, result) {
+      if (err) {
+        console.log("error getting");
+      } else {
+    const file = result.data;
+    var img = fs.readFileSync(__dirname + "/uploads/" + file);
+    res.writeHead(200, {'Content-Type': 'image/png' });
+    res.end(img, 'binary');
+      }
+    });
+
+  });
 
     
 

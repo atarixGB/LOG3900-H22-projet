@@ -137,7 +137,7 @@ interface IMyService {
 //                    @Field("data") data: String): Observable<String>
 
     @Multipart
-    @POST("drawings/{drawingId}")
+    @POST("/upload/{drawingId}")
     fun saveDrawing(@Path("drawingId") drawingId: String,
                     @Part image: MultipartBody.Part,
                     @Part("upload") name: RequestBody): Call<ResponseBody>
