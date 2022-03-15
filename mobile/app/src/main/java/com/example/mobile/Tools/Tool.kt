@@ -7,6 +7,7 @@ import com.example.mobile.DrawingCollaboration
 import com.example.mobile.Interface.IPencilStroke
 import com.example.mobile.Interface.IVec2
 import com.example.mobile.R
+import org.json.JSONObject
 import kotlin.collections.ArrayList
 
 abstract class Tool(context: Context, baseCanvas: Canvas, socket: DrawingCollaboration) {
@@ -48,7 +49,7 @@ abstract class Tool(context: Context, baseCanvas: Canvas, socket: DrawingCollabo
         this.paint.color = color
     }
 
-    abstract fun onDraw(canvas: Canvas)
+    abstract fun onStrokeReceived(stroke : JSONObject)
 
-    abstract fun onStrokeReceive(stroke : IPencilStroke)
+    abstract fun onDraw(canvas: Canvas)
 }

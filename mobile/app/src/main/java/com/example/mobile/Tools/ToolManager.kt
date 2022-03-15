@@ -8,10 +8,10 @@ class ToolManager {
     var currentTool : Tool
     private var baseCanvas: Canvas
     private var context: Context
-    private lateinit var pencil: Pencil
-    private lateinit var eraser: Eraser
-    private lateinit var rectangle: Rectangle
-    private lateinit var ellipse: Ellipse
+    lateinit var pencil: Pencil
+    lateinit var eraser: Eraser
+    lateinit var rectangle: Rectangle
+    lateinit var ellipse: Ellipse
     private var socket: DrawingCollaboration
 
     constructor(context: Context, baseCanvas : Canvas, socket :DrawingCollaboration){

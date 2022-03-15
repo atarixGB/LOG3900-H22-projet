@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Canvas
 import com.example.mobile.DrawingCollaboration
 import com.example.mobile.Interface.IPencilStroke
+import org.json.JSONObject
 import java.util.*
 import kotlin.math.abs
 
@@ -36,11 +37,15 @@ class Eraser(context: Context, baseCanvas: Canvas, socket : DrawingCollaboration
         path!!.reset()
     }
 
+    override fun onStrokeReceived(stroke: JSONObject) {
+        TODO("Not yet implemented")
+    }
+
     override fun onDraw(canvas: Canvas) {
 
     }
 
-    override fun onStrokeReceive(stroke: IPencilStroke) {
+    fun onStrokeReceive() {
         TODO("Not yet implemented")
     }
 }

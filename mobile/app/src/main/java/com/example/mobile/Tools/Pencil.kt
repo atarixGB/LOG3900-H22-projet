@@ -2,11 +2,9 @@ package com.example.mobile.Tools
 
 import android.content.Context
 import android.graphics.*
-import android.util.Log
 import com.example.mobile.DrawingCollaboration
 import com.example.mobile.Interface.IPencilStroke
 import com.example.mobile.Interface.IVec2
-import com.google.gson.Gson
 import org.json.JSONArray
 import org.json.JSONObject
 import java.util.*
@@ -48,9 +46,31 @@ class Pencil(context: Context, baseCanvas: Canvas, val socket : DrawingCollabora
         path!!.reset()
     }
 
+    override fun onStrokeReceived(stroke: JSONObject) {
+        var boundingPoints = ArrayList<IVec2>()
+        val boundingPointsData = stroke["boundingPoints"]  as JSONArray
+        for (i in 0 until boundingPointsData.length()) {
+            val obj = boundingPointsData[i] as JSONObject
+            boundingPoints.add( IVec2(obj.getDouble("x").toFloat(), obj.getDouble("y").toFloat()) )
+        }
+
+        var points = ArrayList<IVec2>()
+        val pointsData = stroke["points"] as JSONArray
+        for (i in 0 until pointsData.length() ) {
+            val obj = pointsData[i] as JSONObject
+            points.add(IVec2(obj.getDouble("x").toFloat(), obj.getDouble("y").toFloat()))
+        }
+        val iPencilStroke = IPencilStroke(boundingPoints,
+            stroke.getInt("primaryColor"),
+            stroke.getDouble("strokeWidth").toFloat(),
+            points)
+        draw(iPencilStroke)
+
+    }
+
     override fun onDraw(canvas: Canvas) {}
 
-    override fun onStrokeReceive(stroke: IPencilStroke) {
+    fun draw(stroke: IPencilStroke) {
         val upcomingPaint = Paint().apply {
             color = stroke.color
             strokeWidth = stroke.strokeWidth

@@ -3,24 +3,18 @@ package com.example.mobile
 import android.content.Context
 import android.graphics.*
 import android.os.Bundle
-import android.util.AttributeSet
-import android.util.Log
 import android.view.*
 import android.widget.LinearLayout
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import com.example.mobile.Interface.IPencilStroke
-import com.example.mobile.Interface.IVec2
 import com.example.mobile.Tools.ToolManager
 import com.example.mobile.Tools.ToolbarFragment
 import com.example.mobile.model.ToolModel
 import com.example.mobile.model.ToolParameters
 import io.socket.emitter.Emitter
-import org.json.JSONArray
 import org.json.JSONObject
-import java.math.BigDecimal
 
 class DrawingZoneFragment : Fragment() {
     private lateinit var mDrawingView: DrawingView
@@ -55,25 +49,7 @@ class DrawingZoneFragment : Fragment() {
     }
     private var onReceiveStroke = Emitter.Listener {
         val drawEvent = it[0] as JSONObject
-
-        var boundingPoints = ArrayList<IVec2>()
-        val boundingPointsData = drawEvent["boundingPoints"]  as JSONArray
-        for (i in 0 until boundingPointsData.length()) {
-            val obj = boundingPointsData[i] as JSONObject
-            boundingPoints.add( IVec2(obj.getDouble("x").toFloat(), obj.getDouble("y").toFloat()) )
-        }
-
-        var points = ArrayList<IVec2>()
-        val pointsData = drawEvent["points"] as JSONArray
-        for (i in 0 until pointsData.length() ) {
-            val obj = pointsData[i] as JSONObject
-            points.add(IVec2(obj.getDouble("x").toFloat(), obj.getDouble("y").toFloat()))
-        }
-        val stroke = IPencilStroke(boundingPoints,
-            drawEvent.getInt("primaryColor"),
-            drawEvent.getDouble("strokeWidth").toFloat(),
-            points)
-        mDrawingView!!.onStrokeReceive(stroke)
+        mDrawingView.onStrokeReceive(drawEvent)
     }
 
     class DrawingView (context: Context, val socket: DrawingCollaboration) : View(context){
@@ -83,8 +59,12 @@ class DrawingZoneFragment : Fragment() {
         private var mCanvas: Canvas? = null
         private var isDrawing = false
 
-        fun onStrokeReceive(stroke: IPencilStroke){
-            toolManager.currentTool.onStrokeReceive(stroke)
+        fun onStrokeReceive(stroke: JSONObject){
+            if(stroke.getInt("toolType") == ToolbarFragment.MenuItem.PENCIL.ordinal){
+                toolManager.pencil.onStrokeReceived(stroke)
+            }else if(stroke.getInt("toolType") == ToolbarFragment.MenuItem.RECTANGLE.ordinal){
+                toolManager.rectangle.onStrokeReceived(stroke)
+            }
             invalidate()
         }
 

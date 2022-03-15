@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Canvas
 import com.example.mobile.DrawingCollaboration
 import com.example.mobile.Interface.IPencilStroke
+import org.json.JSONObject
 import java.util.*
 
 class  Ellipse(context: Context, baseCanvas: Canvas, socket : DrawingCollaboration) : Tool(context, baseCanvas, socket) {
@@ -18,6 +19,10 @@ class  Ellipse(context: Context, baseCanvas: Canvas, socket : DrawingCollaborati
        onDraw(baseCanvas)
     }
 
+    override fun onStrokeReceived(stroke: JSONObject) {
+        TODO("Not yet implemented")
+    }
+
     override fun onDraw(canvas: Canvas) {
         val right = if (mStartX > mx) mStartX else mx
         val left = if (mStartX > mx) mx else mStartX
@@ -26,7 +31,5 @@ class  Ellipse(context: Context, baseCanvas: Canvas, socket : DrawingCollaborati
         canvas!!.drawOval(left, top, right, bottom, paint!!)
     }
 
-    override fun onStrokeReceive(stroke: IPencilStroke) {
-        TODO("Not yet implemented")
-    }
+
 }
