@@ -8,12 +8,6 @@
             </button>
         </mat-grid-tile>
         <mat-grid-tile>
-            <button [ngClass]="{ active: toolManagerService.currentToolEnum === ToolList.Eraser }" mat-icon-button
-                matTooltip="Efface" matTooltipPosition="above" (click)="onTool(ToolList.Eraser)">
-                <mat-icon [ngClass]="{ active: toolManagerService.currentToolEnum === ToolList.Eraser }">how_to_vote</mat-icon>
-            </button>
-        </mat-grid-tile>
-        <mat-grid-tile>
             <button [ngClass]="{ active: toolManagerService.currentToolEnum === ToolList.Rectangle }" mat-icon-button
                 matTooltip="Rectangle" matTooltipPosition="above" (click)="onTool(ToolList.Rectangle)">
                 <mat-icon [ngClass]="{ active: toolManagerService.currentToolEnum === ToolList.Rectangle }">check_box_outline_blank</mat-icon>

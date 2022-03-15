@@ -13,12 +13,12 @@ export class ToolsListComponent {
     constructor(public toolManagerService: ToolManagerService, public selectionService: SelectionService) {}
 
     onTool(selectedTool: ToolList): void {
-        this.toolManagerService.switchTool(selectedTool);
         if (this.selectionService.isActiveSelection) {
             this.selectionService.pasteSelectionOnBaseCnv();
         }
         if (selectedTool === this.ToolList.Selection) {
             this.selectionService.oldTool = this.ToolList.Selection;
         }
+        this.toolManagerService.switchTool(selectedTool);
     }
 }

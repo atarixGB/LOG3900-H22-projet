@@ -35,7 +35,6 @@ import { EditorComponent } from './components/editor/editor.component';
 import { ExportModalComponent } from './components/editor/export-modal/export-modal.component';
 import { SaveDrawingModalComponent } from './components/editor/save-drawing-modal/save-drawing-modal.component';
 import { EllipseConfigComponent } from './components/editor/sidebar/ellipse-config/ellipse-config.component';
-import { EraserConfigComponent } from './components/editor/sidebar/eraser-config/eraser-config.component';
 import { FileMenuComponent } from './components/editor/sidebar/file-menu/file-menu.component';
 import { PencilConfigComponent } from './components/editor/sidebar/pencil-config/pencil-config.component';
 import { RectangleConfigComponent } from './components/editor/sidebar/rectangle-config/rectangle-config.component';
@@ -64,7 +63,6 @@ import { ColorConfigComponent } from './components/editor/sidebar/color-config/c
         FileMenuComponent,
         ToolsListComponent,
         PencilConfigComponent,
-        EraserConfigComponent,
         PencilConfigComponent,
         EllipseConfigComponent,
         RectangleConfigComponent,

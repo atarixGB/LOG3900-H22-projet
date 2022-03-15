@@ -13,8 +13,6 @@ export class ConfigPanelComponent {
     constructor(public toolManagerService: ToolManagerService) { }
 
     includesColorConfiguration(): boolean {
-        if (this.toolManagerService.currentToolEnum !== ToolList.Eraser)
-            return true;
         return false;
     }
 }

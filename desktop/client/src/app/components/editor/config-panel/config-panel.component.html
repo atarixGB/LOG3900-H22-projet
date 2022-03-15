@@ -2,7 +2,6 @@
     <mat-sidenav-content>
         <h3>Paramètres de l'outil</h3>
         <app-pencil-config *ngIf="toolManagerService.currentToolEnum === ToolList.Pencil"></app-pencil-config>
-        <app-eraser-config *ngIf="toolManagerService.currentToolEnum === ToolList.Eraser"></app-eraser-config>
         <app-rectangle-config *ngIf="toolManagerService.currentToolEnum === ToolList.Rectangle"> </app-rectangle-config>
         <app-ellipse-config *ngIf="toolManagerService.currentToolEnum === ToolList.Ellipse"></app-ellipse-config>
         <app-selection-config *ngIf="toolManagerService.currentToolEnum === ToolList.Selection"></app-selection-config>

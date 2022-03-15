@@ -4,7 +4,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { Vec2 } from '@app/classes/vec2';
 import { MIN_SIZE } from '@app/constants/constants';
-import { ToolList } from '@app/interfaces-enums/tool-list';
 import { AutoSaveService } from '@app/services/editor/auto-save/auto-save.service';
 import { DrawingService } from '@app/services/editor/drawing/drawing.service';
 import { ExportService } from '@app/services/editor/export-image/export.service';
@@ -115,12 +114,7 @@ export class DrawingComponent implements AfterViewInit, OnDestroy, OnChanges {
     }
 
     onMouseMove(event: MouseEvent): void {
-        if (this.toolManagerService.currentToolEnum === ToolList.Eraser) {
-            this.drawingService.cursorCtx = this.cursorCtx;
-        } else {
-            this.cursorCtx.clearRect(0, 0, this.cursorCanvas.nativeElement.width, this.cursorCanvas.nativeElement.height);
-        }
-
+        this.cursorCtx.clearRect(0, 0, this.cursorCanvas.nativeElement.width, this.cursorCanvas.nativeElement.height);
         this.handleSelectionTool(event);
     }
 
