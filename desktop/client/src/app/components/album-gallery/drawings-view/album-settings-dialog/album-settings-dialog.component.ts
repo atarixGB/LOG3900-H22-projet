@@ -1,15 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { AlbumGalleryService } from '@app/services/album-gallery/album-gallery.service';
 
 @Component({
   selector: 'app-album-settings-dialog',
   templateUrl: './album-settings-dialog.component.html',
   styleUrls: ['./album-settings-dialog.component.scss']
 })
-export class AlbumSettingsDialogComponent implements OnInit {
+export class AlbumSettingsDialogComponent {
+  newAlbumName: string;
+  newDescription: string;
 
-  constructor() { }
+  constructor(public albumGalleryService: AlbumGalleryService) {}
 
-  ngOnInit(): void {
+  modifyAlbum(): void {
+    this.albumGalleryService.updateAlbumParameters(this.newAlbumName, this.newDescription);
   }
 
 }

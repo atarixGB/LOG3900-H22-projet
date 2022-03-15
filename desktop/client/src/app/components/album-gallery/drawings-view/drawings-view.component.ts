@@ -13,10 +13,9 @@ import { RequestsDialogComponent } from './requests-dialog/requests-dialog.compo
   styleUrls: ['./drawings-view.component.scss']
 })
 export class DrawingsViewComponent {
-  @Output() backToAlbumPageEvent = new EventEmitter<boolean>();
   isCurrentAlbumMine: boolean;
 
-  constructor(public albumGalleryService: AlbumGalleryService, public loginService: LoginService, private router: Router, private route: ActivatedRoute, public dialog: MatDialog) {
+  constructor(public albumGalleryService: AlbumGalleryService, public loginService: LoginService, public dialog: MatDialog, private router: Router, private route: ActivatedRoute) {
     this.isCurrentAlbumMine = this.loginService.username == albumGalleryService.currentAlbum.owner;
     console.log("iscurrentalbummine:", this.isCurrentAlbumMine);
   }
@@ -30,7 +29,11 @@ export class DrawingsViewComponent {
   }
 
   openSettingsDialog(): void {
-    this.dialog.open(AlbumSettingsDialogComponent, {});
+    const dialogRef = this.dialog.open(AlbumSettingsDialogComponent, {});
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log(result);
+      this.router.navigate(['../my-albums'], { relativeTo: this.route });
+    })
   }
 
   viewRequests(): void {

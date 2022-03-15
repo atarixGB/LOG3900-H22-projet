@@ -1,1 +1,28 @@
-<p>album-settings-dialog works!</p>
+<h2 mat-dialog-title>Modifier l'album</h2>
+
+<mat-dialog-content class="mat-typography">
+
+  <mat-form-field appearance="fill">
+    <mat-label>Nouveau nom</mat-label>
+    <input matInput [(ngModel)]="this.newAlbumName">
+  </mat-form-field>
+
+  <br>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Nouvelle description</mat-label>
+    <textarea matInput [(ngModel)]="this.newDescription"></textarea>
+  </mat-form-field>
+
+  <div>
+    L'album <span class="bold">{{ this.albumGalleryService.currentAlbum.name }}</span> sera renommé <span class="bold">{{ this.newAlbumName }}</span>.
+    <br>
+    La description <span class="bold">{{ this.albumGalleryService.currentAlbum.description }}</span> sera changé pour <span class="bold">{{ this.newDescription }}</span>.
+  </div>
+
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close>Annuler</button>
+  <button mat-button [mat-dialog-close]="true" cdkFocusInitial (click)="modifyAlbum()">Modifer</button>
+</mat-dialog-actions>
