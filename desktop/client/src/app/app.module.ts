@@ -54,6 +54,7 @@ import { CreateAlbumDialogComponent } from './components/album-gallery/create-al
 import { PublicAlbumsComponent } from './components/album-gallery/public-albums/public-albums.component';
 import { DrawingsViewComponent } from './components/album-gallery/drawings-view/drawings-view.component';
 import { PublicDrawingGalleryComponent } from './components/album-gallery/public-drawing-gallery/public-drawing-gallery.component';
+import { ColorConfigComponent } from './components/editor/sidebar/color-config/color-config.component';
 
 @NgModule({
     declarations: [
@@ -88,7 +89,8 @@ import { PublicDrawingGalleryComponent } from './components/album-gallery/public
         ChatroomComponent,
         ProfileComponent,
         ProfileSettingsComponent,
-        SelectionConfigComponent, 
+        SelectionConfigComponent,
+        ColorConfigComponent, 
     ],
     imports: [
         BrowserModule,
