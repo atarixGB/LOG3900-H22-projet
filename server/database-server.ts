@@ -296,8 +296,53 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
       })
     })
 
+    //get drawingName
+    app.get("/getDrawingName", (request, response, next) => {
+
+      var post_data = request.query;
+      var drawingId = post_data.drawingId.replaceAll(/"/g, ''); //? pour enlever les "" 
+
+      DB.collection("drawings")
+        .findOne({ _id: mongoose.Types.ObjectId(drawingId) }, function (err, result) {
+          if (err) {
+            console.log("error getting");
+            response.status(400).send("Error fetching albums");
+          } else {
+            response.json(result.name)
+            console.log("Getting One Drawing", result);
+          }
+        });
+    });
+
+    //Save drawing data
+    app.put("/drawing/:drawingId", (request, response, next) => {
+
+      var drawingId = request.params.drawingId.replaceAll(/"/g, '');
+      var data =  request.body.data;
+
+      console.log(drawingId);
+      console.log(data);
+
+      DB.collection("drawings").findOneAndUpdate({ _id: mongoose.Types.ObjectId(drawingId) }, { $set: {"data": data}}, { returnDocument: 'after' }, (err, res) => {
+        response.json(200);
+        console.log(drawingId);
+        console.log(data);
+        console.log(res);
+      });
+    });
+    
+
     //create new album
     app.post("/albums", (request, response, next) => {
+      var post_data = request.body;
+      var members = post_data.members
+
+      console.log("avanntt", request.body.members);
+      if (typeof members === 'string' || members instanceof String) {
+        request.body.members = [post_data.members];
+        console.log("apress", request.body.members);
+      }
+
       DB.collection("albums").insertOne(request.body, (err, res) => {
         request.body._id = res.insertedId.toHexString();
         console.log(`Album "${request.body.name}" created successfully with ID: ${request.body._id}!`);
@@ -355,9 +400,16 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
       let albumName = request.params.albumName;
       let usertoAdd = request.body.identifier;
       console.log("USER TO ADD",usertoAdd);
-      DB.collection("albums").findOneAndUpdate({ name: albumName }, { $push: { membershipRequests: usertoAdd } }, { returnDocument: 'after' }, (err, res) => {
-        response.json(201)
-        console.log(usertoAdd, "sent request to join ", albumName);
+      DB.collection("albums").find({ name: albumName }).toArray(function (err, res) {
+        console.log(res[0].membershipRequests);
+        if (res[0].membershipRequests != undefined && res[0].membershipRequests.includes(usertoAdd)) {
+          response.json(400);
+        } else {
+          DB.collection("albums").updateOne({ name: albumName }, { $push: { membershipRequests: usertoAdd } }, { returnDocument: 'after' }, (err, res) => {
+          response.json(201)
+          console.log(usertoAdd, "sent request to join ", albumName);
+        });
+      }
       })
     });
 
@@ -387,8 +439,16 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
       let albumId = request.params.id;
       let memberToRemove = request.body.memberToRemove;
       DB.collection("albums").findOneAndUpdate({ _id: mongoose.Types.ObjectId(albumId) }, { $pull: { members: memberToRemove } }, { returnDocument: 'after' }, (err, res) => {
-        response.json(res)
-      })
+        
+        let albumOwner = res.value.owner
+        res.value.drawingIDs.forEach(element => {
+          DB.collection("drawings").findOneAndUpdate({ _id: mongoose.Types.ObjectId(element.replaceAll(/"/g, '')), owner: memberToRemove }, { $set: { owner: albumOwner } }, { returnDocument: 'after' }, (err, res) => {
+            //console.log(albumOwner, "is the new owner of", res.value.name);
+          });
+        });
+        console.log(memberToRemove, "has left album ", albumId);
+        response.json(201);
+      });
     });
 
     //delete album with specific id
@@ -396,8 +456,58 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
       let albumId = request.params.id;
       DB.collection("albums").findOneAndDelete({ _id: mongoose.Types.ObjectId(albumId) }, (err, res) => {
         console.log(`Album with id ${request.params.id} has been deleted successfully!`);
-      })
-    })
+        response.json(201)
+      });
+    });
+
+    //Getting album parameters
+    app.get("/getAlbumParameters", (request, response, next) => {
+
+      var post_data = request.query;
+      var albumName = post_data.albumName;
+
+      console.log(albumName);
+
+      DB.collection("albums")
+        .findOne({ name: albumName }, function (err, result) {
+          if (err) {
+            console.log("error getting");
+            response.status(400).send("Error fetching albums");
+          } else {
+            response.json(result)
+            console.log("Getting One Album", result);
+          }
+        });
+    });
+
+    //update album attributes
+    app.post("/albumUpdate", (request, response, next) => {
+      var post_data = request.body;
+      var oldAlbumName = post_data.oldAlbumName;
+      var newAlbumName = post_data.newAlbumName;
+      var newDescription = post_data.newDescription;
+    
+      //check if an album already has the new name
+      DB.collection("albums")
+        .find({ name: newAlbumName })
+        .count(function (err, number) {
+          if (number != 0 && oldAlbumName != newAlbumName) {
+            response.json(false);
+            console.log("album name already used");
+          } else {
+            // Update album data
+            DB.collection("albums").updateOne({ name: oldAlbumName }, {
+              $set: {
+                "name": newAlbumName,
+                "description": newDescription,
+              },
+            }).then(result => {
+              response.json(200);
+            });
+          }
+        });
+    });
+
 
     //Getting a user's data 
     app.get("/profile/:username", (request, response, next) => {
