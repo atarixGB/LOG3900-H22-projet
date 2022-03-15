@@ -375,7 +375,7 @@ app.post(
       } else {
     const file = result.data;
     var img = fs.readFileSync(__dirname + "/uploads/" + file, {encoding: 'base64'});
-    console.log("image", img)
+    //console.log("image", img)
     res.writeHead(200, {'Content-Type': 'image/png' });
     res.end(img, 'binary');
     //console.log("ressss", res);

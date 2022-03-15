@@ -30,7 +30,7 @@ class DrawingAdapter (val context: Context?, var drawings: ArrayList<String>) : 
         val currentDrawing = drawings[position]
 
         holder.itemView.apply {
-            drawingName.text = currentDrawing
+//            drawingName.text = currentDrawing
 
             imgDrawing.setImageBitmap(bitmapDecoder(currentDrawing))
 

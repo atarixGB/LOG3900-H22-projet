@@ -86,9 +86,9 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
 
         albumNameTextView.text = albumName
 
-        //getAllAlbumDrawings(albumName)
+        getAllAlbumDrawings(albumName)
 
-        displayDrawing("6230fd7ba0a1a0e827f84dc0")
+        //displayDrawing("6230fd7ba0a1a0e827f84dc0")
 
         leaveAlbumBtn.setOnClickListener {
             val intent = Intent(this, Albums::class.java)
@@ -212,7 +212,8 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
 
             override fun onResponse(call: Call<List<String>>, response: Response<List<String>>) {
                 for (drawing in response.body()!!) {
-                    displayDrawingName(drawing)
+                    //displayDrawingName(drawing)
+                    displayDrawing(drawing)
                 }
             }
 
