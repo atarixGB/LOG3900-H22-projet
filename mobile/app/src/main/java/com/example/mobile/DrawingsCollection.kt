@@ -86,7 +86,9 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
 
         albumNameTextView.text = albumName
 
-        getAllAlbumDrawings(albumName)
+        //getAllAlbumDrawings(albumName)
+
+        displayDrawing("6230fd7ba0a1a0e827f84dc0")
 
         leaveAlbumBtn.setOnClickListener {
             val intent = Intent(this, Albums::class.java)
@@ -278,6 +280,21 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
             override fun onResponse(call: Call<String>, response: Response<String>) {
                 drawingName = response.body()!!
                 drawingAdapter.addDrawing(drawingName)
+                drawingAdapter.notifyItemInserted((rvOutputDrawings.adapter as DrawingAdapter).itemCount)
+            }
+
+            override fun onFailure(call: Call<String>, t: Throwable) {
+                Log.d("Albums", "onFailure" +t.message )
+            }
+        })
+    }
+
+    private fun displayDrawing(drawingId: String) {
+        var call: Call<String> = iMyService.getDrawingData(drawingId)
+        call.enqueue(object: retrofit2.Callback<String> {
+
+            override fun onResponse(call: Call<String>, response: Response<String>) {
+                drawingAdapter.addDrawing(response.body()!!)
                 drawingAdapter.notifyItemInserted((rvOutputDrawings.adapter as DrawingAdapter).itemCount)
             }
 

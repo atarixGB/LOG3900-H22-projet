@@ -142,6 +142,9 @@ interface IMyService {
                     @Part image: MultipartBody.Part,
                     @Part("upload") name: RequestBody): Call<ResponseBody>
 
+    @GET("drawings/{drawingId}")
+    fun getDrawingData(@Path("drawingId") drawingId: String):Call<String>
+
 //    @Multipart
 //    @POST("upload")
 //    fun uploadImage(@Part part: MultipartBody.Part,@Part("somedate") requestBody: RequestBody ) : Call<RequestBody>

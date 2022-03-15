@@ -1,6 +1,9 @@
 package com.example.mobile
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,10 +32,17 @@ class DrawingAdapter (val context: Context?, var drawings: ArrayList<String>) : 
         holder.itemView.apply {
             drawingName.text = currentDrawing
 
+            imgDrawing.setImageBitmap(bitmapDecoder(currentDrawing))
+
             imgDrawing.setOnClickListener {
                 listener.drawingAdapterListener(drawingName.text.toString())
             }
         }
+    }
+
+    private fun bitmapDecoder(avatar_str:String?): Bitmap {
+        val decodedString: ByteArray = Base64.decode(avatar_str, Base64.DEFAULT)
+        return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
     }
 
     fun addDrawing (drawing: String) {
