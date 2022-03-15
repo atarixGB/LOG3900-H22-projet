@@ -5,6 +5,9 @@ import com.example.mobile.Room
 import com.example.mobile.IAlbum
 import com.example.mobile.IDrawing
 import io.reactivex.Observable
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import okhttp3.ResponseBody
 
 import retrofit2.http.*
 import retrofit2.Call
@@ -128,10 +131,16 @@ interface IMyService {
         @Field("newDescription") newAvatar: String,
     ): Observable<String>
 
-    @PUT("drawings/{drawingId}")
-    @FormUrlEncoded
+//    @PUT("drawings/{drawingId}")
+//    @FormUrlEncoded
+//    fun saveDrawing(@Path("drawingId") drawingId: String,
+//                    @Field("data") data: String): Observable<String>
+
+    @Multipart
+    @POST("drawings/{drawingId}")
     fun saveDrawing(@Path("drawingId") drawingId: String,
-                    @Field("data") data: String): Observable<String>
+                    @Part image: MultipartBody.Part,
+                    @Part("upload") name: RequestBody): Call<ResponseBody>
 
 //    @Multipart
 //    @POST("upload")

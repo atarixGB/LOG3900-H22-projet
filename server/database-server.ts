@@ -5,6 +5,20 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const crypto = require("crypto");
 const mongoose = require("mongoose");
+const multer = require('multer')
+const path = require('path');
+
+const storage = multer.diskStorage({
+  destination: './uploads/',
+  filename: function(req, file, cb) {
+    return crypto.pseudoRandomBytes(16, function(err, raw) {
+      if (err) {
+        return cb(err);
+      }
+      return cb(null, "" + (raw.toString('hex')) + (path.extname(file.originalname)));
+    });
+  }
+});
 
 //constants
 const DATABASE_URL =
@@ -315,21 +329,39 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
     });
 
     //Save drawing data
-    app.put("/drawing/:drawingId", (request, response, next) => {
+    // app.put("/drawing/:drawingId", (request, response, next) => {
+    //   console.log("save to databave");
 
-      var drawingId = request.params.drawingId.replaceAll(/"/g, '');
-      var data =  request.body.data;
+    //   var drawingId = request.params.drawingId.replaceAll(/"/g, '');
+    //   var data =  request.body.data;
 
-      console.log(drawingId);
-      console.log(data);
+    //   console.log(drawingId);
+    //   console.log(data);
 
-      DB.collection("drawings").findOneAndUpdate({ _id: mongoose.Types.ObjectId(drawingId) }, { $set: {"data": data}}, { returnDocument: 'after' }, (err, res) => {
-        response.json(200);
-        console.log(drawingId);
-        console.log(data);
-        console.log(res);
-      });
-    });
+    //   DB.collection("drawings").findOneAndUpdate({ _id: mongoose.Types.ObjectId(drawingId) }, { $set: {"data": data}}, { returnDocument: 'after' }, (err, res) => {
+    //     response.json(200);
+    //     console.log(drawingId);
+    //     console.log(data);
+    //     console.log(res);
+    //   });
+    // });
+
+    // app.post("/drawing/:drawingId", (request, response, next) => 
+    //   multer({
+    //     storage: storage,
+    //   }).DB.collection("drawings").findOneAndUpdate({ _id: mongoose.Types.ObjectId(request.params.drawingId.replaceAll(/"/g, '')) }, { $set: {"data": storage}}, { returnDocument: 'after' }, (err, res) => {
+    //       res.json(200);
+    //       console.log(res);
+    //     });
+      // single('drawings'), function(req, res) {
+      //   console.log(req.file);
+      //   console.log(req.body);
+      //   res.redirect("/uploads/" + req.file.filename);
+      //   console.log(req.file.filename);
+      //   return res.status(200).end();
+      // });
+
+
     
 
     //create new album
