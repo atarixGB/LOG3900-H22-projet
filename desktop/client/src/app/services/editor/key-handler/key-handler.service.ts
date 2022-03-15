@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Vec2 } from '@app/classes/vec2';
 import { ExportModalComponent } from '@app/components/editor/export-modal/export-modal.component';
-import { NewDrawModalComponent } from '@app/components/editor/new-draw-modal/new-draw-modal.component';
 import { SaveDrawingModalComponent } from '@app/components/editor/save-drawing-modal/save-drawing-modal.component';
 import { ExportService } from '@app/services/editor/export-image/export.service';
 import { ToolManagerService } from '@app/services/editor/tools/tool-manager.service';
@@ -22,7 +21,6 @@ export class KeyHandlerService {
     ) { }
 
     handleKeyDown(event: KeyboardEvent): void {
-        this.modalHandler(event, NewDrawModalComponent, 'o');
         this.modalHandler(event, SaveDrawingModalComponent, 's');
         this.modalHandler(event, ExportModalComponent, 'e');
 
@@ -37,7 +35,7 @@ export class KeyHandlerService {
 
     private modalHandler(
         event: KeyboardEvent,
-        component: ComponentType<NewDrawModalComponent | SaveDrawingModalComponent | ExportModalComponent>,
+        component: ComponentType<SaveDrawingModalComponent | ExportModalComponent>,
         key: string,
     ): void {
         const modalKeysPressed = event.ctrlKey && event.key === key;

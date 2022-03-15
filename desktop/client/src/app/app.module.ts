@@ -33,7 +33,6 @@ import { ConfigPanelComponent } from './components/editor/config-panel/config-pa
 import { DrawingComponent } from './components/editor/drawing/drawing.component';
 import { EditorComponent } from './components/editor/editor.component';
 import { ExportModalComponent } from './components/editor/export-modal/export-modal.component';
-import { NewDrawModalComponent } from './components/editor/new-draw-modal/new-draw-modal.component';
 import { SaveDrawingModalComponent } from './components/editor/save-drawing-modal/save-drawing-modal.component';
 import { EllipseConfigComponent } from './components/editor/sidebar/ellipse-config/ellipse-config.component';
 import { EraserConfigComponent } from './components/editor/sidebar/eraser-config/eraser-config.component';
@@ -61,13 +60,12 @@ import { ColorConfigComponent } from './components/editor/sidebar/color-config/c
         AppComponent,
         EditorComponent,
         SidebarComponent,
-        DrawingComponent,
+        DrawingComponent, 
         FileMenuComponent,
         ToolsListComponent,
         PencilConfigComponent,
         EraserConfigComponent,
         PencilConfigComponent,
-        NewDrawModalComponent,
         EllipseConfigComponent,
         RectangleConfigComponent,
         ConfigPanelComponent,
