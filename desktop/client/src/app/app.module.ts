@@ -60,6 +60,7 @@ import { DeleteRoomDialogComponent } from './components/chat/delete-room-dialog/
 import { CreateDrawingDialogComponent } from './components/editor/create-drawing-dialog/create-drawing-dialog.component';
 import { RequestsDialogComponent } from './components/album-gallery/drawings-view/requests-dialog/requests-dialog.component';
 import { MembersListDialogComponent } from './components/album-gallery/drawings-view/members-list-dialog/members-list-dialog.component';
+import { AlbumSettingsDialogComponent } from './components/album-gallery/drawings-view/album-settings-dialog/album-settings-dialog.component';
 
 @NgModule({
     declarations: [
@@ -101,6 +102,7 @@ import { MembersListDialogComponent } from './components/album-gallery/drawings-
         CreateDrawingDialogComponent,
         RequestsDialogComponent,
         MembersListDialogComponent,
+        AlbumSettingsDialogComponent,
     ],
     imports: [
         BrowserModule,

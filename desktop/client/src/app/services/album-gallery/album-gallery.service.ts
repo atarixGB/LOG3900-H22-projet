@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { IAlbum } from '@app/interfaces-enums/IAlbum'
 import { LoginService } from '@app/services/login/login.service';
-import { ALBUM_URL, PUBLIC_DRAWINGS_URL, CREATE_DRAWING_URL, JOIN_ALBUM_URL, DECLINE_MEMBERSHIP_REQUEST_URL, ACCEPT_MEMBERSHIP_REQUEST_URL } from '@app/constants/api-urls';
+import { ALBUM_URL, PUBLIC_DRAWINGS_URL, CREATE_DRAWING_URL, JOIN_ALBUM_URL, DECLINE_MEMBERSHIP_REQUEST_URL, ACCEPT_MEMBERSHIP_REQUEST_URL, UPDATE_ALBUM_PARAMETERS_URL } from '@app/constants/api-urls';
 import { DrawingService } from '../editor/drawing/drawing.service';
 
 @Injectable({
@@ -171,6 +171,24 @@ export class AlbumGalleryService {
       },
       (error) => {
         console.log(`Impossible de retrouver les dessins de l'album dans la base de données.\nErreur: ${error}`);
+      }
+    )
+  }
+
+  updateAlbumParameters(name: string, description: string): void {
+    const data = {
+      oldAlbumName: this.currentAlbum.name,
+      newAlbumName: name,
+      newDescription: description
+    }
+
+    this.httpClient.post(UPDATE_ALBUM_PARAMETERS_URL, data).subscribe(
+      (result) => {
+        console.log("Résultat serveur:", result);
+      },
+      (error) => {
+        console.log("Erreur serveur", error);
+
       }
     )
   }
