@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlbumGalleryService } from '@app/services/album-gallery/album-gallery.service';
 import { LoginService } from '@app/services/login/login.service';
+import { MembersListDialogComponent } from './members-list-dialog/members-list-dialog.component';
 import { RequestsDialogComponent } from './requests-dialog/requests-dialog.component';
 
 @Component({
@@ -21,6 +22,10 @@ export class DrawingsViewComponent {
 
   ngAfterViewInit(): void {
     this.albumGalleryService.fetchDrawingsFromSelectedAlbum(this.albumGalleryService.currentAlbum);
+  }
+
+  viewMembersList(): void {
+    this.dialog.open(MembersListDialogComponent, {});
   }
 
   openSettingsDialog(): void {

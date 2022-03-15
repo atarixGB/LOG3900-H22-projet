@@ -19,6 +19,7 @@
 
     <div>
       <div fxLayout="row" fxLayoutAlign="space-evenly center">
+        <button mat-raised-button color="primary" (click)="viewMembersList()">Voir les membres de l'album</button>
         <button *ngIf="this.isCurrentAlbumMine" mat-raised-button color="primary" (click)="openSettingsDialog()">Modifer l'album</button>
         <button *ngIf="this.isCurrentAlbumMine" mat-raised-button color="primary" (click)="viewRequests()">Voir les demandes d'adhésion</button>
         <button *ngIf="!this.isCurrentAlbumMine" mat-raised-button color="primary" (click)="leaveAlbumButton()">Quitter l'album</button>
