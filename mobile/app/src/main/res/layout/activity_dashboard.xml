@@ -150,4 +150,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/solo_text" />
 
+
 </androidx.constraintlayout.widget.ConstraintLayout>

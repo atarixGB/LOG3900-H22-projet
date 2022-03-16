@@ -36,7 +36,7 @@ class Profile : AppCompatActivity() {
     private val sharedViewModel: SharedViewModelToolBar by viewModels()
 
 
-    //todo: for the statistic portion we will use fragments i think its better to transmit the information
+    //todo(NH): for the statistic portion we will use fragments i think its better to transmit the information
     //todo (suite): or we can use a viewModel to do the calculations and call them on this page
 
     override fun onStop() {

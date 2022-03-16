@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.activity_create_room_pop_up.view.*
 import kotlinx.android.synthetic.main.activity_users_list_pop_up.view.*
 import java.util.ArrayList
 
-class UsersListPopUp(val room: Room) : DialogFragment() {
+class UsersListPopUp(val name: String, val usersList: ArrayList<String>) : DialogFragment() {
     private lateinit var userAdapter: UserAdapter
     private lateinit var users : ArrayList<String>
 
@@ -27,7 +27,7 @@ class UsersListPopUp(val room: Room) : DialogFragment() {
     ): View? {
         var rootView: View = inflater.inflate(R.layout.activity_users_list_pop_up, container, false)
 
-        rootView.roomName.text = "Membres de ${room.roomName}"
+        rootView.roomName.text = "Membres de ${name}"
         users = ArrayList()
 
         userAdapter = UserAdapter(requireContext(), users)
@@ -35,7 +35,7 @@ class UsersListPopUp(val room: Room) : DialogFragment() {
         rootView.rvUsersList.adapter = userAdapter
         rootView.rvUsersList.layoutManager = LinearLayoutManager(requireContext())
 
-        for (user in room.usersList) {
+        for (user in usersList) {
             userAdapter.addUser(user)
             userAdapter.notifyItemInserted((rootView.rvUsersList.adapter as UserAdapter).itemCount)
         }

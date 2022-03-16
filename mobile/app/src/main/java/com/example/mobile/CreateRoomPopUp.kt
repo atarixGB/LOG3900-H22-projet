@@ -25,9 +25,6 @@ class CreateRoomPopUp : DialogFragment() {
     private lateinit var listener: DialogListener
 
 
-
-
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

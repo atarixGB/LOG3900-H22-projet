@@ -60,11 +60,17 @@ class ToolbarNavigationFragment: Fragment() {
         draw.setOnClickListener {
             draw.setBackgroundResource(R.color.greenOnClick)
             Toast.makeText(context, "draw", Toast.LENGTH_SHORT).show()
+            val intent = Intent(activity, DrawingActivity::class.java)
+            intent.putExtra("userName",user)
+            startActivity(intent)
         }
 
         albums.setOnClickListener {
             albums.setBackgroundResource(R.color.greenOnClick)
             Toast.makeText(context, "albums", Toast.LENGTH_SHORT).show()
+            val intent = Intent(activity, Albums::class.java)
+            intent.putExtra("userName",user)
+            startActivity(intent)
         }
 
         profile.setOnClickListener {

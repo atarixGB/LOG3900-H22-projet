@@ -25,6 +25,24 @@
         android:theme="@style/Theme.Mobile"
         android:usesCleartextTraffic="true" >
         <activity
+            android:name="com.example.mobile.DrawingsCollection"
+            android:exported="false" />
+        <activity
+            android:name="com.example.mobile.drawingsCollection"
+            android:exported="false" />
+        <activity
+            android:name="com.example.mobile.joinAlbumPopUp"
+            android:exported="false" />
+        <activity
+            android:name="com.example.mobile.createDrawingPopUp"
+            android:exported="false" />
+        <activity
+            android:name="com.example.mobile.DisplayPublicAlbums"
+            android:exported="false" />
+        <activity
+            android:name="com.example.mobile.Albums"
+            android:exported="false" />
+        <activity
             android:name="com.example.mobile.usersListPopUp"
             android:exported="false" />
         <activity android:name="com.example.mobile.Dashboard" />

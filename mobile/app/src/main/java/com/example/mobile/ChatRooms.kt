@@ -90,7 +90,7 @@ class ChatRooms : AppCompatActivity(), CreateRoomPopUp.DialogListener, RoomAdapt
         }
 
         principal_room_btn.setOnClickListener {
-            this.roomName = principal_room_btn.text.toString()
+            this.roomName = "default-public-room"
             var roomData: JSONObject = JSONObject()
             roomData.put("userName", user)
             roomData.put("room", this.roomName)

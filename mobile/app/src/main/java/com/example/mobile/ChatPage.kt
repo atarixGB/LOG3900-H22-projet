@@ -54,8 +54,9 @@ class ChatPage : AppCompatActivity() {
         roomNameView = findViewById(R.id.roomName)
         roomNameView.text = roomName.toString()
 
-        if (roomName == "Canal Principal") {
+        if (roomName == "default-public-room") {
             chatViewOptions.isVisible = false
+            roomNameView.text = "Canal Principal"
         } else {
             getRoomParameters()
         }
@@ -165,7 +166,7 @@ class ChatPage : AppCompatActivity() {
 
         //handle popup menu options
         chatViewOptions.setOnClickListener {
-            if (roomName != "Canal Principal") {
+            if (roomName != "default-public-room") {
                 getRoomParameters()
             }
 
@@ -179,7 +180,7 @@ class ChatPage : AppCompatActivity() {
                 when (menuItem.itemId) {
                     R.id.menu_members -> {
                         //ouvrir le popup window des utilisateurs
-                        var dialog = UsersListPopUp(room)
+                        var dialog = UsersListPopUp(room.roomName, room.usersList)
                         dialog.show(supportFragmentManager, "customDialog")
                         true
                     }

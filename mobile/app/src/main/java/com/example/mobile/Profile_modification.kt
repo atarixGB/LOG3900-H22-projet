@@ -71,7 +71,11 @@ class Profile_modification : AppCompatActivity(),SelectAvatarPopUp.DialogListene
         newDescription=findViewById(R.id.edt_description)
         oldUsername= intent.getStringExtra("userName").toString()
         oldEmail=intent.getStringExtra("email").toString()
-        oldDescription=intent.getStringExtra("email").toString()
+        oldDescription=intent.getStringExtra("description").toString()
+
+        newIdentifier.setText(oldUsername)
+        newEmail.setText(oldEmail)
+        newDescription.setText(oldDescription)
 
 
         //init api
