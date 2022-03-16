@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CreateDrawingPopUp"
+    android:background="@color/white"
+    android:gravity="center">
+
+    <TextView
+        android:id="@+id/popupTitleDrawing"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:text="Créer un dessin"
+        android:textSize="26sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/drawingName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/popupTitleDrawing"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:hint="Nom du dessin"
+        android:inputType="text"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+    <TextView
+        android:id="@+id/drawingNameEmptyError"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Veuillez saisir un nom"
+        android:layout_centerHorizontal="true"
+        android:textSize="15sp"
+        android:textColor="@color/red"
+        android:layout_below="@+id/drawingName"/>
+
+    <TextView
+        android:id="@+id/accessibilityTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Accessibilité"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:textSize="26sp"
+        android:layout_below="@+id/drawingNameEmptyError"/>
+
+    <RadioGroup
+        android:id="@+id/accessibilityRadioGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/accessibilityTitle">
+
+        <RadioButton
+            android:id="@+id/publicRB"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="public"
+            android:textSize="20sp"/>
+
+        <RadioButton
+            android:id="@+id/privateRB"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="privé"
+            android:textSize="20sp"/>
+
+    </RadioGroup>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvOutputAlbums"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/accessibilityRadioGroup"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/message_input_box" />
+
+    <TextView
+        android:id="@+id/albumEmptyError"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Veuillez saisir un album privé"
+        android:layout_centerHorizontal="true"
+        android:textSize="15sp"
+        android:textColor="@color/red"
+        android:layout_below="@+id/rvOutputAlbums"/>
+
+
+    <LinearLayout
+        android:id="@+id/buttons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/albumEmptyError"
+        android:orientation="horizontal"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp">
+
+        <Button
+            android:id="@+id/cancelBtn"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/submitBtn"
+            android:background="@color/black"
+            android:text="Annuler"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+
+        <Button
+            android:id="@+id/submitBtn"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:background="@color/black"
+            android:text="Creer"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+
+
+    </LinearLayout>
+
+
+
+</RelativeLayout>

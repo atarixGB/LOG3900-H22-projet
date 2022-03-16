@@ -8,6 +8,7 @@ import android.util.Base64
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.mobile.Interface.User
 import com.example.mobile.Retrofit.IMyService
@@ -32,9 +33,10 @@ class Profile : AppCompatActivity() {
     private lateinit var iMyService: IMyService
     internal var compositeDisposable = CompositeDisposable()
     var userList = mutableListOf<User>()
+    private val sharedViewModel: SharedViewModelToolBar by viewModels()
 
 
-    //todo: for the statistic portion we will use fragments i think its better to transmit the information
+    //todo(NH): for the statistic portion we will use fragments i think its better to transmit the information
     //todo (suite): or we can use a viewModel to do the calculations and call them on this page
 
     override fun onStop() {
@@ -50,14 +52,11 @@ class Profile : AppCompatActivity() {
         avatar = findViewById(R.id.userAvatar)
         modifyProfile=findViewById(R.id.modify_label)
         user = intent.getStringExtra("userName").toString()
-//        email = intent.getStringExtra("email").toString()
+        sharedViewModel.setUser(user)
 
 
-
-        //username and email sent from registration page displayed
+        //username and email sent from registration or login page displayed
         usernameDisplayed.setText(user)
-        title_username.setText(user)
-//        user_email.setText(email)
 
         //init api
         val retrofit = RetrofitClient.getInstance()
@@ -80,8 +79,10 @@ class Profile : AppCompatActivity() {
 
         modify_label.setOnClickListener(){
             val intent = Intent(this, Profile_modification::class.java)
-
+            //to send the old username, we need it in the modification page
             intent.putExtra("userName",user)
+            intent.putExtra("email",user_email.text.toString())
+            intent.putExtra("description",description_field.text.toString())
             startActivity(intent)
         }
 
@@ -94,7 +95,6 @@ class Profile : AppCompatActivity() {
             override fun onResponse(call: Call<User>, response: Response<User>) {
                 Toast.makeText(this@Profile, "Bienvenu!", Toast.LENGTH_SHORT).show()
                 userAvatar.setImageBitmap(avatarDecoder(response.body()?.avatar))
-//                title_username.setText(response.body()?.username)
 //                username.setText(response.body()?.username)
                 user_email.setText(response.body()?.email)
                 description_field.setText(response.body()?.description)

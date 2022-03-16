@@ -53,6 +53,9 @@ import { PublicAlbumsComponent } from './components/album-gallery/public-albums/
 import { DrawingsViewComponent } from './components/album-gallery/drawings-view/drawings-view.component';
 import { PublicDrawingGalleryComponent } from './components/album-gallery/public-drawing-gallery/public-drawing-gallery.component';
 import { ColorConfigComponent } from './components/editor/sidebar/color-config/color-config.component';
+import { CreateRoomDialogComponent } from './components/chat/create-room-dialog/create-room-dialog.component';
+import { PublicChatroomsComponent } from './components/chat/public-chatrooms/public-chatrooms.component';
+import { DeleteRoomDialogComponent } from './components/chat/delete-room-dialog/delete-room-dialog.component'
 
 @NgModule({
     declarations: [
@@ -87,6 +90,9 @@ import { ColorConfigComponent } from './components/editor/sidebar/color-config/c
         ProfileSettingsComponent,
         SelectionConfigComponent,
         ColorConfigComponent, 
+        CreateRoomDialogComponent,
+        PublicChatroomsComponent,
+        DeleteRoomDialogComponent,
     ],
     imports: [
         BrowserModule,

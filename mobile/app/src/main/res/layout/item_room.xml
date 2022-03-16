@@ -6,15 +6,19 @@
     android:paddingStart="8dp"
     android:paddingTop="8dp">
 
-    <Button
+    <TextView
         android:id="@+id/item_room_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/white"
         android:fontFamily="@font/roboto"
-        android:minWidth="240dp"
+        android:minWidth="200dp"
+        android:minHeight="50dp"
         android:text="room"
+        android:gravity="center"
+        android:textStyle="bold"
+        app:iconTint="#888282"
         android:textColor="@color/black"
+        android:background="@drawable/room_btn"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

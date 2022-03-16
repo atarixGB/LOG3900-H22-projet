@@ -7,6 +7,7 @@ import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -39,6 +40,8 @@ class ChatRooms : AppCompatActivity(), CreateRoomPopUp.DialogListener, RoomAdapt
     private lateinit var iMyService: IMyService
     internal var compositeDisposable = CompositeDisposable()
 
+    private val sharedViewModel: SharedViewModelToolBar by viewModels()
+
     override fun onStop() {
         compositeDisposable.clear()
         super.onStop()
@@ -59,6 +62,7 @@ class ChatRooms : AppCompatActivity(), CreateRoomPopUp.DialogListener, RoomAdapt
 
         rooms = ArrayList()
         user = intent.getStringExtra("userName").toString()
+        sharedViewModel.setUser(user)
 
         roomAdapter = RoomAdapter(this, rooms, user)
 
@@ -86,7 +90,7 @@ class ChatRooms : AppCompatActivity(), CreateRoomPopUp.DialogListener, RoomAdapt
         }
 
         principal_room_btn.setOnClickListener {
-            this.roomName = principal_room_btn.text.toString()
+            this.roomName = "default-public-room"
             var roomData: JSONObject = JSONObject()
             roomData.put("userName", user)
             roomData.put("room", this.roomName)

@@ -15,22 +15,22 @@ const io = socket(server);
 
 let message = '';
 let users = new Set();
-let room = "Canal Principal"
+let room = "default-public-room"
 
 io.on('connection', (socket) => {
 
     var userName = '';
     socket.join(room)
+    
+    console.log("New socket connection: " + socket.id, "\nRoom: " + room)
 
-    console.log("New socket connection: " + socket.id)
+    socket.on('newUser', (data) => {
 
-    socket.on('newUser', (userName) => {
-
-        if (!users.has(userName))
+        if (!users.has(data.userName))
         {
-            console.log('welcom', userName);
-            users.add(userName);
-            io.emit('newUser', userName);
+            console.log('Welcome', data.userName);
+            users.add(data.userName);
+            io.emit('newUser', data.userName);
         }
     })
 
@@ -53,7 +53,8 @@ io.on('connection', (socket) => {
         const roomName = room_data.room;
 
         room = roomName;
-        console.log(userName, ' has joined ', roomName);
+        socket.join(roomName); 
+        console.log(userName, ' has joined ', room);
     })
 
     socket.on('newUserToChatRoom', (room_data) => {
@@ -89,8 +90,7 @@ io.on('connection', (socket) => {
 
     socket.on('message', (msg) => {
         console.log(msg)
-        const roomName = msg.room;
-        io.to(roomName).emit('message', msg);
+        io.to(msg.room).emit('message', msg);
     })
 
     socket.on('disconnectUser', (userName) => {

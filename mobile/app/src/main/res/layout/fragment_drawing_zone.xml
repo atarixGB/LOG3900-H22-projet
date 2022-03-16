@@ -4,10 +4,9 @@
     android:layout_height="0dp"
     tools:context="com.example.mobile.DrawingZoneFragment">
 
-    <LinearLayout
-        android:id="@+id/canvas"
+    <view class="com.example.mobile.DrawingZoneFragment$DrawingView"
+        android:id="@+id/drawingView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#000000"
-        android:orientation="horizontal" />
+        android:layout_marginTop="10dp" />
 </FrameLayout>

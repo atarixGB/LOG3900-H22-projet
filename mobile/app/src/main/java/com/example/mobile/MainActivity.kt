@@ -42,6 +42,8 @@ class MainActivity : AppCompatActivity()  {
         showHideBtn = findViewById(R.id.showHideBtn)
         pwd = findViewById(R.id.edt_password)
 
+
+
         //Connect to the Server
 
 //        SocketHandler.setSocket()
