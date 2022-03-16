@@ -2907,6 +2907,7 @@ id drawingName
 id drawingNameEmptyError
 id drawingView
 id drawing_gallery_btn
+id drawingsSearchView
 id dropdown_menu
 id easeIn
 id easeInOut

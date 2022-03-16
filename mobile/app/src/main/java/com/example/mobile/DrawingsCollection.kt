@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.ImageButton
+import android.widget.SearchView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -27,6 +28,8 @@ import com.google.gson.GsonBuilder
 import com.google.gson.JsonElement
 import org.json.JSONArray
 import org.json.JSONObject
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterListener, UserAdapter.UserAdapterListener,AlbumAttributeModificationPopUp.DialogListener {
@@ -38,9 +41,11 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
     private lateinit var membersListButton: ImageButton
     private lateinit var addDrawingButton: ImageButton
     private lateinit var albumViewOptions: ImageButton
+    private lateinit var searchView: SearchView
     private lateinit var rvOutputDrawings: RecyclerView
     private lateinit var drawingAdapter: DrawingAdapter
     private lateinit var drawings: ArrayList<IDrawing>
+    private lateinit var searchArrayList: ArrayList<IDrawing>
     private lateinit var drawingName: String
     private lateinit var userNameAccepted: String
     private lateinit var dialogAcceptMembershipRequest: AcceptMembershipRequestsPopUp
@@ -70,6 +75,9 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
         val retrofit = RetrofitClient.getInstance()
         iMyService = retrofit.create(IMyService::class.java)
 
+        searchView = findViewById<SearchView>(R.id.drawingsSearchView)
+        searchView.queryHint = "cherchez un dessin"
+
         user = intent.getStringExtra("userName").toString()
         albumName = intent.getStringExtra("albumName").toString()
         getAlbumParameters(albumName)
@@ -80,6 +88,7 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
         }
 
         drawings = java.util.ArrayList()
+        searchArrayList = ArrayList()
 
         drawingAdapter = DrawingAdapter(this, drawings)
 
@@ -112,6 +121,18 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
             startActivity(intent)
             Toast.makeText(this, "Ajouter un dessin", Toast.LENGTH_LONG).show()
         }
+
+        searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                filter(newText)
+                return false
+            }
+
+        })
 
         //handle popup menu options
         albumViewOptions.setOnClickListener {
@@ -308,5 +329,24 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
         this.albumNameTextView.text=albumName
         updateAlbum(this.albumName,albumName,albumDescription)
         this.albumName=albumName
+    }
+
+    private fun filter(newText: String?) {
+        searchArrayList.clear()
+        val searchText = newText!!.lowercase(Locale.getDefault())
+        if (!searchText.isEmpty()) {
+            drawings.forEach {
+                if ((it.name!!.lowercase(Locale.getDefault()).contains(searchText)) ||
+                    (it.owner!!.lowercase(Locale.getDefault()).contains(searchText))
+                ){
+                    searchArrayList.add(it)
+                }
+            }
+            drawingAdapter.searchArrayList(searchArrayList)
+        } else {
+            searchArrayList.clear()
+            searchArrayList.addAll(drawings)
+            drawingAdapter.notifyDataSetChanged()
+        }
     }
 }

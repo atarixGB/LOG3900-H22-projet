@@ -55,6 +55,11 @@ class DrawingAdapter (val context: Context?, var drawings: ArrayList<IDrawing>) 
         drawings.add(drawing)
     }
 
+    fun searchArrayList (list: ArrayList<IDrawing>) {
+        drawings = list
+        notifyDataSetChanged()
+    }
+
     override fun getItemCount(): Int {
         return drawings.size
     }
