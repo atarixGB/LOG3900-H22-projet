@@ -93,7 +93,7 @@ export class RectangleService extends ShapeService {
             ctx.rect(this.pathData[0].x, this.pathData[0].y, width, length);
             ctx.stroke();
         } else {
-            ctx.fillStyle = this.colorSecond;
+            ctx.fillStyle = this.isClearSecondary ? 'rgba(0, 0, 0, 0)' : this.colorSecond;
             ctx.strokeStyle = this.colorPrime;
             ctx.fill();
             ctx.stroke();
@@ -129,7 +129,7 @@ export class RectangleService extends ShapeService {
             this.findLeftPoint(this.pathData[0], this.pathData[this.pathData.length - 1]),
             Math.abs(this.width),
             Math.abs(this.height),
-            this.selectType,
+            this.isClearSecondary,
         );
         this.collaborationService.broadcastStroke(rectStroke);
         this.selectionService.addStroke(rectStroke);

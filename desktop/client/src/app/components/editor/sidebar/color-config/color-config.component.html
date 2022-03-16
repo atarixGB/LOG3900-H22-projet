@@ -2,7 +2,7 @@
 <div>
    <mat-grid-list cols="3">
       <mat-grid-tile *ngFor="let color of this.colors">
-         <div class="color primeColor" (click)="this.changePrimaryColorTo(color, $event.target)"></div>
+         <div class="color primeColor" [ngClass]="{ selected: color == this.colorManagerService.primaryColor }" (click)="this.changePrimaryColorTo(color, $event.target)"></div>
       </mat-grid-tile>
   </mat-grid-list>
 </div>
