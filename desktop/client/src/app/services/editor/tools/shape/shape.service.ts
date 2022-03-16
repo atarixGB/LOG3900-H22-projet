@@ -1,7 +1,6 @@
 import { Tool } from '@app/classes/tool';
 import { Vec2 } from '@app/classes/vec2';
 import { DEFAULT_LINE_THICKNESS, MouseButton } from '@app/constants/constants';
-import { ColorOrder } from '@app/interfaces-enums/color-order';
 import { TypeStyle } from '@app/interfaces-enums/type-style';
 import { ColorManagerService } from '@app/services/editor/color-manager/color-manager.service';
 import { DrawingService } from '@app/services/editor/drawing/drawing.service';
@@ -67,8 +66,8 @@ export abstract class ShapeService extends Tool {
             this.mouseDownCoord = this.getPositionFromMouse(event);
             this.pathData.push(this.mouseDownCoord);
         }
-        this.colorPrime = this.colorManager.selectedColor[ColorOrder.PrimaryColor].inString;
-        this.colorSecond = this.colorManager.selectedColor[ColorOrder.SecondaryColor].inString;
+        this.colorPrime = this.colorManager.primaryColor;
+        this.colorSecond = this.colorManager.secondaryColor;
     }
 
     handleKeyDown(event: KeyboardEvent): void {
@@ -90,8 +89,8 @@ export abstract class ShapeService extends Tool {
     }
 
     protected updateBorderType(ctx: CanvasRenderingContext2D): void {
-        const filling = this.colorManager.selectedColor[ColorOrder.PrimaryColor].inString;
-        const contouring = this.colorManager.selectedColor[ColorOrder.SecondaryColor].inString;
+        const filling = this.colorManager.primaryColor;
+        const contouring = this.colorManager.secondaryColor;
 
         if (this.isSelection) {
             ctx.strokeStyle = 'rgb(116, 113, 113)';

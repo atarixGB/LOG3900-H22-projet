@@ -7,7 +7,6 @@ import { ToolList } from '@app/interfaces-enums/tool-list';
 import { CollaborationService } from '@app/services/collaboration/collaboration.service';
 import { DrawingService } from '@app/services/editor/drawing/drawing.service';
 import { SelectionService } from '@app/services/editor/tools/selection/selection.service';
-import { ColorOrder } from 'src/app/interfaces-enums/color-order';
 import { ColorManagerService } from 'src/app/services/editor/color-manager/color-manager.service';
 
 @Injectable({
@@ -55,7 +54,7 @@ export class PencilService extends Tool {
             const mousePosition = this.getPositionFromMouse(event);
             this.pathData.push(mousePosition);
             this.drawLine(this.drawingService.baseCtx, this.pathData);
-            this.color = this.colorManager.selectedColor[ColorOrder.PrimaryColor].inString;
+            this.color = this.colorManager.primaryColor;
 
             this.drawingService.clearCanvas(this.drawingService.previewCtx);
             this.sendPencilStroke(false);
@@ -95,16 +94,14 @@ export class PencilService extends Tool {
             ctx.lineTo(point.x, point.y);
             ctx.lineWidth = this.pencilThickness;
         }
-        const color = this.colorManager.selectedColor[ColorOrder.PrimaryColor].inString;
-        ctx.strokeStyle = color;
+        ctx.strokeStyle = this.colorManager.primaryColor;
         ctx.stroke();
     }
 
     private drawPoint(ctx: CanvasRenderingContext2D, path: Vec2[]): void {
         ctx.beginPath();
         ctx.arc(path[0].x, path[0].y, this.pencilThickness, 0, 2 * Math.PI, true);
-        const color = this.colorManager.selectedColor[ColorOrder.PrimaryColor].inString;
-        ctx.fillStyle = color;
+        ctx.fillStyle = this.colorManager.primaryColor;
         ctx.fill();
     }
 
