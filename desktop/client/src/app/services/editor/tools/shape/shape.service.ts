@@ -12,6 +12,8 @@ export abstract class ShapeService extends Tool {
     isShiftShape: boolean;
     colorPrime: string;
     colorSecond: string;
+    isClearSecondary: boolean;
+
     protected fillValue: boolean;
     protected strokeValue: boolean;
     protected size: Vec2;
@@ -24,10 +26,11 @@ export abstract class ShapeService extends Tool {
         this.strokeValue = false;
         this.isSelection = false;
         this.selectType = TypeStyle.Stroke;
-        this.changeType();
         this.clearPath();
         this.isShiftShape = false;
         this.size = { x: 0, y: 0 };
+        this.colorSecond = 'rgb(0,0,0)';
+        this.isClearSecondary = true;
     }
 
     abstract onMouseUp(event: MouseEvent): void;
@@ -37,23 +40,6 @@ export abstract class ShapeService extends Tool {
     abstract upperLeft(path: Vec2[]): void;
     abstract upperRight(path: Vec2[]): void;
     abstract lowerRight(path: Vec2[]): void;
-
-    changeType(): void {
-        switch (this.selectType) {
-            case TypeStyle.Stroke:
-                this.fillValue = false;
-                this.strokeValue = true;
-                break;
-            case TypeStyle.Fill:
-                this.fillValue = true;
-                this.strokeValue = false;
-                break;
-            case TypeStyle.StrokeFill:
-                this.fillValue = true;
-                this.strokeValue = true;
-                break;
-        }
-    }
 
     clearPath(): void {
         this.pathData = [];
@@ -67,7 +53,6 @@ export abstract class ShapeService extends Tool {
             this.pathData.push(this.mouseDownCoord);
         }
         this.colorPrime = this.colorManager.primaryColor;
-        this.colorSecond = this.colorManager.secondaryColor;
     }
 
     handleKeyDown(event: KeyboardEvent): void {
@@ -85,37 +70,6 @@ export abstract class ShapeService extends Tool {
                 this.drawingService.clearCanvas(this.drawingService.previewCtx);
                 this.drawShape(this.drawingService.previewCtx);
             }
-        }
-    }
-
-    protected updateBorderType(ctx: CanvasRenderingContext2D): void {
-        const filling = this.colorManager.primaryColor;
-        const contouring = this.colorManager.secondaryColor;
-
-        if (this.isSelection) {
-            ctx.strokeStyle = 'rgb(116, 113, 113)';
-            ctx.fillStyle = 'rgba(116, 113, 113, 0)';
-            ctx.fill();
-            ctx.stroke();
-            return;
-        }
-        if (this.strokeValue) {
-            ctx.strokeStyle = contouring;
-            ctx.fillStyle = 'rgba(255, 0, 0, 0)';
-            ctx.fill();
-            ctx.stroke();
-        }
-        if (this.fillValue) {
-            ctx.fillStyle = filling;
-            ctx.strokeStyle = 'rgba(255, 0, 0, 0)';
-            ctx.fill();
-            ctx.stroke();
-        }
-        if (this.fillValue && this.strokeValue) {
-            ctx.fillStyle = filling;
-            ctx.strokeStyle = contouring;
-            ctx.fill();
-            ctx.stroke();
         }
     }
 

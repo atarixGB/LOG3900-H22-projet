@@ -4,11 +4,17 @@
     [(ngModel)]="ellipseService.lineWidth"> </mat-slider>
 </div>
 
-<mat-form-field>
-  <mat-label>Style du dessin</mat-label>
-  <mat-select class="white" [(ngModel)]="ellipseService.selectType" (selectionChange)="ellipseService.changeType()">
-    <mat-option value="stroke">Contour</mat-option>
-    <mat-option value="fill">Plein</mat-option>
-    <mat-option value="strokeFill">Plein + contour</mat-option>
-  </mat-select>
-</mat-form-field>
+<!-- Secondary color set -->
+<div fxLayout="row" fxLayoutAlign="start center" >
+  <h4>Fond transparent: </h4>
+  <mat-slide-toggle id="toggle" [(ngModel)]="this.ellipseService.isClearSecondary"></mat-slide-toggle>
+</div>
+
+<div [hidden]="this.ellipseService.isClearSecondary">
+  <h4>Couleur de fond: </h4>
+  <mat-grid-list cols="4">
+     <mat-grid-tile *ngFor="let color of this.colors">
+        <div class="color ellipseColor" [ngClass]="{ selected: color == this.ellipseService.colorSecond }" (click)="changeSecondaryColorTo(color, $event.target)"></div>
+     </mat-grid-tile>
+ </mat-grid-list>
+</div>

@@ -9,16 +9,29 @@ import { ColorManagerService } from '@app/services/editor/color-manager/color-ma
 })
 export class ColorConfigComponent implements AfterViewInit {
   colors: string[];
+  primaryColorBtns: HTMLCollection;
 
   constructor(public colorManagerService: ColorManagerService) { 
     this.colors = colors;
   }
 
   ngAfterViewInit(): void {
-    const colorBtns = document.getElementsByClassName('color'); 
+    this.primaryColorBtns = document.getElementsByClassName('primeColor'); 
     for(let i = 0; i < colors.length; i++) {
-      (colorBtns.item(i) as HTMLElement).style.backgroundColor = colors[i];
+      (this.primaryColorBtns.item(i) as HTMLElement).style.backgroundColor = colors[i];
     }
+  }
+
+  changePrimaryColorTo(newPrimary: string, div: HTMLElement): void {
+    this.colorManagerService.primaryColor = newPrimary;
+    this.displayActiveColor(div);
+  }
+
+  displayActiveColor(div: HTMLElement): void {
+      for(let i = 0; i < colors.length; i++) {
+          (this.primaryColorBtns.item(i) as HTMLElement).className = "color primeColor";
+      }
+      div.className += " selected";
   }
 
 }

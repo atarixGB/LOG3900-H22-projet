@@ -93,7 +93,10 @@ export class RectangleService extends ShapeService {
             ctx.rect(this.pathData[0].x, this.pathData[0].y, width, length);
             ctx.stroke();
         } else {
-            this.updateBorderType(ctx);
+            ctx.fillStyle = this.colorSecond;
+            ctx.strokeStyle = this.colorPrime;
+            ctx.fill();
+            ctx.stroke();
         }
     }
 
@@ -110,8 +113,6 @@ export class RectangleService extends ShapeService {
             this.drawingService.clearCanvas(this.drawingService.previewCtx);
             ctx.rect(this.origin.x, this.origin.y, this.shortestSide, this.shortestSide);
             ctx.stroke();
-        } else {
-            this.updateBorderType(ctx);
         }
     }
 

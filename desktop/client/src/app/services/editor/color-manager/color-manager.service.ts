@@ -6,18 +6,8 @@ import { colors } from '@app/constants/colors'
 })
 export class ColorManagerService {
     primaryColor: string;
-    secondaryColor: string;
 
     constructor() {
         this.primaryColor = colors[2];
-        this.secondaryColor = colors[2];
-    }
-
-    changePrimaryColorTo(newPrimary: string): void {
-        this.primaryColor = newPrimary;
-    }
-
-    changeSecondaryColorTo(newSecondary: string): void {
-
     }
 }

@@ -36,7 +36,10 @@ export class EllipseService extends ShapeService {
         ctx.lineWidth = this.lineWidth;
         ctx.beginPath();
         ctx.ellipse(this.origin.x, this.origin.y, this.size.x / 2, this.size.y / 2, 0, 2 * Math.PI, 0);
-        this.updateBorderType(ctx);
+        ctx.fillStyle = this.colorSecond;
+        ctx.strokeStyle = this.colorPrime;
+        ctx.fill();
+        ctx.stroke();
     }
 
     private drawCircle(ctx: CanvasRenderingContext2D): void {
@@ -45,7 +48,6 @@ export class EllipseService extends ShapeService {
         this.pathData.push({ x: this.origin.x + this.radius, y: this.origin.y + this.radius });
         ctx.beginPath();
         ctx.ellipse(this.origin.x, this.origin.y, this.radius, this.radius, 0, 2 * Math.PI, 0);
-        this.updateBorderType(ctx);
     }
 
     drawShape(ctx: CanvasRenderingContext2D): void {
