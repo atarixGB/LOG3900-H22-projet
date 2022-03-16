@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { IAlbum } from '@app/interfaces-enums/IAlbum'
+import { IDrawing } from '@app/interfaces-enums/IDrawing'
 import { LoginService } from '@app/services/login/login.service';
-import { ALBUM_URL, PUBLIC_DRAWINGS_URL, CREATE_DRAWING_URL, JOIN_ALBUM_URL, DECLINE_MEMBERSHIP_REQUEST_URL, ACCEPT_MEMBERSHIP_REQUEST_URL, UPDATE_ALBUM_PARAMETERS_URL } from '@app/constants/api-urls';
+import { ALBUM_URL, PUBLIC_DRAWINGS_URL, CREATE_DRAWING_URL, JOIN_ALBUM_URL, DECLINE_MEMBERSHIP_REQUEST_URL, ACCEPT_MEMBERSHIP_REQUEST_URL, UPDATE_ALBUM_PARAMETERS_URL, ADD_DRAWING_TO_ALBUM_URL } from '@app/constants/api-urls';
 import { DrawingService } from '../editor/drawing/drawing.service';
 
 @Injectable({
@@ -12,7 +13,7 @@ export class AlbumGalleryService {
   publicAlbums: IAlbum[];
   myAlbums: IAlbum[];
   currentAlbum: IAlbum;
-  currentDrawing: string; // TODO: change with an interface
+  selectedAlbumId: string | void;
 
   constructor(private httpClient: HttpClient, private loginService: LoginService, private drawingService: DrawingService) {
     this.publicAlbums = [];
@@ -20,7 +21,7 @@ export class AlbumGalleryService {
   }
 
   createDrawing(drawingName: string): void {
-    const drawingData = {
+    const drawingData: IDrawing = {
       name: drawingName,
       creator: this.loginService.username,
       contributors: [this.loginService.username],
@@ -32,35 +33,29 @@ export class AlbumGalleryService {
     console.log(drawingData)
 
     this.httpClient.post(CREATE_DRAWING_URL, drawingData).subscribe(
-      (result)=>{
+      (result) => {
         console.log("Résultat du serveur:", result);
-        // Add drawing to album
+        drawingData._id = result;
+        this.addDrawingToAlbum(drawingData, this.selectedAlbumId);
       },
-      (error)=>{
-        console.log("Erreur du serveur", error);
+      (error) => {
+        console.log(`Impossible de créer le dessin ${drawingName} dans la base de données.\nErreur: ${error}`);
       });
 
-    }
+  }
 
-  addDrawingToAlbum(drawingName: string, albumName: string, albumId: string | void): void {
-    console.log("addDrawingToAlbum", `Create new drawing "${drawingName}" in album "${albumName}" with id ${albumId}`);
-    // TODO: send new drawing in the specify album request here
-    // const drawingToAdd: IDrawing = {
-    //   name: drawingName,
-    //   creator: this.loginService.username,
-    //   contributors: [this.loginService.username],
-    //   data: "data in base 64", // Get data from canvas
-    //   albumId: albumId,
-    // }
-    // console.log("drawingToAdd", drawingToAdd);
-    // this.httpClient.put(ADD_DRAWING_TO_ALBUM_URL + `/${drawingName}`, drawingToAdd).subscribe(
-    //   (result)=> {
-    //     console.log(result);
+  addDrawingToAlbum(drawing: IDrawing, albumId: string | void): void {
+    const data = {
+      drawing: drawing._id,
+    };
 
-    //   },
-    //   (error)=> {
-    //     console.log(error);
-    //   });
+    this.httpClient.put(ADD_DRAWING_TO_ALBUM_URL + `/${albumId}`, data).subscribe(
+      (result) => {
+        console.log(result);
+      },
+      (error) => {
+        console.log(error);
+      });
   }
 
   createAlbum(name: string, description: string): void {
@@ -68,17 +63,17 @@ export class AlbumGalleryService {
       name: name,
       owner: this.loginService.username,
       description: description,
-      drawingIds: [],
+      drawingIDs: [],
       members: [this.loginService.username],
       membershipRequests: []
     }
 
     this.httpClient.post(ALBUM_URL, newAlbum).subscribe(
       (result: IAlbum) => {
-        console.log("Server result: ", result)
+        console.log("Résultat du serveur:", result)
       },
       (error) => {
-        console.log("Server error:", error);
+        console.log(`Impossible de créer l'album "${name}" dans la base de données.\nErreur: ${error}`);
       }
     )
 
@@ -91,11 +86,11 @@ export class AlbumGalleryService {
 
     this.httpClient.put(`${JOIN_ALBUM_URL}/${album.name}`, userToAdd).subscribe(
       (result) => {
-        console.log("Résultat serveur:", result);
+        console.log("Résultat du serveur:", result);
 
       },
       (error) => {
-        console.log("Erreur serveur:", error);
+        console.log(`Impossible d'envoyer une demande d'adhésion à l'album "${album.name}" dans la base de données.\nErreur: ${error}`);
 
       }
     )
@@ -109,18 +104,18 @@ export class AlbumGalleryService {
     }
 
     this.httpClient.put(ACCEPT_MEMBERSHIP_REQUEST_URL, data).subscribe(
-      (result)=> {
-        console.log("Résultat serveur", result);
-          this.currentAlbum.membershipRequests.forEach((user,index) => {
-            if (user == memberName) {
-              this.currentAlbum.membershipRequests.splice(index, 1);
-            }
-          });
+      (result) => {
+        console.log("Résultat du serveur:", result);
+        this.currentAlbum.membershipRequests.forEach((user, index) => {
+          if (user == memberName) {
+            this.currentAlbum.membershipRequests.splice(index, 1);
+          }
+        });
       },
-      (error)=> {
-        console.log("Erreur serveur", error)
+      (error) => {
+        console.log("Erreur du serveur:", error)
       })
-    console.log(`${memberName} has been accepted in the album ${this.currentAlbum.name} by ${this.loginService.username}`);
+    console.log(`${memberName} a été accepté dans l'album "${this.currentAlbum.name}" par ${this.loginService.username}`);
   }
 
   declineUser(memberName: string): void {
@@ -131,30 +126,29 @@ export class AlbumGalleryService {
     }
 
     this.httpClient.put(DECLINE_MEMBERSHIP_REQUEST_URL, data).subscribe(
-      (result)=> {
-        console.log("Résultat serveur", result)
+      (result) => {
+        console.log("Résultat du serveur:", result)
 
-        this.currentAlbum.membershipRequests.forEach((user,index) => {
+        this.currentAlbum.membershipRequests.forEach((user, index) => {
           if (user == memberName) {
             this.currentAlbum.membershipRequests.splice(index, 1);
           }
         });
       },
-      (error)=> {
-        console.log("Erreur serveur", error)
+      (error) => {
+        console.log("Erreur du serveur:", error)
       })
-    console.log(`${memberName} has been refused in the album ${this.currentAlbum.name} by ${this.loginService.username}`);
+    console.log(`${memberName} a été refusé dans l'album "${this.currentAlbum.name}" par ${this.loginService.username}`);
   }
 
   leaveAlbum(album: IAlbum): void {
-    console.log("Leaving album");
     const url = ALBUM_URL + `/${album._id}`;
 
     if (album.owner != this.loginService.username) {
       const updateData = { memberToRemove: this.loginService.username }; // TODO Set new ownwer, may be in another function
       this.httpClient.put<string>(url, updateData).subscribe(
         (result) => {
-          console.log("Server result:", result);
+          console.log("Résultat du serveur:", result);
         },
         (error) => {
           console.log(`Impossible de retrouver l'album demandé dans la base de données.\nErreur: ${error}`)
@@ -167,10 +161,10 @@ export class AlbumGalleryService {
     const url = ALBUM_URL + `/${albumId}`;
     this.httpClient.delete(url).subscribe(
       (result) => {
-        console.log("Server result: ", result);
+        console.log("Résultat du serveur:", result);
       },
       (error) => {
-        console.log(`Impossible de retrouver les dessins de l'album dans la base de données.\nErreur: ${error}`);
+        console.log(`Impossible de supprimer l'album dans la base de données.\nErreur: ${error}`);
       }
     )
   }
@@ -184,10 +178,10 @@ export class AlbumGalleryService {
 
     this.httpClient.post(UPDATE_ALBUM_PARAMETERS_URL, data).subscribe(
       (result) => {
-        console.log("Résultat serveur:", result);
+        console.log("Résultat du serveur:", result);
       },
       (error) => {
-        console.log("Erreur serveur", error);
+        console.log(`Impossible de modifier les attributs de l'album dans la base de données.\nErreur: ${error}`);
 
       }
     )

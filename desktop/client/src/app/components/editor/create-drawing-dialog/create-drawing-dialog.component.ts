@@ -35,7 +35,7 @@ export class CreateDrawingDialogComponent implements OnInit {
     this.isPrivate = value == 1;
     if (this.isPrivate) {
       this.selectedAlbumName = this.albumGalleryService.myAlbums[0].name;
-      this.selectedAlbumId = this.albumGalleryService.myAlbums[0]._id;
+      this.albumGalleryService.selectedAlbumId = this.albumGalleryService.myAlbums[0]._id;
     } else {
       this.selectedAlbumName = "public (par défaut)";
       this.selectedAlbumId = "id"; // CHANGE FOR PUBLIC ALBUM ID
@@ -57,8 +57,8 @@ export class CreateDrawingDialogComponent implements OnInit {
 
   onAlbumClick(album: IAlbum): void {
     this.selectedAlbumName = album.name;
-    this.selectedAlbumId = album._id;
-    console.log("onAlbumClick",this.selectedAlbumName, this.selectedAlbumId);
+    this.albumGalleryService.selectedAlbumId = album._id;
+    console.log("onAlbumClick",this.selectedAlbumName, this.albumGalleryService.selectedAlbumId);
   }
 
   private getAlbums(): void {

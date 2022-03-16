@@ -361,7 +361,7 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
             response.status(400).send("Error fetching albums");
           } else {
             response.json(result)
-            console.log(result, "fetching succes");
+            console.log("fetching succes");
           }
         });
     });
@@ -387,11 +387,10 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
     //add drawing to an album
     app.put("/albums/addDrawing/:albumId", (request, response, next) => {
       let albumId = request.params.albumId;
-      console.log(albumId);
-      let drawingtoAdd = request.body.drawing;
-      DB.collection("albums").findOneAndUpdate({ name: albumId }, { $push: { drawingIDs: drawingtoAdd } }, { returnDocument: 'after' }, (err, res) => {
+      let drawingID = request.body.drawing;
+      DB.collection("albums").findOneAndUpdate({ _id: mongoose.Types.ObjectId(albumId) }, { $push: { drawingIDs: drawingID } }, { returnDocument: 'after' }, (err, res) => {
         response.json(201)
-        console.log(drawingtoAdd, "is added to ", albumId);
+        console.log(drawingID, "is added to ", albumId);
       })
     });
 
