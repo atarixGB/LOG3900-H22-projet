@@ -16,6 +16,9 @@
         android:theme="@style/Theme.Mobile"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".DisplayAllDrawings"
+            android:exported="false" />
+        <activity
             android:name=".AcceptMembershipRequestsPopUp"
             android:exported="false" />
         <activity

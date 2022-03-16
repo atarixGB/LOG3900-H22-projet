@@ -79,6 +79,10 @@ interface IMyService {
     @GET("albums/Drawings/{albumName}")
     fun getAllAlbumDrawings(@Path("albumName") albumName: String):Call<List<String>>
 
+    //get tous les dessins des albums dont userName est membre
+    @GET("/albums/getAllDrawings/{userName}")
+    fun getAllUserDrawings(@Path("userName") userName: String):Call<List<IAlbum>>
+
     @POST("albums")
     @FormUrlEncoded
     fun createNewAlbum(@Field("name")albumName:String,
@@ -131,11 +135,6 @@ interface IMyService {
         @Field("newDescription") newAvatar: String,
     ): Observable<String>
 
-//    @PUT("drawings/{drawingId}")
-//    @FormUrlEncoded
-//    fun saveDrawing(@Path("drawingId") drawingId: String,
-//                    @Field("data") data: String): Observable<String>
-
     @Multipart
     @POST("/upload/{drawingId}")
     fun saveDrawing(@Path("drawingId") drawingId: String,
@@ -144,8 +143,4 @@ interface IMyService {
 
     @GET("drawings/{drawingId}")
     fun getDrawingData(@Path("drawingId") drawingId: String):Call<IDrawing>
-
-//    @Multipart
-//    @POST("upload")
-//    fun uploadImage(@Part part: MultipartBody.Part,@Part("somedate") requestBody: RequestBody ) : Call<RequestBody>
 }

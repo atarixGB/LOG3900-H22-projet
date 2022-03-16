@@ -24,12 +24,12 @@
         "source": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\src\\main\\res\\drawable\\white_color.xml"
     },
     {
-        "merged": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\drawable_yellow_color.xml.flat",
-        "source": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\src\\main\\res\\drawable\\yellow_color.xml"
-    },
-    {
         "merged": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ic_baseline_text_snippet_24.xml.flat",
         "source": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\src\\main\\res\\drawable\\ic_baseline_text_snippet_24.xml"
+    },
+    {
+        "merged": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\drawable_yellow_color.xml.flat",
+        "source": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\src\\main\\res\\drawable\\yellow_color.xml"
     },
     {
         "merged": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\drawable_circle8.xml.flat",
@@ -44,16 +44,16 @@
         "source": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\src\\main\\res\\drawable\\ic_baseline_close_24.xml"
     },
     {
-        "merged": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\drawable_monster3.png.flat",
-        "source": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\src\\main\\res\\drawable\\monster3.png"
+        "merged": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\drawable_circle20.xml.flat",
+        "source": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\src\\main\\res\\drawable\\circle20.xml"
     },
     {
         "merged": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxxhdpi_ic_launcher_foreground.png.flat",
         "source": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher_foreground.png"
     },
     {
-        "merged": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\drawable_circle20.xml.flat",
-        "source": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\src\\main\\res\\drawable\\circle20.xml"
+        "merged": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\drawable_monster3.png.flat",
+        "source": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\src\\main\\res\\drawable\\monster3.png"
     },
     {
         "merged": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\layout_activity_profile_modification.xml.flat",
@@ -426,6 +426,10 @@
     {
         "merged": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ic_baseline_photo_library_24.xml.flat",
         "source": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\src\\main\\res\\drawable\\ic_baseline_photo_library_24.xml"
+    },
+    {
+        "merged": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\layout_activity_display_all_drawings.xml.flat",
+        "source": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\src\\main\\res\\layout\\activity_display_all_drawings.xml"
     },
     {
         "merged": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\drawable_yellow_green_color.xml.flat",
