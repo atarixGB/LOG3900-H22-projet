@@ -228,6 +228,10 @@
         "source": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\src\\main\\res\\layout\\activity_display_public_albums.xml"
     },
     {
+        "merged": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ic_baseline_thumb_up_off_alt_24.xml.flat",
+        "source": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\src\\main\\res\\drawable\\ic_baseline_thumb_up_off_alt_24.xml"
+    },
+    {
         "merged": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\layout_fragment_toolbar_navigation.xml.flat",
         "source": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\src\\main\\res\\layout\\fragment_toolbar_navigation.xml"
     },
@@ -254,6 +258,10 @@
     {
         "merged": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ic_baseline_add_photo_alternate_24.xml.flat",
         "source": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\src\\main\\res\\drawable\\ic_baseline_add_photo_alternate_24.xml"
+    },
+    {
+        "merged": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\drawable_like.png.flat",
+        "source": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\src\\main\\res\\drawable\\like.png"
     },
     {
         "merged": "C:\\Users\\chaim\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxhdpi_ic_launcher_round.png.flat",

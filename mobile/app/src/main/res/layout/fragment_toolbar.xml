@@ -18,13 +18,14 @@
     <GridView
         android:id="@+id/weight_view"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:columnWidth="50dp"
         android:horizontalSpacing="10dp"
         android:numColumns="1"
         android:verticalSpacing="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/saveDrawingBtn"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"></GridView>
+        app:layout_constraintTop_toBottomOf="@+id/backBtn"></GridView>
 
     <Button
         android:id="@+id/saveDrawingBtn"

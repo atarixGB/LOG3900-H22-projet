@@ -1,30 +1,33 @@
 package com.example.mobile
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Base64
 import android.util.Log
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.view.isVisible
-import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mobile.Retrofit.IMyService
 import com.example.mobile.Retrofit.RetrofitClient
-import com.mikhaellopez.circularimageview.CircularImageView
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_profile_modification.*
 import kotlinx.android.synthetic.main.fragment_create_album_pop_up.*
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+import com.google.gson.JsonElement
+import org.json.JSONArray
+import org.json.JSONObject
+
 
 class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterListener, UserAdapter.UserAdapterListener,AlbumAttributeModificationPopUp.DialogListener {
     private lateinit var leaveAlbumBtn: ImageButton
@@ -37,7 +40,7 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
     private lateinit var albumViewOptions: ImageButton
     private lateinit var rvOutputDrawings: RecyclerView
     private lateinit var drawingAdapter: DrawingAdapter
-    private lateinit var drawings: ArrayList<String>
+    private lateinit var drawings: ArrayList<IDrawing>
     private lateinit var drawingName: String
     private lateinit var userNameAccepted: String
     private lateinit var dialogAcceptMembershipRequest: AcceptMembershipRequestsPopUp
@@ -87,8 +90,6 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
         albumNameTextView.text = albumName
 
         getAllAlbumDrawings(albumName)
-
-        //displayDrawing("6230fd7ba0a1a0e827f84dc0")
 
         leaveAlbumBtn.setOnClickListener {
             val intent = Intent(this, Albums::class.java)
@@ -212,7 +213,6 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
 
             override fun onResponse(call: Call<List<String>>, response: Response<List<String>>) {
                 for (drawing in response.body()!!) {
-                    //displayDrawingName(drawing)
                     displayDrawing(drawing)
                 }
             }
@@ -274,32 +274,18 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
             })
     }
 
-    private fun displayDrawingName(drawingId: String) {
-        var call: Call<String> = iMyService.getDrawingName(drawingId)
-        call.enqueue(object: retrofit2.Callback<String> {
-
-            override fun onResponse(call: Call<String>, response: Response<String>) {
-                drawingName = response.body()!!
-                drawingAdapter.addDrawing(drawingName)
-                drawingAdapter.notifyItemInserted((rvOutputDrawings.adapter as DrawingAdapter).itemCount)
-            }
-
-            override fun onFailure(call: Call<String>, t: Throwable) {
-                Log.d("Albums", "onFailure" +t.message )
-            }
-        })
-    }
-
     private fun displayDrawing(drawingId: String) {
-        var call: Call<String> = iMyService.getDrawingData(drawingId)
-        call.enqueue(object: retrofit2.Callback<String> {
+        var call: Call<IDrawing> = iMyService.getDrawingData(drawingId)
+        call.enqueue(object: retrofit2.Callback<IDrawing> {
 
-            override fun onResponse(call: Call<String>, response: Response<String>) {
-                drawingAdapter.addDrawing(response.body()!!)
+            override fun onResponse(call: Call<IDrawing>, response: Response<IDrawing>) {
+                val currentDrawing = response.body()
+
+                drawingAdapter.addDrawing(currentDrawing!!)
                 drawingAdapter.notifyItemInserted((rvOutputDrawings.adapter as DrawingAdapter).itemCount)
             }
 
-            override fun onFailure(call: Call<String>, t: Throwable) {
+            override fun onFailure(call: Call<IDrawing>, t: Throwable) {
                 Log.d("Albums", "onFailure" +t.message )
             }
         })

@@ -12,7 +12,7 @@ import kotlinx.android.synthetic.main.item_album.view.*
 import kotlinx.android.synthetic.main.item_drawing.view.*
 import java.util.ArrayList
 
-class DrawingAdapter (val context: Context?, var drawings: ArrayList<String>) : RecyclerView.Adapter<DrawingAdapter.DrawingViewHolder>() {
+class DrawingAdapter (val context: Context?, var drawings: ArrayList<IDrawing>) : RecyclerView.Adapter<DrawingAdapter.DrawingViewHolder>() {
 
     private var listener: DrawingAdapterListener = context as DrawingAdapterListener
 
@@ -30,9 +30,15 @@ class DrawingAdapter (val context: Context?, var drawings: ArrayList<String>) : 
         val currentDrawing = drawings[position]
 
         holder.itemView.apply {
-//            drawingName.text = currentDrawing
+            drawingName.text = currentDrawing.name
+            owner.text = currentDrawing.owner
+            if (currentDrawing.nbrOfLikes == null) {
+                nbrOfLikes.text = "0"
+            } else {
+                nbrOfLikes.text = currentDrawing.nbrOfLikes.toString()
+            }
 
-            imgDrawing.setImageBitmap(bitmapDecoder(currentDrawing))
+            imgDrawing.setImageBitmap(bitmapDecoder(currentDrawing.data))
 
             imgDrawing.setOnClickListener {
                 listener.drawingAdapterListener(drawingName.text.toString())
@@ -45,7 +51,7 @@ class DrawingAdapter (val context: Context?, var drawings: ArrayList<String>) : 
         return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
     }
 
-    fun addDrawing (drawing: String) {
+    fun addDrawing (drawing: IDrawing) {
         drawings.add(drawing)
     }
 

@@ -313,10 +313,10 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
       })
     })
 
-    //get drawingName
-    app.get("/getDrawingName", (request, response, next) => {
+    //get drawing Parameters
+    app.get("/getDrawingParameters/:drawingId", (request, response, next) => {
 
-      var post_data = request.query;
+      var post_data = request.params;
       var drawingId = post_data.drawingId.replaceAll(/"/g, ''); //? pour enlever les "" 
 
       DB.collection("drawings")
@@ -325,29 +325,11 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
             console.log("error getting");
             response.status(400).send("Error fetching albums");
           } else {
-            response.json(result.name)
+            response.json(result);
             console.log("Getting One Drawing", result);
           }
         });
     });
-
-    // Save drawing data
-    // app.put("/drawing/:drawingId", (request, response, next) => {
-    //   console.log("save to databave");
-
-    //   var drawingId = request.params.drawingId.replaceAll(/"/g, '');
-    //   var data =  request.body.data;
-
-    //   console.log(drawingId);
-    //   console.log(data);
-
-    //   DB.collection("drawings").findOneAndUpdate({ _id: mongoose.Types.ObjectId(drawingId) }, { $set: {"data": data}}, { returnDocument: 'after' }, (err, res) => {
-    //     response.json(200);
-    //     console.log(drawingId);
-    //     console.log(data);
-    //     console.log(res);
-    //   });
-    // });
 
     const upload = multer({dest: '/public/data/uploads/'});
 
@@ -376,15 +358,23 @@ app.post(
     const file = result.data;
     var img = fs.readFileSync(__dirname + "/uploads/" + file, {encoding: 'base64'});
     //console.log("image", img)
-    res.writeHead(200, {'Content-Type': 'image/png' });
-    res.end(img, 'binary');
+    //res.writeHead(200, {'Content-Type': 'image/png' });
+    // res.end(img, 'binary');
+    var returnedJson = {
+      _id: result._id,
+      name: result.name,
+      owner: result.owner,
+      description: result.description,
+      data: img,
+      members: result.members,
+      nbrOfLikes: result.nbrOfLikes
+    };
+    res.json(returnedJson)
     //console.log("ressss", res);
       }
     });
 
   });
-
-    
 
     //create new album
     app.post("/albums", (request, response, next) => {

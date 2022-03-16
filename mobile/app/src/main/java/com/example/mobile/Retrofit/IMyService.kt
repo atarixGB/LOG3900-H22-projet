@@ -117,8 +117,8 @@ interface IMyService {
     fun leaveAlbum (@Path("id") albumId: String,
                  @Field("memberToRemove")memberToRemove:String) : Observable<String>
 
-    @GET("getDrawingName")
-    fun getDrawingName(@Query("drawingId") drawingId: String):Call<String>
+    @GET("/getDrawingParameters/{drawingId}")
+    fun getDrawingParameters(@Path("drawingId") drawingId: String):Call<IDrawing>
 
     @DELETE("/albums/{id}")
     fun deleteAlbum(@Path("id")albumID:String): Observable<String>
@@ -143,7 +143,7 @@ interface IMyService {
                     @Part("upload") name: RequestBody): Call<ResponseBody>
 
     @GET("drawings/{drawingId}")
-    fun getDrawingData(@Path("drawingId") drawingId: String):Call<String>
+    fun getDrawingData(@Path("drawingId") drawingId: String):Call<IDrawing>
 
 //    @Multipart
 //    @POST("upload")

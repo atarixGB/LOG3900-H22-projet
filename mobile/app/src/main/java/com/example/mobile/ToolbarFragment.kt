@@ -1,5 +1,6 @@
 package com.example.mobile
 
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
@@ -20,10 +21,14 @@ class ToolbarFragment : Fragment(), AdapterView.OnItemClickListener {
     private var gridView: GridView? = null
     private var arrayList:ArrayList<ToolItem> ? = null
     private var toolAdapter: ToolAdapter ? = null
-    private val toolChange: ToolModel by activityViewModels()
+    private lateinit var user: String
     private lateinit var saveDrawingBtn : Button
     private lateinit var backBtn : Button
     private lateinit var _img: Bitmap
+
+    private val toolChange: ToolModel by activityViewModels()
+    private val sharedViewModel: SharedViewModelToolBar by activityViewModels()
+
     enum class MenuItem(val position: Int) {
         BACK(0),
         PENCIL(1),
@@ -46,14 +51,21 @@ class ToolbarFragment : Fragment(), AdapterView.OnItemClickListener {
         gridView?.adapter = toolAdapter
         gridView?.onItemClickListener = this
 
+        sharedViewModel.user.observe(viewLifecycleOwner) {
+            user = it
+        }
+
         saveDrawingBtn.setOnClickListener {
             toolChange.onClick()
         }
 
         backBtn.setOnClickListener {
-//            val intent = Intent(activity, Dashboard::class.java)
-//            intent.putExtra("userName", user)
-//            startActivity(intent)
+            //enregistrer avant de quitter
+            toolChange.onClick()
+
+            val intent = Intent(activity, Albums::class.java)
+            intent.putExtra("userName", user)
+            startActivity(intent)
         }
 
         return rootView
