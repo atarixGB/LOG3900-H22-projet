@@ -6,11 +6,14 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.ImageButton
 import android.widget.SearchView
+import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mobile.Retrofit.IMyService
 import com.example.mobile.Retrofit.RetrofitClient
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import retrofit2.Call
 import retrofit2.Response
 import java.util.*
@@ -136,6 +139,23 @@ class DisplayAllDrawings : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
 
     override fun drawingAdapterListener(drawingName: String) {
         TODO("Not yet implemented")
+    }
+
+    override fun addLikeToDrawingAdapterListener(drawingId: String) {
+        addLikeToDrawing(drawingId)
+    }
+
+    private fun addLikeToDrawing(drawingId: String) {
+        compositeDisposable.add(iMyService.addLikeToDrawing(drawingId)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { result ->
+                if (result == "201") {
+                    Toast.makeText(this, "liked", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this, "erreur", Toast.LENGTH_SHORT).show()
+                }
+            })
     }
 
 

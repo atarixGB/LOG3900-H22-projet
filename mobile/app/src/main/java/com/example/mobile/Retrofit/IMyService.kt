@@ -95,7 +95,10 @@ interface IMyService {
     @POST("drawing/create")
     @FormUrlEncoded
     fun createDrawing(@Field("name")drawingName:String,
-                       @Field("owner")ownerID:String): Observable<String>
+                      @Field("owner")ownerID:String,
+                      @Field("data")data:String,
+                      @Field("members")members:ArrayList<String>,
+                      @Field("nbrOfLikes")nbrOfLikes:Int): Observable<String>
 
     @PUT("albums/addDrawing/{albumId}")
     @FormUrlEncoded
@@ -143,4 +146,7 @@ interface IMyService {
 
     @GET("drawings/{drawingId}")
     fun getDrawingData(@Path("drawingId") drawingId: String):Call<IDrawing>
+
+    @PUT("drawings/addLike/{drawingId}")
+    fun addLikeToDrawing(@Path("drawingId") drawingId: String): Observable<String>
 }

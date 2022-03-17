@@ -2595,6 +2595,7 @@ drawable ic_baseline_search_24
 drawable ic_baseline_security_24
 drawable ic_baseline_text_snippet_24
 drawable ic_baseline_thumb_up_off_alt_24
+drawable ic_baseline_thumb_up_off_alt_24_2
 drawable ic_baseline_waving_hand_24
 drawable ic_clock_black_24dp
 drawable ic_keyboard_black_24dp
@@ -2608,6 +2609,7 @@ drawable ic_mtrl_chip_checked_black
 drawable ic_mtrl_chip_checked_circle
 drawable ic_mtrl_chip_close_circle
 drawable ic_save
+drawable imageliked
 drawable large_dot
 drawable like
 drawable logopolygram

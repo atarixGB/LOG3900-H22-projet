@@ -40,14 +40,14 @@
         android:id="@+id/nbrOfLikes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="2"
+        android:text="0"
         android:textColor="@color/black"
         android:textSize="30sp"
         android:layout_marginRight="10dp"
         app:layout_constraintEnd_toStartOf="@+id/likeBtn"
         app:layout_constraintTop_toBottomOf="@+id/imgDrawing" />
 
-    <Button
+    <ImageView
         android:id="@+id/likeBtn"
         android:layout_width="45dp"
         android:layout_height="45dp"

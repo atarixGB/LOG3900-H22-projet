@@ -305,6 +305,9 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
 
     //create drawing
     app.post("/drawing/create", (request, response, next)=> {
+      if (request.body.nbrOfLikes != undefined) {
+        request.body.nbrOfLikes = Number(request.body.nbrOfLikes)
+      }
       DB.collection("drawings").insertOne(request.body, (err, res) => {
         const drawingData = request.body; 
         drawingData._id = res.insertedId.toHexString();
@@ -438,6 +441,17 @@ app.post(
         console.log(drawingtoAdd, "is added to ", albumId);
       })
     });
+
+    //add one like to a drawing
+    app.put("/drawings/addLike/:drawingId", (request, response, next) => {
+      let drawingId = request.params.drawingId.replaceAll(/"/g, '');
+
+      DB.collection("drawings").findOneAndUpdate({ _id: mongoose.Types.ObjectId(drawingId) }, { $inc: { nbrOfLikes: 1 } }, { returnDocument: 'after' }, (err, res) => {
+        response.json(201)
+        console.log(drawingId, "is liked");
+      })
+    });
+
 
     //send request to an album
     app.put("/albums/sendRequest/:albumName", (request, response, next) => {

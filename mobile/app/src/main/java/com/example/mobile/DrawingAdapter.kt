@@ -3,10 +3,12 @@ package com.example.mobile
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_album.view.*
 import kotlinx.android.synthetic.main.item_drawing.view.*
@@ -15,6 +17,7 @@ import java.util.ArrayList
 class DrawingAdapter (val context: Context?, var drawings: ArrayList<IDrawing>) : RecyclerView.Adapter<DrawingAdapter.DrawingViewHolder>() {
 
     private var listener: DrawingAdapterListener = context as DrawingAdapterListener
+//    private var alreadyLiked: Boolean = false
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DrawingViewHolder {
         return DrawingViewHolder(
@@ -32,16 +35,24 @@ class DrawingAdapter (val context: Context?, var drawings: ArrayList<IDrawing>) 
         holder.itemView.apply {
             drawingName.text = currentDrawing.name
             owner.text = currentDrawing.owner
-            if (currentDrawing.nbrOfLikes == null) {
-                nbrOfLikes.text = "0"
-            } else {
-                nbrOfLikes.text = currentDrawing.nbrOfLikes.toString()
+            var incrementNbrOfLikes = 0
+            if (currentDrawing.nbrOfLikes != null) {
+                incrementNbrOfLikes = currentDrawing.nbrOfLikes
             }
+
+            nbrOfLikes.text = incrementNbrOfLikes.toString()
 
             imgDrawing.setImageBitmap(bitmapDecoder(currentDrawing.data))
 
             imgDrawing.setOnClickListener {
                 listener.drawingAdapterListener(drawingName.text.toString())
+            }
+
+            likeBtn.setOnClickListener {
+                listener.addLikeToDrawingAdapterListener(currentDrawing._id!!)
+                incrementNbrOfLikes++
+                nbrOfLikes.text = incrementNbrOfLikes.toString()
+                likeBtn.setBackgroundResource(R.drawable.imageliked)
             }
         }
     }
@@ -66,7 +77,9 @@ class DrawingAdapter (val context: Context?, var drawings: ArrayList<IDrawing>) 
 
     public interface DrawingAdapterListener {
         fun drawingAdapterListener(drawingName: String)
+        fun addLikeToDrawingAdapterListener(drawingId: String)
     }
+
 
     class DrawingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 }
