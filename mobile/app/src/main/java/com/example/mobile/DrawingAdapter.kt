@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.item_album.view.*
 import kotlinx.android.synthetic.main.item_drawing.view.*
 import java.util.ArrayList
 
-class DrawingAdapter (val context: Context?, var drawings: ArrayList<IDrawing>) : RecyclerView.Adapter<DrawingAdapter.DrawingViewHolder>() {
+class DrawingAdapter (val context: Context?, var drawings: ArrayList<IDrawing>, val user: String) : RecyclerView.Adapter<DrawingAdapter.DrawingViewHolder>() {
 
     private var listener: DrawingAdapterListener = context as DrawingAdapterListener
 //    private var alreadyLiked: Boolean = false
@@ -35,24 +35,51 @@ class DrawingAdapter (val context: Context?, var drawings: ArrayList<IDrawing>) 
         holder.itemView.apply {
             drawingName.text = currentDrawing.name
             owner.text = currentDrawing.owner
+
             var incrementNbrOfLikes = 0
-            if (currentDrawing.nbrOfLikes != null) {
-                incrementNbrOfLikes = currentDrawing.nbrOfLikes
+            if (currentDrawing.likes != null) {
+                incrementNbrOfLikes = currentDrawing.likes.size
+                if (currentDrawing.likes.contains(user)) {
+                    likeBtn.setBackgroundResource(R.drawable.imageliked)
+                }
             }
 
             nbrOfLikes.text = incrementNbrOfLikes.toString()
 
             imgDrawing.setImageBitmap(bitmapDecoder(currentDrawing.data))
 
+
+
             imgDrawing.setOnClickListener {
                 listener.drawingAdapterListener(drawingName.text.toString())
             }
 
             likeBtn.setOnClickListener {
-                listener.addLikeToDrawingAdapterListener(currentDrawing._id!!)
-                incrementNbrOfLikes++
-                nbrOfLikes.text = incrementNbrOfLikes.toString()
-                likeBtn.setBackgroundResource(R.drawable.imageliked)
+//                if (currentDrawing.likes != null) {
+//                    if (!currentDrawing.likes.contains(user)) {
+//                        listener.addLikeToDrawingAdapterListener(currentDrawing._id!!)
+//                        incrementNbrOfLikes++
+//                        nbrOfLikes.text = incrementNbrOfLikes.toString()
+//                        likeBtn.setBackgroundResource(R.drawable.imageliked)
+////                    alreadyLiked = true
+//                    } else {
+//                        Toast.makeText(context, "already liked", Toast.LENGTH_SHORT).show()
+//                    }
+//                } else {
+//                    listener.addLikeToDrawingAdapterListener(currentDrawing._id!!)
+//                    incrementNbrOfLikes++
+//                    nbrOfLikes.text = incrementNbrOfLikes.toString()
+//                    likeBtn.setBackgroundResource(R.drawable.imageliked)
+//                }
+                if (currentDrawing.likes?.contains(user) == false){
+                    listener.addLikeToDrawingAdapterListener(currentDrawing._id!!)
+                    incrementNbrOfLikes++
+                    nbrOfLikes.text = incrementNbrOfLikes.toString()
+                    likeBtn.setBackgroundResource(R.drawable.imageliked)
+//                   alreadyLiked = true
+                } else {
+                    Toast.makeText(context, "already liked", Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }

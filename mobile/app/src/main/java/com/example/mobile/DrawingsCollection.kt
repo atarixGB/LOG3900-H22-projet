@@ -90,7 +90,7 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
         drawings = java.util.ArrayList()
         searchArrayList = ArrayList()
 
-        drawingAdapter = DrawingAdapter(this, drawings)
+        drawingAdapter = DrawingAdapter(this, drawings, user)
 
         //Recycler View of rooms
         rvOutputDrawings.adapter = drawingAdapter
@@ -267,7 +267,7 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
     }
 
     private fun addLikeToDrawing(drawingId: String) {
-        compositeDisposable.add(iMyService.addLikeToDrawing(drawingId)
+        compositeDisposable.add(iMyService.addLikeToDrawing(drawingId, user)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { result ->

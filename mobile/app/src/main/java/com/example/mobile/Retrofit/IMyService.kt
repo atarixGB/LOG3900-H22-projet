@@ -98,7 +98,7 @@ interface IMyService {
                       @Field("owner")ownerID:String,
                       @Field("data")data:String,
                       @Field("members")members:ArrayList<String>,
-                      @Field("nbrOfLikes")nbrOfLikes:Int): Observable<String>
+                      @Field("likes")likes:ArrayList<String>): Observable<String>
 
     @PUT("albums/addDrawing/{albumId}")
     @FormUrlEncoded
@@ -148,5 +148,7 @@ interface IMyService {
     fun getDrawingData(@Path("drawingId") drawingId: String):Call<IDrawing>
 
     @PUT("drawings/addLike/{drawingId}")
-    fun addLikeToDrawing(@Path("drawingId") drawingId: String): Observable<String>
+    @FormUrlEncoded
+    fun addLikeToDrawing(@Path("drawingId") drawingId: String,
+                         @Field("user")user:String): Observable<String>
 }

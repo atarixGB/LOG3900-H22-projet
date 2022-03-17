@@ -305,9 +305,6 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
 
     //create drawing
     app.post("/drawing/create", (request, response, next)=> {
-      if (request.body.nbrOfLikes != undefined) {
-        request.body.nbrOfLikes = Number(request.body.nbrOfLikes)
-      }
       DB.collection("drawings").insertOne(request.body, (err, res) => {
         const drawingData = request.body; 
         drawingData._id = res.insertedId.toHexString();
@@ -370,7 +367,7 @@ app.post(
       description: result.description,
       data: img,
       members: result.members,
-      nbrOfLikes: result.nbrOfLikes
+      likes: result.likes
     };
     res.json(returnedJson)
     //console.log("ressss", res);
@@ -445,8 +442,9 @@ app.post(
     //add one like to a drawing
     app.put("/drawings/addLike/:drawingId", (request, response, next) => {
       let drawingId = request.params.drawingId.replaceAll(/"/g, '');
+      let user = request.body.user
 
-      DB.collection("drawings").findOneAndUpdate({ _id: mongoose.Types.ObjectId(drawingId) }, { $inc: { nbrOfLikes: 1 } }, { returnDocument: 'after' }, (err, res) => {
+      DB.collection("drawings").findOneAndUpdate({ _id: mongoose.Types.ObjectId(drawingId) }, { $push: { likes: user } }, { returnDocument: 'after' }, (err, res) => {
         response.json(201)
         console.log(drawingId, "is liked");
       })
