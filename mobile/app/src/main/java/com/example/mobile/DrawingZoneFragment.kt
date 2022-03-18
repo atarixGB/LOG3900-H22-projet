@@ -229,15 +229,7 @@ class DrawingZoneFragment : Fragment() {
                             call: Call<ResponseBody>,
                             response: Response<ResponseBody>
                         ) {
-                            if(response.code() == 200) {
-                                Toast.makeText(
-                                    context,
-                                    "l'image a ete sauvegarder",
-                                    Toast.LENGTH_SHORT
-                                )
-                                    .show()
-                            }
-                            Toast.makeText(context, "${response.code()}", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "image sauvegardée", Toast.LENGTH_SHORT).show();
                         }
 
                         override fun onFailure(call: Call<ResponseBody>, t: Throwable) {

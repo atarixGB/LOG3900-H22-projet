@@ -190,6 +190,11 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
       var roomName = post_data.roomName;
       var usersList = post_data.usersList;
 
+      if (typeof usersList === 'string' || usersList instanceof String) {
+        usersList = [post_data.usersList];
+        console.log("apress", request.body.usersList);
+      }
+
       console.log("USER", identifier);
       console.log("ROOM NAME", roomName);
       console.log("USERS LIST", usersList);
@@ -376,7 +381,7 @@ app.post(
     console.log(req.file.filename);
     DB.collection("drawings").findOneAndUpdate({ _id: mongoose.Types.ObjectId(req.params.drawingId.replaceAll(/"/g, '')) }, { $set: {"data": req.file.filename}}, { returnDocument: 'after' }, (err, res) => {
       });
-    res.json(200);
+    return res.status(200).end(); 
   });
 
   //get image from DB

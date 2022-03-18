@@ -27,7 +27,6 @@ class ChatPage : AppCompatActivity(), UserAdapter.UserAdapterListener {
     private lateinit var rvOutputMsgs: RecyclerView
     private lateinit var  btnSend : Button
     private lateinit var leaveChatBtn: ImageButton
-    private lateinit var drawButton: ImageButton
     private lateinit var  messageText : EditText
     private lateinit var msgAdapter: MessageAdapter
     private lateinit var messages : ArrayList<Message>
@@ -64,7 +63,7 @@ class ChatPage : AppCompatActivity(), UserAdapter.UserAdapterListener {
         rvOutputMsgs = findViewById(R.id.rvOutputMsgs)
         btnSend = findViewById<Button>(R.id.btnSend)
         leaveChatBtn = findViewById<ImageButton>(R.id.leaveChatBtn)
-        drawButton = findViewById<ImageButton>(R.id.drawButton)
+
         messageText = findViewById<EditText>(R.id.msgText)
         user=intent.getStringExtra("userName").toString()
         messages = ArrayList()
@@ -99,10 +98,6 @@ class ChatPage : AppCompatActivity(), UserAdapter.UserAdapterListener {
 
         leaveChatBtn.setOnClickListener {
             leaveChat()
-        }
-
-        drawButton.setOnClickListener {
-            //A implementer: elle nous ramene a l'editeur du dessin
         }
 
         socket.on("message"){ args ->

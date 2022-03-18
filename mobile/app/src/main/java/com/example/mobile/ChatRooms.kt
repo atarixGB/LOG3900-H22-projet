@@ -139,7 +139,6 @@ class ChatRooms : AppCompatActivity(), CreateRoomPopUp.DialogListener, RoomAdapt
         this.roomName = roomName
         var usersList = ArrayList<String>()
         usersList.add(user)
-        usersList.add("prob")
         createRoom(user,this.roomName, usersList)
     }
 

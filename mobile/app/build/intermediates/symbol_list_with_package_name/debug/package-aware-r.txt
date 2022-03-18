@@ -2905,7 +2905,6 @@ id dragRight
 id dragStart
 id dragUp
 id draw
-id drawButton
 id drawingName
 id drawingNameEmptyError
 id drawingView
