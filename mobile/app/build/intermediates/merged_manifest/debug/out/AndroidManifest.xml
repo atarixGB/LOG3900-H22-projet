@@ -25,13 +25,13 @@
         android:theme="@style/Theme.Mobile"
         android:usesCleartextTraffic="true" >
         <activity
-            android:name="com.example.mobile.DisplayAllDrawings"
+            android:name="com.example.mobile.activity.albums.DisplayAllDrawings"
             android:exported="false" />
         <activity
-            android:name="com.example.mobile.AcceptMembershipRequestsPopUp"
+            android:name="com.example.mobile.popup.AcceptMembershipRequestsPopUp"
             android:exported="false" />
         <activity
-            android:name="com.example.mobile.DrawingsCollection"
+            android:name="com.example.mobile.activity.albums.DrawingsCollection"
             android:exported="false" />
         <activity
             android:name="com.example.mobile.drawingsCollection"
@@ -43,40 +43,40 @@
             android:name="com.example.mobile.createDrawingPopUp"
             android:exported="false" />
         <activity
-            android:name="com.example.mobile.DisplayPublicAlbums"
+            android:name="com.example.mobile.activity.albums.DisplayPublicAlbums"
             android:exported="false" />
         <activity
-            android:name="com.example.mobile.Albums"
+            android:name="com.example.mobile.activity.albums.Albums"
             android:exported="false" />
         <activity
             android:name="com.example.mobile.usersListPopUp"
             android:exported="false" />
         <activity android:name="com.example.mobile.Dashboard" />
         <activity
-            android:name="com.example.mobile.Profile_modification"
+            android:name="com.example.mobile.activity.profile.Profile_modification"
             android:exported="false" />
         <activity android:name="com.example.mobile.Dashboard" />
         <activity
-            android:name="com.example.mobile.Profile"
+            android:name="com.example.mobile.activity.profile.Profile"
             android:exported="false" />
         <activity
-            android:name="com.example.mobile.Registration"
+            android:name="com.example.mobile.activity.profile.Registration"
             android:exported="false" />
         <activity
-            android:name="com.example.mobile.joinRoom"
+            android:name="com.example.mobile.activity.chat.joinRoom"
             android:exported="false" />
         <activity
-            android:name="com.example.mobile.CreateRoomPopUp"
+            android:name="com.example.mobile.popup.CreateRoomPopUp"
             android:exported="false" />
         <activity
-            android:name="com.example.mobile.ChatRooms"
+            android:name="com.example.mobile.activity.chat.ChatRooms"
             android:exported="false" />
         <activity android:name="com.example.mobile.DrawingActivity" />
         <activity
-            android:name="com.example.mobile.ChatPage"
+            android:name="com.example.mobile.activity.chat.ChatPage"
             android:exported="true" />
         <activity
-            android:name="com.example.mobile.MainActivity"
+            android:name="com.example.mobile.activity.MainActivity"
             android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

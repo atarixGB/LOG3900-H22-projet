@@ -3,12 +3,9 @@ package com.example.mobile
 import android.content.Context
 import android.graphics.*
 import android.os.Bundle
-import android.os.Environment
 import android.util.AttributeSet
-import android.util.Base64
 import android.view.*
 import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -17,9 +14,8 @@ import com.example.mobile.Retrofit.IMyService
 import com.example.mobile.Retrofit.RetrofitClient
 import com.example.mobile.model.ToolModel
 import com.example.mobile.model.ToolParameters
-import io.reactivex.android.schedulers.AndroidSchedulers
+import com.example.mobile.viewModel.SharedViewModelToolBar
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
 import okhttp3.*
 import retrofit2.Call
 import retrofit2.Response
@@ -73,7 +69,7 @@ class DrawingZoneFragment : Fragment() {
         private var mBitmap: Bitmap? = null
         private var mCanvas: Canvas? = null
         private var isDrawing = false
-        private lateinit var drawingId : String
+        private lateinit var drawingId: String
 
 
         private lateinit var iMyService: IMyService
@@ -95,7 +91,7 @@ class DrawingZoneFragment : Fragment() {
                 strokeCap = Paint.Cap.ROUND
                 strokeWidth = 1f
             }
-            mCanvas!!.drawRect(0f,0f, w.toFloat(), h.toFloat(),borderPaint )
+            mCanvas!!.drawRect(0f, 0f, w.toFloat(), h.toFloat(), borderPaint)
         }
 
         override fun onDraw(canvas: Canvas) {
@@ -121,7 +117,7 @@ class DrawingZoneFragment : Fragment() {
                     toolManager.currentTool.touchStart()
                     invalidate()
                 }
-                MotionEvent.ACTION_MOVE ->{
+                MotionEvent.ACTION_MOVE -> {
                     toolManager.currentTool.touchMove()
                     invalidate()
                 }
@@ -133,117 +129,69 @@ class DrawingZoneFragment : Fragment() {
             }
             return true
         }
-        fun changeWeight(width : Float){
-            if(this::toolManager.isInitialized) toolManager.currentTool.changeWeight(width)
+
+        fun changeWeight(width: Float) {
+            if (this::toolManager.isInitialized) toolManager.currentTool.changeWeight(width)
         }
-        fun changeColor(color : Int){
-            if(this::toolManager.isInitialized) {
-                if(!toolManager.isCurrentToolEraser()){
+
+        fun changeColor(color: Int) {
+            if (this::toolManager.isInitialized) {
+                if (!toolManager.isCurrentToolEraser()) {
                     toolManager.currentTool.changeColor(color)
                 }
             }
         }
 
-        fun changeTool(tool: ToolbarFragment.MenuItem){
-            if(this::toolManager.isInitialized) {
+        fun changeTool(tool: ToolbarFragment.MenuItem) {
+            if (this::toolManager.isInitialized) {
                 this.toolManager.changeTool(tool)
                 resetPath()
             }
         }
 
-        fun setDrawingId(drawingId: String){
+        fun setDrawingId(drawingId: String) {
             this.drawingId = drawingId
         }
 
         fun saveImg() {
-//            val retrofit = RetrofitClient.getInstance()
-//            iMyService = retrofit.create(IMyService::class.java)
 
-//            if (mBitmap != null) {
-//                var drawingByteArray: ByteArray = convertToByteArray(mBitmap!!)
-//                var drawing_str: String = Base64.encodeToString(drawingByteArray, 0)
-//                compositeDisposable.add(iMyService.saveDrawing(drawingId, drawing_str)
-//                    .subscribeOn(Schedulers.io())
-//                    .observeOn(AndroidSchedulers.mainThread())
-//                    .subscribe { result ->
-//                        if (result == "201") {
-//                            Toast.makeText(context, "l'image a ete sauvegarder", Toast.LENGTH_SHORT).show()
-//                        } else {
-//                            Toast.makeText(context, "erreur", Toast.LENGTH_SHORT).show()
-//                        }
-//                    })
-//            }
-
-            //tuto :
             if (mBitmap != null) {
-                //create a file to write bitmap data
-//                var file: File? = null
-//                file = File(
-//                    Environment.getExternalStorageDirectory().toString() + File.separator + filePath
-//                )
-//                file.createNewFile()
-//
-//                var drawingByteArray: ByteArray = convertToByteArray(mBitmap!!)
-//                var drawing_str: String = Base64.encodeToString(drawingByteArray, 0)
-//
-//                //write the bytes in file
-//                val fos = FileOutputStream(file)
-//                fos.write(drawingByteArray)
-//                fos.flush()
-//                fos.close()
-//                file
-
-                //var file = File(filePath)
-                //file.writeBytes(drawingByteArray)
-//                var requestBody: RequestBody = RequestBody.create(MediaType.parse("image/*"), file)
-//                var parts: MultipartBody.Part =
-//                    MultipartBody.Part.createFormData("newimage", file.name, requestBody)
-
-
                 val retrofit = RetrofitClient.getInstance()
                 val myService = retrofit.create(IMyService::class.java)
 
-                //another tuto
-                    var filesDir: File = context.filesDir;
-                    var file = File(filesDir, "image" + ".png")
+                var filesDir: File = context.filesDir;
+                var file = File(filesDir, "image" + ".png")
 
-                    var bos: ByteArrayOutputStream = ByteArrayOutputStream();
-                    mBitmap!!.compress(Bitmap.CompressFormat.PNG, 0, bos);
-                    var bitmapdata: ByteArray = convertToByteArray(mBitmap!!)
+                var bos: ByteArrayOutputStream = ByteArrayOutputStream();
+                mBitmap!!.compress(Bitmap.CompressFormat.PNG, 0, bos);
+                var bitmapdata: ByteArray = convertBitmapToByteArray(mBitmap!!)
 
 
-                    var fos: FileOutputStream = FileOutputStream(file);
-                    fos.write(bitmapdata);
-                    fos.flush();
-                    fos.close();
+                var fos: FileOutputStream = FileOutputStream(file);
+                fos.write(bitmapdata);
+                fos.flush();
+                fos.close();
 
-                    var reqFile: RequestBody = RequestBody.create(MediaType.parse("image/*"), file)
-                    var body: MultipartBody.Part =
-                        MultipartBody.Part.createFormData("upload", file.name, reqFile)
+                var reqFile: RequestBody = RequestBody.create(MediaType.parse("image/*"), file)
+                var body: MultipartBody.Part =
+                    MultipartBody.Part.createFormData("upload", file.name, reqFile)
 
-                    var name: RequestBody = RequestBody.create(MediaType.parse("text/plain"), "upload");
+                var name: RequestBody = RequestBody.create(MediaType.parse("text/plain"), "upload");
 
-                    var call = myService.saveDrawing(drawingId, body, name)
-                    call.enqueue(object : retrofit2.Callback<ResponseBody> {
-                        override fun onResponse(
-                            call: Call<ResponseBody>,
-                            response: Response<ResponseBody>
-                        ) {
-                            Toast.makeText(context, "image sauvegardée", Toast.LENGTH_SHORT).show();
-                        }
+                var call = myService.saveDrawing(drawingId, body, name)
+                call.enqueue(object : retrofit2.Callback<ResponseBody> {
+                    override fun onResponse(
+                        call: Call<ResponseBody>,
+                        response: Response<ResponseBody>
+                    ) {
+                        Toast.makeText(context, "image sauvegardée", Toast.LENGTH_SHORT).show();
+                    }
 
-                        override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                            Toast.makeText(context, "erreur", Toast.LENGTH_SHORT).show()
-                        }
-                    })
-
+                    override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                        Toast.makeText(context, "erreur", Toast.LENGTH_SHORT).show()
+                    }
+                })
             }
-        }
-
-        fun convertToByteArray(bitmap: Bitmap): ByteArray {
-            val stream = ByteArrayOutputStream()
-            bitmap.compress(Bitmap.CompressFormat.PNG, 90, stream)
-            return stream.toByteArray()
         }
     }
 }

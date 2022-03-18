@@ -1,9 +1,9 @@
 package com.example.mobile.Retrofit
 
 import com.example.mobile.Interface.User
-import com.example.mobile.Room
-import com.example.mobile.IAlbum
-import com.example.mobile.IDrawing
+import com.example.mobile.IRoom
+import com.example.mobile.Interface.IAlbum
+import com.example.mobile.Interface.IDrawing
 import io.reactivex.Observable
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -64,10 +64,10 @@ interface IMyService {
                  @Field("roomName")roomName:String) : Observable<String>
 
     @GET("getAllRooms")
-    fun getAllRooms():Call<List<Room>>
+    fun getAllRooms():Call<List<IRoom>>
 
     @GET("getRoomParameters")
-    fun getRoomParameters(@Query("roomName")roomName:String) : Call<Room>
+    fun getRoomParameters(@Query("roomName")roomName:String) : Call<IRoom>
 
     @POST("deleteRoom")
     @FormUrlEncoded

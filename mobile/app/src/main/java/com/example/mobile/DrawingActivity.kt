@@ -3,7 +3,10 @@ package com.example.mobile
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
-import java.util.ArrayList
+import com.example.mobile.adapter.AlbumAdapter
+import com.example.mobile.popup.CreateDrawingPopUp
+import com.example.mobile.viewModel.SharedViewModelCreateDrawingPopUp
+import com.example.mobile.viewModel.SharedViewModelToolBar
 
 class DrawingActivity : AppCompatActivity(), CreateDrawingPopUp.DialogListener, AlbumAdapter.AlbumAdapterListener {
     private lateinit var user: String

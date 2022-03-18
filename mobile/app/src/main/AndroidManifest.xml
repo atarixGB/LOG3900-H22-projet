@@ -16,13 +16,13 @@
         android:theme="@style/Theme.Mobile"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".DisplayAllDrawings"
+            android:name=".activity.albums.DisplayAllDrawings"
             android:exported="false" />
         <activity
-            android:name=".AcceptMembershipRequestsPopUp"
+            android:name=".popup.AcceptMembershipRequestsPopUp"
             android:exported="false" />
         <activity
-            android:name=".DrawingsCollection"
+            android:name=".activity.albums.DrawingsCollection"
             android:exported="false" />
         <activity
             android:name=".drawingsCollection"
@@ -34,41 +34,41 @@
             android:name=".createDrawingPopUp"
             android:exported="false" />
         <activity
-            android:name=".DisplayPublicAlbums"
+            android:name=".activity.albums.DisplayPublicAlbums"
             android:exported="false" />
         <activity
-            android:name=".Albums"
+            android:name=".activity.albums.Albums"
             android:exported="false" />
         <activity
             android:name=".usersListPopUp"
             android:exported="false" />
         <activity android:name=".Dashboard" />
         <activity
-            android:name=".Profile_modification"
+            android:name=".activity.profile.Profile_modification"
             android:exported="false" />
         <activity android:name=".Dashboard" />
         <activity
-            android:name=".Profile"
+            android:name=".activity.profile.Profile"
             android:exported="false" />
         <activity
-            android:name=".Registration"
+            android:name=".activity.profile.Registration"
             android:exported="false" />
         <activity
-            android:name=".joinRoom"
+            android:name=".activity.chat.joinRoom"
             android:exported="false" />
         <activity
-            android:name=".CreateRoomPopUp"
+            android:name=".popup.CreateRoomPopUp"
             android:exported="false"
             tools:ignore="Instantiatable" />
         <activity
-            android:name=".ChatRooms"
+            android:name=".activity.chat.ChatRooms"
             android:exported="false" />
         <activity android:name=".DrawingActivity" />
         <activity
-            android:name=".ChatPage"
+            android:name=".activity.chat.ChatPage"
             android:exported="true" />
         <activity
-            android:name=".MainActivity"
+            android:name=".activity.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

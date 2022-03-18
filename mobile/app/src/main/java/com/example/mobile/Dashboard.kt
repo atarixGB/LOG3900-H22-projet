@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.widget.Button
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.example.mobile.viewModel.SharedViewModelToolBar
+
 class Dashboard : AppCompatActivity() {
 
     private lateinit var user: String

@@ -129,24 +129,24 @@ MERGED from [androidx.startup:startup-runtime:1.0.0] C:\Users\15149\.gradle\cach
 		ADDED from C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:16:9-44
 	android:usesCleartextTraffic
 		ADDED from C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:17:9-44
-activity#com.example.mobile.DisplayAllDrawings
+activity#com.example.mobile.activity.albums.DisplayAllDrawings
 ADDED from C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:18:9-20:40
 	android:exported
 		ADDED from C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:20:13-37
 	android:name
-		ADDED from C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:19:13-47
-activity#com.example.mobile.AcceptMembershipRequestsPopUp
+		ADDED from C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:19:13-63
+activity#com.example.mobile.popup.AcceptMembershipRequestsPopUp
 ADDED from C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:21:9-23:40
 	android:exported
 		ADDED from C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:23:13-37
 	android:name
-		ADDED from C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:22:13-58
-activity#com.example.mobile.DrawingsCollection
+		ADDED from C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:22:13-64
+activity#com.example.mobile.activity.albums.DrawingsCollection
 ADDED from C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:24:9-26:40
 	android:exported
 		ADDED from C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:26:13-37
 	android:name
-		ADDED from C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:25:13-47
+		ADDED from C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:25:13-63
 activity#com.example.mobile.drawingsCollection
 ADDED from C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:27:9-29:40
 	android:exported
@@ -165,18 +165,18 @@ ADDED from C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\s
 		ADDED from C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:35:13-37
 	android:name
 		ADDED from C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:34:13-47
-activity#com.example.mobile.DisplayPublicAlbums
+activity#com.example.mobile.activity.albums.DisplayPublicAlbums
 ADDED from C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:36:9-38:40
 	android:exported
 		ADDED from C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:38:13-37
 	android:name
-		ADDED from C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:37:13-48
-activity#com.example.mobile.Albums
+		ADDED from C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:37:13-64
+activity#com.example.mobile.activity.albums.Albums
 ADDED from C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:39:9-41:40
 	android:exported
 		ADDED from C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:41:13-37
 	android:name
-		ADDED from C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:40:13-35
+		ADDED from C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:40:13-51
 activity#com.example.mobile.usersListPopUp
 ADDED from C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:42:9-44:40
 	android:exported
@@ -187,60 +187,60 @@ activity#com.example.mobile.Dashboard
 ADDED from C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:45:9-47
 	android:name
 		ADDED from C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:45:19-44
-activity#com.example.mobile.Profile_modification
+activity#com.example.mobile.activity.profile.Profile_modification
 ADDED from C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:46:9-48:40
 	android:exported
 		ADDED from C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:48:13-37
 	android:name
-		ADDED from C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:47:13-49
-activity#com.example.mobile.Profile
+		ADDED from C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:47:13-66
+activity#com.example.mobile.activity.profile.Profile
 ADDED from C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:50:9-52:40
 	android:exported
 		ADDED from C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:52:13-37
 	android:name
-		ADDED from C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:51:13-36
-activity#com.example.mobile.Registration
+		ADDED from C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:51:13-53
+activity#com.example.mobile.activity.profile.Registration
 ADDED from C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:53:9-55:40
 	android:exported
 		ADDED from C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:55:13-37
 	android:name
-		ADDED from C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:54:13-41
-activity#com.example.mobile.joinRoom
+		ADDED from C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:54:13-58
+activity#com.example.mobile.activity.chat.joinRoom
 ADDED from C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:56:9-58:40
 	android:exported
 		ADDED from C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:58:13-37
 	android:name
-		ADDED from C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:57:13-37
-activity#com.example.mobile.CreateRoomPopUp
+		ADDED from C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:57:13-51
+activity#com.example.mobile.popup.CreateRoomPopUp
 ADDED from C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:59:9-62:45
 	android:exported
 		ADDED from C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:61:13-37
 	tools:ignore
 		ADDED from C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:62:13-42
 	android:name
-		ADDED from C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:60:13-44
-activity#com.example.mobile.ChatRooms
+		ADDED from C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:60:13-50
+activity#com.example.mobile.activity.chat.ChatRooms
 ADDED from C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:63:9-65:40
 	android:exported
 		ADDED from C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:65:13-37
 	android:name
-		ADDED from C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:64:13-38
+		ADDED from C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:64:13-52
 activity#com.example.mobile.DrawingActivity
 ADDED from C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:66:9-53
 	android:name
 		ADDED from C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:66:19-50
-activity#com.example.mobile.ChatPage
+activity#com.example.mobile.activity.chat.ChatPage
 ADDED from C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:67:9-69:39
 	android:exported
 		ADDED from C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:69:13-36
 	android:name
-		ADDED from C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:68:13-37
-activity#com.example.mobile.MainActivity
+		ADDED from C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:68:13-51
+activity#com.example.mobile.activity.MainActivity
 ADDED from C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:70:9-78:20
 	android:exported
 		ADDED from C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:72:13-36
 	android:name
-		ADDED from C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:71:13-41
+		ADDED from C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:71:13-50
 intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
 ADDED from C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:73:13-77:29
 action#android.intent.action.MAIN

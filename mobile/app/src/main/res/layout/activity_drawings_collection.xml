@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:screenOrientation="landscape"
-    tools:context=".DrawingsCollection">
+    tools:context=".activity.albums.DrawingsCollection">
 
     <ImageButton
         android:id="@+id/leaveAlbumBtn"

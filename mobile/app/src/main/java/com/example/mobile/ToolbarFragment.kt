@@ -2,19 +2,16 @@ package com.example.mobile
 
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
-import android.util.Base64
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.AdapterView
 import android.widget.Button
 import android.widget.GridView
-import android.widget.Toast
 import androidx.fragment.app.activityViewModels
+import com.example.mobile.activity.albums.Albums
 import com.example.mobile.model.ToolModel
-import com.mikhaellopez.circularimageview.CircularImageView
-import java.io.ByteArrayOutputStream
+import com.example.mobile.viewModel.SharedViewModelToolBar
 
 class ToolbarFragment : Fragment(), AdapterView.OnItemClickListener {
 
