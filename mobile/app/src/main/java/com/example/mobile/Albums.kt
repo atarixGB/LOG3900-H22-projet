@@ -25,6 +25,7 @@ class Albums : AppCompatActivity(), CreateAlbumPopUp.DialogListener ,AlbumAdapte
     private lateinit var albumAdapter: AlbumAdapter
     private lateinit var albums : ArrayList<IAlbum>
     private lateinit var displayAlbumsBtn: Button
+    private lateinit var displayAllDrawingsBtn: Button
     private lateinit var iMyService: IMyService
     private lateinit var albumName: String
     private lateinit var publicGalleryBtn : Button
@@ -45,6 +46,7 @@ class Albums : AppCompatActivity(), CreateAlbumPopUp.DialogListener ,AlbumAdapte
 
         rvOutputAlbums = findViewById(R.id.rvOutputAlbums)
         displayAlbumsBtn = findViewById(R.id.display_albums_btn)
+        displayAllDrawingsBtn = findViewById(R.id.display_all_drawings_btn)
         publicGalleryBtn= findViewById(R.id.drawing_gallery_btn)
 
         val retrofit = RetrofitClient.getInstance()
@@ -72,6 +74,12 @@ class Albums : AppCompatActivity(), CreateAlbumPopUp.DialogListener ,AlbumAdapte
 
         displayAlbumsBtn.setOnClickListener {
             val intent = Intent(this, DisplayPublicAlbums::class.java)
+            intent.putExtra("userName",user)
+            startActivity(intent)
+        }
+
+        displayAllDrawingsBtn.setOnClickListener {
+            val intent = Intent(this, DisplayAllDrawings::class.java)
             intent.putExtra("userName",user)
             startActivity(intent)
         }

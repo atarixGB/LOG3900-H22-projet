@@ -90,7 +90,7 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
         drawings = java.util.ArrayList()
         searchArrayList = ArrayList()
 
-        drawingAdapter = DrawingAdapter(this, drawings)
+        drawingAdapter = DrawingAdapter(this, drawings, user)
 
         //Recycler View of rooms
         rvOutputDrawings.adapter = drawingAdapter
@@ -260,6 +260,23 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
 
     override fun drawingAdapterListener(drawingName: String) {
         this.drawingName = drawingName
+    }
+
+    override fun addLikeToDrawingAdapterListener(drawingId: String) {
+        addLikeToDrawing(drawingId)
+    }
+
+    private fun addLikeToDrawing(drawingId: String) {
+        compositeDisposable.add(iMyService.addLikeToDrawing(drawingId, user)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { result ->
+                if (result == "201") {
+                    Toast.makeText(this, "liked", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this, "erreur", Toast.LENGTH_SHORT).show()
+                }
+            })
     }
 
     override fun userAdapterListener(userName: String) {

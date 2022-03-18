@@ -367,7 +367,7 @@ app.post(
       description: result.description,
       data: img,
       members: result.members,
-      nbrOfLikes: result.nbrOfLikes
+      likes: result.likes
     };
     res.json(returnedJson)
     //console.log("ressss", res);
@@ -438,6 +438,18 @@ app.post(
         console.log(drawingtoAdd, "is added to ", albumId);
       })
     });
+
+    //add one like to a drawing
+    app.put("/drawings/addLike/:drawingId", (request, response, next) => {
+      let drawingId = request.params.drawingId.replaceAll(/"/g, '');
+      let user = request.body.user
+
+      DB.collection("drawings").findOneAndUpdate({ _id: mongoose.Types.ObjectId(drawingId) }, { $push: { likes: user } }, { returnDocument: 'after' }, (err, res) => {
+        response.json(201)
+        console.log(drawingId, "is liked");
+      })
+    });
+
 
     //send request to an album
     app.put("/albums/sendRequest/:albumName", (request, response, next) => {
