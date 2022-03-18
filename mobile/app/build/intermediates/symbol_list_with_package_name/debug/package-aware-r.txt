@@ -2924,7 +2924,6 @@ id edt_createAccountText
 id edt_description
 id edt_email
 id edt_id
-id edt_identifiant
 id edt_logo
 id edt_password
 id edt_pwd

@@ -131,7 +131,6 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
     //login
     app.post("/login", (request, response, next) => {
       var post_data = request.body;
-
       var email = post_data.email;
       var userPassword = post_data.password;
 
@@ -377,7 +376,7 @@ app.post(
     console.log(req.file.filename);
     DB.collection("drawings").findOneAndUpdate({ _id: mongoose.Types.ObjectId(req.params.drawingId.replaceAll(/"/g, '')) }, { $set: {"data": req.file.filename}}, { returnDocument: 'after' }, (err, res) => {
       });
-    return res.status(200).end();
+    res.json(200);
   });
 
   //get image from DB

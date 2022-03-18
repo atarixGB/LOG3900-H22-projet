@@ -12,16 +12,16 @@
         "source": "C:\\Users\\15149\\Desktop\\Clone fin tache album\\log3900-203\\mobile\\app\\src\\main\\res\\mipmap-hdpi\\ic_launcher.png"
     },
     {
-        "merged": "C:\\Users\\15149\\Desktop\\Clone fin tache album\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\layout_fragment_album_attribute_modification_pop_up.xml.flat",
-        "source": "C:\\Users\\15149\\Desktop\\Clone fin tache album\\log3900-203\\mobile\\app\\src\\main\\res\\layout\\fragment_album_attribute_modification_pop_up.xml"
+        "merged": "C:\\Users\\15149\\Desktop\\Clone fin tache album\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\drawable_customborder.xml.flat",
+        "source": "C:\\Users\\15149\\Desktop\\Clone fin tache album\\log3900-203\\mobile\\app\\src\\main\\res\\drawable\\customborder.xml"
     },
     {
         "merged": "C:\\Users\\15149\\Desktop\\Clone fin tache album\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\drawable_pencil_clicked.png.flat",
         "source": "C:\\Users\\15149\\Desktop\\Clone fin tache album\\log3900-203\\mobile\\app\\src\\main\\res\\drawable\\pencil_clicked.png"
     },
     {
-        "merged": "C:\\Users\\15149\\Desktop\\Clone fin tache album\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\drawable_customborder.xml.flat",
-        "source": "C:\\Users\\15149\\Desktop\\Clone fin tache album\\log3900-203\\mobile\\app\\src\\main\\res\\drawable\\customborder.xml"
+        "merged": "C:\\Users\\15149\\Desktop\\Clone fin tache album\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\layout_fragment_album_attribute_modification_pop_up.xml.flat",
+        "source": "C:\\Users\\15149\\Desktop\\Clone fin tache album\\log3900-203\\mobile\\app\\src\\main\\res\\layout\\fragment_album_attribute_modification_pop_up.xml"
     },
     {
         "merged": "C:\\Users\\15149\\Desktop\\Clone fin tache album\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\layout_activity_chat_rooms.xml.flat",
@@ -104,12 +104,12 @@
         "source": "C:\\Users\\15149\\Desktop\\Clone fin tache album\\log3900-203\\mobile\\app\\src\\main\\res\\layout\\activity_registration.xml"
     },
     {
-        "merged": "C:\\Users\\15149\\Desktop\\Clone fin tache album\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\layout_tools_weight_list.xml.flat",
-        "source": "C:\\Users\\15149\\Desktop\\Clone fin tache album\\log3900-203\\mobile\\app\\src\\main\\res\\layout\\tools_weight_list.xml"
-    },
-    {
         "merged": "C:\\Users\\15149\\Desktop\\Clone fin tache album\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ic_baseline_email_24.xml.flat",
         "source": "C:\\Users\\15149\\Desktop\\Clone fin tache album\\log3900-203\\mobile\\app\\src\\main\\res\\drawable\\ic_baseline_email_24.xml"
+    },
+    {
+        "merged": "C:\\Users\\15149\\Desktop\\Clone fin tache album\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\layout_tools_weight_list.xml.flat",
+        "source": "C:\\Users\\15149\\Desktop\\Clone fin tache album\\log3900-203\\mobile\\app\\src\\main\\res\\layout\\tools_weight_list.xml"
     },
     {
         "merged": "C:\\Users\\15149\\Desktop\\Clone fin tache album\\log3900-203\\mobile\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ic_baseline_thumb_up_off_alt_24.xml.flat",

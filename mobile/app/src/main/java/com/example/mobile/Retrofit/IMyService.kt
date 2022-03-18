@@ -27,9 +27,12 @@ interface IMyService {
     @POST("login")
     @FormUrlEncoded
     fun loginUser(
-        @Field("identifier") identifier: String,
+        @Field("email") email: String,
         @Field("password") password: String
     ): Observable<String>
+
+    @GET("/login/{email}")
+    fun getUsernameFromDB(@Path("email")email:String):Call<Any>
 
     @GET("/profile/{identifier}")
     fun getUserFromDB(@Path("identifier") username: String): Call<User>

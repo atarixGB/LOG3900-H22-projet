@@ -15,16 +15,19 @@ import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
+import retrofit2.Call
+import retrofit2.Response
 
 class MainActivity : AppCompatActivity()  {
     private var isDashboardOpen: Boolean = false
     private lateinit var iMyService: IMyService
     internal var compositeDisposable = CompositeDisposable()
-    private lateinit var identifiant: EditText
+    private lateinit var email: EditText
     private lateinit var pwd: EditText
     private lateinit var loginBtn: Button
     private lateinit var showHideBtn:Button
     private lateinit var createAccountBtn: Button
+    private lateinit var identifiant:String
     private var isChatOpen: Boolean = false
 
     override fun onStop(){
@@ -36,7 +39,7 @@ class MainActivity : AppCompatActivity()  {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        identifiant = findViewById(R.id.edt_identifiant) as EditText
+        email = findViewById(R.id.edt_email) as EditText
         loginBtn = findViewById(R.id.connect_btn) as Button
         createAccountBtn = findViewById(R.id.edt_createAccountButton)
         showHideBtn = findViewById(R.id.showHideBtn)
@@ -55,19 +58,12 @@ class MainActivity : AppCompatActivity()  {
         iMyService = retrofit.create(IMyService::class.java)
 
         loginBtn.setOnClickListener {
-            if (identifiant.text.toString().length > 0) {
-                if (!identifiant.text.toString().isNullOrBlank()) {
+            if (email.text.toString().length > 0) {
+                if (!email.text.toString().isNullOrBlank()) {
                     //socket.emit("newUser", identifiant.text.toString())
-                    loginUser(identifiant.text.toString(), pwd.text.toString())
+                    loginUser(email.text.toString(), pwd.text.toString())
                 }
             }
-//        }
-//        socket.on("newUser") { args ->
-//            openDashboard()
-//            //openChatRooms()
-////            if(args[0] != null && !isDashboardOpen && identifiant.text.toString().length > 0){
-////                openDashboard()
-////            }
         }
 
 
@@ -97,21 +93,34 @@ class MainActivity : AppCompatActivity()  {
     private fun openDashboard(){
         isDashboardOpen = true
         val intent = Intent(this, Dashboard::class.java)
-        intent.putExtra("userName",identifiant.text.toString())
+        intent.putExtra("userName",identifiant)
         startActivity(intent)
     }
 
 
+    private fun getUsernameFromDB(email: String) {
+        var call: Call<Any> = iMyService.getUsernameFromDB(email)
+        call.enqueue(object: retrofit2.Callback<Any>{
+            override fun onResponse(call: Call<Any>, response: Response<Any>) {
+                identifiant=response.body()!!.toString()
+                openDashboard()
+            }
+            override fun onFailure(call: Call<Any>, t: Throwable) {
+                TODO("Not yet implemented")
+            }
+        })
+    }
 
-    private fun loginUser(identifier: String, password: String) {
-        compositeDisposable.add(iMyService.loginUser(identifier, password)
+
+    private fun loginUser(email: String, password: String) {
+        compositeDisposable.add(iMyService.loginUser(email, password)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { result ->
                 if(result == "404"){
                     Toast.makeText(this, "Utilisateur inexistant", Toast.LENGTH_SHORT).show()
                 }else if(result == "200"){
-                    openDashboard()
+                    getUsernameFromDB(email)
                 }
                 else{
                     Toast.makeText(this, "Mot de passe incorrect", Toast.LENGTH_SHORT).show()

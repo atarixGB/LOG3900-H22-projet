@@ -91,10 +91,7 @@ import { RequestsDialogComponent } from './components/album-gallery/drawings-vie
         ProfileComponent,
         ProfileSettingsComponent,
         SelectionConfigComponent,
-<<<<<<< HEAD
         ColorConfigComponent, 
-=======
->>>>>>> mobile/feature/album
         CreateRoomDialogComponent,
         PublicChatroomsComponent,
         DeleteRoomDialogComponent,
