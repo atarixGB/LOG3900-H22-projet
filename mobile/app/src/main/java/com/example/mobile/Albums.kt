@@ -25,13 +25,15 @@ class Albums : AppCompatActivity(), CreateAlbumPopUp.DialogListener ,AlbumAdapte
     private lateinit var albumAdapter: AlbumAdapter
     private lateinit var albums : ArrayList<IAlbum>
     private lateinit var displayAlbumsBtn: Button
+    private lateinit var displayAllDrawingsBtn: Button
     private lateinit var iMyService: IMyService
     private lateinit var albumName: String
+    private lateinit var publicGalleryBtn : Button
     private lateinit var albumDescription: String
     private lateinit var owner:String
     internal var compositeDisposable = CompositeDisposable()
 
-    private val sharedViewModel: SharedViewModelToolBar by viewModels()
+    private val sharedViewModelToolBar: SharedViewModelToolBar by viewModels()
 
     override fun onStop() {
         compositeDisposable.clear()
@@ -44,13 +46,15 @@ class Albums : AppCompatActivity(), CreateAlbumPopUp.DialogListener ,AlbumAdapte
 
         rvOutputAlbums = findViewById(R.id.rvOutputAlbums)
         displayAlbumsBtn = findViewById(R.id.display_albums_btn)
+        displayAllDrawingsBtn = findViewById(R.id.display_all_drawings_btn)
+        publicGalleryBtn= findViewById(R.id.drawing_gallery_btn)
 
         val retrofit = RetrofitClient.getInstance()
         iMyService = retrofit.create(IMyService::class.java)
 
         albums = ArrayList()
         user = intent.getStringExtra("userName").toString()
-        sharedViewModel.setUser(user)
+        sharedViewModelToolBar.setUser(user)
 
         albumAdapter = AlbumAdapter(this, albums)
 
@@ -74,6 +78,20 @@ class Albums : AppCompatActivity(), CreateAlbumPopUp.DialogListener ,AlbumAdapte
             startActivity(intent)
         }
 
+        displayAllDrawingsBtn.setOnClickListener {
+            val intent = Intent(this, DisplayAllDrawings::class.java)
+            intent.putExtra("userName",user)
+            startActivity(intent)
+        }
+
+        publicGalleryBtn.setOnClickListener{
+            val intent = Intent(this, DrawingsCollection::class.java)
+            intent.putExtra("albumName", "album public")
+            intent.putExtra("userName", user)
+            startActivity(intent)
+        }
+
+
     }
 
     private fun getAllAvailableAlbums() {
@@ -82,9 +100,11 @@ class Albums : AppCompatActivity(), CreateAlbumPopUp.DialogListener ,AlbumAdapte
 
             override fun onResponse(call: Call<List<IAlbum>>, response: Response<List<IAlbum>>) {
                 for (album in response.body()!!) {
-                    if (album.members.contains(user)) {
-                        albumAdapter.addAlbum(album)
-                        albumAdapter.notifyItemInserted((rvOutputAlbums.adapter as AlbumAdapter).itemCount)
+                    if (album._id != "622f77abc04d88938c916084") {
+                        if (album.members.contains(user)!!) {
+                            albumAdapter.addAlbum(album)
+                            albumAdapter.notifyItemInserted((rvOutputAlbums.adapter as AlbumAdapter).itemCount)
+                        }
                     }
                 }
             }
@@ -103,29 +123,26 @@ class Albums : AppCompatActivity(), CreateAlbumPopUp.DialogListener ,AlbumAdapte
         //list of members
         var usersList = ArrayList<String>()
         usersList.add(user)
-        usersList.add("prob")
+        //usersList.add("prob")
 
         var drawingIDs = ArrayList<String>()
-        drawingIDs.add("test drawing1")
-        drawingIDs.add("test drawing2")
+
 
         var membershipRequests = ArrayList<String>()
-        membershipRequests.add("test request 1")
-        membershipRequests.add("test request2")
+//        membershipRequests.add("test request 1")
+//        membershipRequests.add("test request2")
 
-        val newAlbum =IAlbum(this.albumName,this.owner,this.albumDescription,drawingIDs,usersList, membershipRequests)
+        val newAlbum =IAlbum(_id = null,this.albumName,this.owner,this.albumDescription,drawingIDs,usersList, membershipRequests)
         albumAdapter.addAlbum(newAlbum)
         albumAdapter.notifyItemInserted((rvOutputAlbums.adapter as AlbumAdapter).itemCount)
 
         createNewAlbum(this.albumName,this.owner,this.albumDescription,drawingIDs,usersList, membershipRequests)
     }
 
-    override fun albumAdapterListener(albumName: String, albumsMembers: ArrayList<String>, albumOwner: String) {
+    override fun albumAdapterListener(albumName: String) {
         this.albumName = albumName
         val intent = Intent(this, DrawingsCollection::class.java)
         intent.putExtra("albumName", albumName)
-        intent.putExtra("albumMembers", albumsMembers)
-        intent.putExtra("albumOwner", albumOwner)
         intent.putExtra("userName", user)
         startActivity(intent)
     }

@@ -2590,9 +2590,12 @@ drawable ic_baseline_more_vert_24
 drawable ic_baseline_people_24
 drawable ic_baseline_person_24
 drawable ic_baseline_photo_library_24
+drawable ic_baseline_save_alt_24
 drawable ic_baseline_search_24
 drawable ic_baseline_security_24
 drawable ic_baseline_text_snippet_24
+drawable ic_baseline_thumb_up_off_alt_24
+drawable ic_baseline_thumb_up_off_alt_24_2
 drawable ic_baseline_waving_hand_24
 drawable ic_clock_black_24dp
 drawable ic_keyboard_black_24dp
@@ -2606,7 +2609,9 @@ drawable ic_mtrl_chip_checked_black
 drawable ic_mtrl_chip_checked_circle
 drawable ic_mtrl_chip_close_circle
 drawable ic_save
+drawable imageliked
 drawable large_dot
+drawable like
 drawable logopolygram
 drawable logoutlogo
 drawable m3_appbar_background
@@ -2699,6 +2704,7 @@ id SYM
 id TOP_END
 id TOP_START
 id accelerate
+id acceptButton
 id accessibilityRadioGroup
 id accessibilityTitle
 id accessibility_action_clickable_span
@@ -2792,6 +2798,7 @@ id avatar7
 id avatar8
 id avatar9
 id avatar_selector
+id backBtn
 id back_btn_modification
 id barrier
 id baseline
@@ -2887,6 +2894,7 @@ id disablePostScroll
 id disableScroll
 id disjoint
 id display_albums_btn
+id display_all_drawings_btn
 id displaypicture
 id dragAnticlockwise
 id dragClockwise
@@ -2902,6 +2910,7 @@ id drawingName
 id drawingNameEmptyError
 id drawingView
 id drawing_gallery_btn
+id drawingsSearchView
 id dropdown_menu
 id easeIn
 id easeInOut
@@ -2990,6 +2999,7 @@ id jumpToStart
 id labeled
 id layout
 id leave
+id leaveActivityBtn
 id leaveAlbumBtn
 id leaveBtn
 id leaveChatBtn
@@ -2997,6 +3007,7 @@ id left
 id leftToRight
 id left_to_right
 id legacy
+id likeBtn
 id line1
 id line3
 id linear
@@ -3039,6 +3050,8 @@ id menu_members
 id message
 id middle
 id mini
+id modifiedAlbumName
+id modifyAlbumBtn
 id modify_avatar
 id modify_label
 id month_grid
@@ -3080,9 +3093,11 @@ id navigation_bar_item_labels_group
 id navigation_bar_item_large_label_view
 id navigation_bar_item_small_label_view
 id navigation_header_container
+id nbrOfLikes
 id never
 id neverCompleteToEnd
 id neverCompleteToStart
+id newAlbumDescription
 id newAlbumName
 id newRoomName
 id newRoomsSearchView
@@ -3100,6 +3115,7 @@ id onInterceptTouchReturnSwipe
 id outline
 id outward
 id overshoot
+id owner
 id packed
 id parallax
 id parent
@@ -3118,6 +3134,7 @@ id popupTitle
 id popupTitleAlbum
 id popupTitleDrawing
 id popupTitleJoinAlbum
+id popupTitleModifAlbum
 id position
 id postLayout
 id principal_room_btn
@@ -3143,6 +3160,7 @@ id rvOutputDrawings
 id rvOutputMsgs
 id rvOutputRooms
 id rvUsersList
+id saveDrawingBtn
 id save_non_transition_alpha
 id save_overlay_view
 id sawtooth
@@ -3390,6 +3408,7 @@ layout abc_search_dropdown_item_icons_2line
 layout abc_search_view
 layout abc_select_dialog_material
 layout abc_tooltip
+layout activity_accept_membership_requests_pop_up
 layout activity_add_avatar_pop_up
 layout activity_albums
 layout activity_chat_page
@@ -3397,6 +3416,7 @@ layout activity_chat_rooms
 layout activity_create_drawing_pop_up
 layout activity_create_room_pop_up
 layout activity_dashboard
+layout activity_display_all_drawings
 layout activity_display_public_albums
 layout activity_drawing
 layout activity_drawings_collection
@@ -3424,6 +3444,7 @@ layout design_navigation_menu
 layout design_navigation_menu_item
 layout design_text_input_end_icon
 layout design_text_input_start_icon
+layout fragment_album_attribute_modification_pop_up
 layout fragment_create_album_pop_up
 layout fragment_custom_tool
 layout fragment_drawing_zone

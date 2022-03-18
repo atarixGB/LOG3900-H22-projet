@@ -130,6 +130,8 @@ class Registration : AppCompatActivity(),SelectAvatarPopUp.DialogListener {
 
         registerAccountBtn.setOnClickListener {
             registerUser(identifiant.text.toString(), pwd.text.toString(),displaypicture,edt_email.text.toString(),description)
+
+
         }
 
         loginAccountBtn.setOnClickListener {
@@ -165,6 +167,7 @@ class Registration : AppCompatActivity(),SelectAvatarPopUp.DialogListener {
                     val intent = Intent(this, Profile::class.java)
                     intent.putExtra("userName",identifiant.text.toString())
                     intent.putExtra("email",edt_email.text.toString())
+                    acceptMemberRequest(identifiant.text.toString(),"","album public")
                     startActivity(intent)
                 }else{
                     Toast.makeText(this,"Nom d'utilisateur déjà existant", Toast.LENGTH_SHORT).show()
@@ -177,6 +180,19 @@ class Registration : AppCompatActivity(),SelectAvatarPopUp.DialogListener {
         val stream = ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.PNG, 90, stream)
         return stream.toByteArray()
+    }
+
+    private fun acceptMemberRequest(userToAdd: String, currentUser: String, albumName: String) {
+        compositeDisposable.add(iMyService.acceptMemberRequest(userToAdd, currentUser, albumName)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { result ->
+                if (result == "201") {
+                    Toast.makeText(this, "$userToAdd a ete accepter", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this, "erreur", Toast.LENGTH_SHORT).show()
+                }
+            })
     }
 
     override fun popUpListener(avatarChosen: Drawable) {

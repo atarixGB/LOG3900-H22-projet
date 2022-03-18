@@ -5,6 +5,9 @@ import com.example.mobile.Room
 import com.example.mobile.IAlbum
 import com.example.mobile.IDrawing
 import io.reactivex.Observable
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import okhttp3.ResponseBody
 
 import retrofit2.http.*
 import retrofit2.Call
@@ -76,6 +79,10 @@ interface IMyService {
     @GET("albums/Drawings/{albumName}")
     fun getAllAlbumDrawings(@Path("albumName") albumName: String):Call<List<String>>
 
+    //get tous les dessins des albums dont userName est membre
+    @GET("/albums/getAllDrawings/{userName}")
+    fun getAllUserDrawings(@Path("userName") userName: String):Call<List<IAlbum>>
+
     @POST("albums")
     @FormUrlEncoded
     fun createNewAlbum(@Field("name")albumName:String,
@@ -85,9 +92,17 @@ interface IMyService {
                        @Field("members")usersList:ArrayList<String>,
                        @Field("membershipRequests")membershipRequests:ArrayList<String>): Observable<String>
 
-    @PUT("albums/addDrawing/{albumName}")
+    @POST("drawing/create")
     @FormUrlEncoded
-    fun addDrawingToAlbum(@Path("albumName") albumName: String,
+    fun createDrawing(@Field("name")drawingName:String,
+                      @Field("owner")ownerID:String,
+                      @Field("data")data:String,
+                      @Field("members")members:ArrayList<String>,
+                      @Field("likes")likes:ArrayList<String>): Observable<String>
+
+    @PUT("albums/addDrawing/{albumId}")
+    @FormUrlEncoded
+    fun addDrawingToAlbum(@Path("albumId") albumId: String,
                         @Field("drawing") drawing: String): Observable<String>
 
     @PUT("albums/sendRequest/{albumName}")
@@ -95,8 +110,45 @@ interface IMyService {
     fun sendRequestToJoinAlbum(@Path("albumName") albumName: String,
                           @Field("identifier") userName: String): Observable<String>
 
+    @PUT("albums/request/add")
+    @FormUrlEncoded
+    fun acceptMemberRequest(@Field("userToAdd") userToAdd: String,
+                            @Field("currentUser") currentUser: String,
+                            @Field("albumName") albumName: String): Observable<String>
 
-//    @Multipart
-//    @POST("upload")
-//    fun uploadImage(@Part part: MultipartBody.Part,@Part("somedate") requestBody: RequestBody ) : Call<RequestBody>
+    @GET("getAlbumParameters")
+    fun getAlbumParameters(@Query("albumName")albumName:String) : Call<IAlbum>
+
+    @PUT("/albums/{id}")
+    @FormUrlEncoded
+    fun leaveAlbum (@Path("id") albumId: String,
+                 @Field("memberToRemove")memberToRemove:String) : Observable<String>
+
+    @GET("/getDrawingParameters/{drawingId}")
+    fun getDrawingParameters(@Path("drawingId") drawingId: String):Call<IDrawing>
+
+    @DELETE("/albums/{id}")
+    fun deleteAlbum(@Path("id")albumID:String): Observable<String>
+
+    @POST("albumUpdate")
+    @FormUrlEncoded
+    fun updateAlbum(
+        @Field("oldAlbumName") oldUsername: String,
+        @Field("newAlbumName") newUsername: String,
+        @Field("newDescription") newAvatar: String,
+    ): Observable<String>
+
+    @Multipart
+    @POST("/upload/{drawingId}")
+    fun saveDrawing(@Path("drawingId") drawingId: String,
+                    @Part image: MultipartBody.Part,
+                    @Part("upload") name: RequestBody): Call<ResponseBody>
+
+    @GET("drawings/{drawingId}")
+    fun getDrawingData(@Path("drawingId") drawingId: String):Call<IDrawing>
+
+    @PUT("drawings/addLike/{drawingId}")
+    @FormUrlEncoded
+    fun addLikeToDrawing(@Path("drawingId") drawingId: String,
+                         @Field("user")user:String): Observable<String>
 }

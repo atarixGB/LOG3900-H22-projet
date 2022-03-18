@@ -25,6 +25,12 @@
         android:theme="@style/Theme.Mobile"
         android:usesCleartextTraffic="true" >
         <activity
+            android:name="com.example.mobile.DisplayAllDrawings"
+            android:exported="false" />
+        <activity
+            android:name="com.example.mobile.AcceptMembershipRequestsPopUp"
+            android:exported="false" />
+        <activity
             android:name="com.example.mobile.DrawingsCollection"
             android:exported="false" />
         <activity

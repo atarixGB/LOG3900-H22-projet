@@ -2,6 +2,7 @@ package com.example.mobile
 
 import android.content.Context
 import android.content.Intent
+import android.location.GnssAntennaInfo
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -26,9 +27,10 @@ import kotlinx.android.synthetic.main.activity_create_room_pop_up.view.submitBtn
 import kotlinx.coroutines.currentCoroutineContext
 import retrofit2.Call
 import retrofit2.Response
+import retrofit2.http.Field
 import java.util.ArrayList
 
-class CreateDrawingPopUp(val user: String) : DialogFragment() {
+class CreateDrawingPopUp(val user: String, val isAlbumAlreadySelected: Boolean) : DialogFragment() {
 
     private lateinit var drawingName: EditText
     private lateinit var drawingNameEmptyError: TextView
@@ -40,6 +42,7 @@ class CreateDrawingPopUp(val user: String) : DialogFragment() {
     private lateinit var albums : ArrayList<IAlbum>
     private lateinit var iMyService: IMyService
     private var albumName: String = ""
+    private var drawingId: String = ""
     internal var compositeDisposable = CompositeDisposable()
     private lateinit var listener: DialogListener
     private val sharedViewModelCreateDrawingPopUp: SharedViewModelCreateDrawingPopUp by activityViewModels()
@@ -74,6 +77,9 @@ class CreateDrawingPopUp(val user: String) : DialogFragment() {
         albumEmptyError.isVisible = false
         publicRB.isChecked = true
 
+        rootView.accessibilityTitle.isVisible = !isAlbumAlreadySelected
+        radioGroup.isVisible = !isAlbumAlreadySelected
+
         albums = ArrayList()
 
         albumAdapter = AlbumAdapter(context, albums)
@@ -93,27 +99,48 @@ class CreateDrawingPopUp(val user: String) : DialogFragment() {
 
 
         rootView.cancelBtn.setOnClickListener {
-            val intent = Intent(activity, Dashboard::class.java)
-            intent.putExtra("userName",user)
-            startActivity(intent)
+            if (isAlbumAlreadySelected) {
+                val intent = Intent(activity, DrawingsCollection::class.java)
+                intent.putExtra("userName", user)
+                intent.putExtra("albumName", albumName)
+                startActivity(intent)
+            } else {
+                val intent = Intent(activity, Dashboard::class.java)
+                intent.putExtra("userName", user)
+                startActivity(intent)
+            }
         }
 
         rootView.submitBtn.setOnClickListener {
+            val data: String = ""
+            val members = ArrayList<String>()
+            val likes = ArrayList<String>()
+
             var rb: RadioButton = rootView.findViewById<RadioButton>(radioGroup.checkedRadioButtonId)
             if (drawingName.text.toString().isNotEmpty()) {
                 drawingNameEmptyError.isVisible = false
                 albumEmptyError.isVisible = false
-                if (rb.text.toString().equals("privé")) {
+                if (isAlbumAlreadySelected) {
+                    createDrawing(albumName, drawingName.text.toString(), user, data, members, likes)
+                    Toast.makeText(
+                        context,
+                        "ajout du dessin a $albumName",
+                        Toast.LENGTH_LONG
+                    )
+                        .show()
+                    listener.popUpListener(albumName, drawingName.text.toString(), drawingId)
+                    dismiss()
+                } else if (rb.text.toString().equals("privé")) {
                     //add drawing to private album
                         if (albumName.isNotEmpty()) {
-                            addDrawingToAlbum(albumName, drawingName.text.toString())
+                            createDrawing(albumName, drawingName.text.toString(), user, data, members, likes)
                             Toast.makeText(
                                 context,
                                 "ajout du dessin a $albumName",
                                 Toast.LENGTH_LONG
                             )
                                 .show()
-                            listener.popUpListener(albumName, drawingName.text.toString())
+                            listener.popUpListener(albumName, drawingName.text.toString(), drawingId)
                             dismiss()
                         } else {
                             // s'il n'a pas choisi un album sors une erreur
@@ -122,10 +149,11 @@ class CreateDrawingPopUp(val user: String) : DialogFragment() {
                         }
                 } else {
                     //add drawing to public album
-                    addDrawingToAlbum("Album public", drawingName.text.toString())
+                    createDrawing("album public", drawingName.text.toString(), user, data, members, likes)
+//                    addDrawingToAlbum("Album public", drawingName.text.toString())
                     Toast.makeText(context, "ajout du dessin a l'album public", Toast.LENGTH_LONG)
                         .show()
-                    listener.popUpListener(albumName, drawingName.text.toString())
+                    listener.popUpListener(albumName, drawingName.text.toString(), drawingId)
                     dismiss()
                 }
             } else {
@@ -138,8 +166,25 @@ class CreateDrawingPopUp(val user: String) : DialogFragment() {
 
     }
 
-    private fun addDrawingToAlbum(albumName: String, drawingName: String) {
-        compositeDisposable.add(iMyService.addDrawingToAlbum(albumName, drawingName)
+    private fun createDrawing(albumName: String, drawingName: String, owner: String, data:String, members:ArrayList<String>, likes:ArrayList<String>) {
+        compositeDisposable.add(iMyService.createDrawing(drawingName, owner, data, members, likes)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { result ->
+                //result est drawingID
+                //this.drawingId = result
+                listener.drawingIdPopUpListener(result)
+                addDrawingToAlbum(albumName, result)
+//                if (result == "201") {
+////                    Toast.makeText(context, "added", Toast.LENGTH_SHORT).show()
+//                } else {
+//                    Toast.makeText(context, "erreur", Toast.LENGTH_SHORT).show()
+//                }
+            })
+    }
+
+    private fun addDrawingToAlbum(albumName: String, drawingId: String) {
+        compositeDisposable.add(iMyService.addDrawingToAlbum(albumName, drawingId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { result ->
@@ -157,9 +202,11 @@ class CreateDrawingPopUp(val user: String) : DialogFragment() {
 
             override fun onResponse(call: Call<List<IAlbum>>, response: Response<List<IAlbum>>) {
                 for (album in response.body()!!) {
-                    if (album.members.contains(user)) {
-                        albumAdapter.addAlbum(album)
-                        albumAdapter.notifyItemInserted((rvOutputAlbums.adapter as AlbumAdapter).itemCount)
+                    if (album._id != "622f77abc04d88938c916084"){
+                        if (album.members.contains(user)) {
+                            albumAdapter.addAlbum(album)
+                            albumAdapter.notifyItemInserted((rvOutputAlbums.adapter as AlbumAdapter).itemCount)
+                        }
                     }
                 }
             }
@@ -184,7 +231,8 @@ class CreateDrawingPopUp(val user: String) : DialogFragment() {
 
 
     public interface DialogListener {
-        fun popUpListener(albumName: String, drawingName: String)
+        fun popUpListener(albumName: String, drawingName: String, drawingId: String)
+        fun drawingIdPopUpListener(drawingId: String)
     }
 
 }

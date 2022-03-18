@@ -30,7 +30,7 @@ class UsersListPopUp(val name: String, val usersList: ArrayList<String>) : Dialo
         rootView.roomName.text = "Membres de ${name}"
         users = ArrayList()
 
-        userAdapter = UserAdapter(requireContext(), users)
+        userAdapter = UserAdapter(requireContext(), users, false)
         //Recycler View of rooms
         rootView.rvUsersList.adapter = userAdapter
         rootView.rvUsersList.layoutManager = LinearLayoutManager(requireContext())
