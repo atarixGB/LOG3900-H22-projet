@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { ICollabSelection } from '@app/interfaces-enums/ICollabSelection';
 import { DrawingService } from '@app/services/editor/drawing/drawing.service';
 import * as io from 'socket.io-client';
 import { Observable, Subject } from 'rxjs';
@@ -32,6 +31,9 @@ export class CollaborationService {
     newStrokeWidth: Subject<any>;
     newStrokeWidth$: Observable<any>;
 
+    newStrokeColors: Subject<any>;
+    newStrokeColors$: Observable<any>;
+
     constructor(public drawingService: DrawingService) { 
         this.newStroke = new Subject();
         this.newStroke$ = this.newStroke.asObservable();
@@ -53,6 +55,9 @@ export class CollaborationService {
 
         this.newStrokeWidth = new Subject();
         this.newStrokeWidth$ = this.newStrokeWidth.asObservable();
+
+        this.newStrokeColors = new Subject();
+        this.newStrokeColors$ = this.newStrokeColors.asObservable();
     }
 
     enterCollaboration(): void {
@@ -60,77 +65,132 @@ export class CollaborationService {
 
         this.socket.on('receiveStroke', (stroke: any) => {
             if (stroke.sender !== this.socket.id) {
-                this.newStroke.next(stroke); // this is an observable value that will be read by selection service
+                this.newStroke.next(stroke);
             }
         });
 
         this.socket.on('receiveSelection', (selection: any) => {
             if (selection.sender !== this.socket.id) {
-                this.newSelection.next(selection); // this is an observable value that will be read by collab selection service
+                this.newSelection.next(selection);
             }
         });
 
         this.socket.on('receiveSelectionPos', (selectionPos: any) => {
             if (selectionPos.sender !== this.socket.id) {
-                this.newSelectionPos.next(selectionPos); // this is an observable value that will be read by collab selection service
+                this.newSelectionPos.next(selectionPos);
             }
         });
 
         this.socket.on('receiveSelectionSize', (selectionSize: any) => {
             if (selectionSize.sender !== this.socket.id) {
-                this.newSelectionSize.next(selectionSize); // this is an observable value that will be read by collab selection service
+                this.newSelectionSize.next(selectionSize); 
             }
         });
 
         this.socket.on('receivePasteRequest', (pasteReq: any) => {
             if (pasteReq.sender !== this.socket.id) {
-                this.pasteRequest.next(pasteReq); // this is an observable value that will be read by collab selection service
+                this.pasteRequest.next(pasteReq); 
             }
         });
 
         this.socket.on('receiveDeleteRequest', (delReq: any) => {
             if (delReq.sender !== this.socket.id) {
-                this.deleteRequest.next(delReq); // this is an observable value that will be read by collab selection service
+                this.deleteRequest.next(delReq); 
             }
         });
 
         this.socket.on('receiveStrokeWidth', (width: any) => {
             if (width.sender !== this.socket.id) {
-                this.newStrokeWidth.next(width); // this is an observable value that will be read by collab selection service
+                this.newStrokeWidth.next(width); 
+            }
+        });
+
+        this.socket.on('receiveStrokeColors', (colors: any) => {
+            if (colors.sender !== this.socket.id) {
+                this.newStrokeColors.next(colors); 
             }
         });
     } 
 
+    // Un stroke: voir les classes Stroke, StrokePencil, StrokeRectangle et StrokeEllipse
     broadcastStroke(stroke: any): void {
         stroke.sender = this.socket.id;
         this.socket.emit('broadcastStroke', stroke);
     }
 
-    broadcastSelection(selection: ICollabSelection): void {
+    /* selection:
+    {
+      sender: string,
+      strokeIndex: number,
+    }*/
+    broadcastSelection(selection: any): void {
         selection.sender = this.socket.id;
         this.socket.emit('broadcastSelection', selection);
     }
 
+    /* selectionPos:
+    {
+        sender: string,
+        pos: Vec2,
+    }*/
     broadcastSelectionPos(selectionPos: any): void {
         selectionPos.sender = this.socket.id;
         this.socket.emit('broadcastSelectionPos', selectionPos);
     }
 
+    /* selectionSize:
+    {
+        sender: string,
+        strokeIndex: number,
+        newPos: Vec2,
+        newDimensions: Vec2,
+        scale: Vec2,
+    }*/
     broadcastSelectionSize(selectionSize: any): void {
         selectionSize.sender = this.socket.id;
         this.socket.emit('broadcastSelectionSize', selectionSize);
     }
 
-    broadcastPasteRequest(): void {
-        this.socket.emit('broadcastPasteRequest', { sender: this.socket.id });
+    /* pasteData:
+    {
+      sender: string,
+      strokeIndex: number,
+    }*/
+    broadcastPasteRequest(pasteData: any): void {
+        pasteData.sender = this.socket.id;
+        this.socket.emit('broadcastPasteRequest', pasteData);
     }
 
-    broadcastDeleteRequest(): void {
-        this.socket.emit('broadcastDeleteRequest', { sender: this.socket.id });
+    /* delData:
+    {
+      sender: string,
+      strokeIndex: number,
+    }*/
+    broadcastDeleteRequest(delData: any): void {
+        delData.sender = this.socket.id;
+        this.socket.emit('broadcastDeleteRequest', delData);
     }
 
+    /* width:
+    {
+      sender: string,
+      strokeIndex: number,
+      value: number,
+    }*/
     broadcastNewStrokeWidth(width: any): void {
         width.sender = this.socket.id;
         this.socket.emit('broadcastNewStrokeWidth', width);
+    }
+
+    /* colors:
+    {
+      sender: string,
+      strokeIndex: number,
+      primeColor: string, (genre rgb(0, 0, 0))
+      secondColor: string,
+    }*/
+    broadcastNewStrokeColors(colors: any): void {
+        colors.sender = this.socket.id;
+        this.socket.emit('broadcastNewStrokeColors', colors);
     }
 }

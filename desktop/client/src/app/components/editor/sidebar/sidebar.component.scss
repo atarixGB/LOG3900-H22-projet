@@ -6,6 +6,16 @@ mat-sidenav-container {
     padding: 1em;
 }
 
+#returnBtn {
+    scale: 1.75;
+    color: black;
+    cursor: pointer;
+}
+
+#returnBtn:hover {
+    color: rgb(115, 115, 115);
+}
+
 .config-container {
     display: inline-block;
     margin: 12px;

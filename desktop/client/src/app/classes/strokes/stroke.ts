@@ -23,6 +23,8 @@ export abstract class Stroke {
 
     rescale(scale: Vec2): void {}
 
+    updateStrokeColors(newPrimary: string, newSecondary: string): void {}
+
     updateStrokeWidth(newWidth: number): void {
         this.strokeWidth = newWidth;
     }

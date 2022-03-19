@@ -1,7 +1,23 @@
-<div *ngIf="selectionService.isActiveSelection">
-   <h4>Épaisseur: {{ selectionService.selectedStroke.strokeWidth }} px</h4>
-   <div>
-      <mat-slider min="1" max="50" tickInterval="1000" thumbLabel (input)="selectionService.updateSelectionStrokeWidth($event.value)" [(ngModel)]="selectionService.selectedStroke.strokeWidth">
-      </mat-slider>
+<div *ngIf="!selectionService.isActiveSelection" fxLayout="row" fxLayoutAlign="center center" >
+   <h4 id="selectionText">Cliquez un trait pour le selectionner!</h4>
+</div>
+<div [hidden]="!selectionService.isActiveSelection">
+   <div fxLayout="row" fxLayoutAlign="space-evenly center" >
+      <button class="margin" mat-raised-button (click)="this.selectionService.delete()">Supprimer</button>
+      <button class="margin" mat-raised-button (click)="this.selectionService.paste()">Coller</button>
    </div>
+
+   <h4 id="widthTitle">Modifier l'épaisseur:</h4>
+   <mat-grid-list id="thicknessGrid" cols="3">
+      <mat-grid-tile *ngFor="let i of [1, 2, 3, 4, 5, 6, 7, 8, 9]">
+         <div fxLayout="row" fxLayoutAlign="center stretch" class="circle" id="circle" [ngClass]="{ selected: this.selectionService.currentStrokeWidthPreset == i }" (click)="changeWidth(i)">
+            <div fxLayout="column" fxLayoutAlign="center center">
+               <div class="thicknessS"></div>
+            </div>
+         </div>
+      </mat-grid-tile>
+  </mat-grid-list>
+
+  <h4 id="colorTitle">Modifier les couleurs:</h4>
+
 </div>

@@ -1,38 +1,37 @@
-mat-label {
-    color: rgb(247, 247, 247);
+h4 {
+    margin: 0;
 }
 
-::ng-deep .white .mat-select-value {
-    color: rgb(247, 247, 247);
-}
-
-#toggle {
+#thicknessGrid {
     scale: 0.75;
-    margin-top: -14px;
+    margin-top: -15px;
 }
 
-.mat-grid-list {
-    scale: 0.75;
-    margin-top: -30px;
-}
-
-.color {
-    border: solid 1px;
+.circle {
+    background-color: white;
+    border: solid 0px;
     border-radius: 50%;
-    width: 30px;
-    height: 30px;
+    width: 75%;
+    height: 75%;
     box-shadow: 1px 1px 3px rgb(0, 0, 0);
 }
 
-.color:hover {
+.thicknessR {
+    background-color: black;
+    border-radius: 50%;
+}
+
+.circle:hover {
     cursor: pointer;
     border-width: 2px;
-    border-color: white;
+    border-color: rgb(66, 243, 131);
     box-shadow: 1px 1px 3px rgb(255, 255, 255);
-}
+ }
 
 .selected {
     border-width: 2px;
-    border-color: white;
-    box-shadow: 1px 1px 3px rgb(255, 255, 255);
+    border-color: rgb(66, 243, 131);
+    box-shadow: 2px 2px 5px rgb(46, 137, 0);
 }
+
+

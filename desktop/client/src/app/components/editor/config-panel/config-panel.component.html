@@ -1,12 +1,11 @@
 <mat-sidenav-container class="config-container">
     <mat-sidenav-content>
-        <h3>Paramètres de l'outil</h3>
+        <h3><u>Paramètres de l'outil</u></h3>
         <app-pencil-config *ngIf="toolManagerService.currentToolEnum === ToolList.Pencil"></app-pencil-config>
         <app-rectangle-config *ngIf="toolManagerService.currentToolEnum === ToolList.Rectangle"> </app-rectangle-config>
         <app-ellipse-config *ngIf="toolManagerService.currentToolEnum === ToolList.Ellipse"></app-ellipse-config>
         <app-selection-config *ngIf="toolManagerService.currentToolEnum === ToolList.Selection"></app-selection-config>
         
-        <h3>Couleur de trait</h3>
         <app-color-config></app-color-config>
     </mat-sidenav-content>
 </mat-sidenav-container>
