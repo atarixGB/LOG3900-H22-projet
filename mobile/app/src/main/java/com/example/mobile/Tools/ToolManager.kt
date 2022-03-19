@@ -12,6 +12,7 @@ class ToolManager {
     lateinit var eraser: Eraser
     lateinit var rectangle: Rectangle
     lateinit var ellipse: Ellipse
+    lateinit var selection:Selection
     private var socket: DrawingCollaboration
 
     constructor(context: Context, baseCanvas : Canvas, socket :DrawingCollaboration){
@@ -27,6 +28,7 @@ class ToolManager {
         this.eraser = Eraser(context, baseCanvas, socket)
         this.rectangle = Rectangle(context, baseCanvas, socket)
         this.ellipse = Ellipse(context, baseCanvas, socket)
+        this.selection= Selection(context,baseCanvas,socket)
     }
 
     fun isCurrentToolEraser(): Boolean {
@@ -38,5 +40,6 @@ class ToolManager {
         else if (tool == ToolbarFragment.MenuItem.ERASER) this.currentTool = eraser
         else if (tool == ToolbarFragment.MenuItem.RECTANGLE) this.currentTool = rectangle
         else if (tool == ToolbarFragment.MenuItem.OVAL) this.currentTool = ellipse
+        else if (tool == ToolbarFragment.MenuItem.SELECTION) this.currentTool = selection
     }
 }
