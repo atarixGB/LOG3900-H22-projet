@@ -6,16 +6,17 @@
 }
 
 button {
-    color: rgb(247, 247, 247);
-    text-shadow: 1px 1px 5px rgb(27, 27, 27);
+    color: black;
+    text-shadow: 1px 1px 5px rgb(255, 255, 255);
     background-color: rgba($color: #fff, $alpha: 0);
     margin: 0;
     padding: 0;
 }
 
 button:hover {
-    color: rgb(0, 190, 95);
+    color: rgb(255, 255, 255);
 }
+
 h3 {
     text-align: center;
     letter-spacing: 3px;

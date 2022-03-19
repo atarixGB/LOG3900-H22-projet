@@ -12,8 +12,19 @@ export class ProfileSettingsService {
     newAvatarSrc: string;
     newDescription: string;
 
+    isAvatarTooLarge: boolean;
+    isValidUsername: boolean;
+    isExistingUsername: boolean;
+
     constructor(private httpClient: HttpClient,  private router: Router, private route: ActivatedRoute, public profileService: ProfileService) {
         this.getUserInfoFromProfile();
+        this.setBoolsToDefault();
+    }
+
+    setBoolsToDefault(): void {
+        this.isAvatarTooLarge = false;
+        this.isValidUsername = true;
+        this.isExistingUsername = false;
     }
 
     getUserInfoFromProfile(): void {
@@ -23,8 +34,9 @@ export class ProfileSettingsService {
     }
 
     saveChanges() : void {
+        this.setBoolsToDefault();
         if(this.somethingChanged()) {
-            this.isValidNewUsername() ? this.sendChangesToDB() : console.log('TO DO: Message erreur quand le username est invalid (dans profile-settings component)');
+            this.isValidNewUsername() ? this.sendChangesToDB() : this.isValidUsername = false;
         } else {
             this.router.navigate(['../profile'], { relativeTo: this.route });
         }
@@ -54,12 +66,12 @@ export class ProfileSettingsService {
                     this.profileService.setUsername(this.newUsername);
                     this.router.navigate(['../profile'], { relativeTo: this.route });
                 } else {
-                    // TODO: Add UI feedback
-                    console.log("Update failed because username already exists, To Do -> UI error feedback in profile settings service");
+                    this.isExistingUsername = true;
                 }
             },
             (error) => {
                 console.log('Error:', error);
+                this.isAvatarTooLarge = true;
             },
         );
     }

@@ -2,17 +2,17 @@ package com.example.mobile
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.viewModels
-import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
+import com.example.mobile.activity.albums.Albums
+import com.example.mobile.activity.chat.ChatRooms
+import com.example.mobile.activity.profile.Profile
+import com.example.mobile.viewModel.SharedViewModelToolBar
 
 class ToolbarNavigationFragment: Fragment() {
     private lateinit var dashbord: TextView
@@ -60,11 +60,17 @@ class ToolbarNavigationFragment: Fragment() {
         draw.setOnClickListener {
             draw.setBackgroundResource(R.color.greenOnClick)
             Toast.makeText(context, "draw", Toast.LENGTH_SHORT).show()
+            val intent = Intent(activity, DrawingActivity::class.java)
+            intent.putExtra("userName",user)
+            startActivity(intent)
         }
 
         albums.setOnClickListener {
             albums.setBackgroundResource(R.color.greenOnClick)
             Toast.makeText(context, "albums", Toast.LENGTH_SHORT).show()
+            val intent = Intent(activity, Albums::class.java)
+            intent.putExtra("userName",user)
+            startActivity(intent)
         }
 
         profile.setOnClickListener {

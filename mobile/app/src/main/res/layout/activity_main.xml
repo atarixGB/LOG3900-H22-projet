@@ -16,20 +16,20 @@
         android:src="@drawable/logopolygram" />
 
     <EditText
-        android:id="@+id/edt_identifiant"
+        android:id="@+id/edt_email"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/edt_logo"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="67dp"
-        android:hint="Identifiant"
+        android:hint="Adresse courriel"
         android:inputType="text" />
 
     <EditText
         android:id="@+id/edt_password"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/edt_identifiant"
+        android:layout_below="@+id/edt_email"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="25dp"
         android:hint="Mot de passe"
@@ -51,7 +51,7 @@
         android:id="@+id/connect_btn"
         android:layout_width="183dp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/edt_identifiant"
+        android:layout_below="@id/edt_email"
         android:layout_alignParentEnd="false"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="68dp"

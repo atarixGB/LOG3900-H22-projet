@@ -5,7 +5,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:screenOrientation="landscape"
-    tools:context=".Registration">
+    tools:context=".activity.profile.Registration">
 
     <ImageView
         android:id="@+id/edt_logo"

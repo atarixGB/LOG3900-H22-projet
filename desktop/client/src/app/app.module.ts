@@ -33,10 +33,8 @@ import { ConfigPanelComponent } from './components/editor/config-panel/config-pa
 import { DrawingComponent } from './components/editor/drawing/drawing.component';
 import { EditorComponent } from './components/editor/editor.component';
 import { ExportModalComponent } from './components/editor/export-modal/export-modal.component';
-import { NewDrawModalComponent } from './components/editor/new-draw-modal/new-draw-modal.component';
 import { SaveDrawingModalComponent } from './components/editor/save-drawing-modal/save-drawing-modal.component';
 import { EllipseConfigComponent } from './components/editor/sidebar/ellipse-config/ellipse-config.component';
-import { EraserConfigComponent } from './components/editor/sidebar/eraser-config/eraser-config.component';
 import { FileMenuComponent } from './components/editor/sidebar/file-menu/file-menu.component';
 import { PencilConfigComponent } from './components/editor/sidebar/pencil-config/pencil-config.component';
 import { RectangleConfigComponent } from './components/editor/sidebar/rectangle-config/rectangle-config.component';
@@ -48,12 +46,13 @@ import { SideMenuComponent } from './components/menu/side-menu/side-menu.compone
 import { ProfileSettingsComponent } from './components/profile/profile-settings/profile-settings.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { SignUpComponent } from './components/sign-up/sign-up.component';
+import { SelectionConfigComponent } from './components/editor/sidebar/selection-config/selection-config.component';
 import { AlbumGalleryComponent } from './components/album-gallery/my-albums/album-gallery.component';
 import { CreateAlbumDialogComponent } from './components/album-gallery/create-album-dialog/create-album-dialog.component';
 import { PublicAlbumsComponent } from './components/album-gallery/public-albums/public-albums.component';
 import { DrawingsViewComponent } from './components/album-gallery/drawings-view/drawings-view.component';
 import { PublicDrawingGalleryComponent } from './components/album-gallery/public-drawing-gallery/public-drawing-gallery.component';
-import { SelectionConfigComponent } from './components/editor/sidebar/selection-config/selection-config.component';
+import { ColorConfigComponent } from './components/editor/sidebar/color-config/color-config.component';
 import { CreateRoomDialogComponent } from './components/chat/create-room-dialog/create-room-dialog.component';
 import { PublicChatroomsComponent } from './components/chat/public-chatrooms/public-chatrooms.component';
 import { DeleteRoomDialogComponent } from './components/chat/delete-room-dialog/delete-room-dialog.component';
@@ -67,13 +66,11 @@ import { AlbumSettingsDialogComponent } from './components/album-gallery/drawing
         AppComponent,
         EditorComponent,
         SidebarComponent,
-        DrawingComponent,
+        DrawingComponent, 
         FileMenuComponent,
         ToolsListComponent,
         PencilConfigComponent,
-        EraserConfigComponent,
         PencilConfigComponent,
-        NewDrawModalComponent,
         EllipseConfigComponent,
         RectangleConfigComponent,
         ConfigPanelComponent,
@@ -96,6 +93,7 @@ import { AlbumSettingsDialogComponent } from './components/album-gallery/drawing
         ProfileComponent,
         ProfileSettingsComponent,
         SelectionConfigComponent,
+        ColorConfigComponent, 
         CreateRoomDialogComponent,
         PublicChatroomsComponent,
         DeleteRoomDialogComponent,

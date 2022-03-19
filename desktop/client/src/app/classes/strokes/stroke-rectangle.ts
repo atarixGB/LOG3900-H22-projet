@@ -1,6 +1,5 @@
 import { Vec2 } from '@app/classes/vec2';
 import { ToolList } from '@app/interfaces-enums/tool-list';
-import { TypeStyle } from '@app/interfaces-enums/type-style';
 import { Stroke } from './stroke';
 
 export class StrokeRectangle extends Stroke {
@@ -8,7 +7,7 @@ export class StrokeRectangle extends Stroke {
     topLeftCorner: Vec2;
     width: number;
     height: number;
-    shapeType: TypeStyle;
+    isSecondColorTransparent: boolean;
 
     constructor(
         boundingPoints: Vec2[],
@@ -18,30 +17,22 @@ export class StrokeRectangle extends Stroke {
         topLeftCorner: Vec2,
         width: number,
         height: number,
-        shapeType: TypeStyle,
+        isSecondColorTransparent: boolean,
     ) {
         super(ToolList.Rectangle, boundingPoints, color, strokeWidth);
         this.secondaryColor = secondaryColor;
         this.topLeftCorner = topLeftCorner;
         this.width = width;
         this.height = height;
-        this.shapeType = shapeType;
+        this.isSecondColorTransparent = isSecondColorTransparent;
     }
 
     drawStroke(ctx: CanvasRenderingContext2D): void {
         ctx.lineWidth = this.strokeWidth;
         ctx.beginPath();
         ctx.rect(this.topLeftCorner.x, this.topLeftCorner.y, this.width, this.height);
-        if (this.shapeType === TypeStyle.Stroke) {
-           ctx.strokeStyle = this.secondaryColor;
-           ctx.fillStyle = 'rgba(255, 0, 0, 0)';
-        } else if (this.shapeType === TypeStyle.Fill) {
-           ctx.strokeStyle = 'rgba(255, 0, 0, 0)';
-           ctx.fillStyle = this.primaryColor;
-        } else {
-           ctx.strokeStyle = this.secondaryColor;
-           ctx.fillStyle = this.primaryColor;
-        }
+        ctx.fillStyle = this.isSecondColorTransparent ? 'rgba(0, 0, 0, 0)' : this.secondaryColor;
+        ctx.strokeStyle = this.primaryColor;
         ctx.fill();
         ctx.stroke();
     }

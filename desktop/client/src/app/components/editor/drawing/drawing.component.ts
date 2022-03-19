@@ -4,12 +4,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { Vec2 } from '@app/classes/vec2';
 import { MIN_SIZE } from '@app/constants/constants';
-import { ToolList } from '@app/interfaces-enums/tool-list';
 import { AutoSaveService } from '@app/services/editor/auto-save/auto-save.service';
 import { DrawingService } from '@app/services/editor/drawing/drawing.service';
 import { ExportService } from '@app/services/editor/export-image/export.service';
 import { KeyHandlerService } from '@app/services/editor/key-handler/key-handler.service';
-import { NewDrawingService } from '@app/services/editor/new-drawing/new-drawing.service';
 import { SelectionService } from '@app/services/editor/tools/selection/selection.service';
 import { CollabSelectionService } from '@app/services/editor/tools/selection/collab-selection.service';
 import { ToolManagerService } from '@app/services/editor/tools/tool-manager.service';
@@ -51,7 +49,6 @@ export class DrawingComponent implements AfterViewInit, OnDestroy, OnChanges {
         public dialog: MatDialog,
         private route: ActivatedRoute,
         private drawingService: DrawingService,
-        private newDrawingService: NewDrawingService,
         private autoSaveService: AutoSaveService,
         private keyHandlerService: KeyHandlerService,
         private selectionService: SelectionService,
@@ -59,14 +56,6 @@ export class DrawingComponent implements AfterViewInit, OnDestroy, OnChanges {
     ) {
         this.dragPosition = { x: 0, y: 0 };
         this.canvasSize = { x: MIN_SIZE, y: MIN_SIZE };
-        this.subscription = this.newDrawingService.getCleanStatus().subscribe((isCleanRequest) => {
-            if (isCleanRequest) {
-                this.drawingService.baseCtx.beginPath();
-                this.drawingService.baseCtx.clearRect(0, 0, this.canvasSize.x, this.canvasSize.y);
-                this.drawingService.previewCtx.clearRect(0, 0, this.canvasSize.x, this.canvasSize.y);
-                this.whiteBackgroundCanvas();
-            }
-        });
     }
 
     ngOnDestroy(): void {
@@ -125,12 +114,7 @@ export class DrawingComponent implements AfterViewInit, OnDestroy, OnChanges {
     }
 
     onMouseMove(event: MouseEvent): void {
-        if (this.toolManagerService.currentToolEnum === ToolList.Eraser) {
-            this.drawingService.cursorCtx = this.cursorCtx;
-        } else {
-            this.cursorCtx.clearRect(0, 0, this.cursorCanvas.nativeElement.width, this.cursorCanvas.nativeElement.height);
-        }
-
+        this.cursorCtx.clearRect(0, 0, this.cursorCanvas.nativeElement.width, this.cursorCanvas.nativeElement.height);
         this.handleSelectionTool(event);
     }
 

@@ -29,20 +29,26 @@
                    <button mat-raised-button color="primary" (click)="this.openAvatarImportModal()">Importer un nouvel avatar</button>
                </div>
             </div>
-
+            <div class="topPadding" fxLayout="row" fxLayoutAlign="center center">
+               <p *ngIf="this.profileSettingsService.isAvatarTooLarge" class="error">^ <u>L'avatar importé est trop volumineux</u> ^</p>
+            </div>
 
             <!-- Username settings -->
             <div class="sectionTitleContainer" fxLayout="row" fxLayoutAlign="start center">
                <span>Pseudonyme</span>
             </div>
             <div class="topBottomPadding" fxLayout="row" fxLayoutAlign="space-evenly center">
-               <mat-form-field appearance="outline">
-                  <mat-label>Entrez un nouveau nom</mat-label>
-                  <input matInput [(ngModel)]="this.profileSettingsService.newUsername">
-               </mat-form-field>
+               <div fxLayout="column" fxLayoutAlign="center center">
+                  <mat-form-field appearance="outline">
+                     <mat-label>Entrez un nouveau nom</mat-label>
+                     <input matInput [(ngModel)]="this.profileSettingsService.newUsername">
+                  </mat-form-field>
+                  <p *ngIf="this.profileSettingsService.isExistingUsername" class="error">^ <u>Ce pseudonyme n'est pas disponible</u> ^</p>
+                  <p *ngIf="!this.profileSettingsService.isValidUsername" class="error">^ <u>Le pseudonyme doit être composé de lettres et/ou de chiffres uniquement</u> ^</p>
+               </div>
             </div>
 
-             <!-- Description settings -->
+            <!-- Description settings -->
              <div class="sectionTitleContainer" fxLayout="row" fxLayoutAlign="start center">
                <span>Description</span>
             </div>
