@@ -3,7 +3,6 @@ package com.example.mobile
 import android.content.Context
 import android.graphics.*
 import android.os.Bundle
-import android.util.AttributeSet
 import android.util.Log
 import android.view.*
 import android.widget.LinearLayout
@@ -18,8 +17,8 @@ import io.socket.emitter.Emitter
 import org.json.JSONObject
 import com.example.mobile.Retrofit.IMyService
 import com.example.mobile.Retrofit.RetrofitClient
-import com.example.mobile.model.ToolModel
-import com.example.mobile.model.ToolParameters
+import com.example.mobile.viewModel.ToolModel
+import com.example.mobile.viewModel.ToolParameters
 import com.example.mobile.viewModel.SharedViewModelToolBar
 import io.reactivex.disposables.CompositeDisposable
 import okhttp3.*

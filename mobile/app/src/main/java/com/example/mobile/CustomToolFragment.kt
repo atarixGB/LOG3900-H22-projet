@@ -11,7 +11,8 @@ import androidx.fragment.app.activityViewModels
 import com.example.mobile.Tools.ToolColorItem
 import com.example.mobile.Tools.ToolWeightAdapter
 import com.example.mobile.Tools.ToolWeightItem
-import com.example.mobile.model.ToolParameters
+import com.example.mobile.adapter.ColorAdapter
+import com.example.mobile.viewModel.ToolParameters
 
 
 class CustomToolFragment : Fragment(), AdapterView.OnItemClickListener {
@@ -23,7 +24,7 @@ class CustomToolFragment : Fragment(), AdapterView.OnItemClickListener {
 
     private var colorView:GridView ? = null
     private var colors:ArrayList<ToolColorItem> ? = null
-    private var colorAdapter: ColorAdapter ? = null
+    private var colorAdapter: ColorAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
