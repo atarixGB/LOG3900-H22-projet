@@ -6,182 +6,194 @@
 6
 7    <uses-sdk
 8        android:minSdkVersion="28"
-8-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml
+8-->C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml
 9        android:targetSdkVersion="31" />
-9-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml
+9-->C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml
 10
 11    <uses-permission android:name="android.permission.INTERNET" />
-11-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:6:5-67
-11-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:6:22-64
+11-->C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:6:5-67
+11-->C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:6:22-64
 12    <uses-permission android:name="android.permission.CAMERA" />
-12-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:7:5-65
-12-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:7:22-62
+12-->C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:7:5-65
+12-->C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:7:22-62
 13    <uses-permission android:name="android.permission.RECORD_AUDIO" />
-13-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:8:5-71
-13-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:8:22-68
+13-->C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:8:5-71
+13-->C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:8:22-68
 14
 15    <application
-15-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:10:5-73:19
+15-->C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:10:5-79:19
 16        android:allowBackup="true"
-16-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:11:9-35
+16-->C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:11:9-35
 17        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
-17-->[androidx.core:core:1.7.0] C:\Users\chaim\.gradle\caches\transforms-2\files-2.1\a431b63830e255b80e0dcda496eb99b4\core-1.7.0\AndroidManifest.xml:24:18-86
+17-->[androidx.core:core:1.7.0] C:\Users\15149\.gradle\caches\transforms-2\files-2.1\a431b63830e255b80e0dcda496eb99b4\core-1.7.0\AndroidManifest.xml:24:18-86
 18        android:debuggable="true"
 19        android:extractNativeLibs="false"
 20        android:icon="@mipmap/ic_launcher"
-20-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:12:9-43
+20-->C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:12:9-43
 21        android:label="@string/app_name"
-21-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:13:9-41
+21-->C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:13:9-41
 22        android:roundIcon="@mipmap/ic_launcher_round"
-22-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:14:9-54
+22-->C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:14:9-54
 23        android:supportsRtl="true"
-23-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:15:9-35
+23-->C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:15:9-35
 24        android:testOnly="true"
 25        android:theme="@style/Theme.Mobile"
-25-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:16:9-44
+25-->C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:16:9-44
 26        android:usesCleartextTraffic="true" >
-26-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:17:9-44
+26-->C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:17:9-44
 27        <activity
-27-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:18:9-20:40
-28            android:name="com.example.mobile.DrawingsCollection"
-28-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:19:13-47
+27-->C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:18:9-20:40
+28            android:name="com.example.mobile.activity.albums.DisplayAllDrawings"
+28-->C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:19:13-63
 29            android:exported="false" />
-29-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:20:13-37
+29-->C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:20:13-37
 30        <activity
-30-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:21:9-23:40
-31            android:name="com.example.mobile.drawingsCollection"
-31-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:22:13-47
+30-->C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:21:9-23:40
+31            android:name="com.example.mobile.popup.AcceptMembershipRequestsPopUp"
+31-->C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:22:13-64
 32            android:exported="false" />
-32-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:23:13-37
+32-->C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:23:13-37
 33        <activity
-33-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:24:9-26:40
-34            android:name="com.example.mobile.joinAlbumPopUp"
-34-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:25:13-43
+33-->C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:24:9-26:40
+34            android:name="com.example.mobile.activity.albums.DrawingsCollection"
+34-->C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:25:13-63
 35            android:exported="false" />
-35-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:26:13-37
+35-->C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:26:13-37
 36        <activity
-36-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:27:9-29:40
-37            android:name="com.example.mobile.createDrawingPopUp"
-37-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:28:13-47
+36-->C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:27:9-29:40
+37            android:name="com.example.mobile.drawingsCollection"
+37-->C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:28:13-47
 38            android:exported="false" />
-38-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:29:13-37
+38-->C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:29:13-37
 39        <activity
-39-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:30:9-32:40
-40            android:name="com.example.mobile.DisplayPublicAlbums"
-40-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:31:13-48
+39-->C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:30:9-32:40
+40            android:name="com.example.mobile.joinAlbumPopUp"
+40-->C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:31:13-43
 41            android:exported="false" />
-41-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:32:13-37
+41-->C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:32:13-37
 42        <activity
-42-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:33:9-35:40
-43            android:name="com.example.mobile.Albums"
-43-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:34:13-35
+42-->C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:33:9-35:40
+43            android:name="com.example.mobile.createDrawingPopUp"
+43-->C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:34:13-47
 44            android:exported="false" />
-44-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:35:13-37
+44-->C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:35:13-37
 45        <activity
-45-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:36:9-38:40
-46            android:name="com.example.mobile.usersListPopUp"
-46-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:37:13-43
+45-->C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:36:9-38:40
+46            android:name="com.example.mobile.activity.albums.DisplayPublicAlbums"
+46-->C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:37:13-64
 47            android:exported="false" />
-47-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:38:13-37
-48        <activity android:name="com.example.mobile.Dashboard" />
-48-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:39:9-47
-48-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:39:19-44
-49        <activity
-49-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:40:9-42:40
-50            android:name="com.example.mobile.Profile_modification"
-50-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:41:13-49
-51            android:exported="false" />
-51-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:42:13-37
-52        <activity android:name="com.example.mobile.Dashboard" />
-52-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:39:9-47
-52-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:39:19-44
-53        <activity
-53-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:44:9-46:40
-54            android:name="com.example.mobile.Profile"
-54-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:45:13-36
-55            android:exported="false" />
-55-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:46:13-37
-56        <activity
-56-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:47:9-49:40
-57            android:name="com.example.mobile.Registration"
-57-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:48:13-41
-58            android:exported="false" />
-58-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:49:13-37
+47-->C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:38:13-37
+48        <activity
+48-->C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:39:9-41:40
+49            android:name="com.example.mobile.activity.albums.Albums"
+49-->C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:40:13-51
+50            android:exported="false" />
+50-->C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:41:13-37
+51        <activity
+51-->C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:42:9-44:40
+52            android:name="com.example.mobile.usersListPopUp"
+52-->C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:43:13-43
+53            android:exported="false" />
+53-->C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:44:13-37
+54        <activity android:name="com.example.mobile.Dashboard" />
+54-->C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:45:9-47
+54-->C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:45:19-44
+55        <activity
+55-->C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:46:9-48:40
+56            android:name="com.example.mobile.activity.profile.Profile_modification"
+56-->C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:47:13-66
+57            android:exported="false" />
+57-->C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:48:13-37
+58        <activity android:name="com.example.mobile.Dashboard" />
+58-->C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:45:9-47
+58-->C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:45:19-44
 59        <activity
-59-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:50:9-52:40
-60            android:name="com.example.mobile.joinRoom"
-60-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:51:13-37
+59-->C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:50:9-52:40
+60            android:name="com.example.mobile.activity.profile.Profile"
+60-->C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:51:13-53
 61            android:exported="false" />
-61-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:52:13-37
+61-->C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:52:13-37
 62        <activity
-62-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:53:9-56:45
-63            android:name="com.example.mobile.CreateRoomPopUp"
-63-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:54:13-44
+62-->C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:53:9-55:40
+63            android:name="com.example.mobile.activity.profile.Registration"
+63-->C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:54:13-58
 64            android:exported="false" />
-64-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:55:13-37
+64-->C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:55:13-37
 65        <activity
-65-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:57:9-59:40
-66            android:name="com.example.mobile.ChatRooms"
-66-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:58:13-38
+65-->C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:56:9-58:40
+66            android:name="com.example.mobile.activity.chat.joinRoom"
+66-->C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:57:13-51
 67            android:exported="false" />
-67-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:59:13-37
-68        <activity android:name="com.example.mobile.DrawingActivity" />
-68-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:60:9-53
-68-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:60:19-50
-69        <activity
-69-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:61:9-63:39
-70            android:name="com.example.mobile.ChatPage"
-70-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:62:13-37
-71            android:exported="true" />
-71-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:63:13-36
-72        <activity
-72-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:64:9-72:20
-73            android:name="com.example.mobile.MainActivity"
-73-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:65:13-41
-74            android:exported="true" >
-74-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:66:13-36
-75            <intent-filter>
-75-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:67:13-71:29
-76                <action android:name="android.intent.action.MAIN" />
-76-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:68:17-69
-76-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:68:25-66
-77
-78                <category android:name="android.intent.category.LAUNCHER" />
-78-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:70:17-77
-78-->C:\Users\chaim\log3900-203\mobile\app\src\main\AndroidManifest.xml:70:27-74
-79            </intent-filter>
-80        </activity>
-81
-82        <provider
-82-->[androidx.emoji2:emoji2:1.0.0] C:\Users\chaim\.gradle\caches\transforms-2\files-2.1\a1db6a0ca78a28b66c64115dbc645d09\jetified-emoji2-1.0.0\AndroidManifest.xml:26:9-34:20
-83            android:name="androidx.startup.InitializationProvider"
-83-->[androidx.emoji2:emoji2:1.0.0] C:\Users\chaim\.gradle\caches\transforms-2\files-2.1\a1db6a0ca78a28b66c64115dbc645d09\jetified-emoji2-1.0.0\AndroidManifest.xml:27:13-67
-84            android:authorities="com.example.mobile.androidx-startup"
-84-->[androidx.emoji2:emoji2:1.0.0] C:\Users\chaim\.gradle\caches\transforms-2\files-2.1\a1db6a0ca78a28b66c64115dbc645d09\jetified-emoji2-1.0.0\AndroidManifest.xml:28:13-68
-85            android:exported="false" >
-85-->[androidx.emoji2:emoji2:1.0.0] C:\Users\chaim\.gradle\caches\transforms-2\files-2.1\a1db6a0ca78a28b66c64115dbc645d09\jetified-emoji2-1.0.0\AndroidManifest.xml:29:13-37
-86            <meta-data
-86-->[androidx.emoji2:emoji2:1.0.0] C:\Users\chaim\.gradle\caches\transforms-2\files-2.1\a1db6a0ca78a28b66c64115dbc645d09\jetified-emoji2-1.0.0\AndroidManifest.xml:31:13-33:52
-87                android:name="androidx.emoji2.text.EmojiCompatInitializer"
-87-->[androidx.emoji2:emoji2:1.0.0] C:\Users\chaim\.gradle\caches\transforms-2\files-2.1\a1db6a0ca78a28b66c64115dbc645d09\jetified-emoji2-1.0.0\AndroidManifest.xml:32:17-75
-88                android:value="androidx.startup" />
-88-->[androidx.emoji2:emoji2:1.0.0] C:\Users\chaim\.gradle\caches\transforms-2\files-2.1\a1db6a0ca78a28b66c64115dbc645d09\jetified-emoji2-1.0.0\AndroidManifest.xml:33:17-49
-89            <meta-data
-89-->[androidx.lifecycle:lifecycle-process:2.4.0] C:\Users\chaim\.gradle\caches\transforms-2\files-2.1\33cb0bcbb6de7bcdeaa8d59150e0e237\jetified-lifecycle-process-2.4.0\AndroidManifest.xml:31:13-33:52
-90                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
-90-->[androidx.lifecycle:lifecycle-process:2.4.0] C:\Users\chaim\.gradle\caches\transforms-2\files-2.1\33cb0bcbb6de7bcdeaa8d59150e0e237\jetified-lifecycle-process-2.4.0\AndroidManifest.xml:32:17-78
-91                android:value="androidx.startup" />
-91-->[androidx.lifecycle:lifecycle-process:2.4.0] C:\Users\chaim\.gradle\caches\transforms-2\files-2.1\33cb0bcbb6de7bcdeaa8d59150e0e237\jetified-lifecycle-process-2.4.0\AndroidManifest.xml:33:17-49
-92        </provider>
-93
-94        <service
-94-->[androidx.room:room-runtime:2.3.0] C:\Users\chaim\.gradle\caches\transforms-2\files-2.1\405bda75e18cb5884c20e8632461cd46\room-runtime-2.3.0\AndroidManifest.xml:25:9-28:40
-95            android:name="androidx.room.MultiInstanceInvalidationService"
-95-->[androidx.room:room-runtime:2.3.0] C:\Users\chaim\.gradle\caches\transforms-2\files-2.1\405bda75e18cb5884c20e8632461cd46\room-runtime-2.3.0\AndroidManifest.xml:26:13-74
-96            android:directBootAware="true"
-96-->[androidx.room:room-runtime:2.3.0] C:\Users\chaim\.gradle\caches\transforms-2\files-2.1\405bda75e18cb5884c20e8632461cd46\room-runtime-2.3.0\AndroidManifest.xml:27:13-43
-97            android:exported="false" />
-97-->[androidx.room:room-runtime:2.3.0] C:\Users\chaim\.gradle\caches\transforms-2\files-2.1\405bda75e18cb5884c20e8632461cd46\room-runtime-2.3.0\AndroidManifest.xml:28:13-37
-98    </application>
+67-->C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:58:13-37
+68        <activity
+68-->C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:59:9-62:45
+69            android:name="com.example.mobile.popup.CreateRoomPopUp"
+69-->C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:60:13-50
+70            android:exported="false" />
+70-->C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:61:13-37
+71        <activity
+71-->C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:63:9-65:40
+72            android:name="com.example.mobile.activity.chat.ChatRooms"
+72-->C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:64:13-52
+73            android:exported="false" />
+73-->C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:65:13-37
+74        <activity android:name="com.example.mobile.DrawingActivity" />
+74-->C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:66:9-53
+74-->C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:66:19-50
+75        <activity
+75-->C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:67:9-69:39
+76            android:name="com.example.mobile.activity.chat.ChatPage"
+76-->C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:68:13-51
+77            android:exported="true" />
+77-->C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:69:13-36
+78        <activity
+78-->C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:70:9-78:20
+79            android:name="com.example.mobile.activity.MainActivity"
+79-->C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:71:13-50
+80            android:exported="true" >
+80-->C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:72:13-36
+81            <intent-filter>
+81-->C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:73:13-77:29
+82                <action android:name="android.intent.action.MAIN" />
+82-->C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:74:17-69
+82-->C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:74:25-66
+83
+84                <category android:name="android.intent.category.LAUNCHER" />
+84-->C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:76:17-77
+84-->C:\Users\15149\Desktop\Clone fin tache album\log3900-203\mobile\app\src\main\AndroidManifest.xml:76:27-74
+85            </intent-filter>
+86        </activity>
+87
+88        <provider
+88-->[androidx.emoji2:emoji2:1.0.0] C:\Users\15149\.gradle\caches\transforms-2\files-2.1\a1db6a0ca78a28b66c64115dbc645d09\jetified-emoji2-1.0.0\AndroidManifest.xml:26:9-34:20
+89            android:name="androidx.startup.InitializationProvider"
+89-->[androidx.emoji2:emoji2:1.0.0] C:\Users\15149\.gradle\caches\transforms-2\files-2.1\a1db6a0ca78a28b66c64115dbc645d09\jetified-emoji2-1.0.0\AndroidManifest.xml:27:13-67
+90            android:authorities="com.example.mobile.androidx-startup"
+90-->[androidx.emoji2:emoji2:1.0.0] C:\Users\15149\.gradle\caches\transforms-2\files-2.1\a1db6a0ca78a28b66c64115dbc645d09\jetified-emoji2-1.0.0\AndroidManifest.xml:28:13-68
+91            android:exported="false" >
+91-->[androidx.emoji2:emoji2:1.0.0] C:\Users\15149\.gradle\caches\transforms-2\files-2.1\a1db6a0ca78a28b66c64115dbc645d09\jetified-emoji2-1.0.0\AndroidManifest.xml:29:13-37
+92            <meta-data
+92-->[androidx.emoji2:emoji2:1.0.0] C:\Users\15149\.gradle\caches\transforms-2\files-2.1\a1db6a0ca78a28b66c64115dbc645d09\jetified-emoji2-1.0.0\AndroidManifest.xml:31:13-33:52
+93                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+93-->[androidx.emoji2:emoji2:1.0.0] C:\Users\15149\.gradle\caches\transforms-2\files-2.1\a1db6a0ca78a28b66c64115dbc645d09\jetified-emoji2-1.0.0\AndroidManifest.xml:32:17-75
+94                android:value="androidx.startup" />
+94-->[androidx.emoji2:emoji2:1.0.0] C:\Users\15149\.gradle\caches\transforms-2\files-2.1\a1db6a0ca78a28b66c64115dbc645d09\jetified-emoji2-1.0.0\AndroidManifest.xml:33:17-49
+95            <meta-data
+95-->[androidx.lifecycle:lifecycle-process:2.4.0] C:\Users\15149\.gradle\caches\transforms-2\files-2.1\33cb0bcbb6de7bcdeaa8d59150e0e237\jetified-lifecycle-process-2.4.0\AndroidManifest.xml:31:13-33:52
+96                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+96-->[androidx.lifecycle:lifecycle-process:2.4.0] C:\Users\15149\.gradle\caches\transforms-2\files-2.1\33cb0bcbb6de7bcdeaa8d59150e0e237\jetified-lifecycle-process-2.4.0\AndroidManifest.xml:32:17-78
+97                android:value="androidx.startup" />
+97-->[androidx.lifecycle:lifecycle-process:2.4.0] C:\Users\15149\.gradle\caches\transforms-2\files-2.1\33cb0bcbb6de7bcdeaa8d59150e0e237\jetified-lifecycle-process-2.4.0\AndroidManifest.xml:33:17-49
+98        </provider>
 99
-100</manifest>
+100        <service
+100-->[androidx.room:room-runtime:2.3.0] C:\Users\15149\.gradle\caches\transforms-2\files-2.1\405bda75e18cb5884c20e8632461cd46\room-runtime-2.3.0\AndroidManifest.xml:25:9-28:40
+101            android:name="androidx.room.MultiInstanceInvalidationService"
+101-->[androidx.room:room-runtime:2.3.0] C:\Users\15149\.gradle\caches\transforms-2\files-2.1\405bda75e18cb5884c20e8632461cd46\room-runtime-2.3.0\AndroidManifest.xml:26:13-74
+102            android:directBootAware="true"
+102-->[androidx.room:room-runtime:2.3.0] C:\Users\15149\.gradle\caches\transforms-2\files-2.1\405bda75e18cb5884c20e8632461cd46\room-runtime-2.3.0\AndroidManifest.xml:27:13-43
+103            android:exported="false" />
+103-->[androidx.room:room-runtime:2.3.0] C:\Users\15149\.gradle\caches\transforms-2\files-2.1\405bda75e18cb5884c20e8632461cd46\room-runtime-2.3.0\AndroidManifest.xml:28:13-37
+104    </application>
+105
+106</manifest>

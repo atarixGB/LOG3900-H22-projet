@@ -1,10 +1,10 @@
-#Wed Mar 09 13:55:52 EST 2022
+#Fri Mar 18 15:48:03 EDT 2022
 path.2=classes2.dex
 path.1=classes.dex
 path.0=classes.dex
 renamed.2=classes3.dex
 renamed.1=classes2.dex
 renamed.0=classes.dex
-base.2=C\:\\Users\\chaim\\log3900-203\\mobile\\app\\build\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes2.dex
-base.1=C\:\\Users\\chaim\\log3900-203\\mobile\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\classes.dex
-base.0=C\:\\Users\\chaim\\log3900-203\\mobile\\app\\build\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes.dex
+base.2=C\:\\Users\\15149\\Desktop\\Clone fin tache album\\log3900-203\\mobile\\app\\build\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes2.dex
+base.1=C\:\\Users\\15149\\Desktop\\Clone fin tache album\\log3900-203\\mobile\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\classes.dex
+base.0=C\:\\Users\\15149\\Desktop\\Clone fin tache album\\log3900-203\\mobile\\app\\build\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes.dex

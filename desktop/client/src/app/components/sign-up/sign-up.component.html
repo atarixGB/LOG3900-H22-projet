@@ -9,24 +9,30 @@
              <input matInput placeholder="Entrez votre nom" [(ngModel)]="this.username" name="username">
            </mat-form-field>
         </form>
+        <p *ngIf="this.signUpService.isExistingUsername" class="error">^ <u>Cet identifiant n'est pas disponible</u> ^</p>
+        <p *ngIf="!this.isValidUsername" class="error errorMargin">^ <u>L'identifiant doit être composé de lettres et/ou de chiffres uniquement</u> ^</p>
         <form>
            <mat-form-field  appearance="fill">
              <mat-label>Mot de passe</mat-label>
              <input matInput placeholder="Entrez votre mot de passe" type="password" [(ngModel)]="this.password" name="password">
            </mat-form-field>
         </form>
+        <p *ngIf="!this.isValidPW" class="error errorMargin">^ <u>Le mot de passe ne doit pas contenir d'espaces.</u> ^</p>
         <form>
            <mat-form-field  appearance="fill">
              <mat-label>Confirmation du mot de passe</mat-label>
              <input matInput placeholder="Confirmer votre mot de passe" type="password" [(ngModel)]="this.confirmedPassword" name="confirmedPassword">
            </mat-form-field>
         </form>
+        <p *ngIf="!this.isValidConfirmation" class="error errorMargin">^ <u>Les champs mot de passe et confirmation ne correspondent pas</u> ^</p>
         <form>
            <mat-form-field  appearance="fill">
              <mat-label>Courriel</mat-label>
              <input matInput placeholder="Entrez votre courriel" [(ngModel)]="this.email" name="email">
            </mat-form-field>
         </form>
+        <p *ngIf="this.signUpService.isUsedEmail" class="error">^ <u>Ce courriel est déjà assigné à un autre compte</u> ^</p>
+        <p *ngIf="!this.isValidEmail" class="error errorMargin">^ <u>Le courriel doit être de la forme 'name@mail.ca/com'</u> ^</p>
    </div>
 
    <div fxLayout="column" fxLayoutAlign="center center">
@@ -42,6 +48,7 @@
         <div id="avatarDisplay" fxLayoutAlign="center center">
             <img *ngIf="this.signUpService.avatarSrc" id="avatarImg" src="data:image/png;base64,{{this.signUpService.avatarSrc}}">
         </div>
+        <p *ngIf="this.signUpService.isAvatarTooLarge" class="error">^ <u>L'avatar importé est trop volumineux</u> ^</p>
     </div>
 
     <div fxLayout="column" fxLayoutAlign="start center">

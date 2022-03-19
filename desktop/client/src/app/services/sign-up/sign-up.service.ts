@@ -13,7 +13,19 @@ export class SignUpService {
     description: string;
     avatarSrc: string;
 
-    constructor(private httpClient: HttpClient, private router: Router, private route: ActivatedRoute) {}
+    isExistingUsername: boolean;
+    isUsedEmail: boolean;
+    isAvatarTooLarge: boolean;
+
+    constructor(private httpClient: HttpClient, private router: Router, private route: ActivatedRoute) {
+        this.setBoolsToDefault();
+    }
+
+    setBoolsToDefault(): void {
+        this.isExistingUsername = false;
+        this.isUsedEmail = false;
+        this.isAvatarTooLarge = false;
+    }
 
     signUp(): void {
         // POST resquest to create a new user in the database
@@ -27,16 +39,18 @@ export class SignUpService {
 
         this.httpClient.post(SIGN_UP_URL, userInfos).subscribe(
             (result) => {
-              if (result == 201) {
+              if (result == "success") {
                     console.log(result, 'Signup success');
                     this.router.navigate(['../home'], { relativeTo: this.route });
-                } else if (result == 406) {
-                    // TODO: Add UI feedback
-                    console.log(result, "Username already exists.");
+                } else if (result == "usernameTaken") {
+                    this.isExistingUsername = true;
+                }else if (result == "emailUsed") {
+                    this.isUsedEmail = true;
                 }
             },
             (error) => {
-                console.log('Error:', error);
+                console.log('Error:', error); 
+                this.isAvatarTooLarge = true;
             },
         );
     }

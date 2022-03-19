@@ -1,18 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:paddingStart="8dp"
-    android:paddingTop="8dp">
-
-    <ImageView
-        android:id="@+id/imgDrawing"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_baseline_image_24"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    android:paddingTop="8dp"
+    android:background="@drawable/toolbar_btn">
 
     <TextView
         android:id="@+id/drawingName"
@@ -22,6 +16,43 @@
         android:textColor="@color/black"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imgDrawing"
+        android:layout_width="wrap_content"
+        android:layout_height="500dp"
+        android:src="@drawable/ic_baseline_image_24"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/drawingName" />
+
+    <TextView
+        android:id="@+id/owner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="owner name"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imgDrawing" />
+
+    <TextView
+        android:id="@+id/nbrOfLikes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0"
+        android:textColor="@color/black"
+        android:textSize="30sp"
+        android:layout_marginRight="10dp"
+        app:layout_constraintEnd_toStartOf="@+id/likeBtn"
+        app:layout_constraintTop_toBottomOf="@+id/imgDrawing" />
+
+    <ImageView
+        android:id="@+id/likeBtn"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:background="@drawable/like"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imgDrawing" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

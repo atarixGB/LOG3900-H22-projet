@@ -5,17 +5,29 @@ import android.graphics.*
 import android.os.Bundle
 import android.util.AttributeSet
 import android.view.*
+import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import com.example.mobile.Retrofit.IMyService
+import com.example.mobile.Retrofit.RetrofitClient
 import com.example.mobile.model.ToolModel
 import com.example.mobile.model.ToolParameters
+import com.example.mobile.viewModel.SharedViewModelToolBar
+import io.reactivex.disposables.CompositeDisposable
+import okhttp3.*
+import retrofit2.Call
+import retrofit2.Response
+import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.FileOutputStream
 
 class DrawingZoneFragment : Fragment() {
     private var mDrawingView: DrawingView? = null
     private val viewModel: ToolParameters by activityViewModels()
     private val toolModel: ToolModel by activityViewModels()
+    private val sharedViewModelToolBar: SharedViewModelToolBar by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,7 +49,17 @@ class DrawingZoneFragment : Fragment() {
         toolModel.tool.observe(viewLifecycleOwner, Observer { tool ->
             mDrawingView.changeTool(tool)
         })
+
+        sharedViewModelToolBar.drawingId.observe(viewLifecycleOwner, Observer { drawingId ->
+            mDrawingView.setDrawingId(drawingId)
+        })
+
+        toolModel.onClick.observe(viewLifecycleOwner, Observer { onClick ->
+            mDrawingView.saveImg()
+        })
+
     }
+
     class DrawingView @JvmOverloads constructor(
         context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
     ) : View(context, attrs, defStyleAttr) {
@@ -47,6 +69,12 @@ class DrawingZoneFragment : Fragment() {
         private var mBitmap: Bitmap? = null
         private var mCanvas: Canvas? = null
         private var isDrawing = false
+        private lateinit var drawingId: String
+
+
+        private lateinit var iMyService: IMyService
+        internal var compositeDisposable = CompositeDisposable()
+        private var filePath: String = ""
 
 
         override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
@@ -63,7 +91,7 @@ class DrawingZoneFragment : Fragment() {
                 strokeCap = Paint.Cap.ROUND
                 strokeWidth = 1f
             }
-            mCanvas!!.drawRect(0f,0f, w.toFloat(), h.toFloat(),borderPaint )
+            mCanvas!!.drawRect(0f, 0f, w.toFloat(), h.toFloat(), borderPaint)
         }
 
         override fun onDraw(canvas: Canvas) {
@@ -89,7 +117,7 @@ class DrawingZoneFragment : Fragment() {
                     toolManager.currentTool.touchStart()
                     invalidate()
                 }
-                MotionEvent.ACTION_MOVE ->{
+                MotionEvent.ACTION_MOVE -> {
                     toolManager.currentTool.touchMove()
                     invalidate()
                 }
@@ -101,21 +129,68 @@ class DrawingZoneFragment : Fragment() {
             }
             return true
         }
-        fun changeWeight(width : Float){
-            if(this::toolManager.isInitialized) toolManager.currentTool.changeWeight(width)
+
+        fun changeWeight(width: Float) {
+            if (this::toolManager.isInitialized) toolManager.currentTool.changeWeight(width)
         }
-        fun changeColor(color : Int){
-            if(this::toolManager.isInitialized) {
-                if(!toolManager.isCurrentToolEraser()){
+
+        fun changeColor(color: Int) {
+            if (this::toolManager.isInitialized) {
+                if (!toolManager.isCurrentToolEraser()) {
                     toolManager.currentTool.changeColor(color)
                 }
             }
         }
 
-        fun changeTool(tool: ToolbarFragment.MenuItem){
-            if(this::toolManager.isInitialized) {
+        fun changeTool(tool: ToolbarFragment.MenuItem) {
+            if (this::toolManager.isInitialized) {
                 this.toolManager.changeTool(tool)
                 resetPath()
+            }
+        }
+
+        fun setDrawingId(drawingId: String) {
+            this.drawingId = drawingId
+        }
+
+        fun saveImg() {
+
+            if (mBitmap != null) {
+                val retrofit = RetrofitClient.getInstance()
+                val myService = retrofit.create(IMyService::class.java)
+
+                var filesDir: File = context.filesDir;
+                var file = File(filesDir, "image" + ".png")
+
+                var bos: ByteArrayOutputStream = ByteArrayOutputStream();
+                mBitmap!!.compress(Bitmap.CompressFormat.PNG, 0, bos);
+                var bitmapdata: ByteArray = convertBitmapToByteArray(mBitmap!!)
+
+
+                var fos: FileOutputStream = FileOutputStream(file);
+                fos.write(bitmapdata);
+                fos.flush();
+                fos.close();
+
+                var reqFile: RequestBody = RequestBody.create(MediaType.parse("image/*"), file)
+                var body: MultipartBody.Part =
+                    MultipartBody.Part.createFormData("upload", file.name, reqFile)
+
+                var name: RequestBody = RequestBody.create(MediaType.parse("text/plain"), "upload");
+
+                var call = myService.saveDrawing(drawingId, body, name)
+                call.enqueue(object : retrofit2.Callback<ResponseBody> {
+                    override fun onResponse(
+                        call: Call<ResponseBody>,
+                        response: Response<ResponseBody>
+                    ) {
+                        Toast.makeText(context, "image sauvegardée", Toast.LENGTH_SHORT).show();
+                    }
+
+                    override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                        Toast.makeText(context, "erreur", Toast.LENGTH_SHORT).show()
+                    }
+                })
             }
         }
     }

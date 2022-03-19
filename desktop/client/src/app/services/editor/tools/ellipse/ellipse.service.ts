@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { StrokeEllipse } from '@app/classes/strokes/stroke-ellipse';
 import { Vec2 } from '@app/classes/vec2';
+import { MouseButton } from '@app/constants/constants';
 import { ToolList } from '@app/interfaces-enums/tool-list';
 import { CollaborationService } from '@app/services/collaboration/collaboration.service';
 import { ColorManagerService } from '@app/services/editor/color-manager/color-manager.service';
@@ -25,11 +26,21 @@ export class EllipseService extends ShapeService {
         super(drawingService, colorManager);
     }
 
+    getPositionFromMouse(event: MouseEvent): Vec2 {
+        const cnvPos = { x: this.drawingService.canvas.getBoundingClientRect().left, y: this.drawingService.canvas.getBoundingClientRect().top};
+        const mousePos = { x: event.clientX, y: event.clientY };
+        return { x: mousePos.x - cnvPos.x, y: mousePos.y - cnvPos.y };
+    }
+
     private drawEllipse(ctx: CanvasRenderingContext2D): void {
         ctx.lineWidth = this.lineWidth;
         ctx.beginPath();
         ctx.ellipse(this.origin.x, this.origin.y, this.size.x / 2, this.size.y / 2, 0, 2 * Math.PI, 0);
-        this.updateBorderType(ctx);
+        
+        ctx.fillStyle = this.isClearSecondary ? 'rgba(0, 0, 0, 0)' : this.colorSecond;
+        ctx.strokeStyle = this.colorPrime;
+        ctx.fill();
+        ctx.stroke();
     }
 
     private drawCircle(ctx: CanvasRenderingContext2D): void {
@@ -38,7 +49,6 @@ export class EllipseService extends ShapeService {
         this.pathData.push({ x: this.origin.x + this.radius, y: this.origin.y + this.radius });
         ctx.beginPath();
         ctx.ellipse(this.origin.x, this.origin.y, this.radius, this.radius, 0, 2 * Math.PI, 0);
-        this.updateBorderType(ctx);
     }
 
     drawShape(ctx: CanvasRenderingContext2D): void {
@@ -54,8 +64,15 @@ export class EllipseService extends ShapeService {
         }
     }
 
+    onMouseDown(event: MouseEvent): void {
+        super.onMouseDown(event);
+        if (event.button === MouseButton.Left) {
+            this.size = { x: 0, y: 0};
+            this.origin = this.getPositionFromMouse(event);
+        }
+    }
+
     onMouseUp(): void {
-        this.mouseDown = false;
         this.drawingService.clearCanvas(this.drawingService.previewCtx);
         if (!this.isShiftShape) {
             this.drawEllipse(this.drawingService.baseCtx);
@@ -73,6 +90,7 @@ export class EllipseService extends ShapeService {
         this.mouseDown = false;
         this.clearPath();
     }
+    
     onMouseMove(event: MouseEvent): void {
         if (this.mouseDown) {
             const mousePosition = this.getPositionFromMouse(event);
@@ -122,7 +140,7 @@ export class EllipseService extends ShapeService {
             this.colorSecond,
             this.origin,
             { x: this.size.x / 2, y: this.size.y / 2 },
-            this.selectType,
+            this.isClearSecondary,
         );
         this.collaborationService.broadcastStroke(ellipseStroke);
         this.selectionService.addStroke(ellipseStroke);

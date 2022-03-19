@@ -25,6 +25,12 @@ export class RectangleService extends ShapeService {
         super(drawingService, colorManager);
     }
 
+    getPositionFromMouse(event: MouseEvent): Vec2 {
+        const cnvPos = { x: this.drawingService.canvas.getBoundingClientRect().left, y: this.drawingService.canvas.getBoundingClientRect().top};
+        const mousePos = { x: event.clientX, y: event.clientY };
+        return { x: mousePos.x - cnvPos.x, y: mousePos.y - cnvPos.y };
+    }
+
     drawShape(ctx: CanvasRenderingContext2D, isAnotherShapeBorder?: boolean): void {
         if (!this.isShiftShape) {
             this.drawRectangle(ctx, isAnotherShapeBorder);
@@ -87,7 +93,10 @@ export class RectangleService extends ShapeService {
             ctx.rect(this.pathData[0].x, this.pathData[0].y, width, length);
             ctx.stroke();
         } else {
-            this.updateBorderType(ctx);
+            ctx.fillStyle = this.isClearSecondary ? 'rgba(0, 0, 0, 0)' : this.colorSecond;
+            ctx.strokeStyle = this.colorPrime;
+            ctx.fill();
+            ctx.stroke();
         }
     }
 
@@ -104,8 +113,6 @@ export class RectangleService extends ShapeService {
             this.drawingService.clearCanvas(this.drawingService.previewCtx);
             ctx.rect(this.origin.x, this.origin.y, this.shortestSide, this.shortestSide);
             ctx.stroke();
-        } else {
-            this.updateBorderType(ctx);
         }
     }
 
@@ -122,7 +129,7 @@ export class RectangleService extends ShapeService {
             this.findLeftPoint(this.pathData[0], this.pathData[this.pathData.length - 1]),
             Math.abs(this.width),
             Math.abs(this.height),
-            this.selectType,
+            this.isClearSecondary,
         );
         this.collaborationService.broadcastStroke(rectStroke);
         this.selectionService.addStroke(rectStroke);
