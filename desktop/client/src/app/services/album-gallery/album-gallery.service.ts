@@ -25,10 +25,9 @@ export class AlbumGalleryService {
   createDrawing(drawingName: string): void {
     const drawingData: IDrawing = {
       name: drawingName,
-      creator: this.loginService.username,
+      owner: this.loginService.username,
       contributors: [this.loginService.username],
-      height: this.drawingService.canvas.height,
-      width: this.drawingService.canvas.width,
+      likes: [],
       data: this.drawingService.canvas.toDataURL(),
     }
 
