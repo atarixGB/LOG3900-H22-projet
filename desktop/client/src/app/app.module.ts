@@ -60,13 +60,14 @@ import { CreateDrawingDialogComponent } from './components/editor/create-drawing
 import { RequestsDialogComponent } from './components/album-gallery/drawings-view/requests-dialog/requests-dialog.component';
 import { MembersListDialogComponent } from './components/album-gallery/drawings-view/members-list-dialog/members-list-dialog.component';
 import { AlbumSettingsDialogComponent } from './components/album-gallery/drawings-view/album-settings-dialog/album-settings-dialog.component';
+import { JoinRequestDialogComponent } from './components/album-gallery/public-albums/join-request-dialog/join-request-dialog.component';
 
 @NgModule({
     declarations: [
         AppComponent,
         EditorComponent,
         SidebarComponent,
-        DrawingComponent, 
+        DrawingComponent,
         FileMenuComponent,
         ToolsListComponent,
         PencilConfigComponent,
@@ -93,7 +94,7 @@ import { AlbumSettingsDialogComponent } from './components/album-gallery/drawing
         ProfileComponent,
         ProfileSettingsComponent,
         SelectionConfigComponent,
-        ColorConfigComponent, 
+        ColorConfigComponent,
         CreateRoomDialogComponent,
         PublicChatroomsComponent,
         DeleteRoomDialogComponent,
@@ -101,6 +102,7 @@ import { AlbumSettingsDialogComponent } from './components/album-gallery/drawing
         RequestsDialogComponent,
         MembersListDialogComponent,
         AlbumSettingsDialogComponent,
+        JoinRequestDialogComponent,
     ],
     imports: [
         BrowserModule,
