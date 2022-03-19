@@ -5,7 +5,7 @@ import io.socket.client.IO
 
 class DrawingCollaboration {
 
-    var socket = IO.socket("http://10.0.2.2:3002/")
+    var socket = IO.socket("http://10.0.2.2:3001/")
 
     fun init() {
         socket.connect()

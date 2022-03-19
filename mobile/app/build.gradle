@@ -2,11 +2,7 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-android-extensions'
-<<<<<<< HEAD
-
-=======
     id 'kotlin-kapt'
->>>>>>> cd1780165518cb430607ce8bcda03ea37d6d2e83
 }
 
 android {

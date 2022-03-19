@@ -31,12 +31,8 @@ class ChatPage : AppCompatActivity(), UserAdapter.UserAdapterListener {
     private lateinit var rvOutputMsgs: RecyclerView
     private lateinit var btnSend : Button
     private lateinit var leaveChatBtn: ImageButton
-<<<<<<< HEAD:mobile/app/src/main/java/com/example/mobile/ChatPage.kt
     private lateinit var drawButton: ImageButton
     private lateinit var messageText : EditText
-=======
-    private lateinit var  messageText : EditText
->>>>>>> cd1780165518cb430607ce8bcda03ea37d6d2e83:mobile/app/src/main/java/com/example/mobile/activity/chat/ChatPage.kt
     private lateinit var msgAdapter: MessageAdapter
     private lateinit var IMessages : ArrayList<IMessage>
     private lateinit var user: String

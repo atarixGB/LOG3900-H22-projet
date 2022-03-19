@@ -20,6 +20,15 @@
         <deviceKey>
           <Key>
             <type value="VIRTUAL_DEVICE_PATH" />
+            <value value="C:\Users\Mio\.android\avd\Copy_of_Galaxy_Tab_A_API_28.avd" />
+          </Key>
+        </deviceKey>
+      </Target>
+      <Target>
+        <type value="QUICK_BOOT_TARGET" />
+        <deviceKey>
+          <Key>
+            <type value="VIRTUAL_DEVICE_PATH" />
             <value value="C:\Users\Mio\.android\avd\Gakaxy_Tab_A_API_28.avd" />
           </Key>
         </deviceKey>
