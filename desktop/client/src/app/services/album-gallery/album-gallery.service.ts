@@ -6,6 +6,8 @@ import { LoginService } from '@app/services/login/login.service';
 import { ALBUM_URL, PUBLIC_DRAWINGS_URL, CREATE_DRAWING_URL, JOIN_ALBUM_URL, DECLINE_MEMBERSHIP_REQUEST_URL, ACCEPT_MEMBERSHIP_REQUEST_URL, UPDATE_ALBUM_PARAMETERS_URL, ADD_DRAWING_TO_ALBUM_URL } from '@app/constants/api-urls';
 import { DrawingService } from '../editor/drawing/drawing.service';
 
+const PUBLIC_ALBUM = "album public";
+
 @Injectable({
   providedIn: 'root'
 })
@@ -77,6 +79,25 @@ export class AlbumGalleryService {
       }
     )
 
+  }
+
+  addUserToPublicAlbum(username: string): void {
+    const body = {
+      userToAdd: username,
+      currentUser: "SYSTEM",
+      albumName: PUBLIC_ALBUM,
+    }
+
+    this.httpClient.put(ACCEPT_MEMBERSHIP_REQUEST_URL, body).subscribe(
+      (result) => {
+        console.log("Résultat du serveur:", result);
+
+      },
+      (error) => {
+        console.log(`Impossible d'ajouter l'utilisateur "${username}" dans l'album public.\nErreur: ${error}`);
+
+      }
+    )
   }
 
   sendJoinAlbumRequest(album: IAlbum): void {
