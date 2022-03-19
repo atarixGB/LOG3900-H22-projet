@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:screenOrientation="landscape"
-    tools:context=".Profile_modification">
+    tools:context=".activity.profile.Profile_modification">
 
 
     <RelativeLayout

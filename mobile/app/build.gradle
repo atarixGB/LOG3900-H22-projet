@@ -2,7 +2,11 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-android-extensions'
+<<<<<<< HEAD
 
+=======
+    id 'kotlin-kapt'
+>>>>>>> cd1780165518cb430607ce8bcda03ea37d6d2e83
 }
 
 android {
@@ -64,7 +68,7 @@ dependencies {
 
     //material edit text
     implementation 'com.rengwuxian.materialedittext:library:2.1.4'
-//    implementation 'com.github.javiersantos:MaterialStyledDialogs:3.0.1'
+
 
     implementation 'com.mikhaellopez:circularimageview:4.1.1'
 
@@ -74,5 +78,9 @@ dependencies {
     implementation 'androidx.activity:activity-ktx:1.4.0'
 
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
+
+//    implementation 'com.github.bumptech.glide:glide:4.8.0'
+//    kapt 'com.github.bumptech.glide:compiler:4.8.0'
+
 
 }

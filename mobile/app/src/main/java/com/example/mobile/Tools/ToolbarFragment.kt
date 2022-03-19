@@ -1,20 +1,39 @@
 package com.example.mobile.Tools
 
+import android.content.Intent
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.AdapterView
+import android.widget.Button
 import android.widget.GridView
 import androidx.fragment.app.activityViewModels
+<<<<<<< HEAD:mobile/app/src/main/java/com/example/mobile/Tools/ToolbarFragment.kt
 import com.example.mobile.R
+=======
+import com.example.mobile.activity.albums.Albums
+>>>>>>> cd1780165518cb430607ce8bcda03ea37d6d2e83:mobile/app/src/main/java/com/example/mobile/ToolbarFragment.kt
 import com.example.mobile.model.ToolModel
+import com.example.mobile.viewModel.SharedViewModelToolBar
 
 class ToolbarFragment : Fragment(), AdapterView.OnItemClickListener {
 
     private var gridView: GridView? = null
     private var arrayList:ArrayList<ToolItem> ? = null
+<<<<<<< HEAD:mobile/app/src/main/java/com/example/mobile/Tools/ToolbarFragment.kt
     private var toolAdapter: ToolAdapter? = null
+=======
+    private var toolAdapter: ToolAdapter ? = null
+    private lateinit var user: String
+    private lateinit var saveDrawingBtn : Button
+    private lateinit var backBtn : Button
+    private lateinit var _img: Bitmap
+
+>>>>>>> cd1780165518cb430607ce8bcda03ea37d6d2e83:mobile/app/src/main/java/com/example/mobile/ToolbarFragment.kt
     private val toolChange: ToolModel by activityViewModels()
+    private val sharedViewModel: SharedViewModelToolBar by activityViewModels()
+
     enum class MenuItem(val position: Int) {
         PENCIL(0),
         ERASER(1),
@@ -28,12 +47,32 @@ class ToolbarFragment : Fragment(), AdapterView.OnItemClickListener {
     ): View? {
         // Inflate the layout for this fragment
         val rootView = inflater.inflate(R.layout.fragment_toolbar, container, false)
+        saveDrawingBtn = rootView.findViewById(R.id.saveDrawingBtn)
+        backBtn = rootView.findViewById(R.id.backBtn)
         gridView = rootView.findViewById(R.id.weight_view)
         arrayList = ArrayList()
         arrayList  = setDataList()
         toolAdapter = ToolAdapter(activity?.baseContext!!, arrayList!!)
         gridView?.adapter = toolAdapter
         gridView?.onItemClickListener = this
+
+        sharedViewModel.user.observe(viewLifecycleOwner) {
+            user = it
+        }
+
+        saveDrawingBtn.setOnClickListener {
+            toolChange.onClick()
+        }
+
+        backBtn.setOnClickListener {
+            //enregistrer avant de quitter
+            toolChange.onClick()
+
+            val intent = Intent(activity, Albums::class.java)
+            intent.putExtra("userName", user)
+            startActivity(intent)
+        }
+
         return rootView
     }
 

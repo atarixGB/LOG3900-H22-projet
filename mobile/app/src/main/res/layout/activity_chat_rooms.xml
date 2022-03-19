@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:screenOrientation="landscape"
-    tools:context=".ChatRooms">
+    tools:context=".activity.chat.ChatRooms">
 
     <fragment
         android:id="@+id/toolbarNavigation"

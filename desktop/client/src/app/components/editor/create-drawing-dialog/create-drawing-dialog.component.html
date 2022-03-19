@@ -1,0 +1,43 @@
+<h2 mat-dialog-title>Créer un nouveau dessin</h2>
+
+<mat-dialog-content class="mat-typography">
+
+  <mat-form-field appearance="fill">
+    <mat-label>Nom du dessin</mat-label>
+    <input matInput [(ngModel)]="this.name">
+  </mat-form-field>
+
+  <br>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Accessibilité</mat-label>
+    <mat-select (valueChange)="this.changeAccess($event)" value="0">
+      <mat-option value="0">Public</mat-option>
+      <mat-option value="1">Privé</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <div class="albums-container-view" *ngIf="this.isPrivate">
+    <mat-grid-list cols="3
+    ">
+      <mat-grid-tile *ngFor="let album of this.albumGalleryService.myAlbums" (click)="onAlbumClick(album)">
+        <button mat-icon-button disableRipple="true" matTooltip="{{album.name}}">
+          <div>
+            <mat-icon>folder</mat-icon>
+            {{album.name}}
+          </div>
+        </button>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </div>
+
+  <div>
+    Le dessin <span class="bold">{{this.name}}</span> sera sauvegardé dans l'album <span class="bold">{{ this.selectedAlbumName }}</span>
+  </div>
+
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close [routerLink]="['/menu']" routerLinkActive="router-link-active">Annuler</button>
+  <button mat-button (click)="this.createDrawingButton()">Créer</button>
+</mat-dialog-actions>

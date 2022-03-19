@@ -1,7 +1,6 @@
 import { Tool } from '@app/classes/tool';
 import { Vec2 } from '@app/classes/vec2';
 import { DEFAULT_LINE_THICKNESS, MouseButton } from '@app/constants/constants';
-import { ColorOrder } from '@app/interfaces-enums/color-order';
 import { TypeStyle } from '@app/interfaces-enums/type-style';
 import { ColorManagerService } from '@app/services/editor/color-manager/color-manager.service';
 import { DrawingService } from '@app/services/editor/drawing/drawing.service';
@@ -13,6 +12,8 @@ export abstract class ShapeService extends Tool {
     isShiftShape: boolean;
     colorPrime: string;
     colorSecond: string;
+    isClearSecondary: boolean;
+
     protected fillValue: boolean;
     protected strokeValue: boolean;
     protected size: Vec2;
@@ -25,10 +26,11 @@ export abstract class ShapeService extends Tool {
         this.strokeValue = false;
         this.isSelection = false;
         this.selectType = TypeStyle.Stroke;
-        this.changeType();
         this.clearPath();
         this.isShiftShape = false;
         this.size = { x: 0, y: 0 };
+        this.colorSecond = 'rgb(0,0,0)';
+        this.isClearSecondary = true;
     }
 
     abstract onMouseUp(event: MouseEvent): void;
@@ -38,23 +40,6 @@ export abstract class ShapeService extends Tool {
     abstract upperLeft(path: Vec2[]): void;
     abstract upperRight(path: Vec2[]): void;
     abstract lowerRight(path: Vec2[]): void;
-
-    changeType(): void {
-        switch (this.selectType) {
-            case TypeStyle.Stroke:
-                this.fillValue = false;
-                this.strokeValue = true;
-                break;
-            case TypeStyle.Fill:
-                this.fillValue = true;
-                this.strokeValue = false;
-                break;
-            case TypeStyle.StrokeFill:
-                this.fillValue = true;
-                this.strokeValue = true;
-                break;
-        }
-    }
 
     clearPath(): void {
         this.pathData = [];
@@ -67,8 +52,7 @@ export abstract class ShapeService extends Tool {
             this.mouseDownCoord = this.getPositionFromMouse(event);
             this.pathData.push(this.mouseDownCoord);
         }
-        this.colorPrime = this.colorManager.selectedColor[ColorOrder.PrimaryColor].inString;
-        this.colorSecond = this.colorManager.selectedColor[ColorOrder.SecondaryColor].inString;
+        this.colorPrime = this.colorManager.primaryColor;
     }
 
     handleKeyDown(event: KeyboardEvent): void {
@@ -86,37 +70,6 @@ export abstract class ShapeService extends Tool {
                 this.drawingService.clearCanvas(this.drawingService.previewCtx);
                 this.drawShape(this.drawingService.previewCtx);
             }
-        }
-    }
-
-    protected updateBorderType(ctx: CanvasRenderingContext2D): void {
-        const filling = this.colorManager.selectedColor[ColorOrder.PrimaryColor].inString;
-        const contouring = this.colorManager.selectedColor[ColorOrder.SecondaryColor].inString;
-
-        if (this.isSelection) {
-            ctx.strokeStyle = 'rgb(116, 113, 113)';
-            ctx.fillStyle = 'rgba(116, 113, 113, 0)';
-            ctx.fill();
-            ctx.stroke();
-            return;
-        }
-        if (this.strokeValue) {
-            ctx.strokeStyle = contouring;
-            ctx.fillStyle = 'rgba(255, 0, 0, 0)';
-            ctx.fill();
-            ctx.stroke();
-        }
-        if (this.fillValue) {
-            ctx.fillStyle = filling;
-            ctx.strokeStyle = 'rgba(255, 0, 0, 0)';
-            ctx.fill();
-            ctx.stroke();
-        }
-        if (this.fillValue && this.strokeValue) {
-            ctx.fillStyle = filling;
-            ctx.strokeStyle = contouring;
-            ctx.fill();
-            ctx.stroke();
         }
     }
 

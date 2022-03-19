@@ -3,7 +3,6 @@ import { Tool } from '@app/classes/tool';
 import { Vec2 } from '@app/classes/vec2';
 import { ToolList } from '@app/interfaces-enums/tool-list';
 import { EllipseService } from './ellipse/ellipse.service';
-import { EraserService } from './eraser/eraser.service';
 import { PencilService } from './pencil/pencil.service';
 import { RectangleService } from './rectangle/rectangle.service';
 import { SelectionService } from './selection/selection.service';
@@ -20,7 +19,6 @@ export class ToolManagerService {
 
     constructor(
         private pencilService: PencilService,
-        private eraserService: EraserService,
         private ellipseService: EllipseService,
         private rectangleService: RectangleService,
         private selectionService: SelectionService,
@@ -34,7 +32,6 @@ export class ToolManagerService {
             .set(ToolList.Pencil, this.pencilService)
             .set(ToolList.Ellipse, this.ellipseService)
             .set(ToolList.Rectangle, this.rectangleService)
-            .set(ToolList.Eraser, this.eraserService)
             .set(ToolList.Selection, this.selectionService)
 
         this.keyBindings = new Map<string, Tool>();
@@ -42,11 +39,14 @@ export class ToolManagerService {
             .set('c', this.pencilService)
             .set('1', this.rectangleService)
             .set('2', this.ellipseService)
-            .set('e', this.eraserService)
 
         this.selectionService.toolUpdate$.subscribe((toolToSwitchTo: number) => {
             this.switchTool(toolToSwitchTo);
-          });
+        });
+
+        this.selectionService.callMouseDown$.subscribe((mouseEvent: MouseEvent) => {
+            this.currentTool?.onMouseDown(mouseEvent);
+        });
     }
 
     private getEnumFromMap(map: Map<ToolList, Tool>, searchValue: Tool | undefined): ToolList | undefined {

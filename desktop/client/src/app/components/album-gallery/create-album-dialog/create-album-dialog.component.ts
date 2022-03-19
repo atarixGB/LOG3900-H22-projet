@@ -12,14 +12,13 @@ export class CreateAlbumDialogComponent {
   isPrivate: boolean;
 
   constructor(public albumGalleryService: AlbumGalleryService) {
-    this.name = "Mon album";
-    this.description = "Mon super album!";
-    this.isPrivate = false;
+    this.name = "";
+    this.description = "";
    }
 
   createAlbumButton(): void {
     if (this.checkAlbumName()) {
-      this.albumGalleryService.createAlbum(this.name, this.description, this.isPrivate);
+      this.albumGalleryService.createAlbum(this.name, this.description);
     } else {
       // TODO: visual feedback in UI
     }
@@ -28,10 +27,6 @@ export class CreateAlbumDialogComponent {
   checkAlbumName(): boolean {
     // TODO: user input validation (no empty, no special character)
     return true;
-  }
-
-  changeAccess(value: number): void {
-    this.isPrivate = value == 1;
   }
 
 }

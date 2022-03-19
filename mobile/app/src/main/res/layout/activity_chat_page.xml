@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:screenOrientation="landscape"
-    tools:context="com.example.mobile.ChatPage">
+    tools:context="com.example.mobile.activity.chat.ChatPage">
 
     <ImageButton
         android:id="@+id/leaveChatBtn"
@@ -30,15 +30,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageButton
-        android:id="@+id/drawButton"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:background="@color/white"
-        android:src="@drawable/ic_baseline_draw_24"
-        app:layout_constraintBottom_toTopOf="@+id/rvOutputMsgs"
-        app:layout_constraintEnd_toStartOf="@+id/chatViewOptions"
-        app:tint="@color/black" />
 
     <ImageButton
         android:id="@+id/chatViewOptions"

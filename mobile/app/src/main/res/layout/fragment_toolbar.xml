@@ -6,14 +6,35 @@
     android:background="@drawable/customborder"
     tools:context="com.example.mobile.Tools.ToolbarFragment">
 
+    <Button
+        android:id="@+id/backBtn"
+        android:layout_width="100sp"
+        android:layout_height="100sp"
+        android:background="@drawable/ic_baseline_arrow_back_ios_new_24"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <GridView
         android:id="@+id/weight_view"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:columnWidth="50dp"
         android:horizontalSpacing="10dp"
         android:numColumns="1"
         android:verticalSpacing="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/saveDrawingBtn"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"></GridView>
+        app:layout_constraintTop_toBottomOf="@+id/backBtn"></GridView>
+
+    <Button
+        android:id="@+id/saveDrawingBtn"
+        android:layout_width="100sp"
+        android:layout_height="100sp"
+        android:background="@drawable/ic_baseline_save_alt_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
