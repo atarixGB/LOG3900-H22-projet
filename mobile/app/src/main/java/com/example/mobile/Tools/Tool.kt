@@ -6,6 +6,7 @@ import androidx.core.content.res.ResourcesCompat
 import com.example.mobile.DrawingCollaboration
 import com.example.mobile.Interface.IPencilStroke
 import com.example.mobile.Interface.IVec2
+import com.example.mobile.Interface.Stroke
 import com.example.mobile.R
 import org.json.JSONObject
 import kotlin.collections.ArrayList
@@ -18,6 +19,7 @@ abstract class Tool(context: Context, baseCanvas: Canvas, socket: DrawingCollabo
     var mx = 0f
     var my = 0f
     var path = Path()
+    var strokes= ArrayList<Stroke>()
     val TOUCH_TOLERANCE = 4f
     protected val drawColor = ResourcesCompat.getColor(context.resources, R.color.black, null)
     protected val backgroundColor = ResourcesCompat.getColor(context.resources, R.color.white, null)
@@ -47,6 +49,10 @@ abstract class Tool(context: Context, baseCanvas: Canvas, socket: DrawingCollabo
 
     fun changeColor(color:Int){
         this.paint.color = color
+    }
+
+    fun addStroke(stroke: Stroke){
+        strokes.add(stroke)
     }
 
     abstract fun onStrokeReceived(stroke : JSONObject)

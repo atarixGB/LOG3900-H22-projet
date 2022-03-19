@@ -44,6 +44,12 @@ class Pencil(context: Context, baseCanvas: Canvas, val socket : DrawingCollabora
         this.sendPencilStroke()
         baseCanvas!!.drawPath(path!!, paint!!)
         path!!.reset()
+
+        val iPencilStroke = IPencilStroke(getBoundingPoints(),
+            this.paint.color,
+            this.paint.strokeWidth,
+            points)
+        addStroke(iPencilStroke)
     }
 
     override fun onStrokeReceived(stroke: JSONObject) {
@@ -63,7 +69,7 @@ class Pencil(context: Context, baseCanvas: Canvas, val socket : DrawingCollabora
         val iPencilStroke = IPencilStroke(boundingPoints,
             stroke.getInt("primaryColor"),
             stroke.getDouble("strokeWidth").toFloat(),
-            points)
+            points,)
         draw(iPencilStroke)
 
     }
