@@ -31,7 +31,6 @@ class ToolbarFragment : Fragment(), AdapterView.OnItemClickListener {
         ERASER(1),
         RECTANGLE(2),
         OVAL(3),
-        BACK(4)
     }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -74,7 +73,6 @@ class ToolbarFragment : Fragment(), AdapterView.OnItemClickListener {
         arrayList.add(ToolItem(R.drawable.eraser))
         arrayList.add(ToolItem(R.drawable.rectangle))
         arrayList.add(ToolItem(R.drawable.circle))
-        arrayList.add(ToolItem(R.drawable.arrow))
         return arrayList
     }
 

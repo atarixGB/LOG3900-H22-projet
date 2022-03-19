@@ -9,7 +9,7 @@
     <fragment
         android:id="@+id/toolBarFragment"
         android:name="com.example.mobile.Tools.ToolbarFragment"
-        android:layout_width="100dp"
+        android:layout_width="75dp"
         android:layout_height="match_parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"></fragment>
@@ -17,7 +17,7 @@
     <fragment
         android:id="@+id/customToolFragment"
         android:name="com.example.mobile.CustomToolFragment"
-        android:layout_width="wrap_content"
+        android:layout_width="125dp"
         android:layout_height="match_parent"
         app:layout_constraintStart_toEndOf="@+id/toolBarFragment"
         app:layout_constraintTop_toTopOf="parent"></fragment>
@@ -25,8 +25,8 @@
     <fragment
         android:id="@+id/canvaFragment"
         android:name="com.example.mobile.DrawingZoneFragment"
-        android:layout_width="800dp"
-        android:layout_height="match_parent"
+        android:layout_width="750dp"
+        android:layout_height="500dp"
         app:layout_constraintStart_toEndOf="@id/customToolFragment"
         app:layout_constraintTop_toTopOf="parent"></fragment>
 
