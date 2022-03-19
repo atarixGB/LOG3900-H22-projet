@@ -14,10 +14,11 @@ import { RequestsDialogComponent } from './requests-dialog/requests-dialog.compo
 })
 export class DrawingsViewComponent {
   isCurrentAlbumMine: boolean;
+  isPublicAlbum: boolean;
 
   constructor(public albumGalleryService: AlbumGalleryService, public loginService: LoginService, public dialog: MatDialog, private router: Router, private route: ActivatedRoute) {
     this.isCurrentAlbumMine = this.loginService.username == albumGalleryService.currentAlbum.owner;
-    console.log("iscurrentalbummine:", this.isCurrentAlbumMine);
+    this.isPublicAlbum = albumGalleryService.currentAlbum.name == "album public";
   }
 
   ngAfterViewInit(): void {

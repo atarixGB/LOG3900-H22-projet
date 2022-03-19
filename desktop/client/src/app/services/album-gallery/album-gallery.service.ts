@@ -165,7 +165,7 @@ export class AlbumGalleryService {
   leaveAlbum(album: IAlbum): void {
     const url = ALBUM_URL + `/${album._id}`;
 
-    if (album.owner != this.loginService.username) {
+    if (album.owner != this.loginService.username && album.name != "album public") {
       const updateData = { memberToRemove: this.loginService.username }; // TODO Set new ownwer, may be in another function
       this.httpClient.put<string>(url, updateData).subscribe(
         (result) => {
@@ -228,9 +228,12 @@ export class AlbumGalleryService {
     console.log(url);
     this.httpClient.get<IAlbum[]>(url).subscribe(
       (albums: IAlbum[]) => {
+
         for (let i = 0; i < albums.length; i++) {
-          this.publicAlbums.push(albums[i]);
-          console.log(albums[i]);
+          if (albums[i].name != "album public") {
+            this.publicAlbums.push(albums[i]);
+            console.log(albums[i]);
+          }
         }
       },
       (error: any) => {
