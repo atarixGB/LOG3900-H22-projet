@@ -46,7 +46,7 @@ export class SignUpService {
                     this.router.navigate(['../home'], { relativeTo: this.route });
                 } else if (result == 406) {
                     this.isExistingUsername = true;
-                }else if (result == 406) {
+                } else if (result == 406) {
                     this.isUsedEmail = true;
                 }
             },
