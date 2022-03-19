@@ -39,12 +39,12 @@ export class SignUpService {
 
         this.httpClient.post(SIGN_UP_URL, userInfos).subscribe(
             (result) => {
-              if (result == "success") {
+              if (result == "201") {
                     console.log(result, 'Signup success');
                     this.router.navigate(['../home'], { relativeTo: this.route });
-                } else if (result == "usernameTaken") {
+                } else if (result == "406") {
                     this.isExistingUsername = true;
-                }else if (result == "emailUsed") {
+                } else if (result == "406") {
                     this.isUsedEmail = true;
                 }
             },
