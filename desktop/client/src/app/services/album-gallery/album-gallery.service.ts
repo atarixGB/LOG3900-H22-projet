@@ -5,8 +5,7 @@ import { IDrawing } from '@app/interfaces-enums/IDrawing'
 import { LoginService } from '@app/services/login/login.service';
 import { ALBUM_URL, PUBLIC_DRAWINGS_URL, CREATE_DRAWING_URL, JOIN_ALBUM_URL, DECLINE_MEMBERSHIP_REQUEST_URL, ACCEPT_MEMBERSHIP_REQUEST_URL, UPDATE_ALBUM_PARAMETERS_URL, ADD_DRAWING_TO_ALBUM_URL } from '@app/constants/api-urls';
 import { DrawingService } from '../editor/drawing/drawing.service';
-
-const PUBLIC_ALBUM = "album public";
+import { PUBLIC_ALBUM } from '@app/constants/constants';
 
 @Injectable({
   providedIn: 'root'
@@ -84,7 +83,7 @@ export class AlbumGalleryService {
     const body = {
       userToAdd: username,
       currentUser: "SYSTEM",
-      albumName: PUBLIC_ALBUM,
+      albumName: PUBLIC_ALBUM.name,
     }
 
     this.httpClient.put(ACCEPT_MEMBERSHIP_REQUEST_URL, body).subscribe(
