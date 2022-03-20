@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ChatService } from '@app/services/chat/chat.service';
 import { IChatroom } from '@app/interfaces-enums/IChatroom'
+import { MatDialog } from '@angular/material/dialog';
+import { JoinRoomDialogComponent } from './join-room-dialog/join-room-dialog.component';
 
 @Component({
   selector: 'app-public-chatrooms',
@@ -9,7 +11,7 @@ import { IChatroom } from '@app/interfaces-enums/IChatroom'
 })
 export class PublicChatroomsComponent implements OnInit {
 
-  constructor(public chatService: ChatService) { }
+  constructor(public chatService: ChatService, public dialog : MatDialog) { }
 
   ngOnInit(): void {
     this.chatService.getAllRooms(false);
@@ -17,11 +19,16 @@ export class PublicChatroomsComponent implements OnInit {
 
   ngOnDestroy(): void {
     this.chatService.publicRooms = [];
+    this.chatService.myRooms = [];
   }
 
   onChatroomClick(selectedRoom: IChatroom): void {
-    this.chatService.addRoomToMyList(selectedRoom);
-    console.log(`ROOM: ${selectedRoom.roomName}\nCREATOR: ${selectedRoom.identifier}\nID: ${selectedRoom._id}\nMEMBERS: ${selectedRoom.usersList}`);
+    const dialogRef = this.dialog.open(JoinRoomDialogComponent, {
+      data: selectedRoom
+    })
+    dialogRef.afterClosed().subscribe((result) => {
+      this.ngOnInit()
+    })
   }
 
 }

@@ -102,7 +102,9 @@ export class ChatService {
               this.myRooms.push(chatrooms[i]);
             }
           } else {
-            this.publicRooms.push(chatrooms[i]);
+            if (!chatrooms[i].usersList.includes(this.loginService.username)) {
+              this.publicRooms.push(chatrooms[i]);
+            }
           }
 
         }
