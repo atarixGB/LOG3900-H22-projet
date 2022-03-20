@@ -9,7 +9,7 @@
   <!-- Titre -->
   <div fxLayout="row" fxLayoutAlign="space-evenly center">
     <div></div>
-    <h1> Clavardage {{this.chatService.currentRoom}} </h1>
+    <h1> Clavardage {{this.chatService.currentRoom.roomName}} </h1>
     <div fxLayout="row" fxLayoutAlign="center center" id="disconnectDiv" (click)="this.chatService.disconnect()"
       routerLink="/home">
       <span>Déconnexion</span>

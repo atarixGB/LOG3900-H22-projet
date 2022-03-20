@@ -1,5 +1,6 @@
 import { formatDate } from '@angular/common';
 import { AfterViewInit, Component, HostListener } from '@angular/core';
+import { IChatroom } from '@app/interfaces-enums/IChatroom';
 import { IMessage } from '@app/interfaces-enums/IMessage';
 import { ChatService } from '@app/services/chat/chat.service';
 
@@ -15,7 +16,7 @@ export class ChatroomComponent implements AfterViewInit {
     userList: string[];
     socket: any;
 
-    currentRoom: string;
+    currentRoom: IChatroom;
 
     constructor(public chatService: ChatService) {
         this.userName = '';
@@ -36,7 +37,7 @@ export class ChatroomComponent implements AfterViewInit {
             const data = {
                 message: this.message,
                 userName: this.userName,
-                room: this.currentRoom,
+                room: this.currentRoom.roomName,
                 time: formatDate(new Date(), 'hh:mm:ss a', 'en-US'),
             };
 
@@ -57,7 +58,7 @@ export class ChatroomComponent implements AfterViewInit {
                 const isMine = data.userName == this.userName;
 
                 // This condition is a workaround to not display messages sent from the default public channel in other rooms... Not final code, the problem is still not fixed!
-                if (data.room == this.chatService.currentRoom) {
+                if (data.room == this.chatService.currentRoom.roomName) {
                   this.messageList.push({
                       message: data.message,
                       userName: data.userName + ' - ' + formatDate(new Date(), 'hh:mm:ss a', 'en-US'),

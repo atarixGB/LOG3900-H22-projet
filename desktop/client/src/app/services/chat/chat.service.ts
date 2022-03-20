@@ -15,11 +15,15 @@ export class ChatService {
   username: string;
   publicRooms: IChatroom[];
   myRooms: IChatroom[];
-  currentRoom: string;
+  currentRoom: IChatroom;
 
   constructor(private loginService: LoginService, private httpClient: HttpClient, private router: Router, private route: ActivatedRoute) {
     this.username = '';
-    this.currentRoom = '';
+    this.currentRoom = {
+      identifier: '',
+      roomName: '',
+      usersList: []
+    };
     this.publicRooms = [];
     this.myRooms = [];
   }
@@ -96,7 +100,6 @@ export class ChatService {
           if (mineOnly) {
             if (chatrooms[i].usersList.includes(this.loginService.username)) {
               this.myRooms.push(chatrooms[i]);
-              console.log(chatrooms[i]);
             }
           } else {
             this.publicRooms.push(chatrooms[i]);
