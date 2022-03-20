@@ -20,6 +20,7 @@ export class ChatMenuComponent implements OnInit {
 
   ngOnDestroy(): void {
     this.chatService.publicRooms = [];
+    this.chatService.myRooms= [];
   }
 
   onCreateNewChatroom(): void {

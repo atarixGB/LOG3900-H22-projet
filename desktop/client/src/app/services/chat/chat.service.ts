@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as io from 'socket.io-client';
-import { CHAT_URL } from '@app/constants/api-urls';
+import { CHAT_URL, JOIN_ROOM_URL } from '@app/constants/api-urls';
 import { HttpClient } from '@angular/common/http';
 import { CREATE_ROOM_URL, ALL_ROOMS_URL, DELETE_ROOM_URL } from '@app/constants/api-urls';
 import { LoginService } from '../login/login.service';
@@ -14,12 +14,14 @@ export class ChatService {
   socket: any;
   username: string;
   publicRooms: IChatroom[];
+  myRooms: IChatroom[];
   currentRoom: string;
 
   constructor(private loginService: LoginService, private httpClient: HttpClient, private router: Router, private route: ActivatedRoute) {
     this.username = '';
     this.currentRoom = '';
     this.publicRooms = [];
+    this.myRooms = [];
   }
 
   joinRoom(roomName: string): void {
@@ -40,6 +42,21 @@ export class ChatService {
         this.router.navigate(['../chatroom'], { relativeTo: this.route });
       }
     });
+  }
+
+  addRoomToMyList(roomName: IChatroom): void {
+    const body = {
+      user: this.loginService.username,
+      roomName: roomName.roomName
+    }
+
+    this.httpClient.post(JOIN_ROOM_URL, body).subscribe(
+      (result) => {
+        console.log("Résultat du serveur:", result);
+      },
+      (error) => {
+        console.log("Erreur du serveur:", error);
+      });
   }
 
   createRoom(roomName: string): void {
@@ -77,8 +94,9 @@ export class ChatService {
 
           // Filter current user's chatroom only (SUGGESTION: we should do the filtering on the server side)
           if (mineOnly) {
-            if (chatrooms[i].identifier === this.loginService.username) {
-              this.publicRooms.push(chatrooms[i]);
+            if (chatrooms[i].usersList.includes(this.loginService.username)) {
+              this.myRooms.push(chatrooms[i]);
+              console.log(chatrooms[i]);
             }
           } else {
             this.publicRooms.push(chatrooms[i]);

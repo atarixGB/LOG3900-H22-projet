@@ -20,7 +20,7 @@
     </div>
 
     <mat-grid-list cols="2" rowHeight="5:1">
-      <mat-grid-tile *ngFor="let room of this.chatService.publicRooms">
+      <mat-grid-tile *ngFor="let room of this.chatService.myRooms">
 
         <div class="roomname-container" mat-raised-button color="primary">
             {{room.roomName}}
@@ -28,7 +28,7 @@
         <button mat-raised-button color="accent" (click)="this.onOpenChatroom(room)" routerLink="/chatroom">
           Ouvrir
         </button>
-        <button matIcon mat-raised-button color="accent" (click)="this.onDeleteChatroom(room)">
+        <button matIcon mat-raised-button color="accent" (click)="this.onDeleteChatroom(room)" routerLink="/chatmenu">
           <mat-icon>delete</mat-icon>
         </button>
 

@@ -20,6 +20,7 @@ export class PublicChatroomsComponent implements OnInit {
   }
 
   onChatroomClick(selectedRoom: IChatroom): void {
+    this.chatService.addRoomToMyList(selectedRoom);
     console.log(`ROOM: ${selectedRoom.roomName}\nCREATOR: ${selectedRoom.identifier}\nID: ${selectedRoom._id}\nMEMBERS: ${selectedRoom.usersList}`);
   }
 
