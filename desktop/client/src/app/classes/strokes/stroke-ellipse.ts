@@ -39,8 +39,7 @@ export class StrokeEllipse extends Stroke {
       this.radius = { x: this.radius.x * scale.x, y: this.radius.y * scale.y }
    }
    
-   updateStrokeColors(newPrimary: string, newSecondary: string): void {
-      this.primaryColor = newPrimary;
-      this.secondaryColor = newSecondary;
-   }
+   updateStrokeSecondaryColor(color: string): void {
+      this.secondaryColor = color;
+   } 
 }

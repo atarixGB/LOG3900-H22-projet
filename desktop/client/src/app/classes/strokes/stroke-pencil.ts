@@ -44,7 +44,5 @@ export class StrokePencil extends Stroke {
        }
    }
 
-   updateStrokeColors(newPrimary: string, newSecondary: string): void {
-      this.primaryColor = newPrimary;
-   } 
+   updateStrokeSecondaryColor(color: string): void {} 
 }

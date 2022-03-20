@@ -31,8 +31,11 @@ export class CollaborationService {
     newStrokeWidth: Subject<any>;
     newStrokeWidth$: Observable<any>;
 
-    newStrokeColors: Subject<any>;
-    newStrokeColors$: Observable<any>;
+    newPrimaryColor: Subject<any>;
+    newPrimaryColor$: Observable<any>;
+
+    newSecondaryColor: Subject<any>;
+    newSecondaryColor$: Observable<any>;
 
     constructor(public drawingService: DrawingService) { 
         this.newStroke = new Subject();
@@ -56,8 +59,11 @@ export class CollaborationService {
         this.newStrokeWidth = new Subject();
         this.newStrokeWidth$ = this.newStrokeWidth.asObservable();
 
-        this.newStrokeColors = new Subject();
-        this.newStrokeColors$ = this.newStrokeColors.asObservable();
+        this.newPrimaryColor = new Subject();
+        this.newPrimaryColor$ = this.newPrimaryColor.asObservable();
+
+        this.newSecondaryColor = new Subject();
+        this.newSecondaryColor$ = this.newSecondaryColor.asObservable();
     }
 
     enterCollaboration(): void {
@@ -105,9 +111,15 @@ export class CollaborationService {
             }
         });
 
-        this.socket.on('receiveStrokeColors', (colors: any) => {
-            if (colors.sender !== this.socket.id) {
-                this.newStrokeColors.next(colors); 
+        this.socket.on('receiveNewPrimaryColor', (color: any) => {
+            if (color.sender !== this.socket.id) {
+                this.newPrimaryColor.next(color); 
+            }
+        });
+
+        this.socket.on('receiveNewSecondaryColor', (color: any) => {
+            if (color.sender !== this.socket.id) {
+                this.newSecondaryColor.next(color); 
             }
         });
     } 
@@ -182,15 +194,25 @@ export class CollaborationService {
         this.socket.emit('broadcastNewStrokeWidth', width);
     }
 
-    /* colors:
+    /* color:
     {
       sender: string,
       strokeIndex: number,
-      primeColor: string, (genre rgb(0, 0, 0))
-      secondColor: string,
+      color: string, (genre rgb(0, 0, 0))
     }*/
-    broadcastNewStrokeColors(colors: any): void {
-        colors.sender = this.socket.id;
-        this.socket.emit('broadcastNewStrokeColors', colors);
+    broadcastNewPrimaryColor(color: any): void {
+        color.sender = this.socket.id;
+        this.socket.emit('broadcastNewPrimaryColor', color);
+    }
+
+     /* color:
+    {
+      sender: string,
+      strokeIndex: number,
+      color: string, (genre rgb(0, 0, 0))
+    }*/
+    broadcastNewSecondaryColor(color: any): void {
+        color.sender = this.socket.id;
+        this.socket.emit('broadcastNewSecondaryColor', color);
     }
 }

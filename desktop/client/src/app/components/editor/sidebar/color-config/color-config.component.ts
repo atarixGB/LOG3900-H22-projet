@@ -36,7 +36,7 @@ export class ColorConfigComponent implements AfterViewInit {
   changePrimaryColorTo(newPrimary: string, div: HTMLElement): void {
     this.colorManagerService.primaryColor = newPrimary;
     if (this.selectionService.isActiveSelection) {
-      this.selectionService.updateSelectionStrokeColors(this.colorManagerService.primaryColor, this.colorManagerService.secondaryColor);
+      this.selectionService.updateSelectionPrimaryColor(this.colorManagerService.primaryColor);
     }
 
     for(let i = 0; i < colors.length; i++) {
@@ -48,7 +48,7 @@ export class ColorConfigComponent implements AfterViewInit {
   changeSecondaryColorTo(newSecondary: string, div: HTMLElement): void {
     this.colorManagerService.secondaryColor = newSecondary;
     if (this.selectionService.isActiveSelection) {
-      this.selectionService.updateSelectionStrokeColors(this.colorManagerService.primaryColor, this.colorManagerService.secondaryColor);
+      this.selectionService.updateSelectionSecondaryColor(this.colorManagerService.secondaryColor);
     }
 
     for(let i = 0; i < colors.length; i++) {
@@ -60,7 +60,7 @@ export class ColorConfigComponent implements AfterViewInit {
   changeBackgroundToTransparent(): void {
     this.colorManagerService.secondaryColor = TRANSPARENT;
     if (this.selectionService.isActiveSelection) {
-      this.selectionService.updateSelectionStrokeColors(this.colorManagerService.primaryColor, this.colorManagerService.secondaryColor);
+      this.selectionService.updateSelectionSecondaryColor(this.colorManagerService.secondaryColor);
     }
   }
 

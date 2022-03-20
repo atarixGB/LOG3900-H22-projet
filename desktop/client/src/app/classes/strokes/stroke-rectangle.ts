@@ -50,8 +50,7 @@ export class StrokeRectangle extends Stroke {
         this.height = this.height * scale.y;
     }
 
-    updateStrokeColors(newPrimary: string, newSecondary: string): void {
-        this.primaryColor = newPrimary;
-        this.secondaryColor = newSecondary;
-    }
+    updateStrokeSecondaryColor(color: string): void {
+        this.secondaryColor = color;
+    } 
 }

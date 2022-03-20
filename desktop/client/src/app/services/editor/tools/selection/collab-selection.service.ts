@@ -48,10 +48,18 @@ export class CollabSelectionService {
     stroke.drawStroke(cnv.getContext('2d') as CanvasRenderingContext2D);
   }
 
-  private updateSelectionStrokeColors(sender: string, strokeIndex: number, newPrimary: string, newSecondary: string): void {
+  private updateSelectionPrimaryColor(sender: string, strokeIndex: number, color: string): void {
     let stroke = this.selectionService.strokes[strokeIndex];
     let cnv = this.selectionCnvs.get(sender) as HTMLCanvasElement;
-    stroke.updateStrokeColors(newPrimary, newSecondary);
+    stroke.updateStrokePrimaryColor(color);
+    this.drawingService.clearCanvas(cnv.getContext('2d') as CanvasRenderingContext2D);
+    stroke.drawStroke(cnv.getContext('2d') as CanvasRenderingContext2D);
+  }
+
+  private updateSelectionSecondaryColor(sender: string, strokeIndex: number, color: string): void {
+    let stroke = this.selectionService.strokes[strokeIndex];
+    let cnv = this.selectionCnvs.get(sender) as HTMLCanvasElement;
+    stroke.updateStrokeSecondaryColor(color);
     this.drawingService.clearCanvas(cnv.getContext('2d') as CanvasRenderingContext2D);
     stroke.drawStroke(cnv.getContext('2d') as CanvasRenderingContext2D);
   }
@@ -115,8 +123,12 @@ export class CollabSelectionService {
       this.updateSelectionStrokeWidth(width.sender, width.strokeIndex, width.value);
     });
 
-    this.collaborationService.newStrokeColors$.subscribe((colors: any) => {
-      this.updateSelectionStrokeColors(colors.sender, colors.strokeIndex, colors.primeColor, colors.secondColor);
+    this.collaborationService.newPrimaryColor$.subscribe((color: any) => {
+      this.updateSelectionPrimaryColor(color.sender, color.strokeIndex, color.color);
+    });
+
+    this.collaborationService.newSecondaryColor$.subscribe((color: any) => {
+      this.updateSelectionSecondaryColor(color.sender, color.strokeIndex, color.color);
     });
   }
 }

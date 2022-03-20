@@ -184,15 +184,25 @@ export class SelectionService extends Tool {
     });
   }
 
-  updateSelectionStrokeColors(newPrimary: string, newSecondary:string): void {
-    this.selectedStroke.updateStrokeColors(newPrimary, newSecondary);
+  updateSelectionPrimaryColor(newPrimary: string): void {
+    this.selectedStroke.updateStrokePrimaryColor(newPrimary);
     this.drawingService.clearCanvas(this.selectionCnv.getContext('2d') as CanvasRenderingContext2D);
     this.selectedStroke.drawStroke(this.selectionCnv.getContext('2d') as CanvasRenderingContext2D);
-    this.collaborationService.broadcastNewStrokeColors({
+    this.collaborationService.broadcastNewPrimaryColor({
       sender: '',
       strokeIndex: this.selectedIndex,
-      primeColor: newPrimary,
-      secondColor: newSecondary,
+      color: newPrimary,
+    });
+  }
+
+  updateSelectionSecondaryColor(newSecondary: string): void {
+    this.selectedStroke.updateStrokeSecondaryColor(newSecondary);
+    this.drawingService.clearCanvas(this.selectionCnv.getContext('2d') as CanvasRenderingContext2D);
+    this.selectedStroke.drawStroke(this.selectionCnv.getContext('2d') as CanvasRenderingContext2D);
+    this.collaborationService.broadcastNewSecondaryColor({
+      sender: '',
+      strokeIndex: this.selectedIndex,
+      color: newSecondary,
     });
   }
 
