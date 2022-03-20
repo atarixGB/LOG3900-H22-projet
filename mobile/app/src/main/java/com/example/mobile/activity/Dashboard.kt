@@ -1,9 +1,11 @@
-package com.example.mobile
+package com.example.mobile.activity
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.example.mobile.R
+import com.example.mobile.activity.drawing.DrawingActivity
 import com.example.mobile.viewModel.SharedViewModelToolBar
 
 class Dashboard : AppCompatActivity() {

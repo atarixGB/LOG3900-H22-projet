@@ -1,10 +1,11 @@
-package com.example.mobile
+package com.example.mobile.adapter
 
 import android.content.Context
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ImageView
+import com.example.mobile.R
 import com.example.mobile.Tools.ToolColorItem
 
 class ColorAdapter(var context: Context, var arrayList: ArrayList<ToolColorItem>): BaseAdapter()  {

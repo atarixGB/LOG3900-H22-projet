@@ -42,11 +42,11 @@
         <activity
             android:name=".usersListPopUp"
             android:exported="false" />
-        <activity android:name=".Dashboard" />
+        <activity android:name=".activity.Dashboard" />
         <activity
             android:name=".activity.profile.Profile_modification"
             android:exported="false" />
-        <activity android:name=".Dashboard" />
+        <activity android:name=".activity.Dashboard" />
         <activity
             android:name=".activity.profile.Profile"
             android:exported="false" />
@@ -63,7 +63,7 @@
         <activity
             android:name=".activity.chat.ChatRooms"
             android:exported="false" />
-        <activity android:name=".DrawingActivity" />
+        <activity android:name=".activity.drawing.DrawingActivity" />
         <activity
             android:name=".activity.chat.ChatPage"
             android:exported="true" />

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#C4E0B2"
-    tools:context="com.example.mobile.CustomToolFragment">
+    tools:context="com.example.mobile.activity.drawing.CustomToolFragment">
 
     <TextView
         android:id="@+id/textView"

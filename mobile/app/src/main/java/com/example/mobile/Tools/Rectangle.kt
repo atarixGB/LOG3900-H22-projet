@@ -4,8 +4,7 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
-import com.example.mobile.DrawingCollaboration
-import com.example.mobile.Interface.IPencilStroke
+import com.example.mobile.activity.drawing.DrawingCollaboration
 import com.example.mobile.Interface.IRectangleStroke
 import com.example.mobile.Interface.IVec2
 import org.json.JSONArray

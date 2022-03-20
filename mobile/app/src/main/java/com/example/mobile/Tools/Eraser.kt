@@ -2,10 +2,8 @@ package com.example.mobile.Tools
 
 import android.content.Context
 import android.graphics.Canvas
-import com.example.mobile.DrawingCollaboration
-import com.example.mobile.Interface.IPencilStroke
+import com.example.mobile.activity.drawing.DrawingCollaboration
 import org.json.JSONObject
-import java.util.*
 import kotlin.math.abs
 
 class Eraser(context: Context, baseCanvas: Canvas, socket : DrawingCollaboration) : Tool(context, baseCanvas, socket) {

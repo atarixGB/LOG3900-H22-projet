@@ -2,7 +2,7 @@ package com.example.mobile.Tools
 
 import android.content.Context
 import android.graphics.Canvas
-import com.example.mobile.DrawingCollaboration
+import com.example.mobile.activity.drawing.DrawingCollaboration
 
 class ToolManager {
     var currentTool : Tool
@@ -14,7 +14,7 @@ class ToolManager {
     lateinit var ellipse: Ellipse
     private var socket: DrawingCollaboration
 
-    constructor(context: Context, baseCanvas : Canvas, socket :DrawingCollaboration){
+    constructor(context: Context, baseCanvas : Canvas, socket : DrawingCollaboration){
         this.socket = socket
         this.baseCanvas = baseCanvas
         this.context = context

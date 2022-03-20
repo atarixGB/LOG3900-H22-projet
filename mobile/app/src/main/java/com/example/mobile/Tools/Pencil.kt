@@ -2,7 +2,7 @@ package com.example.mobile.Tools
 
 import android.content.Context
 import android.graphics.*
-import com.example.mobile.DrawingCollaboration
+import com.example.mobile.activity.drawing.DrawingCollaboration
 import com.example.mobile.Interface.IPencilStroke
 import com.example.mobile.Interface.IVec2
 import org.json.JSONArray
@@ -63,7 +63,7 @@ class Pencil(context: Context, baseCanvas: Canvas, val socket : DrawingCollabora
         val iPencilStroke = IPencilStroke(boundingPoints,
             stroke.getInt("primaryColor"),
             stroke.getDouble("strokeWidth").toFloat(),
-            points)
+            points ,stroke.getBoolean("isFromMobile"))
         draw(iPencilStroke)
 
     }
@@ -124,6 +124,7 @@ class Pencil(context: Context, baseCanvas: Canvas, val socket : DrawingCollabora
         jo.put("strokeWidth", this.paint.strokeWidth)
         jo.put("points", pointsStr)
         jo.put("sender", socket.socket.id())
+        jo.put("isFromMobile", true)
         socket.socket.emit("broadcastStroke", jo )
     }
 
