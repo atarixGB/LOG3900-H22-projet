@@ -3,7 +3,6 @@ package com.example.mobile.activity.drawing
 import android.content.Context
 import android.graphics.*
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.LinearLayout
 import android.widget.Toast
@@ -13,7 +12,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.example.mobile.R
 import com.example.mobile.Tools.ToolManager
-import com.example.mobile.Tools.ToolbarFragment
 import io.socket.emitter.Emitter
 import org.json.JSONObject
 import com.example.mobile.Retrofit.IMyService
@@ -154,9 +152,7 @@ class DrawingZoneFragment : Fragment() {
 
         fun changeColor(color: Int) {
             if (this::toolManager.isInitialized) {
-                if (!toolManager.isCurrentToolEraser()) {
-                    toolManager.currentTool.changeColor(color)
-                }
+                toolManager.currentTool.changeColor(color)
             }
         }
 

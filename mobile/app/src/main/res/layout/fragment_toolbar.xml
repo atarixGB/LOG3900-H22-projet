@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/customborder"
-    tools:context="com.example.mobile.Tools.ToolbarFragment">
+    tools:context="com.example.mobile.activity.drawing.ToolbarFragment">
 
     <Button
         android:id="@+id/backBtn"

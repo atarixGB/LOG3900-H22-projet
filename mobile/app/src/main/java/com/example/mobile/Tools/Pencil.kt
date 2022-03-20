@@ -43,6 +43,8 @@ class Pencil(context: Context, baseCanvas: Canvas, val socket : DrawingCollabora
         path!!.lineTo(mStartX, mStartY)
         points.add(IVec2(mStartX, mStartY))
         this.sendPencilStroke()
+        paint.strokeJoin = Paint.Join.ROUND // default: MITER
+        paint.strokeCap = Paint.Cap.ROUND
         baseCanvas!!.drawPath(path!!, paint!!)
         path!!.reset()
     }

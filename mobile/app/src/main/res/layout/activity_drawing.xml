@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/toolBarFragment"
-        android:name="com.example.mobile.Tools.ToolbarFragment"
+        android:name="com.example.mobile.activity.drawing.ToolbarFragment"
         android:layout_width="75dp"
         android:layout_height="match_parent"
         app:layout_constraintStart_toStartOf="parent"

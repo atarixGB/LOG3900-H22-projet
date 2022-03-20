@@ -4,7 +4,7 @@ import android.graphics.Bitmap
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.mobile.Tools.ToolbarFragment
+import com.example.mobile.activity.drawing.ToolbarFragment
 
 class ToolModel : ViewModel(){
     private var _tool = MutableLiveData<ToolbarFragment.MenuItem>(ToolbarFragment.MenuItem.PENCIL)
