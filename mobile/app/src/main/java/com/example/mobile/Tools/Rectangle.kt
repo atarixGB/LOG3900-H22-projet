@@ -81,8 +81,8 @@ class Rectangle (context: Context, baseCanvas: Canvas, val socket : DrawingColla
             // Dithering affects how colors with higher-precision than the device are down-sampled.
             isDither = true
             style = Paint.Style.STROKE // default: FILL
-            strokeJoin = Paint.Join.ROUND // default: MITER
-            strokeCap = Paint.Cap.ROUND // default: BUTT
+            strokeJoin = Paint.Join.MITER // default: MITER
+            strokeCap = Paint.Cap.SQUARE
         }
         baseCanvas!!.drawRect(stroke.topLeftCorner.x,
             stroke.topLeftCorner.y,

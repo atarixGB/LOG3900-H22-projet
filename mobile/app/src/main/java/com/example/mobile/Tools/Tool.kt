@@ -29,8 +29,8 @@ abstract class Tool(context: Context, baseCanvas: Canvas, socket: DrawingCollabo
         // Dithering affects how colors with higher-precision than the device are down-sampled.
         isDither = true
         style = Paint.Style.STROKE // default: FILL
-        strokeJoin = Paint.Join.ROUND // default: MITER
-        strokeCap = Paint.Cap.ROUND // default: BUTT
+        strokeJoin = Paint.Join.MITER // default: MITER
+        strokeCap = Paint.Cap.SQUARE
         strokeWidth = 1f // default: Hairline-width (really thin)
     }
 

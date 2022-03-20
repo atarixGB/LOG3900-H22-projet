@@ -1,9 +1,8 @@
 package com.example.mobile.Interface
 
 data class IEllipseStroke (val boundingPoints: ArrayList<IVec2>,
-                           val color: Int,
+                           val primaryColor: Int,
                            val secondaryColor : Int,
                            val strokeWidth: Float,
-                           val width: Float,
-                           val height: Float,
-                           val topLeftCorner: IVec2)
+                           val center: IVec2,
+                           val radius: IVec2)
