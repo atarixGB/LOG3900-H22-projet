@@ -13,11 +13,11 @@ import java.util.*
 import kotlin.math.abs
 
 class Rectangle (context: Context, baseCanvas: Canvas, val socket : DrawingCollaboration) : Tool(context, baseCanvas, socket) {
-
     var top = 0F
     var right = 0F
     var bottom = 0F
     var left = 0F
+
     override fun touchStart(){
         mStartX = mx
         mStartY = my
@@ -29,6 +29,14 @@ class Rectangle (context: Context, baseCanvas: Canvas, val socket : DrawingColla
     override fun touchUp(){
         onDraw(baseCanvas)
         this.sendRectangleStroke(left, top, right, bottom)
+    }
+
+    override fun onDraw(canvas: Canvas) {
+        right = if (mStartX > mx) mStartX else mx
+        left = if (mStartX > mx) mx else mStartX
+        bottom = if (mStartY > my) mStartY else my
+        top = if (mStartY > my) my else mStartY
+        canvas!!.drawRect(left, top, right, bottom, paint!!)
     }
 
     override fun onStrokeReceived(stroke: JSONObject) {
@@ -44,14 +52,6 @@ class Rectangle (context: Context, baseCanvas: Canvas, val socket : DrawingColla
             stroke.getDouble("height").toFloat(),
             topLeftCorner)
         draw(iRectangleStroke)
-    }
-
-    override fun onDraw(canvas: Canvas) {
-        right = if (mStartX > mx) mStartX else mx
-        left = if (mStartX > mx) mx else mStartX
-        bottom = if (mStartY > my) mStartY else my
-        top = if (mStartY > my) my else mStartY
-        canvas!!.drawRect(left, top, right, bottom, paint!!)
     }
 
     private fun sendRectangleStroke(left : Float, top: Float, right: Float, bottom: Float){
