@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import com.example.mobile.Interface.IEllipseStroke
 import com.example.mobile.Interface.IRectangleStroke
 import com.example.mobile.Interface.IVec2
 import com.example.mobile.activity.drawing.DrawingCollaboration
@@ -35,14 +36,14 @@ class  Ellipse(context: Context, baseCanvas: Canvas, val socket : DrawingCollabo
         val boundingPointsData = stroke["boundingPoints"]  as JSONArray
         val topCornerData = stroke.get("topLeftCorner") as JSONObject
         var topLeftCorner = IVec2(topCornerData.getDouble("x").toFloat(), topCornerData.getDouble("y").toFloat())
-        val iRectangleStroke = IRectangleStroke(boundingPoints,
+        val iEllipseStroke = IEllipseStroke(boundingPoints,
             stroke.getInt("primaryColor"),
             Color.WHITE, //to change
             stroke.getDouble("strokeWidth").toFloat(),
             stroke.getDouble("width").toFloat(),
             stroke.getDouble("height").toFloat(),
             topLeftCorner)
-        draw(iRectangleStroke)
+        draw(iEllipseStroke)
     }
 
     override fun onDraw(canvas: Canvas) {
@@ -70,7 +71,7 @@ class  Ellipse(context: Context, baseCanvas: Canvas, val socket : DrawingCollabo
         socket.socket.emit("broadcastStroke", jo )
     }
 
-    private fun draw(stroke: IRectangleStroke) {
+    private fun draw(stroke: IEllipseStroke) {
         val upcomingPaint = Paint().apply {
             color = stroke.color
             strokeWidth = stroke.strokeWidth
@@ -81,7 +82,7 @@ class  Ellipse(context: Context, baseCanvas: Canvas, val socket : DrawingCollabo
             strokeJoin = Paint.Join.ROUND // default: MITER
             strokeCap = Paint.Cap.ROUND // default: BUTT
         }
-        baseCanvas!!.drawRect(stroke.topLeftCorner.x,
+        baseCanvas!!.drawOval(stroke.topLeftCorner.x,
             stroke.topLeftCorner.y,
             stroke.topLeftCorner.x + stroke.width,
             stroke.topLeftCorner.y + stroke.height,

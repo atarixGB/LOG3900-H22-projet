@@ -88,6 +88,8 @@ class DrawingZoneFragment : Fragment() {
                 toolManager.pencil.onStrokeReceived(stroke)
             }else if(stroke.getInt("toolType") == 1){
                 toolManager.rectangle.onStrokeReceived(stroke)
+            }else if(stroke.getInt("toolType") == 2){
+                toolManager.ellipse.onStrokeReceived(stroke)
             }
             invalidate()
         }
