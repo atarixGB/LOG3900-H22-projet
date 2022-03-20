@@ -51,4 +51,18 @@ abstract class Tool(context: Context, baseCanvas: Canvas, socket: DrawingCollabo
     abstract fun onStrokeReceived(stroke : JSONObject)
 
     abstract fun onDraw(canvas: Canvas)
+
+    fun toRBGColor(color : Int) : String{
+        val red = Color.red(color)
+        val green = Color.green(color)
+        val blue = Color.blue(color)
+        return "rgb($red,$green,$blue)"
+    }
+
+    fun toIntColor(color : String): Int{
+        var colorBuffer = color.substring(4)
+        colorBuffer = colorBuffer.substring(0, colorBuffer.length - 1);//get only the numbers
+        val splitColor = colorBuffer.split(",")
+        return Color.rgb(splitColor[0].toInt(),splitColor[1].toInt(), splitColor[2].toInt())
+    }
 }

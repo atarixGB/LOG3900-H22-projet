@@ -61,15 +61,8 @@ class Pencil(context: Context, baseCanvas: Canvas, val socket : DrawingCollabora
             val obj = pointsData[i] as JSONObject
             points.add(IVec2(obj.getDouble("x").toFloat(), obj.getDouble("y").toFloat()))
         }
-        //prep color
-        val colorBuffer = stroke.getString("primaryColor")
-        var color = colorBuffer.substring(4)
-        color = color.substring(0, color.length - 1);//get only the numbers
-        val splitColor = color.split(",")
-        val toColor = Color.rgb(splitColor[0].toInt(),splitColor[1].toInt(), splitColor[2].toInt())
-        //end of prep color
         val iPencilStroke = IPencilStroke(boundingPoints,
-            toColor,
+            toIntColor(stroke.getString("primaryColor")),
             stroke.getString("strokeWidth").toFloat(),
             points)
         draw(iPencilStroke)
@@ -128,10 +121,7 @@ class Pencil(context: Context, baseCanvas: Canvas, val socket : DrawingCollabora
         var jo = JSONObject()
         jo.put("boundingPoints", bounding)
         jo.put("toolType", 0)
-        val red = Color.red(paint.color)
-        val green = Color.green(paint.color)
-        val blue = Color.blue(paint.color)
-        jo.put("primaryColor", "rgb($red,$green,$blue)" )
+        jo.put("primaryColor", toRBGColor(paint.color))
         jo.put("strokeWidth", this.paint.strokeWidth)
         jo.put("points", pointsStr)
         jo.put("sender", socket.socket.id())

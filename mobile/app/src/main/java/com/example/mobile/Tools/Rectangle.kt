@@ -45,7 +45,7 @@ class Rectangle (context: Context, baseCanvas: Canvas, val socket : DrawingColla
         val topCornerData = stroke.get("topLeftCorner") as JSONObject
         var topLeftCorner = IVec2(topCornerData.getDouble("x").toFloat(), topCornerData.getDouble("y").toFloat())
         val iRectangleStroke = IRectangleStroke(boundingPoints,
-            stroke.getInt("primaryColor"),
+            toIntColor(stroke.getString("primaryColor")),
             Color.WHITE, //to change
             stroke.getDouble("strokeWidth").toFloat(),
             stroke.getDouble("width").toFloat(),
@@ -63,7 +63,8 @@ class Rectangle (context: Context, baseCanvas: Canvas, val socket : DrawingColla
         var jo = JSONObject()
         jo.put("boundingPoints", bounding) //TODO
         jo.put("toolType", 1)
-        jo.put("primaryColor", this.paint.color)
+        jo.put("primaryColor", toRBGColor(paint.color))
+        //TODO secondary color
         jo.put("strokeWidth", this.paint.strokeWidth)
         jo.put("topLeftCorner", topLeftCorner)
         jo.put("width", abs(left-right))
@@ -74,7 +75,7 @@ class Rectangle (context: Context, baseCanvas: Canvas, val socket : DrawingColla
 
     private fun draw(stroke: IRectangleStroke) {
         val upcomingPaint = Paint().apply {
-            color = stroke.color
+            color = stroke.primaryColor
             strokeWidth = stroke.strokeWidth
             isAntiAlias = true
             // Dithering affects how colors with higher-precision than the device are down-sampled.
