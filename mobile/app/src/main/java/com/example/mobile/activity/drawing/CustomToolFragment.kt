@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.GridView
+import android.widget.Toast
+import android.widget.ToggleButton
 import androidx.fragment.app.activityViewModels
 import com.example.mobile.R
 import com.example.mobile.Tools.ToolColorItem
@@ -27,6 +29,9 @@ class CustomToolFragment : Fragment(), AdapterView.OnItemClickListener {
     private var colors:ArrayList<ToolColorItem> ? = null
     private var colorAdapter: ColorAdapter? = null
 
+    private var strokeButton: ToggleButton  ? = null
+    private var filllButton: ToggleButton  ? = null
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -46,6 +51,15 @@ class CustomToolFragment : Fragment(), AdapterView.OnItemClickListener {
         colorAdapter = ColorAdapter(activity?.baseContext!!, colors!!)
         colorView?.adapter = colorAdapter!!
         colorView?.onItemClickListener = this
+
+        val strokeButton: ToggleButton = rootView.findViewById(R.id.toggle_trait)
+        val fillButton: ToggleButton = rootView.findViewById(R.id.toggle_fond)
+        strokeButton.setOnCheckedChangeListener { _, isChecked ->
+            fillButton.isChecked = !isChecked
+        }
+        fillButton.setOnCheckedChangeListener { _, isChecked ->
+            strokeButton.isChecked = !isChecked
+        }
         return rootView
     }
 
