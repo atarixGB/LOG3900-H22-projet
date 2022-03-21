@@ -5,7 +5,9 @@ import { IChatroom } from '@app/interfaces-enums/IChatroom';
 import { IMessage } from '@app/interfaces-enums/IMessage';
 import { ChatService } from '@app/services/chat/chat.service';
 import { LoginService } from '@app/services/login/login.service';
-import { DeleteRoomDialogComponent } from '../delete-room-dialog/delete-room-dialog.component';
+import { ChatroomUsersDialogComponent } from './chatroom-users-dialog/chatroom-users-dialog.component';
+import { DeleteRoomDialogComponent } from './delete-room-dialog/delete-room-dialog.component';
+import { LeaveRoomDialogComponent } from './leave-room-dialog/leave-room-dialog.component';
 
 @Component({
     selector: 'app-chatroom',
@@ -103,18 +105,21 @@ export class ChatroomComponent implements AfterViewInit {
     }
 
     viewUsers(): void {
-      console.log(this.currentRoom.usersList);
+      this.dialog.open(ChatroomUsersDialogComponent, {
+        data: this.chatService.currentRoom
+      })
 
     }
 
     leaveChatroom(): void {
+      this.dialog.open(LeaveRoomDialogComponent, {
+        data: this.chatService.currentRoom
+      });
     }
 
     deleteChatroom(): void {
-      const dialogRef = this.dialog.open(DeleteRoomDialogComponent, {
+      this.dialog.open(DeleteRoomDialogComponent, {
         data: this.chatService.currentRoom
       });
-
-      dialogRef.afterClosed().subscribe(result => {})
     }
 }

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as io from 'socket.io-client';
-import { CHAT_URL, JOIN_ROOM_URL } from '@app/constants/api-urls';
+import { CHAT_URL, JOIN_ROOM_URL, LEAVE_ROOM_URL } from '@app/constants/api-urls';
 import { HttpClient } from '@angular/common/http';
 import { CREATE_ROOM_URL, ALL_ROOMS_URL, DELETE_ROOM_URL } from '@app/constants/api-urls';
 import { LoginService } from '../login/login.service';
@@ -143,6 +143,25 @@ export class ChatService {
           console.log(`La conversation "${roomName}" a été supprimée avec succès! Code:`, result);
         } else {
           console.log(`La conversation "${roomName}" n'a pas pu être supprimée. Veuillez réessayer. Code: `, result);
+        }
+      },
+      (error) => {
+        console.log(`Impossible de supprimer la conversation "${roomName}".\nErreur:`, error);
+      })
+  }
+
+  leaveRoom(roomName: string): void {
+    const body = {
+      user: this.loginService.username,
+      roomName: roomName
+    }
+
+    this.httpClient.post(LEAVE_ROOM_URL, body).subscribe(
+      (result) => {
+        if (result == 201) {
+          console.log(`L'utilisateur ${this.loginService.username} a quitté la conversation "${roomName}" avec succès! Code:`, result);
+        } else {
+          console.log(`L'utilisateur ${this.loginService.username} n'a pas pu quitter la conversation "${roomName}. Code:`, result);
         }
       },
       (error) => {

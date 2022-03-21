@@ -3,7 +3,6 @@ import { ChatService } from '@app/services/chat/chat.service';
 import { LoginService } from '@app/services/login/login.service';
 import { MatDialog } from '@angular/material/dialog';
 import { CreateRoomDialogComponent } from '@app/components/chat/create-room-dialog/create-room-dialog.component'
-import { DeleteRoomDialogComponent } from '@app/components/chat/delete-room-dialog/delete-room-dialog.component'
 import { IChatroom } from '@app/interfaces-enums/IChatroom';
 
 @Component({
@@ -48,22 +47,5 @@ export class ChatMenuComponent implements OnInit {
     this.chatService.username = this.loginService.username;
     this.chatService.currentRoom = selectedRoom;
     this.chatService.joinRoom(this.chatService.currentRoom.roomName);
-  }
-
-  onLeaveChatroom(selectedRoom: IChatroom): void {
-    console.log("LEAVING ROOM", selectedRoom);
-  }
-
-  onDeleteChatroom(selectedRoom: IChatroom): void {
-    const dialogRef = this.dialog.open(DeleteRoomDialogComponent, {
-      data: selectedRoom
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this.ngOnDestroy();
-        this.ngOnInit();
-      }
-    })
   }
 }

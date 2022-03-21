@@ -20,3 +20,4 @@ export const CREATE_ROOM_URL = `${DATABASE_URL}/createRoom`;
 export const JOIN_ROOM_URL = `${DATABASE_URL}/joinRoom`;
 export const ALL_ROOMS_URL = `${DATABASE_URL}/getAllRooms`;
 export const DELETE_ROOM_URL = `${DATABASE_URL}/deleteRoom`;
+export const LEAVE_ROOM_URL = `${DATABASE_URL}/quitRoom`

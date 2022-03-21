@@ -1,5 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { ActivatedRoute, Router } from '@angular/router';
 import { IChatroom } from '@app/interfaces-enums/IChatroom';
 import { ChatService } from '@app/services/chat/chat.service';
 
@@ -10,7 +11,7 @@ import { ChatService } from '@app/services/chat/chat.service';
 })
 export class DeleteRoomDialogComponent implements OnInit {
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: IChatroom, public chatService: ChatService) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: IChatroom, public chatService: ChatService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     console.log("DATA", this.data.usersList);
@@ -18,6 +19,7 @@ export class DeleteRoomDialogComponent implements OnInit {
 
   onDeleteChatroom(): void {
     this.chatService.deleteRoom(this.data.roomName);
+    this.router.navigate(['../chatmenu'], { relativeTo: this.route });
   }
 
 }

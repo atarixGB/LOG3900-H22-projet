@@ -1,0 +1,13 @@
+<h2 mat-dialog-title>Membres de "{{this.data.roomName}}"</h2>
+
+<mat-dialog-content class="mat-typography">
+  <ul>
+    <li *ngFor="let user of this.data.usersList">
+      {{user}}
+    </li>
+  </ul>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Fermer</button>
+</mat-dialog-actions>

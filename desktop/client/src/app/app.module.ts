@@ -56,10 +56,12 @@ import { PublicDrawingGalleryComponent } from './components/album-gallery/public
 import { ColorConfigComponent } from './components/editor/sidebar/color-config/color-config.component';
 import { CreateRoomDialogComponent } from './components/chat/create-room-dialog/create-room-dialog.component';
 import { PublicChatroomsComponent } from './components/chat/public-chatrooms/public-chatrooms.component';
-import { DeleteRoomDialogComponent } from './components/chat/delete-room-dialog/delete-room-dialog.component';
+import { DeleteRoomDialogComponent } from './components/chat/chatroom/delete-room-dialog/delete-room-dialog.component';
 import { CreateDrawingDialogComponent } from './components/editor/create-drawing-dialog/create-drawing-dialog.component';
 import { RequestsDialogComponent } from './components/album-gallery/drawings-view/requests-dialog/requests-dialog.component';
 import { JoinRoomDialogComponent } from './components/chat/public-chatrooms/join-room-dialog/join-room-dialog.component';
+import { LeaveRoomDialogComponent } from './components/chat/chatroom/leave-room-dialog/leave-room-dialog.component';
+import { ChatroomUsersDialogComponent } from './components/chat/chatroom/chatroom-users-dialog/chatroom-users-dialog.component';
 
 @NgModule({
     declarations: [
@@ -100,6 +102,8 @@ import { JoinRoomDialogComponent } from './components/chat/public-chatrooms/join
         CreateDrawingDialogComponent,
         RequestsDialogComponent,
         JoinRoomDialogComponent,
+        LeaveRoomDialogComponent,
+        ChatroomUsersDialogComponent,
     ],
     imports: [
         BrowserModule,
