@@ -17,9 +17,13 @@
 
 
       <div id="more-vert-btn">
-        <button mat-button matIcon>
-          <mat-icon>more_vert</mat-icon>
-        </button>
+        <button mat-button matIcon [matMenuTriggerFor]="menu" #menuTrigger><mat-icon>more_vert</mat-icon></button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="viewUsers()">Voir la liste des membres présents</button>
+          <button mat-menu-item (click)="leaveChatroom()" *ngIf="!this.isCurrentChatroomMine">Quitter la conversation</button>
+          <button mat-menu-item (click)="deleteChatroom()" *ngIf="this.isCurrentChatroomMine">Supprimer la conversation</button>
+        </mat-menu>
+
       </div>
 
       <!-- Colonne ayant le chat, l'input et le bouton -->

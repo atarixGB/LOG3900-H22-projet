@@ -24,6 +24,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialFileInputModule } from 'ngx-material-file-input';
 import { AppRoutingModule } from './app-routing.module';
+import { MatMenuModule} from '@angular/material/menu';
 import { AppComponent } from './components/app/app.component';
 import { AvatarImportModalComponent } from './components/avatar/avatar-import-modal/avatar-import-modal.component';
 import { AvatarSelectionModalComponent } from './components/avatar/avatar-selection-modal/avatar-selection-modal.component';
@@ -128,6 +129,7 @@ import { JoinRoomDialogComponent } from './components/chat/public-chatrooms/join
         MatCheckboxModule,
         FlexLayoutModule,
         MaterialFileInputModule,
+        MatMenuModule,
     ],
     providers: [],
     bootstrap: [AppComponent],

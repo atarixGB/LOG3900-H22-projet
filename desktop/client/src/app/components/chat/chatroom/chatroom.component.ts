@@ -1,8 +1,11 @@
 import { formatDate } from '@angular/common';
 import { AfterViewInit, Component, HostListener } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { IChatroom } from '@app/interfaces-enums/IChatroom';
 import { IMessage } from '@app/interfaces-enums/IMessage';
 import { ChatService } from '@app/services/chat/chat.service';
+import { LoginService } from '@app/services/login/login.service';
+import { DeleteRoomDialogComponent } from '../delete-room-dialog/delete-room-dialog.component';
 
 @Component({
     selector: 'app-chatroom',
@@ -17,14 +20,18 @@ export class ChatroomComponent implements AfterViewInit {
     socket: any;
 
     currentRoom: IChatroom;
+    isCurrentChatroomMine: boolean;
 
-    constructor(public chatService: ChatService) {
+    constructor(public chatService: ChatService, public loginService: LoginService, public dialog: MatDialog) {
         this.userName = '';
         this.message = '';
         this.messageList = [];
         this.userList = [];
         this.socket = this.chatService.socket;
         this.currentRoom = this.chatService.currentRoom;
+        this.isCurrentChatroomMine = this.chatService.currentRoom.identifier == loginService.username;
+        console.log(`current room mine? ${this.isCurrentChatroomMine}`);
+
     }
 
     ngAfterViewInit(): void {
@@ -93,5 +100,21 @@ export class ChatroomComponent implements AfterViewInit {
     refocusMsgInputField(): void {
         const inputField = document.getElementById('msgInput');
         if (inputField) inputField.focus();
+    }
+
+    viewUsers(): void {
+      console.log(this.currentRoom.usersList);
+
+    }
+
+    leaveChatroom(): void {
+    }
+
+    deleteChatroom(): void {
+      const dialogRef = this.dialog.open(DeleteRoomDialogComponent, {
+        data: this.chatService.currentRoom
+      });
+
+      dialogRef.afterClosed().subscribe(result => {})
     }
 }
