@@ -5,33 +5,58 @@ import * as sounds from '@app/constants/soundPaths';
   providedIn: 'root'
 })
 export class SoundEffectsService {
+  soundEffectAudio: any;
+  drawAudio: any;
 
-  constructor() { }
+  constructor() {
+    this.soundEffectAudio = new Audio();
+    this.drawAudio = new Audio(sounds.DRAW);
+    this.drawAudio.loop = true;
+  }
 
+  // Group 1: Success and failure
   playSuccessSound(): void {
-    let audio = new Audio();
-    audio.src = sounds.SUCCESS;
-    audio.load();
-    audio.play();
+    this.soundEffectAudio.src = sounds.SUCCESS;
+    this.loadAndPlay(this.soundEffectAudio);
   }
 
   playFailureSound(): void {
-    let audio = new Audio();
-    audio.src = sounds.FAILURE;
-    audio.load();
-    audio.play();
+    this.soundEffectAudio.src = sounds.FAILURE;
+    this.loadAndPlay(this.soundEffectAudio);
   }
 
+  // Group 2: Sending a message
   playSendMsgSound(): void {
-    let audio = new Audio();
-    audio.src = sounds.SEND_MSG;
-    audio.load();
-    audio.play();
+    this.soundEffectAudio.src = sounds.SEND_MSG;
+    this.loadAndPlay(this.soundEffectAudio);
   }
 
-  playDrawSound(): void {
-    let audio = new Audio();
-    audio.src = sounds.DRAW;
+  // Group 3: Editor tools
+  startDrawSound(): void {
+    this.loadAndPlay(this.drawAudio);
+  }
+
+  stopDrawSound(): void {
+    this.drawAudio.pause();
+  }
+
+  // Group 2: Sending a message
+  playSelectionSound(): void {
+    this.soundEffectAudio.src = sounds.SELECT;
+    this.loadAndPlay(this.soundEffectAudio);
+  }
+
+  playDeleteSound(): void {
+    this.soundEffectAudio.src = sounds.DELETE;
+    this.loadAndPlay(this.soundEffectAudio);
+  }
+
+  playPasteSound(): void {
+    this.soundEffectAudio.src = sounds.PASTE;
+    this.loadAndPlay(this.soundEffectAudio);
+  }
+
+  loadAndPlay(audio: any): void {
     audio.load();
     audio.play();
   }

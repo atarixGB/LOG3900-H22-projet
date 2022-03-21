@@ -7,6 +7,7 @@ import { ToolList } from '@app/interfaces-enums/tool-list';
 import { CollaborationService } from '@app/services/collaboration/collaboration.service';
 import { DrawingService } from '@app/services/editor/drawing/drawing.service';
 import { SelectionService } from '@app/services/editor/tools/selection/selection.service';
+import { SoundEffectsService } from '@app/services/sound-effects/sound-effects.service';
 import { ColorManagerService } from 'src/app/services/editor/color-manager/color-manager.service';
 
 @Injectable({
@@ -27,6 +28,7 @@ export class PencilService extends Tool {
         private colorManager: ColorManagerService,
         private collaborationService: CollaborationService,
         private selectionService: SelectionService,
+        private soundEffectsService: SoundEffectsService,
     ) {
         super(drawingService);
         this.clearPath();
@@ -46,6 +48,8 @@ export class PencilService extends Tool {
             this.setInitialBounds();
             this.mouseDownCoord = this.getPositionFromMouse(event);
             this.pathData.push(this.mouseDownCoord);
+
+            this.soundEffectsService.startDrawSound();
         }
     }
 
@@ -58,6 +62,8 @@ export class PencilService extends Tool {
 
             this.drawingService.clearCanvas(this.drawingService.previewCtx);
             this.sendPencilStroke(false);
+
+            this.soundEffectsService.stopDrawSound();
         }
 
         this.mouseDown = false;

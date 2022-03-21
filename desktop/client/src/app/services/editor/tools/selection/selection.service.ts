@@ -12,6 +12,7 @@ import { StrokeRectangle } from '@app/classes/strokes/stroke-rectangle';
 import { StrokeEllipse } from '@app/classes/strokes/stroke-ellipse';
 import { StrokePencil } from '@app/classes/strokes/stroke-pencil';
 import { ToolList } from '@app/interfaces-enums/tool-list';
+import { SoundEffectsService } from '@app/services/sound-effects/sound-effects.service';
 
 @Injectable({
   providedIn: 'root',
@@ -35,7 +36,7 @@ export class SelectionService extends Tool {
   callMouseDown$: Observable<MouseEvent>;
   oldTool: number;
 
-  constructor(drawingService: DrawingService, private moveSelectionService: MoveSelectionService, private collaborationService: CollaborationService, private resizeSelectionService: ResizeSelectionService) {
+  constructor(drawingService: DrawingService, private moveSelectionService: MoveSelectionService, private collaborationService: CollaborationService, private resizeSelectionService: ResizeSelectionService, private soundEffectsService: SoundEffectsService) {
     super(drawingService);
     this.strokes = []; 
     this.toolUpdate = new Subject();
@@ -78,6 +79,7 @@ export class SelectionService extends Tool {
   onMouseClick(event: MouseEvent): void {
     if (!this.isActiveSelection && this.isStrokeFound(this.getPositionFromMouse(event))) {
       this.selectStroke(this.strokes[this.selectedIndex]);
+      this.soundEffectsService.playSelectionSound();
     } 
   }
 

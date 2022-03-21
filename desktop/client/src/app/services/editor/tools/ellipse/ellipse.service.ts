@@ -9,6 +9,7 @@ import { DrawingService } from '@app/services/editor/drawing/drawing.service';
 import { RectangleService } from '@app/services/editor/tools/rectangle/rectangle.service';
 import { SelectionService } from '@app/services/editor/tools/selection/selection.service';
 import { ShapeService } from '@app/services/editor/tools/shape/shape.service';
+import { SoundEffectsService } from '@app/services/sound-effects/sound-effects.service';
 @Injectable({
     providedIn: 'root',
 })
@@ -22,8 +23,9 @@ export class EllipseService extends ShapeService {
         colorManager: ColorManagerService,
         private collaborationService: CollaborationService,
         private selectionService: SelectionService,
+        protected soundEffectsService: SoundEffectsService,
     ) {
-        super(drawingService, colorManager);
+        super(drawingService, colorManager,soundEffectsService);
     }
 
     getPositionFromMouse(event: MouseEvent): Vec2 {
@@ -86,8 +88,11 @@ export class EllipseService extends ShapeService {
             this.height = this.radius;
             this.isShiftShape = false;
         }
+        if (this.mouseDown) {
+            this.mouseDown = false;
+            this.soundEffectsService.stopDrawSound();
+        }
 
-        this.mouseDown = false;
         this.clearPath();
     }
     

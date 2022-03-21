@@ -4,6 +4,7 @@ import { DEFAULT_LINE_THICKNESS, MouseButton } from '@app/constants/constants';
 import { TypeStyle } from '@app/interfaces-enums/type-style';
 import { ColorManagerService } from '@app/services/editor/color-manager/color-manager.service';
 import { DrawingService } from '@app/services/editor/drawing/drawing.service';
+import { SoundEffectsService } from '@app/services/sound-effects/sound-effects.service';
 export abstract class ShapeService extends Tool {
     pathData: Vec2[];
     lineWidth: number;
@@ -19,7 +20,7 @@ export abstract class ShapeService extends Tool {
     protected size: Vec2;
     protected origin: Vec2;
 
-    constructor(drawingService: DrawingService, protected colorManager: ColorManagerService) {
+    constructor(drawingService: DrawingService, protected colorManager: ColorManagerService, protected soundEffectsService: SoundEffectsService) {
         super(drawingService);
         this.lineWidth = DEFAULT_LINE_THICKNESS;
         this.fillValue = false;
@@ -51,6 +52,7 @@ export abstract class ShapeService extends Tool {
             this.clearPath();
             this.mouseDownCoord = this.getPositionFromMouse(event);
             this.pathData.push(this.mouseDownCoord);
+            this.soundEffectsService.startDrawSound();
         }
         this.colorPrime = this.colorManager.primaryColor;
     }
