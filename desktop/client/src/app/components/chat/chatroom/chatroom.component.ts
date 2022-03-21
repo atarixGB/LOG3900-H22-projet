@@ -2,6 +2,7 @@ import { formatDate } from '@angular/common';
 import { AfterViewInit, Component, HostListener } from '@angular/core';
 import { IMessage } from '@app/interfaces-enums/IMessage';
 import { ChatService } from '@app/services/chat/chat.service';
+import { SoundEffectsService } from '@app/services/sound-effects/sound-effects.service';
 
 @Component({
     selector: 'app-chatroom',
@@ -17,7 +18,7 @@ export class ChatroomComponent implements AfterViewInit {
 
     currentRoom: string;
 
-    constructor(public chatService: ChatService) {
+    constructor(public chatService: ChatService, private soundEffectsService: SoundEffectsService) {
         this.userName = '';
         this.message = '';
         this.messageList = [];
@@ -44,6 +45,7 @@ export class ChatroomComponent implements AfterViewInit {
 
             this.socket.emit('message', data);
             this.message = '';
+            this.soundEffectsService.playSendMsgSound();
         }
         this.refocusMsgInputField();
     }

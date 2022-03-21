@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { SignUpService } from '@app/services/sign-up/sign-up.service';
 import { AvatarImportModalComponent } from '../avatar/avatar-import-modal/avatar-import-modal.component';
 import { AvatarSelectionModalComponent } from '../avatar/avatar-selection-modal/avatar-selection-modal.component';
+import { SoundEffectsService } from '@app/services/sound-effects/sound-effects.service'
 
 @Component({
     selector: 'app-sign-up',
@@ -20,7 +21,7 @@ export class SignUpComponent implements AfterContentInit {
     isValidConfirmation: boolean;
     isValidEmail: boolean;
 
-    constructor(public signUpService: SignUpService, public dialog: MatDialog) {
+    constructor(public signUpService: SignUpService, public dialog: MatDialog, public soundEffectsService: SoundEffectsService) {
         this.username = '';
         this.password = '';
         this.email = '';
@@ -43,7 +44,9 @@ export class SignUpComponent implements AfterContentInit {
             this.signUpService.password = this.password;
             this.signUpService.email = this.email;
             this.signUpService.signUp();
-        } 
+        } else {
+            this.soundEffectsService.playFailureSound();
+        }
     }
 
     private setBoolsToDefault(): void {
