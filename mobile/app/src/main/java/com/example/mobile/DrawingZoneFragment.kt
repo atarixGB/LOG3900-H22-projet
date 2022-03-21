@@ -150,13 +150,22 @@ class DrawingZoneFragment : Fragment() {
         }
 
         fun changeWeight(width: Float) {
-            if (this::toolManager.isInitialized) toolManager.currentTool.changeWeight(width)
+            if (this::toolManager.isInitialized) {
+                toolManager.currentTool.changeWeight(width)
+
+                if(toolManager.isCurrentToolSelection()) {
+                    toolManager.selection.changeSelectionWeight(width)
+                }
+            }
         }
 
         fun changeColor(color: Int) {
             if (this::toolManager.isInitialized) {
                 if (!toolManager.isCurrentToolEraser()) {
                     toolManager.currentTool.changeColor(color)
+                }
+                if(toolManager.isCurrentToolSelection()) {
+                    toolManager.selection.changeSelectionColor(color)
                 }
             }
         }

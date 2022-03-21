@@ -31,7 +31,7 @@ class ToolbarFragment : Fragment(), AdapterView.OnItemClickListener {
         ERASER(1),
         RECTANGLE(2),
         OVAL(3),
-        SELECTION(5)
+        SELECTION(4)
     }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
