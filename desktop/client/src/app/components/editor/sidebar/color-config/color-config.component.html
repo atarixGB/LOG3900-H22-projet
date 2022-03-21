@@ -1,8 +1,37 @@
+<h3><u>Couleurs</u></h3>
+
+<!-- Toggle -->
+<div fxLayout="row" fxLayoutAlign="center center" >
+   <mat-button-toggle-group (change)="onToggleChange($event.value)" id="toggle" value="primary">
+      <mat-button-toggle class="option" value="primary">
+         <span *ngIf="this.isPrimaryPalette">> </span>Trait
+      </mat-button-toggle>
+      <mat-button-toggle class="option" value="secondary">
+         <span *ngIf="!this.isPrimaryPalette">> </span>Fond
+      </mat-button-toggle>
+   </mat-button-toggle-group>
+</div>
+
 <!-- Primary color set -->
-<div>
+<div [hidden]="!this.isPrimaryPalette">
    <mat-grid-list cols="3">
       <mat-grid-tile *ngFor="let color of this.colors">
          <div class="color primeColor" [ngClass]="{ selected: color == this.colorManagerService.primaryColor }" (click)="this.changePrimaryColorTo(color, $event.target)"></div>
       </mat-grid-tile>
   </mat-grid-list>
+</div>
+
+<!-- Secondary color set -->
+<div [hidden]="this.isPrimaryPalette">
+   <mat-grid-list cols="3">
+      <mat-grid-tile *ngFor="let color of this.colors">
+         <div class="color secondColor" [ngClass]="{ selected: color == this.colorManagerService.secondaryColor }" (click)="this.changeSecondaryColorTo(color, $event.target)"></div>
+      </mat-grid-tile>
+   </mat-grid-list>
+
+   <div fxLayout="row" fxLayoutAlign="center center" >
+      <div fxLayout="row" fxLayoutAlign="center center" class="color" id="transparent" [ngClass]="{ selected: this.colorManagerService.secondaryColor == 'rgba(0, 0, 0, 0)' }" (click)="this.changeBackgroundToTransparent()">
+         <mat-icon>not_interested</mat-icon>
+      </div>
+   </div>
 </div>

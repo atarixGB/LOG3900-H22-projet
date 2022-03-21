@@ -57,7 +57,8 @@ export class ProfileSettingsService {
             oldUsername: this.profileService.username,
             newUsername: this.newUsername,
             newAvatar: this.newAvatarSrc,
-            newDescription : this.newDescription
+            newDescription : this.newDescription,
+            newEmail: this.profileService.email
         };
 
         this.httpClient.post(PROFILE_UPDATE_URL, newInfos).subscribe(

@@ -847,6 +847,16 @@ app.post(
         console.log("Broadcasting new stroke width :", widthData);
         ioCollab.emit('receiveStrokeWidth', widthData);
       })
+
+      socket.on('broadcastNewPrimaryColor', (colorData) => {
+        console.log("Broadcasting NewPrimaryColor :", colorData);
+        ioCollab.emit('receiveNewPrimaryColor', colorData);
+      })
+
+      socket.on('broadcastNewSecondaryColor', (colorData) => {
+        console.log("Broadcasting NewSecondaryColor :", colorData);
+        ioCollab.emit('receiveNewSecondaryColor', colorData);
+      })
     })
   }
 });

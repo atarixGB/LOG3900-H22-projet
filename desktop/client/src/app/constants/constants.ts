@@ -1,9 +1,12 @@
-import { RGBA } from '@app/interfaces-enums/rgba';
-
-export const MIN_SIZE = 250;
+export const CNV_WIDTH = 750;
+export const CNV_HEIGTH = 500;
 export const MAX_DEC_RANGE = 255;
 export const CONTROLPOINTSIZE = 10;
-export const DEFAULT_LINE_THICKNESS = 1;
+export const NUMBER_WIDTH_CHOICES = 9;
+export const BIGGEST_STROKE_WIDTH = 30;
+export const DEFAULT_LINE_THICKNESS = 1/NUMBER_WIDTH_CHOICES * BIGGEST_STROKE_WIDTH;
+export const TRANSPARENT = 'rgba(0, 0, 0, 0)';
+
 export enum MouseButton {
     Left = 0,
     Middle = 1,
@@ -18,14 +21,3 @@ export enum MouseDirection {
     LowerLeft = 2,
     LowerRight = 3,
 }
-
-export const FIRSTCOLORTEST: RGBA = {
-    Dec: { Red: 255, Green: 255, Blue: 255, Alpha: 1 },
-    Hex: { Red: 'ff', Green: 'ff', Blue: 'ff' },
-    inString: 'rgba(255, 255, 255, 1)',
-};
-export const SECONDCOLORTEST: RGBA = {
-    Dec: { Red: 255, Green: 255, Blue: 255, Alpha: 1 },
-    Hex: { Red: 'ff', Green: 'ff', Blue: 'ff' },
-    inString: 'rgba(255, 255, 255, 1)',
-};

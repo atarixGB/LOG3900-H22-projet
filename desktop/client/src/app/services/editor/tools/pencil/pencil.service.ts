@@ -20,6 +20,7 @@ export class PencilService extends Tool {
     rightestCoord: number;
     lowestCoord: number;
     highestCoord: number;
+    selectedWidth: number;
 
     private pathData: Vec2[];
 
@@ -33,6 +34,7 @@ export class PencilService extends Tool {
         super(drawingService);
         this.clearPath();
         this.pencilThickness = DEFAULT_LINE_THICKNESS;
+        this.selectedWidth = 1;
     }
 
     getPositionFromMouse(event: MouseEvent): Vec2 {
@@ -54,15 +56,13 @@ export class PencilService extends Tool {
     }
 
     onMouseUp(event: MouseEvent): void {
-        if (this.mouseDown) {
+        if (this.mouseDown && this.pathData.length > 1) {
             const mousePosition = this.getPositionFromMouse(event);
             this.pathData.push(mousePosition);
             this.drawLine(this.drawingService.baseCtx, this.pathData);
             this.color = this.colorManager.primaryColor;
-
             this.drawingService.clearCanvas(this.drawingService.previewCtx);
-            this.sendPencilStroke(false);
-
+            this.sendPencilStroke();
             this.soundEffectsService.stopDrawSound();
         }
 
@@ -82,18 +82,6 @@ export class PencilService extends Tool {
         }
     }
 
-    onMouseClick(event: MouseEvent): void {
-        if (!this.mouseMove) {
-            this.clearPath();
-            this.mouseDownCoord = this.getPositionFromMouse(event);
-            this.pathData.push(this.mouseDownCoord);
-            this.drawPoint(this.drawingService.baseCtx, this.pathData);
-
-            this.sendPencilStroke(true);
-        }
-        this.mouseMove = false;
-    }
-
     private drawLine(ctx: CanvasRenderingContext2D, path: Vec2[]): void {
         ctx.beginPath();
         for (const point of path) {
@@ -102,13 +90,6 @@ export class PencilService extends Tool {
         }
         ctx.strokeStyle = this.colorManager.primaryColor;
         ctx.stroke();
-    }
-
-    private drawPoint(ctx: CanvasRenderingContext2D, path: Vec2[]): void {
-        ctx.beginPath();
-        ctx.arc(path[0].x, path[0].y, this.pencilThickness, 0, 2 * Math.PI, true);
-        ctx.fillStyle = this.colorManager.primaryColor;
-        ctx.fill();
     }
 
     private clearPath(): void {
@@ -137,8 +118,8 @@ export class PencilService extends Tool {
         }
     }
 
-    private sendPencilStroke(isPoint: boolean): void {
-        const pencilStroke = new StrokePencil(this.getBoundingPoints(), this.color, this.pencilThickness, this.pathData, isPoint);
+    private sendPencilStroke(): void {
+        const pencilStroke = new StrokePencil(this.getBoundingPoints(), this.color, this.pencilThickness, this.pathData);
         this.collaborationService.broadcastStroke(pencilStroke);
         this.selectionService.addStroke(pencilStroke);
         this.selectionService.selectStroke(pencilStroke);

@@ -1,6 +1,6 @@
 import { AfterViewInit, Component } from '@angular/core';
 import { RectangleService } from '@app/services/editor/tools/rectangle/rectangle.service';
-import { colors } from '@app/constants/colors'
+import { BIGGEST_STROKE_WIDTH, NUMBER_WIDTH_CHOICES } from '@app/constants/constants';
 
 @Component({
     selector: 'app-rectangle-config',
@@ -8,36 +8,23 @@ import { colors } from '@app/constants/colors'
     styleUrls: ['./rectangle-config.component.scss'],
 })
 export class RectangleConfigComponent implements AfterViewInit {
-    rectangleService: RectangleService;
-    colors: string[];
-    secondaryColorBtns: HTMLCollection;
-    
+    widthBtns: HTMLCollection;
 
-    constructor(rectangleService: RectangleService) {
-        this.rectangleService = rectangleService;
-        this.colors = colors;
-    }
-
-    updateLineWidth(value: number): number {
-        return value;
-    }
+    constructor(public rectangleService: RectangleService) {}
 
     ngAfterViewInit(): void {
-        this.secondaryColorBtns = document.getElementsByClassName('rectColor'); 
-        for(let i = 0; i < colors.length; i++) {
-          (this.secondaryColorBtns.item(i) as HTMLElement).style.backgroundColor = colors[i];
+        const circleDiam = (document.getElementById('circle') as HTMLElement).offsetHeight;
+        this.widthBtns = document.getElementsByClassName('thicknessR'); 
+        let diam = '';
+        for(let i = 0; i < NUMBER_WIDTH_CHOICES; i++) {
+            diam = ((i+1)/NUMBER_WIDTH_CHOICES * circleDiam).toString() + 'px';
+            (this.widthBtns.item(i) as HTMLElement).style.width = diam;
+            (this.widthBtns.item(i) as HTMLElement).style.height = diam;
         }
     }
 
-    changeSecondaryColorTo(color: string, div: HTMLElement): void {
-        this.rectangleService.colorSecond = color;
-        this.displayActiveColor(div);
-    }
-
-    displayActiveColor(div: HTMLElement): void {
-        for(let i = 0; i < colors.length; i++) {
-            (this.secondaryColorBtns.item(i) as HTMLElement).className = "color rectColor";
-        }
-        div.className += " selected";
+    changeWidth(widthChoice: number): void {
+        this.rectangleService.selectedWidth = widthChoice;
+        this.rectangleService.lineWidth = widthChoice/NUMBER_WIDTH_CHOICES * BIGGEST_STROKE_WIDTH;
     }
 }
