@@ -2,24 +2,25 @@
 
   <div>
     <button mat-icon-button disableRipple="true" routerLink="/chatmenu">
-      <mat-icon id="back-btn">keyboard_arrow_left</mat-icon> Retour vers Mes Conversations
+      <mat-icon id="back-btn">keyboard_arrow_left</mat-icon> Retour
     </button>
   </div>
 
-  <!-- Titre -->
-  <div fxLayout="row" fxLayoutAlign="space-evenly center">
-    <div></div>
-    <h1> Clavardage {{this.chatService.currentRoom.roomName}} </h1>
-    <div fxLayout="row" fxLayoutAlign="center center" id="disconnectDiv" (click)="this.chatService.disconnect()"
-      routerLink="/home">
-      <span>Déconnexion</span>
-      <mat-icon color="primary">exit_to_app</mat-icon>
-    </div>
+  <div class="center">
+    <h1> Conversation "{{this.chatService.currentRoom.roomName}}" </h1>
+    <h3>créée par {{this.chatService.currentRoom.identifier}}</h3>
   </div>
 
   <!-- Encadré du chat -->
   <div fxFlex="70" fxLayout="row" fxLayoutAlign="center stretch">
     <div fxFlex="50" class="bordered" fxLayout="column" fxLayoutAlign="center stretch">
+
+
+      <div id="more-vert-btn">
+        <button mat-button matIcon>
+          <mat-icon>more_vert</mat-icon>
+        </button>
+      </div>
 
       <!-- Colonne ayant le chat, l'input et le bouton -->
       <div fxFlex="92" fxLayout="column" fxLayoutAlign="end stretch">
@@ -74,7 +75,7 @@
           <div fxFlex="5"></div>
           <input id="msgInput" class="bordered" fxFlex="70" matInput placeholder="Écris ton message ici!" type="text"
             [(ngModel)]="this.message">
-          <button fxFlex="20" mat-raised-button color="primary" (click)="sendMessage()">Send</button>
+          <button fxFlex="20" mat-raised-button color="primary" (click)="sendMessage()">Envoyer</button>
           <div fxFlex="5"></div>
         </div>
 

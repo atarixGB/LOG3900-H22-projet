@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ChatService } from '@app/services/chat/chat.service';
 
 @Component({
   selector: 'app-side-menu',
@@ -7,8 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SideMenuComponent implements OnInit {
 
-  constructor() { }
+  constructor(public chatService: ChatService) { }
 
   ngOnInit(): void {}
-
 }
