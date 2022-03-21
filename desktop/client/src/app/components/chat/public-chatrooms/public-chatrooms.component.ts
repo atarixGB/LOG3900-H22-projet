@@ -10,8 +10,11 @@ import { JoinRoomDialogComponent } from './join-room-dialog/join-room-dialog.com
   styleUrls: ['./public-chatrooms.component.scss']
 })
 export class PublicChatroomsComponent implements OnInit {
+  searchBarInput: string;
 
-  constructor(public chatService: ChatService, public dialog : MatDialog) { }
+  constructor(public chatService: ChatService, public dialog : MatDialog) {
+    this.chatService.filterActivated = false;
+  }
 
   ngOnInit(): void {
     this.chatService.getAllRooms(false);
@@ -20,6 +23,14 @@ export class PublicChatroomsComponent implements OnInit {
   ngOnDestroy(): void {
     this.chatService.publicRooms = [];
     this.chatService.myRooms = [];
+  }
+
+  onSearchBtn(): void {
+    this.chatService.findRoomByRoomName(this.searchBarInput);
+  }
+
+  onCancelFilteringBtn(): void {
+    this.chatService.filterActivated = false;
   }
 
   onChatroomClick(selectedRoom: IChatroom): void {

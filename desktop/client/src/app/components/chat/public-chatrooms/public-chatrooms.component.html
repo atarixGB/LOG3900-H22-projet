@@ -10,13 +10,39 @@
       </button>
     </div>
 
-    <mat-grid-list cols="2" rowHeight="5:1">
+    <div fxLayoutAlign="center">
+      <mat-form-field appearance="outline" id="search-bar">
+        <mat-label>Rechercher une conversation</mat-label>
+        <input matInput id="search-input" [(ngModel)]="this.searchBarInput">
+      </mat-form-field>
+      <button mat-raised-button color="primary" disableRipple="true" (click)="onSearchBtn()">
+        Rechercher
+      </button>
+      <button mat-raised-button color="primary" disableRipple="true" (click)="onCancelFilteringBtn()">
+        Annuler le filtrage
+      </button>
+    </div>
+
+    <mat-grid-list cols="2" rowHeight="5:1" *ngIf="!this.chatService.filterActivated">
       <mat-grid-tile *ngFor="let room of this.chatService.publicRooms">
 
         <div class="roomname-container" mat-raised-button color="primary">
             {{room.roomName}}
         </div>
-        <button mat-raised-button color="accent" (click)="this.onChatroomClick(room)">
+        <button mat-raised-button color="primary" (click)="this.onChatroomClick(room)">
+          Joindre
+        </button>
+
+      </mat-grid-tile>
+    </mat-grid-list>
+
+    <mat-grid-list cols="2" rowHeight="5:1" *ngIf="this.chatService.filterActivated">
+      <mat-grid-tile *ngFor="let room of this.chatService.filteredRooms">
+
+        <div class="roomname-container" mat-raised-button color="primary">
+            {{room.roomName}}
+        </div>
+        <button mat-raised-button color="primary" (click)="this.onChatroomClick(room)">
           Joindre
         </button>
 

@@ -17,6 +17,9 @@ export class ChatService {
   myRooms: IChatroom[];
   currentRoom: IChatroom;
 
+  filteredRooms: IChatroom[];
+  filterActivated: boolean;
+
   constructor(private loginService: LoginService, private httpClient: HttpClient, private router: Router, private route: ActivatedRoute) {
     this.username = '';
     this.currentRoom = {
@@ -26,6 +29,9 @@ export class ChatService {
     };
     this.publicRooms = [];
     this.myRooms = [];
+
+    this.filteredRooms = [];
+    this.filterActivated = false;
   }
 
   joinRoom(roomName: string): void {
@@ -114,6 +120,16 @@ export class ChatService {
         console.log(`Impossible de retrouver les conversations publiques dans la base de données\nErreur:`, error);
       }
     )
+  }
+
+  findRoomByRoomName(roomName: string): void {
+    this.filteredRooms = [];
+    this.filterActivated = true;
+    for (let i = 0; i < this.publicRooms.length; i++) {
+      if (this.publicRooms[i].roomName.includes(roomName)) {
+        this.filteredRooms.push(this.publicRooms[i]);
+      }
+    }
   }
 
   deleteRoom(roomName: string): void {
