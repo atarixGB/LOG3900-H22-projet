@@ -59,6 +59,7 @@ export class SelectionService extends Tool {
   }
 
   delete(): void {
+    this.soundEffectsService.playDeleteSound();
     this.deleteSelection(this.selectionCnv);
     this.hideSelectionCps();
     this.strokes.splice(this.selectedIndex, 1);
@@ -71,6 +72,7 @@ export class SelectionService extends Tool {
   }
 
   paste(): void {
+    this.soundEffectsService.playPasteSound();
     this.pasteSelectionOnBaseCnv();
     this.toolUpdate.next(this.oldTool);
   }

@@ -27,7 +27,7 @@ export class SoundEffectsService {
 
   // Group 2: Sending a message
   playSendMsgSound(): void {
-    this.soundEffectAudio.src = sounds.SEND_MSG;
+    this.soundEffectAudio = new Audio(sounds.SEND_MSG);
     this.loadAndPlay(this.soundEffectAudio);
   }
 
