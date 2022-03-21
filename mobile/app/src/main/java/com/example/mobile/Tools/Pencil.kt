@@ -71,8 +71,6 @@ class Pencil(context: Context, baseCanvas: Canvas, val socket : DrawingCollabora
         return paint
     }
 
-
-
     override fun onStrokeReceived(stroke: JSONObject) {
         var boundingPoints = ArrayList<IVec2>()
         val boundingPointsData = stroke["boundingPoints"]  as JSONArray

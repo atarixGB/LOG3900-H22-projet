@@ -13,7 +13,7 @@ import org.json.JSONObject
 import java.util.*
 import kotlin.math.abs
 
-class Rectangle (context: Context, baseCanvas: Canvas, val socket : DrawingCollaboration) : Tool(context, baseCanvas, socket) {
+class Rectangle (context: Context, baseCanvas: Canvas, val socket : DrawingCollaboration, val selection: Selection) : Tool(context, baseCanvas, socket) {
 
     var top = 0F
     var right = 0F
@@ -30,6 +30,33 @@ class Rectangle (context: Context, baseCanvas: Canvas, val socket : DrawingColla
     override fun touchUp(){
         onDraw(baseCanvas)
         this.sendRectangleStroke(left, top, right, bottom)
+
+
+        val iRectangleStroke = IRectangleStroke(getBoundingPoints(),
+            getPaintParameters().color,
+            Color.WHITE, //to change
+            getPaintParameters().strokeWidth,
+            getRectWidthAndHeight().x,
+            getRectWidthAndHeight().y,
+            getTopLeftCorner())
+        selection.addStroke(iRectangleStroke)
+    }
+
+    private fun getRectWidthAndHeight(): IVec2{
+        val point = IVec2(abs(left-right), abs(top-bottom))
+        return point
+    }
+
+    private fun getTopLeftCorner(): IVec2{
+        val point = IVec2(left, top)
+        return point
+    }
+
+    private fun getPaintParameters(): Paint {
+        val paint = Paint()
+        paint.color = this.paint.color
+        paint.strokeWidth = this.paint.strokeWidth
+        return paint
     }
 
     override fun onStrokeReceived(stroke: JSONObject) {
@@ -75,12 +102,14 @@ class Rectangle (context: Context, baseCanvas: Canvas, val socket : DrawingColla
 
     private fun draw(stroke: IRectangleStroke) {
         val upcomingPaint = Paint().apply {
-            color = stroke.color
-            strokeWidth = stroke.strokeWidth
+            color = stroke.currentStrokeColor
+            style = Paint.Style.STROKE // default: FILL
+            color = Color.GRAY //to change
+            style = Paint.Style.FILL
+            strokeWidth = stroke.currentStrokeWidth
             isAntiAlias = true
             // Dithering affects how colors with higher-precision than the device are down-sampled.
             isDither = true
-            style = Paint.Style.STROKE // default: FILL
             strokeJoin = Paint.Join.ROUND // default: MITER
             strokeCap = Paint.Cap.ROUND // default: BUTT
         }
@@ -95,8 +124,10 @@ class Rectangle (context: Context, baseCanvas: Canvas, val socket : DrawingColla
 //        val topLeftPoint = IVec2(1, 1)
 //        val bottomRightPoint = IVec2(this.rightestCoord, this.lowestCoord)
         val points = ArrayList<IVec2>()
-//        points.add(topLeftPoint)
-//        points.add(bottomRightPoint)
+        val topLeftPoint = IVec2(left, top)
+        val bottomRightPoint = IVec2(right, bottom)
+        points.add(topLeftPoint)
+        points.add(bottomRightPoint)
         return points
     }
 

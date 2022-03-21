@@ -9,8 +9,8 @@ data class IPencilStroke (
     override val boundingPoints: ArrayList<IVec2>,
     override var currentStrokeColor: Int,
     override var currentStrokeWidth: Float,
-    override val points: ArrayList<IVec2>,
-    ):Stroke(boundingPoints,currentStrokeColor,currentStrokeWidth,points,ToolbarFragment.MenuItem.PENCIL) {
+    val points: ArrayList<IVec2>,
+    ):Stroke(boundingPoints,currentStrokeColor,currentStrokeWidth,ToolbarFragment.MenuItem.PENCIL) {
 
     override fun drawStroke(canvas: Canvas) {
         val upcomingPaint = Paint().apply {

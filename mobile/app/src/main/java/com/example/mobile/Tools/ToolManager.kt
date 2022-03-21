@@ -27,7 +27,7 @@ class ToolManager {
         this.selection= Selection(context,baseCanvas,socket)
         this.pencil = Pencil(context,baseCanvas,socket, selection )
         this.eraser = Eraser(context, baseCanvas, socket)
-        this.rectangle = Rectangle(context, baseCanvas, socket)
+        this.rectangle = Rectangle(context, baseCanvas, socket, selection)
         this.ellipse = Ellipse(context, baseCanvas, socket)
 //        this.selection= Selection(context,baseCanvas,socket)
     }
