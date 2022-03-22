@@ -61,6 +61,7 @@ class  Selection(context: Context, baseCanvas: Canvas, socket : DrawingCollabora
 //        baseCanvas.drawRect(0f,0f, width.toFloat(), height.toFloat(),clearPaint)
         baseCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR)
         redrawAllStrokesExceptSelected(stroke)
+        stroke.prepForSelection()
         baseCanvas.drawBitmap(selectionBitmap!!, stroke.boundingPoints[0].x, stroke.boundingPoints[0].y, null)
         //ici je supprime tous le basecanvas mais apres avoir supprimer je dois redessiner ttes les anciennes stroke sauf celle selectionner
 //        redrawAllStrokesExceptSelected(stroke)
