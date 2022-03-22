@@ -3,24 +3,31 @@ package com.example.mobile.Tools
 import android.content.Context
 import android.graphics.*
 import androidx.core.content.res.ResourcesCompat
+import androidx.fragment.app.activityViewModels
 import com.example.mobile.DrawingCollaboration
+import com.example.mobile.DrawingZoneFragment
+import com.example.mobile.Interface.IPencilStroke
 import com.example.mobile.Interface.IVec2
 import com.example.mobile.Interface.Stroke
 import com.example.mobile.R
+import com.example.mobile.viewModel.ToolParameters
 import org.json.JSONObject
+import java.util.*
 
-//ancien codeeee
 class  Selection(context: Context, baseCanvas: Canvas, socket : DrawingCollaboration) : Tool(context, baseCanvas, socket) {
-
     var strokes= ArrayList<Stroke>()
-    private lateinit var currentStroke : Stroke
+    private var currentStroke : Stroke? = null
     private var selectionCanvas: Canvas? = null
-//    private var selectionBitmap: Bitmap? = null
+    private var selectionBitmap: Bitmap? = null
     private var selectedIndex:Int=0
 
     override fun touchStart() {
         mStartX = mx
         mStartY = my
+        if (currentStroke!= null) {
+            currentStroke!!.prepForBaseCanvas()
+            currentStroke!!.isSelected = false
+        }
     }
 
 
@@ -29,7 +36,16 @@ class  Selection(context: Context, baseCanvas: Canvas, socket : DrawingCollabora
     override fun touchUp() {
         if(isStrokeFound(IVec2(mStartX, mStartY))) {
             currentStroke = strokes[selectedIndex]
-            createSelectionCanvas(currentStroke)
+            currentStroke!!.isSelected = true
+            if (selectionCanvas!= null) {
+                selectionCanvas!!.drawColor(
+                    Color.TRANSPARENT,
+                    PorterDuff.Mode.CLEAR
+                ) //clear le canvas de selection
+            }
+            createSelectionCanvas(currentStroke!!)
+            drawStrokeOnSelectionCanvas(currentStroke!!)
+            drawStrokesOnBaseCanvas(currentStroke!!)
         }
     }
 
@@ -40,7 +56,7 @@ class  Selection(context: Context, baseCanvas: Canvas, socket : DrawingCollabora
     private fun createSelectionCanvas(stroke: Stroke) {
         val width = (stroke.boundingPoints[1].x - stroke.boundingPoints[0].x).toInt()
         val height = (stroke.boundingPoints[1].y - stroke.boundingPoints[0].y).toInt()
-        val selectionBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+        selectionBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
         selectionCanvas = Canvas(selectionBitmap!!)
         val borderPaint = Paint().apply {
             color = ResourcesCompat.getColor(context.resources, R.color.red, null)
@@ -52,52 +68,40 @@ class  Selection(context: Context, baseCanvas: Canvas, socket : DrawingCollabora
             strokeWidth = 10f
         }
         selectionCanvas!!.drawRect(0f,0f, width.toFloat(), height.toFloat(),borderPaint)
-        drawStroke(stroke, selectionCanvas!!)
-        selectionCanvas!!.setBitmap(selectionBitmap)
+    }
 
-
-//        val clearPaint = Paint()
-//        clearPaint.xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR)
-//        baseCanvas.drawRect(0f,0f, width.toFloat(), height.toFloat(),clearPaint)
-        baseCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR)
-        redrawAllStrokesExceptSelected(stroke)
+    private fun drawStrokeOnSelectionCanvas(stroke: Stroke) {
         stroke.prepForSelection()
-        baseCanvas.drawBitmap(selectionBitmap!!, stroke.boundingPoints[0].x, stroke.boundingPoints[0].y, null)
-        //ici je supprime tous le basecanvas mais apres avoir supprimer je dois redessiner ttes les anciennes stroke sauf celle selectionner
-//        redrawAllStrokesExceptSelected(stroke)
-//        stroke.prepForSelection()
-//        baseCanvas.save()
-//        baseCanvas.translate(value,0)
-
+        stroke.drawStroke(selectionCanvas!!)
+//        selectionCanvas!!.setBitmap(selectionBitmap)
     }
 
-    private fun positionSelectionCanvas(topLeftPos: IVec2, cnv: Canvas) {
-        //trasnlate prend un delta donc ici on peut faire new position.x - old position.x
-        cnv.translate(topLeftPos.x,topLeftPos.y)
-    }
+    private fun drawStrokesOnBaseCanvas(stroke: Stroke) {
+        baseCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR) //clear le base canvas
 
-    private fun pasteStrokeOnSelectionCanvas(stroke: Stroke, selectionCtx: Canvas) {
-        stroke.prepForSelection()
-        stroke.drawStroke(selectionCtx)
-    }
+        strokes.forEachIndexed {i, element ->
+            if (i != selectedIndex) {
+                element.drawStroke(baseCanvas) //redessiner les autres formes sauf la forme selectionner
+            }
+        }
 
+        baseCanvas.drawBitmap(selectionBitmap!!, stroke.boundingPoints[0].x, stroke.boundingPoints[0].y, null) //dessiner la forme selectionner sur le base
 
-    private fun drawStroke(stroke: Stroke, canvas: Canvas) {
-        stroke.drawStroke(canvas)
+        strokes[selectedIndex] = currentStroke!!
     }
 
     override fun onDraw(canvas: Canvas) {
-        path.reset()
-        path.moveTo(mStartX, mStartY)
-        path.quadTo(
-            mStartX,
-            mStartY,
-            (5F + mStartX) ,
-            (5F + mStartY)
-        )
-        path!!.lineTo(5F, 5F)
-        canvas!!.drawPath(path!!, paint!!)
-        path!!.reset()
+//        path.reset()
+//        path.moveTo(mStartX, mStartY)
+//        path.quadTo(
+//            mStartX,
+//            mStartY,
+//            (5F + mStartX) ,
+//            (5F + mStartY)
+//        )
+//        path!!.lineTo(5F, 5F)
+//        canvas!!.drawPath(path!!, paint!!)
+//        path!!.reset()
     }
 
     private fun isStrokeFound(clickedPos: IVec2): Boolean {
@@ -126,26 +130,17 @@ class  Selection(context: Context, baseCanvas: Canvas, socket : DrawingCollabora
     }
 
     fun changeSelectionWeight(width : Float){
-        currentStroke.currentStrokeWidth = width
-        createSelectionCanvas(currentStroke)
+        currentStroke!!.currentStrokeWidth = width
+        createSelectionCanvas(currentStroke!!)
+        currentStroke!!.drawStroke(selectionCanvas!!)
+        drawStrokesOnBaseCanvas(currentStroke!!)
     }
 
     fun changeSelectionColor(color:Int){
-        currentStroke.currentStrokeColor = color
-        createSelectionCanvas(currentStroke)
-    }
-
-    private fun redrawAllStrokesExceptSelected(stroke: Stroke) {
-        if (this.strokes.contains(stroke)) {
-            this.strokes.remove(stroke);
-        }
-
-
-        baseCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR)
-
-        strokes.forEach { stroke ->
-            stroke.drawStroke(baseCanvas);
-        }
+        currentStroke!!.currentStrokeColor = color
+        createSelectionCanvas(currentStroke!!)
+        currentStroke!!.drawStroke(selectionCanvas!!)
+        drawStrokesOnBaseCanvas(currentStroke!!)
     }
 
     //code Leon :
@@ -171,7 +166,18 @@ class  Selection(context: Context, baseCanvas: Canvas, socket : DrawingCollabora
 //
 //    }
 //
-
+//    private fun redrawAllStrokesExceptSelected(stroke: Stroke) {
+//        if (this.strokes.contains(stroke)) {
+//            this.strokes.remove(stroke);
+//        }
+//
+//
+//        baseCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR)
+//
+//        strokes.forEach { stroke ->
+//            stroke.drawStroke(baseCanvas);
+//        }
+//    }
 //
 //    private fun createSelectionCanvas(stroke: Stroke): Canvas {
 //        val width = (stroke.boundingPoints[1].x - stroke.boundingPoints[0].x).toInt()

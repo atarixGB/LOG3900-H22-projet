@@ -36,6 +36,7 @@ class Rectangle (context: Context, baseCanvas: Canvas, val socket : DrawingColla
             getPaintParameters().color,
             Color.WHITE, //to change
             getPaintParameters().strokeWidth,
+            false,
             getRectWidthAndHeight().x,
             getRectWidthAndHeight().y,
             getTopLeftCorner())
@@ -68,6 +69,7 @@ class Rectangle (context: Context, baseCanvas: Canvas, val socket : DrawingColla
             stroke.getInt("primaryColor"),
             Color.WHITE, //to change
             stroke.getDouble("strokeWidth").toFloat(),
+            false,
             stroke.getDouble("width").toFloat(),
             stroke.getDouble("height").toFloat(),
             topLeftCorner)
