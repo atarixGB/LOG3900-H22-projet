@@ -3,18 +3,15 @@ package com.example.mobile.Tools
 import android.content.Context
 import android.graphics.*
 import androidx.core.content.res.ResourcesCompat
-import androidx.fragment.app.activityViewModels
 import com.example.mobile.DrawingCollaboration
-import com.example.mobile.DrawingZoneFragment
-import com.example.mobile.Interface.IPencilStroke
 import com.example.mobile.Interface.IVec2
 import com.example.mobile.Interface.Stroke
 import com.example.mobile.R
-import com.example.mobile.viewModel.ToolParameters
 import org.json.JSONObject
-import java.util.*
 
+//ancien codeeee
 class  Selection(context: Context, baseCanvas: Canvas, socket : DrawingCollaboration) : Tool(context, baseCanvas, socket) {
+
     var strokes= ArrayList<Stroke>()
     private lateinit var currentStroke : Stroke
     private var selectionCanvas: Canvas? = null
@@ -59,10 +56,30 @@ class  Selection(context: Context, baseCanvas: Canvas, socket : DrawingCollabora
         selectionCanvas!!.setBitmap(selectionBitmap)
 
 
+//        val clearPaint = Paint()
+//        clearPaint.xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR)
+//        baseCanvas.drawRect(0f,0f, width.toFloat(), height.toFloat(),clearPaint)
         baseCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR)
-        //ici je supprime tous le basecanvas mais apres avoir supprimer je dois redessiner ttes les anciennes stroke sauf celle selectionner
+        redrawAllStrokesExceptSelected(stroke)
         baseCanvas.drawBitmap(selectionBitmap!!, stroke.boundingPoints[0].x, stroke.boundingPoints[0].y, null)
+        //ici je supprime tous le basecanvas mais apres avoir supprimer je dois redessiner ttes les anciennes stroke sauf celle selectionner
+//        redrawAllStrokesExceptSelected(stroke)
+//        stroke.prepForSelection()
+//        baseCanvas.save()
+//        baseCanvas.translate(value,0)
+
     }
+
+    private fun positionSelectionCanvas(topLeftPos: IVec2, cnv: Canvas) {
+        //trasnlate prend un delta donc ici on peut faire new position.x - old position.x
+        cnv.translate(topLeftPos.x,topLeftPos.y)
+    }
+
+    private fun pasteStrokeOnSelectionCanvas(stroke: Stroke, selectionCtx: Canvas) {
+        stroke.prepForSelection()
+        stroke.drawStroke(selectionCtx)
+    }
+
 
     private fun drawStroke(stroke: Stroke, canvas: Canvas) {
         stroke.drawStroke(canvas)
@@ -117,6 +134,19 @@ class  Selection(context: Context, baseCanvas: Canvas, socket : DrawingCollabora
         createSelectionCanvas(currentStroke)
     }
 
+    private fun redrawAllStrokesExceptSelected(stroke: Stroke) {
+        if (this.strokes.contains(stroke)) {
+            this.strokes.remove(stroke);
+        }
+
+
+        baseCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR)
+
+        strokes.forEach { stroke ->
+            stroke.drawStroke(baseCanvas);
+        }
+    }
+
     //code Leon :
 //    private fun pasteStrokeOnSelectionCanvas(stroke: Stroke, selectionCtx: Canvas) {
 //        stroke.prepForSelection()
@@ -140,18 +170,7 @@ class  Selection(context: Context, baseCanvas: Canvas, socket : DrawingCollabora
 //
 //    }
 //
-//    private fun redrawAllStrokesExceptSelected(stroke: Stroke) {
-//        if (this.strokes.contains(stroke)) {
-//            this.strokes.remove(stroke);
-//        }
-//
-//
-//        baseCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR)
-//
-//        strokes.forEach { stroke ->
-//            stroke.drawStroke(baseCanvas);
-//        }
-//    }
+
 //
 //    private fun createSelectionCanvas(stroke: Stroke): Canvas {
 //        val width = (stroke.boundingPoints[1].x - stroke.boundingPoints[0].x).toInt()
