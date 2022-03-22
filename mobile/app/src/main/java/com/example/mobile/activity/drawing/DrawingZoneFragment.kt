@@ -2,6 +2,7 @@ package com.example.mobile.activity.drawing
 
 import android.content.Context
 import android.graphics.*
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -114,8 +115,11 @@ class DrawingZoneFragment : Fragment() {
         override fun onDraw(canvas: Canvas) {
             super.onDraw(canvas)
             canvas.drawBitmap(mBitmap!!, 0f, 0f, mPaint)
+            var mediaPlayerDraw: MediaPlayer = MediaPlayer.create(context,R.raw.draw)
             if (isDrawing) {
                 toolManager.currentTool.onDraw(canvas)
+                mediaPlayerDraw.start()
+
             }
         }
 
@@ -141,6 +145,7 @@ class DrawingZoneFragment : Fragment() {
                 MotionEvent.ACTION_UP -> {
                     isDrawing = false
                     toolManager.currentTool.touchUp()
+
                     invalidate()
                 }
             }

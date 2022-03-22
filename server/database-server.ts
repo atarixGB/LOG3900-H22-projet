@@ -367,24 +367,24 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
         });
     });
 
-    //Save drawing data
-    app.put("/drawing/:drawingId", (request, response, next) => {
+    // //Save drawing data
+    // app.put("/drawing/:drawingId", (request, response, next) => {
 
-      var drawingId = request.params.drawingId.replaceAll(/"/g, '');
-      var data =  request.body.data;
+    //   var drawingId = request.params.drawingId.replaceAll(/"/g, '');
+    //   var data =  request.body.data;
 
-      console.log(drawingId);
-      console.log(data);
+    //   console.log(drawingId);
+    //   console.log(data);
 
-      DB.collection("drawings").findOneAndUpdate({ _id: mongoose.Types.ObjectId(drawingId) }, { $set: {"data": data}}, { returnDocument: 'after' }, (err, res) => {
-        response.json(200);
-        console.log(drawingId);
-        console.log(data);
-        console.log(res);
-      });
-    });
+    //   DB.collection("drawings").findOneAndUpdate({ _id: mongoose.Types.ObjectId(drawingId) }, { $set: {"data": data}}, { returnDocument: 'after' }, (err, res) => {
+    //     response.json(200);
+    //     console.log(drawingId);
+    //     console.log(data);
+    //     console.log(res);
+    //   });
+    // });
     
-    const upload = multer({dest: '/public/data/uploads/'});
+    // const upload = multer({dest: '/public/data/uploads/'});
 
 // Post files
 app.post(
