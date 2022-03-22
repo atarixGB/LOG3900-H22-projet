@@ -3,8 +3,7 @@ import { Injectable } from '@angular/core';
 import { IAlbum } from '@app/interfaces-enums/IAlbum'
 import { IDrawing } from '@app/interfaces-enums/IDrawing'
 import { LoginService } from '@app/services/login/login.service';
-import { ALBUM_URL, PUBLIC_DRAWINGS_URL, CREATE_DRAWING_URL, JOIN_ALBUM_URL, DECLINE_MEMBERSHIP_REQUEST_URL, ACCEPT_MEMBERSHIP_REQUEST_URL, UPDATE_ALBUM_PARAMETERS_URL, ADD_DRAWING_TO_ALBUM_URL } from '@app/constants/api-urls';
-import { DrawingService } from '../editor/drawing/drawing.service';
+import { ALBUM_URL, PUBLIC_DRAWINGS_URL, CREATE_DRAWING_URL, JOIN_ALBUM_URL, DECLINE_MEMBERSHIP_REQUEST_URL, ACCEPT_MEMBERSHIP_REQUEST_URL, UPDATE_ALBUM_PARAMETERS_URL, ADD_DRAWING_TO_ALBUM_URL, UPLOAD_DRAWING_URL} from '@app/constants/api-urls';
 import { PUBLIC_ALBUM } from '@app/constants/constants';
 
 @Injectable({
@@ -16,27 +15,29 @@ export class AlbumGalleryService {
   currentAlbum: IAlbum;
   selectedAlbumId: string | void;
 
-  constructor(private httpClient: HttpClient, private loginService: LoginService, private drawingService: DrawingService) {
+  currentDrawing: IDrawing;
+
+  constructor(private httpClient: HttpClient, private loginService: LoginService) {
     this.publicAlbums = [];
     this.myAlbums = [];
+
+    this.currentDrawing = {
+      name: "",
+      owner: this.loginService.username,
+    }
   }
 
   createDrawing(drawingName: string): void {
-    const drawingData: IDrawing = {
-      name: drawingName,
-      owner: this.loginService.username,
-      contributors: [this.loginService.username],
-      likes: [],
-      data: this.drawingService.canvas.toDataURL(),
-    }
+    console.log("CREATE DRAWING")
+    this.currentDrawing.name = drawingName;
 
-    console.log(drawingData)
+    console.log(this.currentDrawing)
 
-    this.httpClient.post(CREATE_DRAWING_URL, drawingData).subscribe(
+    this.httpClient.post(CREATE_DRAWING_URL, this.currentDrawing).subscribe(
       (result) => {
         console.log("Résultat du serveur:", result);
-        drawingData._id = result;
-        this.addDrawingToAlbum(drawingData, this.selectedAlbumId);
+        this.currentDrawing._id = result;
+        this.addDrawingToAlbum(this.currentDrawing, this.selectedAlbumId);
       },
       (error) => {
         console.log(`Impossible de créer le dessin ${drawingName} dans la base de données.\nErreur: ${error}`);
@@ -45,11 +46,27 @@ export class AlbumGalleryService {
   }
 
   addDrawingToAlbum(drawing: IDrawing, albumId: string | void): void {
+    console.log("ADD DRAWING TO ALBUM");
+
     const data = {
       drawing: drawing._id,
     };
 
     this.httpClient.put(ADD_DRAWING_TO_ALBUM_URL + `/${albumId}`, data).subscribe(
+      (result) => {
+        console.log(result);
+      },
+      (error) => {
+        console.log(error);
+      });
+  }
+
+  saveDrawing(): void {
+    const body = {
+      filename: this.currentDrawing._id
+    };
+
+    this.httpClient.post(UPLOAD_DRAWING_URL, body).subscribe(
       (result) => {
         console.log(result);
       },
