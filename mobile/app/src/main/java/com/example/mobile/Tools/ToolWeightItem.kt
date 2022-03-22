@@ -1,4 +1,4 @@
-package com.example.mobile
+package com.example.mobile.Tools
 
 class ToolWeightItem {
     var icons:Int  ?=0

@@ -2,44 +2,37 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <targetSelectedWithDropDown>
-<<<<<<< HEAD
-=======
       <Target>
         <type value="QUICK_BOOT_TARGET" />
         <deviceKey>
           <Key>
             <type value="VIRTUAL_DEVICE_PATH" />
-            <value value="C:\Users\chaim\.android\avd\Pixel_C_API_28.avd" />
+            <value value="C:\Users\Mio\.android\avd\Copy_of_Galaxy_Tab_A_API_28.avd" />
           </Key>
         </deviceKey>
       </Target>
     </targetSelectedWithDropDown>
-    <timeTargetWasSelectedWithDropDown value="2022-03-16T20:41:18.328425300Z" />
+    <timeTargetWasSelectedWithDropDown value="2022-03-15T04:26:37.162400700Z" />
+    <multipleDevicesSelectedInDropDown value="true" />
     <targetsSelectedWithDialog>
->>>>>>> mobile/feature/album
       <Target>
         <type value="QUICK_BOOT_TARGET" />
         <deviceKey>
           <Key>
             <type value="VIRTUAL_DEVICE_PATH" />
-            <value value="C:\Users\chaim\.android\avd\Pixel_C_API_28_2.avd" />
+            <value value="C:\Users\Mio\.android\avd\Copy_of_Galaxy_Tab_A_API_28.avd" />
           </Key>
         </deviceKey>
       </Target>
-<<<<<<< HEAD
-    </targetSelectedWithDropDown>
-    <timeTargetWasSelectedWithDropDown value="2022-03-07T14:16:08.100166500Z" />
-=======
       <Target>
         <type value="QUICK_BOOT_TARGET" />
         <deviceKey>
           <Key>
             <type value="VIRTUAL_DEVICE_PATH" />
-            <value value="C:\Users\chaim\.android\avd\Pixel_C_API_28.avd" />
+            <value value="C:\Users\Mio\.android\avd\Gakaxy_Tab_A_API_28.avd" />
           </Key>
         </deviceKey>
       </Target>
     </targetsSelectedWithDialog>
->>>>>>> mobile/feature/album
   </component>
 </project>

@@ -1,10 +1,12 @@
-package com.example.mobile
+package com.example.mobile.adapter
 
 import android.content.Context
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ImageView
+import com.example.mobile.R
+import com.example.mobile.Tools.ToolColorItem
 
 class ColorAdapter(var context: Context, var arrayList: ArrayList<ToolColorItem>): BaseAdapter()  {
     override fun getCount(): Int {
@@ -23,7 +25,7 @@ class ColorAdapter(var context: Context, var arrayList: ArrayList<ToolColorItem>
         var view:View = View.inflate(context, R.layout.color_list, null)
         var icons: ImageView = view.findViewById(R.id.icon_color)
 
-        var colorItem:ToolColorItem = arrayList.get(positon)
+        var colorItem: ToolColorItem = arrayList.get(positon)
         icons.setImageResource(colorItem.icons!!)
         return view
     }

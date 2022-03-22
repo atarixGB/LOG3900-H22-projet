@@ -1,11 +1,16 @@
-package com.example.mobile
+package com.example.mobile.Tools
 
 import android.content.Context
 import android.graphics.*
-import android.view.ViewConfiguration
 import androidx.core.content.res.ResourcesCompat
+import com.example.mobile.DrawingCollaboration
+import com.example.mobile.Interface.IPencilStroke
+import com.example.mobile.Interface.IVec2
+import com.example.mobile.R
+import org.json.JSONObject
+import kotlin.collections.ArrayList
 
-abstract class Tool(context: Context, baseCanvas: Canvas) {
+abstract class Tool(context: Context, baseCanvas: Canvas, socket: DrawingCollaboration) {
     var baseCanvas: Canvas = baseCanvas
     var context: Context = context
     var mStartX = 0f
@@ -16,6 +21,7 @@ abstract class Tool(context: Context, baseCanvas: Canvas) {
     val TOUCH_TOLERANCE = 4f
     protected val drawColor = ResourcesCompat.getColor(context.resources, R.color.black, null)
     protected val backgroundColor = ResourcesCompat.getColor(context.resources, R.color.white, null)
+    var points : ArrayList<IVec2> = ArrayList<IVec2>()
 
     protected val paint = Paint().apply {
         color = drawColor
@@ -42,6 +48,8 @@ abstract class Tool(context: Context, baseCanvas: Canvas) {
     fun changeColor(color:Int){
         this.paint.color = color
     }
+
+    abstract fun onStrokeReceived(stroke : JSONObject)
 
     abstract fun onDraw(canvas: Canvas)
 }

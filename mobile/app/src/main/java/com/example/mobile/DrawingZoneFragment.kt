@@ -3,17 +3,22 @@ package com.example.mobile
 import android.content.Context
 import android.graphics.*
 import android.os.Bundle
-import android.util.AttributeSet
+import android.util.Log
 import android.view.*
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import com.example.mobile.Tools.ToolManager
+import com.example.mobile.Tools.ToolbarFragment
+import io.socket.emitter.Emitter
+import org.json.JSONObject
 import com.example.mobile.Retrofit.IMyService
 import com.example.mobile.Retrofit.RetrofitClient
-import com.example.mobile.model.ToolModel
-import com.example.mobile.model.ToolParameters
+import com.example.mobile.viewModel.ToolModel
+import com.example.mobile.viewModel.ToolParameters
 import com.example.mobile.viewModel.SharedViewModelToolBar
 import io.reactivex.disposables.CompositeDisposable
 import okhttp3.*
@@ -24,9 +29,10 @@ import java.io.File
 import java.io.FileOutputStream
 
 class DrawingZoneFragment : Fragment() {
-    private var mDrawingView: DrawingView? = null
+    private lateinit var mDrawingView: DrawingView
     private val viewModel: ToolParameters by activityViewModels()
     private val toolModel: ToolModel by activityViewModels()
+    var socket = DrawingCollaboration()
     private val sharedViewModelToolBar: SharedViewModelToolBar by activityViewModels()
 
     override fun onCreateView(
@@ -39,7 +45,9 @@ class DrawingZoneFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val mDrawingView = view.findViewById<View>(R.id.drawingView) as DrawingView
+        mDrawingView = DrawingView(requireContext(),this.socket)
+        socket.init()
+        socket.socket.on("receiveStroke", onReceiveStroke)
         viewModel.weight.observe(viewLifecycleOwner, Observer { weight ->
             mDrawingView.changeWeight(weight)
         })
@@ -58,13 +66,15 @@ class DrawingZoneFragment : Fragment() {
             mDrawingView.saveImg()
         })
 
+        view.findViewById<LinearLayout>(R.id.drawingView).addView(mDrawingView)
+    }
+    private var onReceiveStroke = Emitter.Listener {
+        val drawEvent = it[0] as JSONObject
+        mDrawingView.onStrokeReceive(drawEvent)
     }
 
-    class DrawingView @JvmOverloads constructor(
-        context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-    ) : View(context, attrs, defStyleAttr) {
+    class DrawingView (context: Context, val socket: DrawingCollaboration) : View(context){
         private lateinit var toolManager: ToolManager
-
         private var mPaint: Paint? = null
         private var mBitmap: Bitmap? = null
         private var mCanvas: Canvas? = null
@@ -76,12 +86,20 @@ class DrawingZoneFragment : Fragment() {
         internal var compositeDisposable = CompositeDisposable()
         private var filePath: String = ""
 
+        fun onStrokeReceive(stroke: JSONObject){
+            Log.d("ici", "allo")
+            if(stroke.getInt("toolType") == 0){
+                toolManager.pencil.onStrokeReceived(stroke)
+            }else if(stroke.getInt("toolType") == 1){
+                toolManager.rectangle.onStrokeReceived(stroke)
+            }
+            invalidate()
+        }
 
         override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
             super.onSizeChanged(w, h, oldw, oldh)
             mBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
             mCanvas = Canvas(mBitmap!!)
-            toolManager = ToolManager(context, mCanvas!!)
             val borderPaint = Paint().apply {
                 color = ResourcesCompat.getColor(context.resources, R.color.black, null)
                 isAntiAlias = true
@@ -91,7 +109,8 @@ class DrawingZoneFragment : Fragment() {
                 strokeCap = Paint.Cap.ROUND
                 strokeWidth = 1f
             }
-            mCanvas!!.drawRect(0f, 0f, w.toFloat(), h.toFloat(), borderPaint)
+            mCanvas!!.drawRect(0f,0f, w.toFloat(), h.toFloat(),borderPaint )
+            toolManager = ToolManager(context, mCanvas!!, this.socket)
         }
 
         override fun onDraw(canvas: Canvas) {

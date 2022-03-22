@@ -8,19 +8,23 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.GridView
 import androidx.fragment.app.activityViewModels
-import com.example.mobile.model.ToolParameters
+import com.example.mobile.Tools.ToolColorItem
+import com.example.mobile.Tools.ToolWeightAdapter
+import com.example.mobile.Tools.ToolWeightItem
+import com.example.mobile.adapter.ColorAdapter
+import com.example.mobile.viewModel.ToolParameters
 
 
 class CustomToolFragment : Fragment(), AdapterView.OnItemClickListener {
 
     private var weightView:GridView ? = null
     private var weights:ArrayList<ToolWeightItem> ? = null
-    private var weightAdapter: ToolWeightAdapter ? = null
+    private var weightAdapter: ToolWeightAdapter? = null
     private val toolParametersModel: ToolParameters by activityViewModels()
 
     private var colorView:GridView ? = null
     private var colors:ArrayList<ToolColorItem> ? = null
-    private var colorAdapter: ColorAdapter ? = null
+    private var colorAdapter: ColorAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -77,10 +81,10 @@ class CustomToolFragment : Fragment(), AdapterView.OnItemClickListener {
 
     override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         if(parent == weightView){
-            val weightItem:ToolWeightItem = weights!!.get(position)
+            val weightItem: ToolWeightItem = weights!!.get(position)
             toolParametersModel.changeWeight(weightItem.size!!)
         }else{
-            val colorItem:ToolColorItem = colors!!.get(position)
+            val colorItem: ToolColorItem = colors!!.get(position)
             toolParametersModel.changeColor(colorItem.color!!)
         }
 

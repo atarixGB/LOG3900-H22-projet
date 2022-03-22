@@ -13,7 +13,7 @@
     <mat-label>Accessibilité</mat-label>
     <mat-select (valueChange)="this.changeAccess($event)" value="0">
       <mat-option value="0">Public</mat-option>
-      <mat-option value="1">Privé</mat-option>
+      <mat-option value="1" *ngIf="this.albumGalleryService.myAlbums.length != 0">Privé</mat-option>
     </mat-select>
   </mat-form-field>
 

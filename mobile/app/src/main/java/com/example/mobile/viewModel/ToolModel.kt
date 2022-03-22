@@ -1,10 +1,10 @@
-package com.example.mobile.model
+package com.example.mobile.viewModel
 
 import android.graphics.Bitmap
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.mobile.ToolbarFragment
+import com.example.mobile.Tools.ToolbarFragment
 
 class ToolModel : ViewModel(){
     private var _tool = MutableLiveData<ToolbarFragment.MenuItem>(ToolbarFragment.MenuItem.PENCIL)

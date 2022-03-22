@@ -1,18 +1,21 @@
-package com.example.mobile
+package com.example.mobile.Tools
 
 import android.content.Context
 import android.graphics.Canvas
+import com.example.mobile.DrawingCollaboration
 
 class ToolManager {
     var currentTool : Tool
     private var baseCanvas: Canvas
     private var context: Context
-    private lateinit var pencil: Pencil
-    private lateinit var eraser: Eraser
-    private lateinit var rectangle: Rectangle
-    private lateinit var ellipse: Ellipse
+    lateinit var pencil: Pencil
+    lateinit var eraser: Eraser
+    lateinit var rectangle: Rectangle
+    lateinit var ellipse: Ellipse
+    private var socket: DrawingCollaboration
 
-    constructor(context: Context, baseCanvas : Canvas){
+    constructor(context: Context, baseCanvas : Canvas, socket :DrawingCollaboration){
+        this.socket = socket
         this.baseCanvas = baseCanvas
         this.context = context
         initialiseTools()
@@ -20,10 +23,10 @@ class ToolManager {
     }
 
     private fun initialiseTools(){
-        this.pencil = Pencil(context,baseCanvas)
-        this.eraser = Eraser(context, baseCanvas)
-        this.rectangle = Rectangle(context, baseCanvas)
-        this.ellipse = Ellipse(context, baseCanvas)
+        this.pencil = Pencil(context,baseCanvas,socket )
+        this.eraser = Eraser(context, baseCanvas, socket)
+        this.rectangle = Rectangle(context, baseCanvas, socket)
+        this.ellipse = Ellipse(context, baseCanvas, socket)
     }
 
     fun isCurrentToolEraser(): Boolean {
