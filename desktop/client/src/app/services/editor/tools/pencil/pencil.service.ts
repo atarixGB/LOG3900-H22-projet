@@ -63,9 +63,8 @@ export class PencilService extends Tool {
             this.color = this.colorManager.primaryColor;
             this.drawingService.clearCanvas(this.drawingService.previewCtx);
             this.sendPencilStroke();
-            this.soundEffectsService.stopDrawSound();
         }
-
+        this.soundEffectsService.stopDrawSound();
         this.mouseDown = false;
         this.clearPath();
     }
