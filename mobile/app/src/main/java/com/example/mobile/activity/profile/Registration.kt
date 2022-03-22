@@ -13,6 +13,7 @@ import android.provider.MediaStore
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.util.Base64
+import android.view.animation.AnimationUtils
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
@@ -142,6 +143,9 @@ class Registration : AppCompatActivity(), SelectAvatarPopUp.DialogListener {
                 idEmptyError.isVisible=true
                 mdpEmptyError.isVisible=true
                 emailEmptyError.isVisible=true
+                identifiant.animation=AnimationUtils.loadAnimation(this,R.anim.shake_animation)
+                pwd.animation=AnimationUtils.loadAnimation(this,R.anim.shake_animation)
+                email.animation=AnimationUtils.loadAnimation(this,R.anim.shake_animation)
                 mediaPlayerFail.start()
             }
 

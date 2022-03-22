@@ -14,6 +14,7 @@ import com.example.mobile.Retrofit.IMyService
 import com.example.mobile.Retrofit.RetrofitClient
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
+import android.view.animation.AnimationUtils
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -84,6 +85,8 @@ class MainActivity : AppCompatActivity()  {
             else if(email.text.toString().isNullOrBlank() && pwd.text.toString().isNullOrBlank()){
                 emailEmptyError.isVisible=true
                 mdpEmptyError.isVisible=true
+                email.animation= AnimationUtils.loadAnimation(this,R.anim.shake_animation)
+                pwd.animation= AnimationUtils.loadAnimation(this,R.anim.shake_animation)
                 mediaPlayerFail.start()
             }
         }
