@@ -8,15 +8,18 @@
    </div>
 
    <h4 id="widthTitle">Modifier l'épaisseur:</h4>
-   <mat-grid-list id="thicknessGrid" cols="3">
-      <mat-grid-tile *ngFor="let i of [1, 2, 3, 4, 5, 6, 7, 8, 9]">
-         <div fxLayout="row" fxLayoutAlign="center stretch" class="circle" id="circle" [ngClass]="{ selected: this.selectionService.currentStrokeWidthPreset == i }" (click)="changeWidth(i)">
-            <div fxLayout="column" fxLayoutAlign="center center">
-               <div class="thicknessS"></div>
+   <div fxLayout="row" fxLayoutAlign="center center" >
+      <mat-grid-list id="thicknessGrid" cols="3">
+         <mat-grid-tile *ngFor="let i of [1, 2, 3, 4, 5, 6, 7, 8, 9]">
+            <div fxLayout="row" fxLayoutAlign="center stretch" class="circle" id="circle" [ngClass]="{ selected: this.selectionService.currentStrokeWidthPreset == i, black: 9 == i }" (click)="changeWidth(i)">
+               <div fxLayout="column" fxLayoutAlign="center center">
+                  <div class="thicknessS"></div>
+               </div>
             </div>
-         </div>
-      </mat-grid-tile>
-  </mat-grid-list>
+         </mat-grid-tile>
+      </mat-grid-list>
+   </div>
+   
 
   <h4 id="colorTitle">Modifier les couleurs:</h4>
 
