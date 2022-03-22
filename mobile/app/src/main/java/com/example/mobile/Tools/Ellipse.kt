@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
-import com.example.mobile.DrawingCollaboration
 import com.example.mobile.Interface.IEllipseStroke
 import com.example.mobile.Interface.IVec2
 import com.example.mobile.activity.drawing.DrawingCollaboration

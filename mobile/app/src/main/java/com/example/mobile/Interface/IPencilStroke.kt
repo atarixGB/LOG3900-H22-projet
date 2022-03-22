@@ -3,7 +3,7 @@ package com.example.mobile.Interface
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Path
-import com.example.mobile.Tools.ToolbarFragment
+import com.example.mobile.activity.drawing.ToolbarFragment
 
 data class IPencilStroke (
     override var boundingPoints: ArrayList<IVec2>,

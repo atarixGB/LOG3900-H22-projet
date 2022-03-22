@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.*
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.activityViewModels
-import com.example.mobile.DrawingCollaboration
 import com.example.mobile.Interface.IPencilStroke
 import com.example.mobile.activity.drawing.DrawingCollaboration
 import com.example.mobile.Interface.IVec2

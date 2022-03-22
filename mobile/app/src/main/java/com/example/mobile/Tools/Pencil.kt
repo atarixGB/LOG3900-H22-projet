@@ -92,6 +92,7 @@ class Pencil(context: Context, baseCanvas: Canvas, val socket : DrawingCollabora
         val iPencilStroke = IPencilStroke(boundingPoints,
             toIntColor(stroke.getString("primaryColor")),
             stroke.getString("strokeWidth").toFloat(),
+            false,
             points)
         draw(iPencilStroke)
 

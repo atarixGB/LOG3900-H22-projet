@@ -105,8 +105,8 @@ class Rectangle (context: Context, baseCanvas: Canvas, val socket : DrawingColla
 
     private fun draw(stroke: IRectangleStroke) {
         val upcomingPaint = Paint().apply {
-            color = stroke.primaryColor
-            strokeWidth = stroke.strokeWidth
+            color = stroke.currentStrokeColor
+            strokeWidth = stroke.currentStrokeWidth
             isAntiAlias = true
             // Dithering affects how colors with higher-precision than the device are down-sampled.
             isDither = true

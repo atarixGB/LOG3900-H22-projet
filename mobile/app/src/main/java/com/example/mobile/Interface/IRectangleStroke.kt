@@ -2,7 +2,7 @@ package com.example.mobile.Interface
 
 import android.graphics.Canvas
 import android.graphics.Paint
-import com.example.mobile.Tools.ToolbarFragment
+import com.example.mobile.activity.drawing.ToolbarFragment
 
 data class IRectangleStroke(
     override var boundingPoints: ArrayList<IVec2>,
