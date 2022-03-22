@@ -13,7 +13,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.mobile.Dashboard
+import com.example.mobile.activity.Dashboard
 import com.example.mobile.activity.albums.DrawingsCollection
 import com.example.mobile.Interface.IAlbum
 import com.example.mobile.R

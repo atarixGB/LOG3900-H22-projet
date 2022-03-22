@@ -1,18 +1,16 @@
 import { Tool } from '@app/classes/tool';
 import { Vec2 } from '@app/classes/vec2';
 import { DEFAULT_LINE_THICKNESS, MouseButton } from '@app/constants/constants';
-import { TypeStyle } from '@app/interfaces-enums/type-style';
 import { ColorManagerService } from '@app/services/editor/color-manager/color-manager.service';
 import { DrawingService } from '@app/services/editor/drawing/drawing.service';
 export abstract class ShapeService extends Tool {
     pathData: Vec2[];
     lineWidth: number;
-    selectType: TypeStyle;
     isSelection: boolean;
     isShiftShape: boolean;
     colorPrime: string;
     colorSecond: string;
-    isClearSecondary: boolean;
+    selectedWidth: number;
 
     protected fillValue: boolean;
     protected strokeValue: boolean;
@@ -22,15 +20,13 @@ export abstract class ShapeService extends Tool {
     constructor(drawingService: DrawingService, protected colorManager: ColorManagerService) {
         super(drawingService);
         this.lineWidth = DEFAULT_LINE_THICKNESS;
+        this.selectedWidth = 1;
         this.fillValue = false;
         this.strokeValue = false;
         this.isSelection = false;
-        this.selectType = TypeStyle.Stroke;
         this.clearPath();
         this.isShiftShape = false;
         this.size = { x: 0, y: 0 };
-        this.colorSecond = 'rgb(0,0,0)';
-        this.isClearSecondary = true;
     }
 
     abstract onMouseUp(event: MouseEvent): void;
@@ -53,6 +49,7 @@ export abstract class ShapeService extends Tool {
             this.pathData.push(this.mouseDownCoord);
         }
         this.colorPrime = this.colorManager.primaryColor;
+        this.colorSecond = this.colorManager.secondaryColor;
     }
 
     handleKeyDown(event: KeyboardEvent): void {

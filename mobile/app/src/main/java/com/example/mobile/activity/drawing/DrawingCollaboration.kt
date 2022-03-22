@@ -1,11 +1,11 @@
-package com.example.mobile
+package com.example.mobile.activity.drawing
 
 import android.provider.SyncStateContract
 import io.socket.client.IO
 
 class DrawingCollaboration {
-
-    var socket = IO.socket("http://10.0.2.2:3001/")
+    val port = "http://10.0.2.2:3001/"
+    var socket = IO.socket(port)
 
     fun init() {
         socket.connect()

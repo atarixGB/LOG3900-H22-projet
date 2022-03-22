@@ -41,7 +41,7 @@ class  Ellipse(context: Context, baseCanvas: Canvas, val socket : DrawingCollabo
             stroke.getDouble("strokeWidth").toFloat(),
             IVec2(center.getDouble("x").toFloat(), center.getDouble("y").toFloat()),
             IVec2(radius.getDouble("x").toFloat(), radius.getDouble("y").toFloat()),
-        )
+            )
         draw(iEllipseStroke)
     }
 

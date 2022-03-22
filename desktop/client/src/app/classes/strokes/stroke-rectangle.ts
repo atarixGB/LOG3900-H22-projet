@@ -17,21 +17,19 @@ export class StrokeRectangle extends Stroke {
         topLeftCorner: Vec2,
         width: number,
         height: number,
-        isSecondColorTransparent: boolean,
     ) {
         super(ToolList.Rectangle, boundingPoints, color, strokeWidth);
         this.secondaryColor = secondaryColor;
         this.topLeftCorner = topLeftCorner;
         this.width = width;
         this.height = height;
-        this.isSecondColorTransparent = isSecondColorTransparent;
     }
 
     drawStroke(ctx: CanvasRenderingContext2D): void {
         ctx.lineWidth = this.strokeWidth;
         ctx.beginPath();
         ctx.rect(this.topLeftCorner.x, this.topLeftCorner.y, this.width, this.height);
-        ctx.fillStyle = this.isSecondColorTransparent ? 'rgba(0, 0, 0, 0)' : this.secondaryColor;
+        ctx.fillStyle = this.secondaryColor;
         ctx.strokeStyle = this.primaryColor;
         ctx.fill();
         ctx.stroke();
@@ -51,4 +49,8 @@ export class StrokeRectangle extends Stroke {
         this.width = this.width * scale.x;
         this.height = this.height * scale.y;
     }
+
+    updateStrokeSecondaryColor(color: string): void {
+        this.secondaryColor = color;
+    } 
 }

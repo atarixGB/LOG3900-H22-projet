@@ -2,9 +2,10 @@ package com.example.mobile.Tools
 
 import android.content.Context
 import android.graphics.*
-import com.example.mobile.DrawingCollaboration
+import android.util.Log
 import com.example.mobile.Interface.IPencilStroke
 import com.example.mobile.Interface.IVec2
+import com.example.mobile.activity.drawing.DrawingCollaboration
 import org.json.JSONArray
 import org.json.JSONObject
 import java.util.*
@@ -48,6 +49,8 @@ class Pencil(context: Context, baseCanvas: Canvas, val socket : DrawingCollabora
         path!!.lineTo(mStartX, mStartY)
         points.add(IVec2(mStartX, mStartY))
         this.sendPencilStroke()
+        paint.strokeJoin = Paint.Join.ROUND // default: MITER
+        paint.strokeCap = Paint.Cap.ROUND
         baseCanvas!!.drawPath(path!!, paint!!)
         path!!.reset()
 
@@ -87,9 +90,8 @@ class Pencil(context: Context, baseCanvas: Canvas, val socket : DrawingCollabora
             points.add(IVec2(obj.getDouble("x").toFloat(), obj.getDouble("y").toFloat()))
         }
         val iPencilStroke = IPencilStroke(boundingPoints,
-            stroke.getInt("primaryColor"),
-            stroke.getDouble("strokeWidth").toFloat(),
-            false,
+            toIntColor(stroke.getString("primaryColor")),
+            stroke.getString("strokeWidth").toFloat(),
             points)
         draw(iPencilStroke)
 
@@ -147,7 +149,7 @@ class Pencil(context: Context, baseCanvas: Canvas, val socket : DrawingCollabora
         var jo = JSONObject()
         jo.put("boundingPoints", bounding)
         jo.put("toolType", 0)
-        jo.put("primaryColor", this.paint.color)
+        jo.put("primaryColor", toRBGColor(paint.color))
         jo.put("strokeWidth", this.paint.strokeWidth)
         jo.put("points", pointsStr)
         jo.put("sender", socket.socket.id())

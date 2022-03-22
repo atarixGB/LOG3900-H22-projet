@@ -1,4 +1,4 @@
-package com.example.mobile
+package com.example.mobile.activity.drawing
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.GridView
 import androidx.fragment.app.activityViewModels
+import com.example.mobile.R
 import com.example.mobile.Tools.ToolColorItem
 import com.example.mobile.Tools.ToolWeightAdapter
 import com.example.mobile.Tools.ToolWeightItem

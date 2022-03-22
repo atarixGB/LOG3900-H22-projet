@@ -1,8 +1,9 @@
-package com.example.mobile
+package com.example.mobile.activity.drawing
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
+import com.example.mobile.R
 import com.example.mobile.adapter.AlbumAdapter
 import com.example.mobile.popup.CreateDrawingPopUp
 import com.example.mobile.viewModel.SharedViewModelCreateDrawingPopUp

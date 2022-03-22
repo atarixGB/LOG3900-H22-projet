@@ -1,4 +1,4 @@
-package com.example.mobile.Tools
+package com.example.mobile.activity.drawing
 
 import android.content.Intent
 import android.graphics.Bitmap
@@ -10,6 +10,8 @@ import android.widget.Button
 import android.widget.GridView
 import androidx.fragment.app.activityViewModels
 import com.example.mobile.R
+import com.example.mobile.Tools.ToolAdapter
+import com.example.mobile.Tools.ToolItem
 import com.example.mobile.activity.albums.Albums
 import com.example.mobile.viewModel.ToolModel
 import com.example.mobile.viewModel.SharedViewModelToolBar
@@ -18,7 +20,7 @@ class ToolbarFragment : Fragment(), AdapterView.OnItemClickListener {
 
     private var gridView: GridView? = null
     private var arrayList:ArrayList<ToolItem> ? = null
-    private var toolAdapter: ToolAdapter ? = null
+    private var toolAdapter: ToolAdapter? = null
     private lateinit var user: String
     private lateinit var saveDrawingBtn : Button
     private lateinit var backBtn : Button
@@ -28,10 +30,9 @@ class ToolbarFragment : Fragment(), AdapterView.OnItemClickListener {
 
     enum class MenuItem(val position: Int) {
         PENCIL(0),
-        ERASER(1),
-        RECTANGLE(2),
-        OVAL(3),
-        SELECTION(4)
+        RECTANGLE(1),
+        OVAL(2),
+        SELECTION(3)
     }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -71,7 +72,6 @@ class ToolbarFragment : Fragment(), AdapterView.OnItemClickListener {
     private fun setDataList():ArrayList<ToolItem>{
         val arrayList:ArrayList<ToolItem> = ArrayList()
         arrayList.add(ToolItem(R.drawable.pencil_clicked))
-        arrayList.add(ToolItem(R.drawable.eraser))
         arrayList.add(ToolItem(R.drawable.rectangle))
         arrayList.add(ToolItem(R.drawable.circle))
         arrayList.add(ToolItem(R.drawable.select))
@@ -80,18 +80,12 @@ class ToolbarFragment : Fragment(), AdapterView.OnItemClickListener {
 
     override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         arrayList!!.set(MenuItem.PENCIL.position, ToolItem(R.drawable.pencil))
-        arrayList!!.set(MenuItem.ERASER.position, ToolItem(R.drawable.eraser))
         arrayList!!.set(MenuItem.RECTANGLE.position, ToolItem(R.drawable.rectangle))
         arrayList!!.set(MenuItem.OVAL.position, ToolItem(R.drawable.circle))
         arrayList!!.set(MenuItem.SELECTION.position, ToolItem(R.drawable.select))
         if(position == MenuItem.PENCIL.position){
             arrayList!!.set(MenuItem.PENCIL.position, ToolItem(R.drawable.pencil_clicked))
             toolChange.changeTool(MenuItem.PENCIL)
-
-        }else if(position== MenuItem.ERASER.position){
-            arrayList!!.set(MenuItem.ERASER.position, ToolItem(R.drawable.eraser_clicked))
-            toolChange.changeTool(MenuItem.ERASER)
-
         }else if(position== MenuItem.RECTANGLE.position){
             arrayList!!.set(MenuItem.RECTANGLE.position, ToolItem(R.drawable.rectangle_clicked))
             toolChange.changeTool(MenuItem.RECTANGLE)
