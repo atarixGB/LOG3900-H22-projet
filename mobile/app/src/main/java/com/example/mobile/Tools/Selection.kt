@@ -27,6 +27,18 @@ class  Selection(context: Context, baseCanvas: Canvas, socket : DrawingCollabora
         if (currentStroke!= null) {
             currentStroke!!.prepForBaseCanvas()
             currentStroke!!.isSelected = false
+
+            if (selectionCanvas!= null) {
+                selectionCanvas!!.drawColor(
+                    Color.TRANSPARENT,
+                    PorterDuff.Mode.CLEAR
+                ) //clear le canvas de selection
+            }
+            baseCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR) //clear le base canvas
+            strokes.forEach {element ->
+                element.drawStroke(baseCanvas) //redessiner toutes les formes sur le base canvas
+            }
+            currentStroke = null
         }
     }
 
@@ -37,12 +49,6 @@ class  Selection(context: Context, baseCanvas: Canvas, socket : DrawingCollabora
         if(isStrokeFound(IVec2(mStartX, mStartY))) {
             currentStroke = strokes[selectedIndex]
             currentStroke!!.isSelected = true
-            if (selectionCanvas!= null) {
-                selectionCanvas!!.drawColor(
-                    Color.TRANSPARENT,
-                    PorterDuff.Mode.CLEAR
-                ) //clear le canvas de selection
-            }
             createSelectionCanvas(currentStroke!!)
             drawStrokeOnSelectionCanvas(currentStroke!!)
             drawStrokesOnBaseCanvas(currentStroke!!)
@@ -63,11 +69,15 @@ class  Selection(context: Context, baseCanvas: Canvas, socket : DrawingCollabora
             isAntiAlias = true
             isDither = true
             style = Paint.Style.STROKE
-            strokeJoin = Paint.Join.ROUND
-            strokeCap = Paint.Cap.ROUND
+            strokeJoin = Paint.Join.MITER
+            strokeCap = Paint.Cap.SQUARE
             strokeWidth = 10f
         }
         selectionCanvas!!.drawRect(0f,0f, width.toFloat(), height.toFloat(),borderPaint)
+//        selectionCanvas!!.drawRect(0F, 0F, 50F, 50F, borderPaint)
+//        selectionCanvas!!.drawRect(0F, height.toFloat()-50F, 50F, 50F, borderPaint)
+//        selectionCanvas!!.drawRect( width.toFloat()-50F, 0F, 50F, 50F, borderPaint)
+//        selectionCanvas!!.drawRect( width.toFloat()-50F, height.toFloat()-50F, 50F, 50F, borderPaint)
     }
 
     private fun drawStrokeOnSelectionCanvas(stroke: Stroke) {
@@ -90,19 +100,7 @@ class  Selection(context: Context, baseCanvas: Canvas, socket : DrawingCollabora
         strokes[selectedIndex] = currentStroke!!
     }
 
-    override fun onDraw(canvas: Canvas) {
-//        path.reset()
-//        path.moveTo(mStartX, mStartY)
-//        path.quadTo(
-//            mStartX,
-//            mStartY,
-//            (5F + mStartX) ,
-//            (5F + mStartY)
-//        )
-//        path!!.lineTo(5F, 5F)
-//        canvas!!.drawPath(path!!, paint!!)
-//        path!!.reset()
-    }
+    override fun onDraw(canvas: Canvas) { }
 
     private fun isStrokeFound(clickedPos: IVec2): Boolean {
         strokes.reversed().forEach {element->
@@ -130,17 +128,21 @@ class  Selection(context: Context, baseCanvas: Canvas, socket : DrawingCollabora
     }
 
     fun changeSelectionWeight(width : Float){
-        currentStroke!!.currentStrokeWidth = width
-        createSelectionCanvas(currentStroke!!)
-        currentStroke!!.drawStroke(selectionCanvas!!)
-        drawStrokesOnBaseCanvas(currentStroke!!)
+        if (currentStroke != null) {
+            currentStroke!!.currentStrokeWidth = width
+            createSelectionCanvas(currentStroke!!)
+            currentStroke!!.drawStroke(selectionCanvas!!)
+            drawStrokesOnBaseCanvas(currentStroke!!)
+        }
     }
 
     fun changeSelectionColor(color:Int){
-        currentStroke!!.currentStrokeColor = color
-        createSelectionCanvas(currentStroke!!)
-        currentStroke!!.drawStroke(selectionCanvas!!)
-        drawStrokesOnBaseCanvas(currentStroke!!)
+        if (currentStroke != null) {
+            currentStroke!!.currentStrokeColor = color
+            createSelectionCanvas(currentStroke!!)
+            currentStroke!!.drawStroke(selectionCanvas!!)
+            drawStrokesOnBaseCanvas(currentStroke!!)
+        }
     }
 
     //code Leon :
