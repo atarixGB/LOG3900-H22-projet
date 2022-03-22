@@ -12,7 +12,7 @@ import androidx.appcompat.widget.PopupMenu
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.mobile.DrawingActivity
+import com.example.mobile.activity.drawing.DrawingActivity
 import com.example.mobile.Interface.IAlbum
 import com.example.mobile.Interface.IDrawing
 import com.example.mobile.R

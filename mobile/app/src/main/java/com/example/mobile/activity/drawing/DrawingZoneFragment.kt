@@ -1,4 +1,4 @@
-package com.example.mobile
+package com.example.mobile.activity.drawing
 
 import android.content.Context
 import android.graphics.*
@@ -11,12 +11,13 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import com.example.mobile.R
 import com.example.mobile.Tools.ToolManager
-import com.example.mobile.Tools.ToolbarFragment
 import io.socket.emitter.Emitter
 import org.json.JSONObject
 import com.example.mobile.Retrofit.IMyService
 import com.example.mobile.Retrofit.RetrofitClient
+import com.example.mobile.convertBitmapToByteArray
 import com.example.mobile.viewModel.ToolModel
 import com.example.mobile.viewModel.ToolParameters
 import com.example.mobile.viewModel.SharedViewModelToolBar
@@ -80,18 +81,14 @@ class DrawingZoneFragment : Fragment() {
         private var mCanvas: Canvas? = null
         private var isDrawing = false
         private lateinit var drawingId: String
-
-
-        private lateinit var iMyService: IMyService
         internal var compositeDisposable = CompositeDisposable()
-        private var filePath: String = ""
-
         fun onStrokeReceive(stroke: JSONObject){
-            Log.d("ici", "allo")
             if(stroke.getInt("toolType") == 0){
                 toolManager.pencil.onStrokeReceived(stroke)
             }else if(stroke.getInt("toolType") == 1){
                 toolManager.rectangle.onStrokeReceived(stroke)
+            }else if(stroke.getInt("toolType") == 2){
+                toolManager.ellipse.onStrokeReceived(stroke)
             }
             invalidate()
         }
@@ -99,6 +96,7 @@ class DrawingZoneFragment : Fragment() {
         override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
             super.onSizeChanged(w, h, oldw, oldh)
             mBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
+            //if the size of the canva fragment is 750dpx500dp, onsizechanged w= 1125px x 735
             mCanvas = Canvas(mBitmap!!)
             val borderPaint = Paint().apply {
                 color = ResourcesCompat.getColor(context.resources, R.color.black, null)
@@ -155,9 +153,7 @@ class DrawingZoneFragment : Fragment() {
 
         fun changeColor(color: Int) {
             if (this::toolManager.isInitialized) {
-                if (!toolManager.isCurrentToolEraser()) {
-                    toolManager.currentTool.changeColor(color)
-                }
+                toolManager.currentTool.changeColor(color)
             }
         }
 

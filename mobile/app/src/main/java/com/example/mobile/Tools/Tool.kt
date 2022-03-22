@@ -3,8 +3,7 @@ package com.example.mobile.Tools
 import android.content.Context
 import android.graphics.*
 import androidx.core.content.res.ResourcesCompat
-import com.example.mobile.DrawingCollaboration
-import com.example.mobile.Interface.IPencilStroke
+import com.example.mobile.activity.drawing.DrawingCollaboration
 import com.example.mobile.Interface.IVec2
 import com.example.mobile.R
 import org.json.JSONObject
@@ -30,8 +29,8 @@ abstract class Tool(context: Context, baseCanvas: Canvas, socket: DrawingCollabo
         // Dithering affects how colors with higher-precision than the device are down-sampled.
         isDither = true
         style = Paint.Style.STROKE // default: FILL
-        strokeJoin = Paint.Join.ROUND // default: MITER
-        strokeCap = Paint.Cap.ROUND // default: BUTT
+        strokeJoin = Paint.Join.MITER // default: MITER
+        strokeCap = Paint.Cap.SQUARE
         strokeWidth = 1f // default: Hairline-width (really thin)
     }
 
@@ -52,4 +51,18 @@ abstract class Tool(context: Context, baseCanvas: Canvas, socket: DrawingCollabo
     abstract fun onStrokeReceived(stroke : JSONObject)
 
     abstract fun onDraw(canvas: Canvas)
+
+    fun toRBGColor(color : Int) : String{
+        val red = Color.red(color)
+        val green = Color.green(color)
+        val blue = Color.blue(color)
+        return "rgb($red,$green,$blue)"
+    }
+
+    fun toIntColor(color : String): Int{
+        var colorBuffer = color.substring(4)
+        colorBuffer = colorBuffer.substring(0, colorBuffer.length - 1);//get only the numbers
+        val splitColor = colorBuffer.split(",")
+        return Color.rgb(splitColor[0].toInt(),splitColor[1].toInt(), splitColor[2].toInt())
+    }
 }
