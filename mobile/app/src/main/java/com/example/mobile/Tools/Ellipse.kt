@@ -12,7 +12,11 @@ import org.json.JSONObject
 import java.util.ArrayList
 import kotlin.math.abs
 
-class  Ellipse(context: Context, baseCanvas: Canvas, val socket : DrawingCollaboration) : Tool(context, baseCanvas, socket) {
+class  Ellipse(context: Context, baseCanvas: Canvas, val socket : DrawingCollaboration) : Tool(
+    context,
+    baseCanvas,
+    socket,
+) {
     var top = 0F
     var right = 0F
     var bottom = 0F
@@ -36,11 +40,12 @@ class  Ellipse(context: Context, baseCanvas: Canvas, val socket : DrawingCollabo
         val radius = stroke.getJSONObject("radius")
         val iEllipseStroke = IEllipseStroke(boundingPoints,
             toIntColor(stroke.getString("primaryColor")),
-            Color.WHITE, //to change
+            toIntColor(stroke.getString("secondaryColor")),
             stroke.getDouble("strokeWidth").toFloat(),
             IVec2(center.getDouble("x").toFloat(), center.getDouble("y").toFloat()),
             IVec2(radius.getDouble("x").toFloat(), radius.getDouble("y").toFloat()),
-            )
+
+        )
         draw(iEllipseStroke)
     }
 
@@ -49,16 +54,19 @@ class  Ellipse(context: Context, baseCanvas: Canvas, val socket : DrawingCollabo
         left = if (mStartX > mx) mx else mStartX
         bottom = if (mStartY > my) mStartY else my
         top = if (mStartY > my) my else mStartY
-        canvas!!.drawOval(left, top, right, bottom, paint!!)
+        canvas!!.drawOval(left, top, right, bottom, strokePaint!!)
+
+        canvas.drawOval(left, top, right, bottom, fillPaint!!)
+        canvas!!.drawRect(left, top, right, bottom, strokePaint!!)
     }
     private fun sendEllipseStroke(left : Float, top: Float, right: Float, bottom: Float){
         var bounding = JSONArray()
         var jo = JSONObject()
         jo.put("boundingPoints", bounding) //TODO
         jo.put("toolType", 2) //number of the ellipse
-        jo.put("primaryColor", toRBGColor(paint.color))
-        //TODO secondary color
-        jo.put("strokeWidth", this.paint.strokeWidth)
+        jo.put("primaryColor", toRBGColor(strokePaint.color))
+        jo.put("secondaryColor", toRBGColor(fillPaint.color))
+        jo.put("strokeWidth", this.strokePaint.strokeWidth)
 
         var center = JSONObject()
         center.put("x", left+ abs(left-right)/2)
@@ -91,5 +99,7 @@ class  Ellipse(context: Context, baseCanvas: Canvas, val socket : DrawingCollabo
             stroke.center.y+stroke.radius.y,
             upcomingPaint!!)
     }
+
+
 
 }

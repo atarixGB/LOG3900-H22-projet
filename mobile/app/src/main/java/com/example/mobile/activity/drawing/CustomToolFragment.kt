@@ -1,5 +1,6 @@
 package com.example.mobile.activity.drawing
 
+import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -32,6 +33,8 @@ class CustomToolFragment : Fragment(), AdapterView.OnItemClickListener {
     private var strokeButton: ToggleButton  ? = null
     private var filllButton: ToggleButton  ? = null
 
+    private var selectedColor : Int ? = null
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -56,9 +59,16 @@ class CustomToolFragment : Fragment(), AdapterView.OnItemClickListener {
         val fillButton: ToggleButton = rootView.findViewById(R.id.toggle_fond)
         strokeButton.setOnCheckedChangeListener { _, isChecked ->
             fillButton.isChecked = !isChecked
+            if(isChecked) {
+                toolParametersModel.changeStroke(true)
+            }
+
         }
         fillButton.setOnCheckedChangeListener { _, isChecked ->
             strokeButton.isChecked = !isChecked
+            if(isChecked) {
+                toolParametersModel.changeStroke(false)
+            }
         }
         return rootView
     }
@@ -101,6 +111,7 @@ class CustomToolFragment : Fragment(), AdapterView.OnItemClickListener {
         }else{
             val colorItem: ToolColorItem = colors!!.get(position)
             toolParametersModel.changeColor(colorItem.color!!)
+            selectedColor = colorItem.color
         }
 
     }

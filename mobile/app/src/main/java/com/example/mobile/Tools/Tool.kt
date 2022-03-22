@@ -9,7 +9,11 @@ import com.example.mobile.R
 import org.json.JSONObject
 import kotlin.collections.ArrayList
 
-abstract class Tool(context: Context, baseCanvas: Canvas, socket: DrawingCollaboration) {
+abstract class Tool(
+    context: Context,
+    baseCanvas: Canvas,
+    socket: DrawingCollaboration,
+) {
     var baseCanvas: Canvas = baseCanvas
     var context: Context = context
     var mStartX = 0f
@@ -21,14 +25,29 @@ abstract class Tool(context: Context, baseCanvas: Canvas, socket: DrawingCollabo
     protected val drawColor = ResourcesCompat.getColor(context.resources, R.color.black, null)
     protected val backgroundColor = ResourcesCompat.getColor(context.resources, R.color.white, null)
     var points : ArrayList<IVec2> = ArrayList<IVec2>()
+    var strokeColor : Int ? = R.color.black
+    var fillColor : Int ? = R.color.white
+    var isStrokeSelected : Boolean ? = true
 
-    protected val paint = Paint().apply {
+    protected val strokePaint = Paint().apply {
         color = drawColor
         // Smooths out edges of what is drawn without affecting shape.
         isAntiAlias = true
         // Dithering affects how colors with higher-precision than the device are down-sampled.
         isDither = true
         style = Paint.Style.STROKE // default: FILL
+        strokeJoin = Paint.Join.MITER // default: MITER
+        strokeCap = Paint.Cap.SQUARE
+        strokeWidth = 1f // default: Hairline-width (really thin)
+    }
+
+    protected val fillPaint = Paint().apply {
+        color = Color.WHITE
+        // Smooths out edges of what is drawn without affecting shape.
+        isAntiAlias = true
+        // Dithering affects how colors with higher-precision than the device are down-sampled.
+        isDither = true
+        style = Paint.Style.FILL // default: FILL
         strokeJoin = Paint.Join.MITER // default: MITER
         strokeCap = Paint.Cap.SQUARE
         strokeWidth = 1f // default: Hairline-width (really thin)
@@ -41,11 +60,15 @@ abstract class Tool(context: Context, baseCanvas: Canvas, socket: DrawingCollabo
     abstract fun touchUp()
 
     fun changeWeight(width : Float){
-        this.paint.strokeWidth = width
+        this.strokePaint.strokeWidth = width
     }
 
     fun changeColor(color:Int){
-        this.paint.color = color
+        if(isStrokeSelected!!){
+            this.strokePaint.color = color
+        }else{
+            this.fillPaint.color = color
+        }
     }
 
     abstract fun onStrokeReceived(stroke : JSONObject)
