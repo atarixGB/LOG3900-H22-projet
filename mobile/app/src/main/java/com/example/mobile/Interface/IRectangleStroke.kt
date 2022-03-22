@@ -13,7 +13,7 @@ data class IRectangleStroke(
     val width: Float,
     val height: Float,
     var topLeftCorner: IVec2):Stroke(boundingPoints,currentStrokeColor,currentStrokeWidth, isSelected,
-    ToolbarFragment.MenuItem.PENCIL) {
+    ToolbarFragment.MenuItem.RECTANGLE) {
 
     override fun drawStroke(canvas: Canvas) {
         val upcomingPaint = Paint().apply {

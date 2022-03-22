@@ -54,6 +54,7 @@ class Pencil(context: Context, baseCanvas: Canvas, val socket : DrawingCollabora
         baseCanvas!!.drawPath(path!!, paint!!)
         path!!.reset()
 
+        //ajout a l'array list des strokes
         val iPencilStroke = IPencilStroke(getBoundingPoints(),
             getPaintParameters().color,
             getPaintParameters().strokeWidth,

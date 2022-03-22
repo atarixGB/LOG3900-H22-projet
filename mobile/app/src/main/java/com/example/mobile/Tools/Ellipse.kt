@@ -5,6 +5,7 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import com.example.mobile.Interface.IEllipseStroke
+import com.example.mobile.Interface.IRectangleStroke
 import com.example.mobile.Interface.IVec2
 import com.example.mobile.activity.drawing.DrawingCollaboration
 import org.json.JSONArray
@@ -12,7 +13,7 @@ import org.json.JSONObject
 import java.util.ArrayList
 import kotlin.math.abs
 
-class  Ellipse(context: Context, baseCanvas: Canvas, val socket : DrawingCollaboration) : Tool(context, baseCanvas, socket) {
+class  Ellipse(context: Context, baseCanvas: Canvas, val socket : DrawingCollaboration, val selection: Selection) : Tool(context, baseCanvas, socket) {
     var top = 0F
     var right = 0F
     var bottom = 0F
@@ -28,6 +29,33 @@ class  Ellipse(context: Context, baseCanvas: Canvas, val socket : DrawingCollabo
     override fun touchUp() {
         onDraw(baseCanvas)
         this.sendEllipseStroke(left, top, right, bottom)
+
+        //ajout a l'array list des strokes
+        val iEllipseStroke = IEllipseStroke(getBoundingPoints(),
+            getPaintParameters().color,
+            Color.WHITE, //to change
+            getPaintParameters().strokeWidth,
+            false,
+            getCenter(),
+            getRadius())
+        selection.addStroke(iEllipseStroke)
+    }
+
+    private fun getCenter(): IVec2{
+        var center = IVec2(left+ abs(left-right)/2, top+abs(top-bottom)/2)
+        return center
+    }
+
+    private fun getRadius(): IVec2{
+        var radius = IVec2(abs(left-right)/2, abs(top-bottom)/2)
+        return radius
+    }
+
+    private fun getPaintParameters(): Paint {
+        val paint = Paint()
+        paint.color = this.paint.color
+        paint.strokeWidth = this.paint.strokeWidth
+        return paint
     }
 
     override fun onStrokeReceived(stroke: JSONObject) {
@@ -38,6 +66,7 @@ class  Ellipse(context: Context, baseCanvas: Canvas, val socket : DrawingCollabo
             toIntColor(stroke.getString("primaryColor")),
             Color.WHITE, //to change
             stroke.getDouble("strokeWidth").toFloat(),
+            false,
             IVec2(center.getDouble("x").toFloat(), center.getDouble("y").toFloat()),
             IVec2(radius.getDouble("x").toFloat(), radius.getDouble("y").toFloat()),
             )
@@ -76,8 +105,8 @@ class  Ellipse(context: Context, baseCanvas: Canvas, val socket : DrawingCollabo
 
     private fun draw(stroke: IEllipseStroke) {
         val upcomingPaint = Paint().apply {
-            color = stroke.primaryColor
-            strokeWidth = stroke.strokeWidth
+            color = stroke.currentStrokeColor
+            strokeWidth = stroke.currentStrokeWidth
             isAntiAlias = true
             // Dithering affects how colors with higher-precision than the device are down-sampled.
             isDither = true
@@ -90,6 +119,15 @@ class  Ellipse(context: Context, baseCanvas: Canvas, val socket : DrawingCollabo
             stroke.center.x+stroke.radius.x,
             stroke.center.y+stroke.radius.y,
             upcomingPaint!!)
+    }
+
+    private fun getBoundingPoints():ArrayList<IVec2>{
+        val points = ArrayList<IVec2>()
+        val topLeftPoint = IVec2(left, top)
+        val bottomRightPoint = IVec2(right, bottom)
+        points.add(topLeftPoint)
+        points.add(bottomRightPoint)
+        return points
     }
 
 }

@@ -31,7 +31,7 @@ class Rectangle (context: Context, baseCanvas: Canvas, val socket : DrawingColla
         onDraw(baseCanvas)
         this.sendRectangleStroke(left, top, right, bottom)
 
-
+        //ajout a l'array list des strokes
         val iRectangleStroke = IRectangleStroke(getBoundingPoints(),
             getPaintParameters().color,
             Color.WHITE, //to change
@@ -122,8 +122,6 @@ class Rectangle (context: Context, baseCanvas: Canvas, val socket : DrawingColla
     }
 
     private fun getBoundingPoints():ArrayList<IVec2>{
-//        val topLeftPoint = IVec2(1, 1)
-//        val bottomRightPoint = IVec2(this.rightestCoord, this.lowestCoord)
         val points = ArrayList<IVec2>()
         val topLeftPoint = IVec2(left, top)
         val bottomRightPoint = IVec2(right, bottom)
