@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SIGN_UP_URL } from '@app/constants/api-urls';
+import { AlbumGalleryService } from '../album-gallery/album-gallery.service';
 
 @Injectable({
     providedIn: 'root',
@@ -17,7 +18,7 @@ export class SignUpService {
     isUsedEmail: boolean;
     isAvatarTooLarge: boolean;
 
-    constructor(private httpClient: HttpClient, private router: Router, private route: ActivatedRoute) {
+    constructor(private httpClient: HttpClient, private albumGalleryService: AlbumGalleryService, private router: Router, private route: ActivatedRoute) {
         this.setBoolsToDefault();
     }
 
@@ -41,15 +42,16 @@ export class SignUpService {
             (result) => {
               if (result == 201) {
                     console.log(result, 'Signup success');
+                    this.albumGalleryService.addUserToPublicAlbum(this.identifier);
                     this.router.navigate(['../home'], { relativeTo: this.route });
                 } else if (result == 406) {
                     this.isExistingUsername = true;
-                }else if (result == 406) {
+                } else if (result == 406) {
                     this.isUsedEmail = true;
                 }
             },
             (error) => {
-                console.log('Error:', error); 
+                console.log('Error:', error);
                 this.isAvatarTooLarge = true;
             },
         );

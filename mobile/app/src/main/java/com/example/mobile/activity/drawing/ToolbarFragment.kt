@@ -13,7 +13,7 @@ import com.example.mobile.R
 import com.example.mobile.Tools.ToolAdapter
 import com.example.mobile.Tools.ToolItem
 import com.example.mobile.activity.albums.Albums
-import com.example.mobile.model.ToolModel
+import com.example.mobile.viewModel.ToolModel
 import com.example.mobile.viewModel.SharedViewModelToolBar
 
 class ToolbarFragment : Fragment(), AdapterView.OnItemClickListener {

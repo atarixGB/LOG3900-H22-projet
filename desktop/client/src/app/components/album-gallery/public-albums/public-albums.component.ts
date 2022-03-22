@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { IAlbum } from '@app/interfaces-enums/IAlbum';
+import { JoinRequestDialogComponent } from '@app/components/album-gallery/public-albums/join-request-dialog/join-request-dialog.component';
 import { AlbumGalleryService } from '@app/services/album-gallery/album-gallery.service';
 import { LoginService } from '@app/services/login/login.service';
 
@@ -10,7 +12,7 @@ import { LoginService } from '@app/services/login/login.service';
 })
 export class PublicAlbumsComponent implements OnInit {
 
-  constructor(public albumGalleryService: AlbumGalleryService, public loginService: LoginService) {}
+  constructor(public albumGalleryService: AlbumGalleryService, public loginService: LoginService, public dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.albumGalleryService.fetchAllAlbumsFromDatabase();
@@ -20,8 +22,9 @@ export class PublicAlbumsComponent implements OnInit {
     console.log(album.name);
 
     if (album != null) {
-      this.albumGalleryService.currentAlbum = album;
-      this.albumGalleryService.sendJoinAlbumRequest(album);
+      this.dialog.open(JoinRequestDialogComponent, {
+        data: album,
+      });
     }
   }
 
