@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { LoginService } from '@app/services/login/login.service';
+import { SoundEffectsService } from '@app/services/sound-effects/sound-effects.service';
 
 @Component({
     selector: 'app-login',
@@ -13,7 +14,7 @@ export class LoginComponent {
 
     isValidFields: boolean;
 
-    constructor(public loginService: LoginService) {
+    constructor(public loginService: LoginService, private soundEffetsService: SoundEffectsService) {
         this.email = '';
         this.password = '';
         this.setBoolsToDefault();
@@ -32,6 +33,7 @@ export class LoginComponent {
             this.loginService.connect();
         } else {
             this.isValidFields = false;
+            this.soundEffetsService.playFailureSound();
         }
     }
 

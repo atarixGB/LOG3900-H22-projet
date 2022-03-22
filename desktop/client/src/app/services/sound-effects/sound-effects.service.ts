@@ -14,7 +14,7 @@ export class SoundEffectsService {
     this.drawAudio.loop = true;
   }
 
-  // Group 1: Success and failure
+  // Sounds 1: Signup and login
   playSuccessSound(): void {
     this.soundEffectAudio.src = sounds.SUCCESS;
     this.loadAndPlay(this.soundEffectAudio);
@@ -25,13 +25,18 @@ export class SoundEffectsService {
     this.loadAndPlay(this.soundEffectAudio);
   }
 
-  // Group 2: Sending a message
+  // Sounds 2: Chat 
   playSendMsgSound(): void {
     this.soundEffectAudio = new Audio(sounds.SEND_MSG);
     this.loadAndPlay(this.soundEffectAudio);
   }
 
-  // Group 3: Editor tools
+  playHelloSound(): void {
+    this.soundEffectAudio = new Audio(sounds.HELLO);
+    this.loadAndPlay(this.soundEffectAudio);
+  }
+
+  // Sounds 3: Editor tools
   startDrawSound(): void {
     this.loadAndPlay(this.drawAudio);
   }
@@ -40,7 +45,6 @@ export class SoundEffectsService {
     this.drawAudio.pause();
   }
 
-  // Group 2: Sending a message
   playSelectionSound(): void {
     this.soundEffectAudio.src = sounds.SELECT;
     this.loadAndPlay(this.soundEffectAudio);
