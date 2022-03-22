@@ -1,9 +1,12 @@
 package com.example.mobile
 
+import android.content.Context
+import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
 import android.util.Base64
+import android.util.DisplayMetrics
 import com.mikhaellopez.circularimageview.CircularImageView
 import java.io.ByteArrayOutputStream
 
@@ -23,4 +26,26 @@ fun convertBitmapToByteArray(bitmap: Bitmap): ByteArray {
     val stream = ByteArrayOutputStream()
     bitmap.compress(Bitmap.CompressFormat.PNG, 90, stream)
     return stream.toByteArray()
+}
+
+fun convertDpToPixel(dp: Float, context: Context?): Float {
+    return if (context != null) {
+        val resources = context.resources
+        val metrics = resources.displayMetrics
+        dp * (metrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
+    } else {
+        val metrics = Resources.getSystem().displayMetrics
+        dp * (metrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
+    }
+}
+
+fun convertPixelsToDp(px: Float, context: Context?): Float {
+    return if (context != null) {
+        val resources = context.resources
+        val metrics = resources.displayMetrics
+        px / (metrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
+    } else {
+        val metrics = Resources.getSystem().displayMetrics
+        px / (metrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
+    }
 }

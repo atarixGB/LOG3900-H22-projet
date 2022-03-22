@@ -58,13 +58,16 @@ import { PublicChatroomsComponent } from './components/chat/public-chatrooms/pub
 import { DeleteRoomDialogComponent } from './components/chat/delete-room-dialog/delete-room-dialog.component';
 import { CreateDrawingDialogComponent } from './components/editor/create-drawing-dialog/create-drawing-dialog.component';
 import { RequestsDialogComponent } from './components/album-gallery/drawings-view/requests-dialog/requests-dialog.component';
+import { MembersListDialogComponent } from './components/album-gallery/drawings-view/members-list-dialog/members-list-dialog.component';
+import { AlbumSettingsDialogComponent } from './components/album-gallery/drawings-view/album-settings-dialog/album-settings-dialog.component';
+import { JoinRequestDialogComponent } from './components/album-gallery/public-albums/join-request-dialog/join-request-dialog.component';
 
 @NgModule({
     declarations: [
         AppComponent,
         EditorComponent,
         SidebarComponent,
-        DrawingComponent, 
+        DrawingComponent,
         FileMenuComponent,
         ToolsListComponent,
         PencilConfigComponent,
@@ -91,12 +94,15 @@ import { RequestsDialogComponent } from './components/album-gallery/drawings-vie
         ProfileComponent,
         ProfileSettingsComponent,
         SelectionConfigComponent,
-        ColorConfigComponent, 
+        ColorConfigComponent,
         CreateRoomDialogComponent,
         PublicChatroomsComponent,
         DeleteRoomDialogComponent,
         CreateDrawingDialogComponent,
         RequestsDialogComponent,
+        MembersListDialogComponent,
+        AlbumSettingsDialogComponent,
+        JoinRequestDialogComponent,
     ],
     imports: [
         BrowserModule,

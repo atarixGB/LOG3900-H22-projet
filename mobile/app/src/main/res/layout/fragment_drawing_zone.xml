@@ -1,12 +1,17 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="0dp"
-    tools:context="com.example.mobile.DrawingZoneFragment">
+    tools:context="com.example.mobile.activity.drawing.DrawingZoneFragment">
 
-    <view class="com.example.mobile.DrawingZoneFragment$DrawingView"
+    <LinearLayout
         android:id="@+id/drawingView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="10dp" />
-</FrameLayout>
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

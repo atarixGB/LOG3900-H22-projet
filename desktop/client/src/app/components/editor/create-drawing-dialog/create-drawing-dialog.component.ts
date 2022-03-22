@@ -3,6 +3,7 @@ import { AlbumGalleryService } from '@app/services/album-gallery/album-gallery.s
 import { IAlbum } from '@app/interfaces-enums/IAlbum'
 import { MatDialogRef } from '@angular/material/dialog';
 import { LoginService } from '@app/services/login/login.service';
+import { PUBLIC_ALBUM } from '@app/constants/constants';
 
 const MAX_NAME_LENGTH = 40;
 @Component({
@@ -19,8 +20,8 @@ export class CreateDrawingDialogComponent implements OnInit {
   constructor(public albumGalleryService: AlbumGalleryService, public loginService: LoginService, private currentDialogRef: MatDialogRef<CreateDrawingDialogComponent>) {
     this.name = "dessin1";
     this.isPrivate = false;
-    this.selectedAlbumName = "public (par défaut)";
-    this.selectedAlbumId = "id";
+    this.selectedAlbumName = PUBLIC_ALBUM.name;
+    this.selectedAlbumId = PUBLIC_ALBUM.id;
   }
 
   ngOnInit(): void {
@@ -35,10 +36,10 @@ export class CreateDrawingDialogComponent implements OnInit {
     this.isPrivate = value == 1;
     if (this.isPrivate) {
       this.selectedAlbumName = this.albumGalleryService.myAlbums[0].name;
-      this.selectedAlbumId = this.albumGalleryService.myAlbums[0]._id;
+      this.albumGalleryService.selectedAlbumId = this.albumGalleryService.myAlbums[0]._id;
     } else {
-      this.selectedAlbumName = "public (par défaut)";
-      this.selectedAlbumId = "id"; // CHANGE FOR PUBLIC ALBUM ID
+      this.selectedAlbumName = PUBLIC_ALBUM.name;
+      this.selectedAlbumId = PUBLIC_ALBUM.id;
     }
   }
 
@@ -57,8 +58,8 @@ export class CreateDrawingDialogComponent implements OnInit {
 
   onAlbumClick(album: IAlbum): void {
     this.selectedAlbumName = album.name;
-    this.selectedAlbumId = album._id;
-    console.log("onAlbumClick",this.selectedAlbumName, this.selectedAlbumId);
+    this.albumGalleryService.selectedAlbumId = album._id;
+    console.log("onAlbumClick",this.selectedAlbumName, this.albumGalleryService.selectedAlbumId);
   }
 
   private getAlbums(): void {
