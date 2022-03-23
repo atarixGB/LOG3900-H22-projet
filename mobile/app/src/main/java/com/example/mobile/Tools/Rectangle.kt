@@ -93,10 +93,19 @@ class Rectangle (context: Context, baseCanvas: Canvas, val socket : DrawingColla
             stroke.getDouble("height").toFloat(),
             topLeftCorner)
         draw(iRectangleStroke)
+
+        selection.addStroke(iRectangleStroke)
     }
 
     private fun sendRectangleStroke(left : Float, top: Float, right: Float, bottom: Float){
         var bounding = JSONArray()
+        for(pts in this.getBoundingPoints()){
+            var arr = JSONObject()
+            arr.put("x",pts.x)
+            arr.put("y",pts.y)
+            bounding.put(arr)
+        }
+
         var topLeftCorner = JSONObject()
         topLeftCorner.put("x", left)
         topLeftCorner.put("y",top)
@@ -106,6 +115,7 @@ class Rectangle (context: Context, baseCanvas: Canvas, val socket : DrawingColla
         jo.put("toolType", 1)
         jo.put("primaryColor", toRBGColor(paint.color))
         //TODO secondary color
+        jo.put("secondaryColor", toRBGColor(Color.WHITE))
         jo.put("strokeWidth", this.paint.strokeWidth)
         jo.put("topLeftCorner", topLeftCorner)
         jo.put("width", abs(left-right))

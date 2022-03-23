@@ -83,6 +83,8 @@ class  Ellipse(context: Context, baseCanvas: Canvas, val socket : DrawingCollabo
             IVec2(radius.getDouble("x").toFloat(), radius.getDouble("y").toFloat()),
             )
         draw(iEllipseStroke)
+
+        selection.addStroke(iEllipseStroke)
     }
 
     override fun onDraw(canvas: Canvas) {
@@ -94,11 +96,19 @@ class  Ellipse(context: Context, baseCanvas: Canvas, val socket : DrawingCollabo
     }
     private fun sendEllipseStroke(left : Float, top: Float, right: Float, bottom: Float){
         var bounding = JSONArray()
+        for(pts in this.getBoundingPoints()){
+            var arr = JSONObject()
+            arr.put("x",pts.x)
+            arr.put("y",pts.y)
+            bounding.put(arr)
+        }
+
         var jo = JSONObject()
         jo.put("boundingPoints", bounding) //TODO
         jo.put("toolType", 2) //number of the ellipse
         jo.put("primaryColor", toRBGColor(paint.color))
         //TODO secondary color
+        jo.put("secondaryColor", toRBGColor(Color.WHITE))
         jo.put("strokeWidth", this.paint.strokeWidth)
 
         var center = JSONObject()

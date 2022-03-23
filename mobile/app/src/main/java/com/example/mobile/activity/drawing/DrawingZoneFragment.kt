@@ -83,14 +83,16 @@ class DrawingZoneFragment : Fragment() {
         private lateinit var drawingId: String
         internal var compositeDisposable = CompositeDisposable()
         fun onStrokeReceive(stroke: JSONObject){
-            if(stroke.getInt("toolType") == 0){
-                toolManager.pencil.onStrokeReceived(stroke)
-            }else if(stroke.getInt("toolType") == 1){
-                toolManager.rectangle.onStrokeReceived(stroke)
-            }else if(stroke.getInt("toolType") == 2){
-                toolManager.ellipse.onStrokeReceived(stroke)
+            if (socket.socket.id() != stroke.getString("sender")) {
+                if (stroke.getInt("toolType") == 0) {
+                    toolManager.pencil.onStrokeReceived(stroke)
+                } else if (stroke.getInt("toolType") == 1) {
+                    toolManager.rectangle.onStrokeReceived(stroke)
+                } else if (stroke.getInt("toolType") == 2) {
+                    toolManager.ellipse.onStrokeReceived(stroke)
+                }
+                invalidate()
             }
-            invalidate()
         }
 
         override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
@@ -139,10 +141,6 @@ class DrawingZoneFragment : Fragment() {
                         toolManager.currentTool.my = event.y
                         toolManager.currentTool.touchStart()
                     }
-//                    if (toolManager.currentTool.nextTool != ToolbarFragment.MenuItem.SELECTION) {
-//                        changeTool(toolManager.currentTool.nextTool)
-//                        toolManager.currentTool.touchStart()
-//                    }
                     invalidate()
                 }
                 MotionEvent.ACTION_MOVE -> {
@@ -154,9 +152,6 @@ class DrawingZoneFragment : Fragment() {
                     toolManager.currentTool.touchUp()
                     this.toolManager.changeTool(toolManager.currentTool.nextTool)
                     resetPath()
-//                    if (toolManager.currentTool.nextTool == ToolbarFragment.MenuItem.SELECTION) {
-//                        toolManager.selection.resetSelection()
-//                    }
                     invalidate()
                 }
             }

@@ -11,10 +11,11 @@ import com.example.mobile.R
 import com.example.mobile.activity.drawing.DrawingCollaboration
 import com.example.mobile.activity.drawing.ToolbarFragment
 import com.example.mobile.viewModel.ToolParameters
+import org.json.JSONArray
 import org.json.JSONObject
 import java.util.*
 
-class  Selection(context: Context, baseCanvas: Canvas, socket : DrawingCollaboration) : Tool(context, baseCanvas, socket) {
+class  Selection(context: Context, baseCanvas: Canvas, val socket : DrawingCollaboration) : Tool(context, baseCanvas, socket) {
     var strokes= ArrayList<Stroke>()
     private var currentStroke : Stroke? = null
     private var selectionCanvas: Canvas? = null
@@ -43,12 +44,19 @@ class  Selection(context: Context, baseCanvas: Canvas, socket : DrawingCollabora
                 element.drawStroke(baseCanvas) //redessiner toutes les formes sur le base canvas
             }
 
+            var jo = JSONObject()
+            jo.put("strokeIndex", selectedIndex)
+            jo.put("sender", socket.socket.id())
+            socket.socket.emit("broadcastPasteRequest", jo )
+
             if (!isInBounds(currentStroke!!.boundingPoints, IVec2(mx, my)) && !isToolSelection!!) {
                 nextTool = oldTool!!
             } else {
                 nextTool = ToolbarFragment.MenuItem.SELECTION
             }
             currentStroke = null
+
+
 
             //if nzelna en dehors de la selection badel tool a l'ancien tool qui a ete selectionner
         }
@@ -69,6 +77,12 @@ class  Selection(context: Context, baseCanvas: Canvas, socket : DrawingCollabora
             strokes.forEach { element ->
                 element.drawStroke(baseCanvas) //redessiner toutes les formes sur le base canvas
             }
+
+            var jo = JSONObject()
+            jo.put("strokeIndex", selectedIndex)
+            jo.put("sender", socket.socket.id())
+            socket.socket.emit("broadcastPasteRequest", jo )
+
             currentStroke = null
             nextTool = ToolbarFragment.MenuItem.SELECTION
         }
@@ -83,10 +97,6 @@ class  Selection(context: Context, baseCanvas: Canvas, socket : DrawingCollabora
             selectStroke(currentStroke!!)
         }
         nextTool = ToolbarFragment.MenuItem.SELECTION
-    }
-
-    override fun onStrokeReceived(stroke: JSONObject) {
-        TODO("Not yet implemented")
     }
 
     private fun createSelectionCanvas(stroke: Stroke) {
@@ -109,7 +119,6 @@ class  Selection(context: Context, baseCanvas: Canvas, socket : DrawingCollabora
     private fun drawStrokeOnSelectionCanvas(stroke: Stroke) {
         stroke.prepForSelection()
         stroke.drawStroke(selectionCanvas!!)
-//        selectionCanvas!!.setBitmap(selectionBitmap)
     }
 
     private fun drawStrokesOnBaseCanvas(stroke: Stroke) {
@@ -160,6 +169,7 @@ class  Selection(context: Context, baseCanvas: Canvas, socket : DrawingCollabora
         createSelectionCanvas(stroke)
         drawStrokeOnSelectionCanvas(stroke)
         drawStrokesOnBaseCanvas(stroke)
+        sendSelectionStroke()
     }
 
     fun changeSelectionWeight(width : Float){
@@ -168,6 +178,13 @@ class  Selection(context: Context, baseCanvas: Canvas, socket : DrawingCollabora
             createSelectionCanvas(currentStroke!!)
             currentStroke!!.drawStroke(selectionCanvas!!)
             drawStrokesOnBaseCanvas(currentStroke!!)
+
+            //send
+            var jo = JSONObject()
+            jo.put("strokeIndex", selectedIndex)
+            jo.put("value", width)
+            jo.put("sender", socket.socket.id())
+            socket.socket.emit("broadcastNewStrokeWidth", jo)
         }
     }
 
@@ -177,6 +194,25 @@ class  Selection(context: Context, baseCanvas: Canvas, socket : DrawingCollabora
             createSelectionCanvas(currentStroke!!)
             currentStroke!!.drawStroke(selectionCanvas!!)
             drawStrokesOnBaseCanvas(currentStroke!!)
+
+            //send
+            var jo = JSONObject()
+            jo.put("strokeIndex", selectedIndex)
+            jo.put("color", toRBGColor(color))
+            jo.put("sender", socket.socket.id())
+            socket.socket.emit("broadcastNewPrimaryColor", jo)
         }
+    }
+
+    override fun onStrokeReceived(stroke: JSONObject) {
+//        var selectedIndex = stroke["selectedIndex"]
+    }
+
+    private fun sendSelectionStroke(){
+        //convert into the right json format
+        var jo = JSONObject()
+        jo.put("strokeIndex", selectedIndex)
+        jo.put("sender", socket.socket.id())
+        socket.socket.emit("broadcastSelection", jo )
     }
 }

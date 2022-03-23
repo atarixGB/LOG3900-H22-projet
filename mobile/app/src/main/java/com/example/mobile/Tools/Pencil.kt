@@ -109,6 +109,8 @@ class Pencil(context: Context, baseCanvas: Canvas, val socket : DrawingCollabora
             points)
         draw(iPencilStroke)
 
+        selection.addStroke(iPencilStroke)
+
     }
 
     override fun onDraw(canvas: Canvas) {}
