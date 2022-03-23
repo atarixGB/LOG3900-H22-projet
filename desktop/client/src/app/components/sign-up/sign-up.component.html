@@ -4,7 +4,7 @@
    <div fxLayout="column" fxLayoutAlign="start center">
         <h1>Création du compte</h1>
         <form>
-           <mat-form-field  appearance="fill">
+           <mat-form-field class="animate__animated" [ngClass]="{animate__headShake: !this.isValidUsername || this.signUpService.isExistingUsername}"  appearance="fill">
              <mat-label>Identifiant</mat-label>
              <input matInput placeholder="Entrez votre nom" [(ngModel)]="this.username" name="username">
            </mat-form-field>
@@ -12,21 +12,21 @@
         <p *ngIf="this.signUpService.isExistingUsername" class="error">^ <u>Cet identifiant n'est pas disponible</u> ^</p>
         <p *ngIf="!this.isValidUsername" class="error errorMargin">^ <u>L'identifiant doit être composé de lettres et/ou de chiffres uniquement</u> ^</p>
         <form>
-           <mat-form-field  appearance="fill">
+           <mat-form-field class="animate__animated" [ngClass]="{animate__headShake: !this.isValidPW}"  appearance="fill">
              <mat-label>Mot de passe</mat-label>
              <input matInput placeholder="Entrez votre mot de passe" type="password" [(ngModel)]="this.password" name="password">
            </mat-form-field>
         </form>
         <p *ngIf="!this.isValidPW" class="error errorMargin">^ <u>Le mot de passe ne doit pas contenir d'espaces.</u> ^</p>
         <form>
-           <mat-form-field  appearance="fill">
+           <mat-form-field class="animate__animated" [ngClass]="{animate__headShake: !this.isValidConfirmation}" appearance="fill">
              <mat-label>Confirmation du mot de passe</mat-label>
              <input matInput placeholder="Confirmer votre mot de passe" type="password" [(ngModel)]="this.confirmedPassword" name="confirmedPassword">
            </mat-form-field>
         </form>
         <p *ngIf="!this.isValidConfirmation" class="error errorMargin">^ <u>Les champs mot de passe et confirmation ne correspondent pas</u> ^</p>
         <form>
-           <mat-form-field  appearance="fill">
+           <mat-form-field class="animate__animated" [ngClass]="{animate__headShake: !this.isValidEmail || this.signUpService.isUsedEmail}" appearance="fill">
              <mat-label>Courriel</mat-label>
              <input matInput placeholder="Entrez votre courriel" [(ngModel)]="this.email" name="email">
            </mat-form-field>
@@ -45,7 +45,7 @@
 
     <div fxLayout="column" fxLayoutAlign="center center">
         <span>Votre avatar : </span> <br>
-        <div id="avatarDisplay" fxLayoutAlign="center center">
+        <div id="avatarDisplay" class="animate__animated" [ngClass]="{animate__headShake: this.signUpService.isAvatarTooLarge}" fxLayoutAlign="center center">
             <img *ngIf="this.signUpService.avatarSrc" id="avatarImg" src="data:image/png;base64,{{this.signUpService.avatarSrc}}">
         </div>
         <p *ngIf="this.signUpService.isAvatarTooLarge" class="error">^ <u>L'avatar importé est trop volumineux</u> ^</p>
