@@ -21,6 +21,7 @@ class ToolManager {
         this.context = context
         initialiseTools()
         this.currentTool = pencil
+        this.currentTool.nextTool = ToolbarFragment.MenuItem.PENCIL
     }
 
     private fun initialiseTools(){
@@ -28,7 +29,6 @@ class ToolManager {
         this.pencil = Pencil(context,baseCanvas,socket, selection )
         this.rectangle = Rectangle(context, baseCanvas, socket, selection)
         this.ellipse = Ellipse(context, baseCanvas, socket, selection)
-//        this.selection= Selection(context,baseCanvas,socket)
     }
 
 

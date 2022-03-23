@@ -9,6 +9,7 @@ import com.example.mobile.activity.drawing.DrawingCollaboration
 import com.example.mobile.Interface.IVec2
 import com.example.mobile.Interface.Stroke
 import com.example.mobile.R
+import com.example.mobile.activity.drawing.ToolbarFragment
 import com.example.mobile.viewModel.ToolParameters
 import org.json.JSONObject
 import kotlin.collections.ArrayList
@@ -22,6 +23,7 @@ abstract class Tool(context: Context, baseCanvas: Canvas, socket: DrawingCollabo
     var my = 0f
     var path = Path()
     val TOUCH_TOLERANCE = 4f
+    lateinit var nextTool: ToolbarFragment.MenuItem
     protected val drawColor = ResourcesCompat.getColor(context.resources, R.color.black, null)
     protected val backgroundColor = ResourcesCompat.getColor(context.resources, R.color.white, null)
     var points : ArrayList<IVec2> = ArrayList<IVec2>()
@@ -52,7 +54,12 @@ abstract class Tool(context: Context, baseCanvas: Canvas, socket: DrawingCollabo
         this.paint.color = color
     }
 
+    fun changeTool(nextTool: ToolbarFragment.MenuItem) {
+        this.nextTool = nextTool
+    }
+
     abstract fun onStrokeReceived(stroke : JSONObject)
+
 
     abstract fun onDraw(canvas: Canvas)
 

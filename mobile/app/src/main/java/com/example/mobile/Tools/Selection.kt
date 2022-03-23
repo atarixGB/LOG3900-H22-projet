@@ -9,6 +9,7 @@ import com.example.mobile.Interface.IVec2
 import com.example.mobile.Interface.Stroke
 import com.example.mobile.R
 import com.example.mobile.activity.drawing.DrawingCollaboration
+import com.example.mobile.activity.drawing.ToolbarFragment
 import com.example.mobile.viewModel.ToolParameters
 import org.json.JSONObject
 import java.util.*
@@ -19,25 +20,54 @@ class  Selection(context: Context, baseCanvas: Canvas, socket : DrawingCollabora
     private var selectionCanvas: Canvas? = null
     private var selectionBitmap: Bitmap? = null
     private var selectedIndex:Int=0
+    var isToolSelection: Boolean? = null
 
     override fun touchStart() {
         mStartX = mx
         mStartY = my
-        if (currentStroke!= null) {
+        if (currentStroke != null) {
             currentStroke!!.prepForBaseCanvas()
             currentStroke!!.isSelected = false
 
-            if (selectionCanvas!= null) {
+            if (selectionCanvas != null) {
                 selectionCanvas!!.drawColor(
                     Color.TRANSPARENT,
                     PorterDuff.Mode.CLEAR
                 ) //clear le canvas de selection
             }
             baseCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR) //clear le base canvas
-            strokes.forEach {element ->
+            strokes.forEach { element ->
+                element.drawStroke(baseCanvas) //redessiner toutes les formes sur le base canvas
+            }
+
+            if (!isInBounds(currentStroke!!.boundingPoints, IVec2(mx, my)) && !isToolSelection!!) {
+                changeTool(ToolbarFragment.MenuItem.PENCIL)
+            } else {
+                changeTool(ToolbarFragment.MenuItem.SELECTION)
+            }
+            currentStroke = null
+
+            //if nzelna en dehors de la selection badel tool a l'ancien tool qui a ete selectionner
+        }
+    }
+
+    fun resetSelection () {
+        if (currentStroke != null) {
+            currentStroke!!.prepForBaseCanvas()
+            currentStroke!!.isSelected = false
+
+            if (selectionCanvas != null) {
+                selectionCanvas!!.drawColor(
+                    Color.TRANSPARENT,
+                    PorterDuff.Mode.CLEAR
+                ) //clear le canvas de selection
+            }
+            baseCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR) //clear le base canvas
+            strokes.forEach { element ->
                 element.drawStroke(baseCanvas) //redessiner toutes les formes sur le base canvas
             }
             currentStroke = null
+            changeTool(ToolbarFragment.MenuItem.SELECTION)
         }
     }
 
@@ -47,11 +77,9 @@ class  Selection(context: Context, baseCanvas: Canvas, socket : DrawingCollabora
     override fun touchUp() {
         if(isStrokeFound(IVec2(mStartX, mStartY))) {
             currentStroke = strokes[selectedIndex]
-            currentStroke!!.isSelected = true
-            createSelectionCanvas(currentStroke!!)
-            drawStrokeOnSelectionCanvas(currentStroke!!)
-            drawStrokesOnBaseCanvas(currentStroke!!)
+            selectStroke(currentStroke!!)
         }
+        changeTool(ToolbarFragment.MenuItem.SELECTION)
     }
 
     override fun onStrokeReceived(stroke: JSONObject) {
@@ -73,10 +101,6 @@ class  Selection(context: Context, baseCanvas: Canvas, socket : DrawingCollabora
             strokeWidth = 10f
         }
         selectionCanvas!!.drawRect(0f,0f, width.toFloat(), height.toFloat(),borderPaint)
-//        selectionCanvas!!.drawRect(0F, 0F, 50F, 50F, borderPaint)
-//        selectionCanvas!!.drawRect(0F, height.toFloat()-50F, 50F, 50F, borderPaint)
-//        selectionCanvas!!.drawRect( width.toFloat()-50F, 0F, 50F, 50F, borderPaint)
-//        selectionCanvas!!.drawRect( width.toFloat()-50F, height.toFloat()-50F, 50F, 50F, borderPaint)
     }
 
     private fun drawStrokeOnSelectionCanvas(stroke: Stroke) {
@@ -96,7 +120,7 @@ class  Selection(context: Context, baseCanvas: Canvas, socket : DrawingCollabora
 
         baseCanvas.drawBitmap(selectionBitmap!!, stroke.boundingPoints[0].x, stroke.boundingPoints[0].y, null) //dessiner la forme selectionner sur le base
 
-        strokes[selectedIndex] = currentStroke!!
+        strokes[selectedIndex] = stroke
     }
 
     override fun onDraw(canvas: Canvas) { }
@@ -126,6 +150,15 @@ class  Selection(context: Context, baseCanvas: Canvas, socket : DrawingCollabora
         strokes.add(stroke)
     }
 
+    fun selectStroke(stroke: Stroke) {
+        stroke.isSelected = true
+        currentStroke = stroke
+        selectedIndex = strokes.indexOf(stroke)
+        createSelectionCanvas(stroke)
+        drawStrokeOnSelectionCanvas(stroke)
+        drawStrokesOnBaseCanvas(stroke)
+    }
+
     fun changeSelectionWeight(width : Float){
         if (currentStroke != null) {
             currentStroke!!.currentStrokeWidth = width
@@ -143,72 +176,4 @@ class  Selection(context: Context, baseCanvas: Canvas, socket : DrawingCollabora
             drawStrokesOnBaseCanvas(currentStroke!!)
         }
     }
-
-    //code Leon :
-//    private fun pasteStrokeOnSelectionCanvas(stroke: Stroke, selectionCtx: Canvas) {
-//        stroke.prepForSelection()
-//        stroke.drawStroke(selectionCtx)
-//    }
-//
-//    private fun selectStroke(stroke: Stroke) {
-//        isActiveSelection = true
-////        selectedStroke = stroke
-//        previewSelection(stroke);
-//        val index = strokes.indexOf(stroke);
-//        redrawAllStrokesExceptSelected(stroke);
-//    }
-//
-//    private fun previewSelection(stroke: Stroke) {
-//        selectionCnv = createSelectionCanvas(stroke)
-//        val pos = IVec2( stroke.boundingPoints[0].x, stroke.boundingPoints[0].y )
-////        this.positionSelectionCanvas(pos, this.selectionCnv);
-//        pasteStrokeOnSelectionCanvas(stroke, selectionCnv as Canvas);
-////        this.adjustCpsToSelection();
-//
-//    }
-//
-//    private fun redrawAllStrokesExceptSelected(stroke: Stroke) {
-//        if (this.strokes.contains(stroke)) {
-//            this.strokes.remove(stroke);
-//        }
-//
-//
-//        baseCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR)
-//
-//        strokes.forEach { stroke ->
-//            stroke.drawStroke(baseCanvas);
-//        }
-//    }
-//
-//    private fun createSelectionCanvas(stroke: Stroke): Canvas {
-//        val width = (stroke.boundingPoints[1].x - stroke.boundingPoints[0].x).toInt()
-//        val height = (stroke.boundingPoints[1].y - stroke.boundingPoints[0].y).toInt()
-//        var mBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
-//        canvasSelection = Canvas(mBitmap)
-//        val borderPaint = Paint().apply {
-//            color = ResourcesCompat.getColor(context.resources, R.color.red, null)
-//            isAntiAlias = true
-//            isDither = true
-//            style = Paint.Style.STROKE
-//            strokeJoin = Paint.Join.ROUND
-//            strokeCap = Paint.Cap.ROUND
-//            strokeWidth = 5f
-//        }
-//        val upcomingPaint = Paint().apply {
-//            color = stroke.color
-//            strokeWidth = stroke.strokeWidth
-//            isAntiAlias = true
-//            // Dithering affects how colors with higher-precision than the device are down-sampled.
-//            isDither = true
-//            style = Paint.Style.STROKE // default: FILL
-//            strokeJoin = Paint.Join.ROUND // default: MITER
-//            strokeCap = Paint.Cap.ROUND // default: BUTT
-//        }
-//        canvasSelection!!.drawRect(0f,0f, width.toFloat(), height.toFloat(),borderPaint )
-//        path!!.lineTo(5F, 5F)
-//        canvasSelection!!.drawPath(path!!, upcomingPaint!!)
-//        path!!.reset()
-//        return canvasSelection as Canvas
-//    }
-
 }

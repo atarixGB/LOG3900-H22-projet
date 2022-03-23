@@ -6,6 +6,7 @@ import android.util.Log
 import com.example.mobile.Interface.IPencilStroke
 import com.example.mobile.Interface.IVec2
 import com.example.mobile.activity.drawing.DrawingCollaboration
+import com.example.mobile.activity.drawing.ToolbarFragment
 import org.json.JSONArray
 import org.json.JSONObject
 import java.util.*
@@ -61,6 +62,13 @@ class Pencil(context: Context, baseCanvas: Canvas, val socket : DrawingCollabora
             false,
             getPointsList())
         selection.addStroke(iPencilStroke)
+
+        //selectionner ce stroke
+        selection.selectStroke(iPencilStroke)
+
+        //changer le tool a selection
+        selection.isToolSelection = false
+        changeTool(ToolbarFragment.MenuItem.SELECTION)
     }
 
     private fun getPointsList():ArrayList<IVec2> {
