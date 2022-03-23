@@ -32,6 +32,7 @@ const SERVER_PORT = 3001;
 
 //express service
 var app = express();
+app.use(express.json({  limit: '100mb' }))
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors({origin:true,credentials: true}));
@@ -381,6 +382,10 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
     });
 
     app.put("/drawing/save/:drawingId", (request, response) => {
+      const imageData = request.body.data;
+      
+      saveImageAsPNG(imageData, request.params.drawingId, './uploads');
+
       response.json("DataUrl sauvegardé")
     })
 
@@ -857,3 +862,17 @@ app.post(
     })
   }
 });
+
+//==========================================================================================================
+// UTILITY FUNCTIONS
+//==========================================================================================================
+
+let saveImageAsPNG = function(imageData, drawingId, filepath) {
+  console.log("SAVE IMAGE AS PNG!!!")
+  const metadata = imageData.replace(/^data:image\/\w+;base64,/, '');
+  const dataBuffer = Buffer.from(metadata, "base64");
+  console.log("DATA BUFFER:", dataBuffer)
+  fs.writeFile(`${filepath}/${drawingId}.png` , dataBuffer, (error) => {
+      if (error) throw error;
+  });
+}
