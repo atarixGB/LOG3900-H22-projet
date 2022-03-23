@@ -1,0 +1,48 @@
+#selectionText {
+   text-align: center;
+}
+
+#widthTitle {
+   margin: 0;
+}
+
+#colorTitle {
+   margin-top: 10px;
+   margin-bottom: -25px;
+}
+
+#thicknessGrid {
+   scale: 0.75;
+   margin-top: -15px;
+}
+
+.margin {
+   margin-bottom: 10px;
+}
+
+.circle {
+   background-color: white;
+   border: solid 0px;
+   border-radius: 50%;
+   width: 75%;
+   height: 75%;
+   box-shadow: 1px 1px 3px rgb(0, 0, 0);
+}
+
+.thicknessS {
+   background-color: black;
+   border-radius: 50%;
+}
+
+.circle:hover {
+   cursor: pointer;
+   border-width: 2px;
+   border-color: rgb(66, 243, 131);
+   box-shadow: 1px 1px 3px rgb(255, 255, 255);
+}
+
+.selected {
+   border-width: 2px;
+   border-color: rgb(66, 243, 131);
+   box-shadow: 2px 2px 5px rgb(46, 137, 0);
+}

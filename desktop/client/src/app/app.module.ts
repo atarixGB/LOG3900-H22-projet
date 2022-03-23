@@ -62,6 +62,9 @@ import { RequestsDialogComponent } from './components/album-gallery/drawings-vie
 import { JoinRoomDialogComponent } from './components/chat/public-chatrooms/join-room-dialog/join-room-dialog.component';
 import { LeaveRoomDialogComponent } from './components/chat/chatroom/leave-room-dialog/leave-room-dialog.component';
 import { ChatroomUsersDialogComponent } from './components/chat/chatroom/chatroom-users-dialog/chatroom-users-dialog.component';
+import { MembersListDialogComponent } from './components/album-gallery/drawings-view/members-list-dialog/members-list-dialog.component';
+import { AlbumSettingsDialogComponent } from './components/album-gallery/drawings-view/album-settings-dialog/album-settings-dialog.component';
+import { JoinRequestDialogComponent } from './components/album-gallery/public-albums/join-request-dialog/join-request-dialog.component';
 
 @NgModule({
     declarations: [
@@ -104,6 +107,9 @@ import { ChatroomUsersDialogComponent } from './components/chat/chatroom/chatroo
         JoinRoomDialogComponent,
         LeaveRoomDialogComponent,
         ChatroomUsersDialogComponent,
+        MembersListDialogComponent,
+        AlbumSettingsDialogComponent,
+        JoinRequestDialogComponent,
     ],
     imports: [
         BrowserModule,

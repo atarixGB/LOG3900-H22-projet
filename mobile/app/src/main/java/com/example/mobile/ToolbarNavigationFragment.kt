@@ -9,6 +9,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import com.example.mobile.activity.Dashboard
+import com.example.mobile.activity.drawing.DrawingActivity
 import com.example.mobile.activity.albums.Albums
 import com.example.mobile.activity.chat.ChatRooms
 import com.example.mobile.activity.profile.Profile

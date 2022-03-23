@@ -29,9 +29,10 @@ import java.time.format.DateTimeFormatter
 
 class ChatPage : AppCompatActivity(), UserAdapter.UserAdapterListener {
     private lateinit var rvOutputMsgs: RecyclerView
-    private lateinit var  btnSend : Button
+    private lateinit var btnSend : Button
     private lateinit var leaveChatBtn: ImageButton
-    private lateinit var  messageText : EditText
+    private lateinit var drawButton: ImageButton
+    private lateinit var messageText : EditText
     private lateinit var msgAdapter: MessageAdapter
     private lateinit var IMessages : ArrayList<IMessage>
     private lateinit var user: String

@@ -4,29 +4,31 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.mobile.DrawingActivity">
+    tools:context="com.example.mobile.activity.drawing.DrawingActivity">
 
     <fragment
         android:id="@+id/toolBarFragment"
-        android:name="com.example.mobile.ToolbarFragment"
-        android:layout_width="100dp"
+        android:name="com.example.mobile.activity.drawing.ToolbarFragment"
+        android:layout_width="75dp"
         android:layout_height="match_parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"></fragment>
 
     <fragment
         android:id="@+id/customToolFragment"
-        android:name="com.example.mobile.CustomToolFragment"
-        android:layout_width="wrap_content"
+        android:name="com.example.mobile.activity.drawing.CustomToolFragment"
+        android:layout_width="125dp"
         android:layout_height="match_parent"
         app:layout_constraintStart_toEndOf="@+id/toolBarFragment"
         app:layout_constraintTop_toTopOf="parent"></fragment>
 
     <fragment
         android:id="@+id/canvaFragment"
-        android:name="com.example.mobile.DrawingZoneFragment"
-        android:layout_width="800dp"
-        android:layout_height="match_parent"
+        android:name="com.example.mobile.activity.drawing.DrawingZoneFragment"
+        android:layout_width="1200px"
+        android:layout_height="1000px"
+        android:layout_marginStart="28dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/customToolFragment"
         app:layout_constraintTop_toTopOf="parent"></fragment>
 

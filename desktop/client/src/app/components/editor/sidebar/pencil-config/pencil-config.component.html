@@ -1,2 +1,12 @@
-<h4>Épaisseur: {{ pencilService.pencilThickness }} px</h4>
-<mat-slider thumbLabel [displayWith]="formatLabel" tickInterval="1000" min="1" max="50" [(ngModel)]="pencilService.pencilThickness"></mat-slider>
+<div>
+   <h4>Épaisseur de trait:</h4>
+   <mat-grid-list id="thicknessGrid" cols="3">
+      <mat-grid-tile *ngFor="let i of [1, 2, 3, 4, 5, 6, 7, 8, 9]">
+         <div fxLayout="row" fxLayoutAlign="center stretch" class="circle" id="circle" [ngClass]="{ selected: this.pencilService.selectedWidth == i }" (click)="changeWidth(i)">
+            <div fxLayout="column" fxLayoutAlign="center center">
+               <div class="thicknessP"></div>
+            </div>
+         </div>
+      </mat-grid-tile>
+  </mat-grid-list>
+ </div>

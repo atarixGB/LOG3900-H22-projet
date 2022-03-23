@@ -1,8 +1,11 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
+import { PUBLIC_ALBUM } from '@app/constants/constants';
 import { AlbumGalleryService } from '@app/services/album-gallery/album-gallery.service';
 import { LoginService } from '@app/services/login/login.service';
+import { AlbumSettingsDialogComponent } from './album-settings-dialog/album-settings-dialog.component';
+import { MembersListDialogComponent } from './members-list-dialog/members-list-dialog.component';
 import { RequestsDialogComponent } from './requests-dialog/requests-dialog.component';
 
 @Component({
@@ -11,20 +14,28 @@ import { RequestsDialogComponent } from './requests-dialog/requests-dialog.compo
   styleUrls: ['./drawings-view.component.scss']
 })
 export class DrawingsViewComponent {
-  @Output() backToAlbumPageEvent = new EventEmitter<boolean>();
   isCurrentAlbumMine: boolean;
+  isPublicAlbum: boolean;
 
-  constructor(public albumGalleryService: AlbumGalleryService, public loginService: LoginService, private router: Router, private route: ActivatedRoute, public dialog: MatDialog) {
+  constructor(public albumGalleryService: AlbumGalleryService, public loginService: LoginService, public dialog: MatDialog, private router: Router, private route: ActivatedRoute) {
     this.isCurrentAlbumMine = this.loginService.username == albumGalleryService.currentAlbum.owner;
-    console.log("iscurrentalbummine:", this.isCurrentAlbumMine);
+    this.isPublicAlbum = albumGalleryService.currentAlbum.name == PUBLIC_ALBUM.name;
   }
 
   ngAfterViewInit(): void {
     this.albumGalleryService.fetchDrawingsFromSelectedAlbum(this.albumGalleryService.currentAlbum);
   }
 
+  viewMembersList(): void {
+    this.dialog.open(MembersListDialogComponent, {});
+  }
+
   openSettingsDialog(): void {
-    console.log("Open Settings dialog...");
+    const dialogRef = this.dialog.open(AlbumSettingsDialogComponent, {});
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log(result);
+      this.router.navigate(['../my-albums'], { relativeTo: this.route });
+    })
   }
 
   viewRequests(): void {
