@@ -49,6 +49,10 @@ class DrawingZoneFragment : Fragment() {
         mDrawingView = DrawingView(requireContext(),this.socket)
         socket.init()
         socket.socket.on("receiveStroke", onReceiveStroke)
+        socket.socket.on("receiveSelection", onReceiveSelection)
+        socket.socket.on("receiveStrokeWidth", onReceiveStrokeWidth)
+        socket.socket.on("receiveNewPrimaryColor", onReceiveNewPrimaryColor)
+
         viewModel.weight.observe(viewLifecycleOwner, Observer { weight ->
             mDrawingView.changeWeight(weight)
         })
@@ -69,9 +73,25 @@ class DrawingZoneFragment : Fragment() {
 
         view.findViewById<LinearLayout>(R.id.drawingView).addView(mDrawingView)
     }
+
     private var onReceiveStroke = Emitter.Listener {
         val drawEvent = it[0] as JSONObject
         mDrawingView.onStrokeReceive(drawEvent)
+    }
+
+    private var onReceiveSelection = Emitter.Listener {
+        val drawEvent = it[0] as JSONObject
+        mDrawingView.onSelectionReceive(drawEvent)
+    }
+
+    private var onReceiveStrokeWidth = Emitter.Listener {
+        val drawEvent = it[0] as JSONObject
+        mDrawingView.onSelectionReceiveWidth(drawEvent)
+    }
+
+    private var onReceiveNewPrimaryColor = Emitter.Listener {
+        val drawEvent = it[0] as JSONObject
+        mDrawingView.onSelectionReceivePrimaryColor (drawEvent)
     }
 
     class DrawingView (context: Context, val socket: DrawingCollaboration) : View(context){
@@ -82,6 +102,7 @@ class DrawingZoneFragment : Fragment() {
         private var isDrawing = false
         private lateinit var drawingId: String
         internal var compositeDisposable = CompositeDisposable()
+
         fun onStrokeReceive(stroke: JSONObject){
             if (socket.socket.id() != stroke.getString("sender")) {
                 if (stroke.getInt("toolType") == 0) {
@@ -91,6 +112,31 @@ class DrawingZoneFragment : Fragment() {
                 } else if (stroke.getInt("toolType") == 2) {
                     toolManager.ellipse.onStrokeReceived(stroke)
                 }
+                invalidate()
+            }
+        }
+
+        fun onSelectionReceive(stroke: JSONObject){
+            if (socket.socket.id() != stroke.getString("sender")) {
+                toolManager.selection.onStrokeReceived(stroke)
+                invalidate()
+            }
+        }
+
+        fun onSelectionReceiveWidth(newWidth: JSONObject){
+            if (socket.socket.id() != newWidth.getString("sender")) {
+                val width = newWidth.getInt("value").toFloat()
+                val strokeIndex = newWidth.getInt("strokeIndex")
+                toolManager.selection.changeReceivedWidth(width, strokeIndex)
+                invalidate()
+            }
+        }
+
+        fun onSelectionReceivePrimaryColor(newColor: JSONObject){
+            if (socket.socket.id() != newColor.getString("sender")) {
+                val color = toolManager.currentTool.toIntColor(newColor.getString("color"))
+                val strokeIndex = newColor.getInt("strokeIndex")
+                toolManager.selection.changeReceivedColor(color, strokeIndex)
                 invalidate()
             }
         }
