@@ -13,6 +13,7 @@ import android.widget.ToggleButton
 import androidx.fragment.app.activityViewModels
 import com.example.mobile.R
 import com.example.mobile.Tools.ToolColorItem
+import com.example.mobile.Tools.ToolItem
 import com.example.mobile.Tools.ToolWeightAdapter
 import com.example.mobile.Tools.ToolWeightItem
 import com.example.mobile.adapter.ColorAdapter
@@ -108,12 +109,34 @@ class CustomToolFragment : Fragment(), AdapterView.OnItemClickListener {
         if(parent == weightView){
             val weightItem: ToolWeightItem = weights!!.get(position)
             toolParametersModel.changeWeight(weightItem.size!!)
+
+            weights!!.set(0, ToolWeightItem(R.drawable.circle1, 1f))
+            weights!!.set(1, ToolWeightItem(R.drawable.circle2, 2f))
+            weights!!.set(2, ToolWeightItem(R.drawable.circle4, 4f))
+            weights!!.set(3, ToolWeightItem(R.drawable.circle8, 8f))
+            weights!!.set(4, ToolWeightItem(R.drawable.circle12, 12f))
+            weights!!.set(5, ToolWeightItem(R.drawable.circle15, 15f))
+            weights!!.set(6, ToolWeightItem(R.drawable.circle20, 20f))
+            weights!!.set(7, ToolWeightItem(R.drawable.circle24, 24f))
+            weights!!.set(8, ToolWeightItem(R.drawable.circle30, 30f))
+
+            when (position) {
+                0 -> weights!!.set(0, ToolWeightItem(R.drawable.circle1_selected, 1f))
+                1 -> weights!!.set(1, ToolWeightItem(R.drawable.circle2_selected, 2f))
+                2 -> weights!!.set(2, ToolWeightItem(R.drawable.circle4_selected, 4f))
+                3 -> weights!!.set(3, ToolWeightItem(R.drawable.circle8_selected, 8f))
+                4 -> weights!!.set(4, ToolWeightItem(R.drawable.circle12_selected, 12f))
+                5 -> weights!!.set(5, ToolWeightItem(R.drawable.circle15_selected, 15f))
+                6 -> weights!!.set(6, ToolWeightItem(R.drawable.circle20_selected, 20f))
+                7 -> weights!!.set(7, ToolWeightItem(R.drawable.circle24_selected, 24f))
+                8 -> weights!!.set(8, ToolWeightItem(R.drawable.circle30_selected, 30f))
+            }
+            weightAdapter!!.notifyDataSetChanged()
         }else{
             val colorItem: ToolColorItem = colors!!.get(position)
             toolParametersModel.changeColor(colorItem.color!!)
             selectedColor = colorItem.color
         }
-
     }
 
 }
