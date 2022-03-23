@@ -1,4 +1,4 @@
-export const COLLAB_URL = `http://localhost:3002/`;
+export const COLLAB_URL = `http://localhost:3002`;
 export const DATABASE_URL = `http://localhost:3001`;
 export const CHAT_URL = `http://localhost:3000`;
 
