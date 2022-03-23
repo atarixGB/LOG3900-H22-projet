@@ -1,10 +1,16 @@
-export const CNV_WIDTH = 750;
-export const CNV_HEIGTH = 500;
+/******** ALBUMS *******/
+export const PUBLIC_ALBUM = {
+  name: "album public",
+  id: "622f77abc04d88938c916084"
+}
+/***********************/
+export const CNV_WIDTH = 1200;
+export const CNV_HEIGTH = 1000;
 export const MAX_DEC_RANGE = 255;
 export const CONTROLPOINTSIZE = 10;
 export const NUMBER_WIDTH_CHOICES = 9;
 export const BIGGEST_STROKE_WIDTH = 30;
-export const DEFAULT_LINE_THICKNESS = 1/NUMBER_WIDTH_CHOICES * BIGGEST_STROKE_WIDTH;
+export const DEFAULT_LINE_THICKNESS = (1 / NUMBER_WIDTH_CHOICES) * BIGGEST_STROKE_WIDTH;
 export const TRANSPARENT = 'rgba(0, 0, 0, 0)';
 
 export enum MouseButton {

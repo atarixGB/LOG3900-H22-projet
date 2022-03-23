@@ -1,0 +1,24 @@
+<h2 mat-dialog-title>Joindre une conversation</h2>
+
+<mat-dialog-content class="mat-typography">
+  <p>
+    Tu es sur le point de joindre la conversation
+    <span class="bold">
+      {{this.data.roomName}}
+    </span>
+  </p>
+
+  <p>Les membres actuellement présents sont:</p>
+  <ul>
+    <li *ngFor="let user of this.data.usersList">
+      {{user}}
+    </li>
+  </ul>
+
+  <div>Créateur: <span class="bold"> {{this.data.identifier}}</span></div>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close>Annuler</button>
+  <button mat-button [mat-dialog-close]="true" cdkFocusInitial (click)="onJoinChatroom()">Joindre</button>
+</mat-dialog-actions>

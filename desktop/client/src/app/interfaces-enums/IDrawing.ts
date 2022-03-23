@@ -1,10 +1,8 @@
 export interface IDrawing {
   _id?: any,
   name: string,
-  creator: string,
+  owner: string,
   contributors: string[],
-  albumId?: string | void,
-  height: number,
-  width: number,
+  likes: string[];
   data: string | undefined,
 }
