@@ -58,6 +58,7 @@ import { DeleteRoomDialogComponent } from './components/chat/delete-room-dialog/
 import { CreateDrawingDialogComponent } from './components/editor/create-drawing-dialog/create-drawing-dialog.component';
 import { RequestsDialogComponent } from './components/album-gallery/drawings-view/requests-dialog/requests-dialog.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 @NgModule({
     declarations: [
@@ -97,6 +98,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
         DeleteRoomDialogComponent,
         CreateDrawingDialogComponent,
         RequestsDialogComponent,
+        DashboardComponent,
     ],
     imports: [
         BrowserModule,

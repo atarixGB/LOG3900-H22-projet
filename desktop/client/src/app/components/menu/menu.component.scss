@@ -1,3 +1,23 @@
 :host {
     height: 100%;
 }
+
+.green {
+    background-color: 	#A8D08C;
+    color: black;
+}
+
+button {
+    background-color: #c4eba8;
+    border: solid 2px;
+    border-color: #6f9058;
+}
+
+button:hover {
+    opacity: 75%;
+    background-color: #c8f7a7;
+}
+
+.margin {
+    margin: 3px;
+}

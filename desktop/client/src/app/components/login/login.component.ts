@@ -1,11 +1,14 @@
 import { Component } from '@angular/core';
 import { LoginService } from '@app/services/login/login.service';
 import { SoundEffectsService } from '@app/services/sound-effects/sound-effects.service';
+import { fadeInAnimation } from '@app/constants/animations';
 
 @Component({
     selector: 'app-login',
     templateUrl: './login.component.html',
     styleUrls: ['./login.component.scss'],
+    animations: [fadeInAnimation],
+    host: { '[@fadeInAnimation]': '' }
 })
 export class LoginComponent {
     email: string;

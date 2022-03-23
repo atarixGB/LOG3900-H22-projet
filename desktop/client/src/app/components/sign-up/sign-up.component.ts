@@ -4,11 +4,14 @@ import { SignUpService } from '@app/services/sign-up/sign-up.service';
 import { AvatarImportModalComponent } from '../avatar/avatar-import-modal/avatar-import-modal.component';
 import { AvatarSelectionModalComponent } from '../avatar/avatar-selection-modal/avatar-selection-modal.component';
 import { SoundEffectsService } from '@app/services/sound-effects/sound-effects.service'
+import { slideInOutAnimation } from '@app/constants/animations';
 
 @Component({
     selector: 'app-sign-up',
     templateUrl: './sign-up.component.html',
     styleUrls: ['./sign-up.component.scss'],
+    animations: [slideInOutAnimation],
+    host: { '[@slideInOutAnimation]': '' }
 })
 export class SignUpComponent implements AfterContentInit {
     username: string;
