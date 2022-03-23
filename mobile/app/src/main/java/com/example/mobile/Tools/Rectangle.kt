@@ -92,12 +92,12 @@ class Rectangle (context: Context, baseCanvas: Canvas, val socket : DrawingColla
 
         val upcomingPaintFill = Paint().apply {
             color = stroke.secondaryColor
-            strokeWidth = stroke.strokeWidth
             isAntiAlias = true
             isDither = true
             style = Paint.Style.FILL
             strokeJoin = Paint.Join.MITER
             strokeCap = Paint.Cap.SQUARE
+            strokeWidth = 1f
         }
         baseCanvas!!.drawRect(stroke.topLeftCorner.x,
             stroke.topLeftCorner.y,

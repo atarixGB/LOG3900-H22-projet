@@ -11,12 +11,14 @@ import android.widget.GridView
 import android.widget.Toast
 import android.widget.ToggleButton
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import com.example.mobile.R
 import com.example.mobile.Tools.ToolColorItem
 import com.example.mobile.Tools.ToolItem
 import com.example.mobile.Tools.ToolWeightAdapter
 import com.example.mobile.Tools.ToolWeightItem
 import com.example.mobile.adapter.ColorAdapter
+import com.example.mobile.model.ToolModel
 import com.example.mobile.model.ToolParameters
 
 
@@ -35,6 +37,10 @@ class CustomToolFragment : Fragment(), AdapterView.OnItemClickListener {
     private var filllButton: ToggleButton  ? = null
 
     private var selectedColor : Int ? = null
+    private var selectedWeight : Float = 1f
+
+    //when click on new tool set default weight and color
+    private val toolModel: ToolModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -58,6 +64,7 @@ class CustomToolFragment : Fragment(), AdapterView.OnItemClickListener {
 
         val strokeButton: ToggleButton = rootView.findViewById(R.id.toggle_trait)
         val fillButton: ToggleButton = rootView.findViewById(R.id.toggle_fond)
+
         strokeButton.setOnCheckedChangeListener { _, isChecked ->
             fillButton.isChecked = !isChecked
             if(isChecked) {
@@ -71,7 +78,21 @@ class CustomToolFragment : Fragment(), AdapterView.OnItemClickListener {
                 toolParametersModel.changeStroke(false)
             }
         }
+
+        toolModel.tool.observe(viewLifecycleOwner, Observer { tool ->
+            setDefault()
+        })
+
         return rootView
+    }
+
+    private fun setDefault(){
+        setAllWeightToUnselectedIcon()
+        val weightItem: ToolWeightItem = weights!!.get(0)
+        weights!!.set(0, ToolWeightItem(R.drawable.circle1_selected, 1f))
+        toolParametersModel.changeWeight(weightItem.size!!)
+        selectedWeight = weightItem.size!!
+        weightAdapter!!.notifyDataSetChanged()
     }
 
     private fun setWeightList():ArrayList<ToolWeightItem>{
@@ -109,17 +130,8 @@ class CustomToolFragment : Fragment(), AdapterView.OnItemClickListener {
         if(parent == weightView){
             val weightItem: ToolWeightItem = weights!!.get(position)
             toolParametersModel.changeWeight(weightItem.size!!)
-
-            weights!!.set(0, ToolWeightItem(R.drawable.circle1, 1f))
-            weights!!.set(1, ToolWeightItem(R.drawable.circle2, 2f))
-            weights!!.set(2, ToolWeightItem(R.drawable.circle4, 4f))
-            weights!!.set(3, ToolWeightItem(R.drawable.circle8, 8f))
-            weights!!.set(4, ToolWeightItem(R.drawable.circle12, 12f))
-            weights!!.set(5, ToolWeightItem(R.drawable.circle15, 15f))
-            weights!!.set(6, ToolWeightItem(R.drawable.circle20, 20f))
-            weights!!.set(7, ToolWeightItem(R.drawable.circle24, 24f))
-            weights!!.set(8, ToolWeightItem(R.drawable.circle30, 30f))
-
+            selectedWeight = weightItem.size!!
+            setAllWeightToUnselectedIcon()
             when (position) {
                 0 -> weights!!.set(0, ToolWeightItem(R.drawable.circle1_selected, 1f))
                 1 -> weights!!.set(1, ToolWeightItem(R.drawable.circle2_selected, 2f))
@@ -138,5 +150,18 @@ class CustomToolFragment : Fragment(), AdapterView.OnItemClickListener {
             selectedColor = colorItem.color
         }
     }
+
+    private fun setAllWeightToUnselectedIcon(){
+        weights!!.set(0, ToolWeightItem(R.drawable.circle1, 1f))
+        weights!!.set(1, ToolWeightItem(R.drawable.circle2, 2f))
+        weights!!.set(2, ToolWeightItem(R.drawable.circle4, 4f))
+        weights!!.set(3, ToolWeightItem(R.drawable.circle8, 8f))
+        weights!!.set(4, ToolWeightItem(R.drawable.circle12, 12f))
+        weights!!.set(5, ToolWeightItem(R.drawable.circle15, 15f))
+        weights!!.set(6, ToolWeightItem(R.drawable.circle20, 20f))
+        weights!!.set(7, ToolWeightItem(R.drawable.circle24, 24f))
+        weights!!.set(8, ToolWeightItem(R.drawable.circle30, 30f))
+    }
+
 
 }

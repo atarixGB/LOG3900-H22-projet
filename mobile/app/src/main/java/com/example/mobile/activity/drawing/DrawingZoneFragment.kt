@@ -74,7 +74,10 @@ class DrawingZoneFragment : Fragment() {
     }
     private var onReceiveStroke = Emitter.Listener {
         val drawEvent = it[0] as JSONObject
-        mDrawingView.onStrokeReceive(drawEvent)
+        if(drawEvent.getString("sender") != this.socket.socket.id()){
+            mDrawingView.onStrokeReceive(drawEvent)
+        }
+
     }
 
     class DrawingView (context: Context, val socket: DrawingCollaboration) : View(context){
