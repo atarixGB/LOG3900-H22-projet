@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { DrawingService } from '@app/services/editor/drawing/drawing.service';
 import * as io from 'socket.io-client';
 import { Observable, Subject } from 'rxjs';
-import { DATABASE_URL } from '@app/constants/api-urls';
+import { COLLAB_URL } from '@app/constants/api-urls';
 
 @Injectable({
     providedIn: 'root',
@@ -67,7 +67,7 @@ export class CollaborationService {
     }
 
     enterCollaboration(): void {
-        this.socket = io.io(DATABASE_URL, { transports: ['websocket'] });
+        this.socket = io.io(COLLAB_URL, { transports: ['websocket'] });
 
         this.socket.on('receiveStroke', (stroke: any) => {
             if (stroke.sender !== this.socket.id) {
