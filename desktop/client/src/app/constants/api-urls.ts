@@ -10,7 +10,7 @@ export const DECLINE_MEMBERSHIP_REQUEST_URL = `${DATABASE_URL}/albums/request/de
 export const UPDATE_ALBUM_PARAMETERS_URL = `${DATABASE_URL}/albumUpdate`
 
 export const CREATE_DRAWING_URL = `${DATABASE_URL}/drawing/create`;
-export const UPLOAD_DRAWING_URL = `${DATABASE_URL}/upload/:drawingId`
+export const SAVE_DRAWING_URL = `${DATABASE_URL}/drawing/save`
 
 export const PROFILE_UPDATE_URL = `${DATABASE_URL}/profileUpdate`;
 export const PROFILE_URL = `${DATABASE_URL}/profile`;

@@ -3,8 +3,9 @@ import { Injectable } from '@angular/core';
 import { IAlbum } from '@app/interfaces-enums/IAlbum'
 import { IDrawing } from '@app/interfaces-enums/IDrawing'
 import { LoginService } from '@app/services/login/login.service';
-import { ALBUM_URL, PUBLIC_DRAWINGS_URL, CREATE_DRAWING_URL, JOIN_ALBUM_URL, DECLINE_MEMBERSHIP_REQUEST_URL, ACCEPT_MEMBERSHIP_REQUEST_URL, UPDATE_ALBUM_PARAMETERS_URL, ADD_DRAWING_TO_ALBUM_URL, UPLOAD_DRAWING_URL} from '@app/constants/api-urls';
+import { ALBUM_URL, PUBLIC_DRAWINGS_URL, CREATE_DRAWING_URL, JOIN_ALBUM_URL, DECLINE_MEMBERSHIP_REQUEST_URL, ACCEPT_MEMBERSHIP_REQUEST_URL, UPDATE_ALBUM_PARAMETERS_URL, ADD_DRAWING_TO_ALBUM_URL, SAVE_DRAWING_URL} from '@app/constants/api-urls';
 import { PUBLIC_ALBUM } from '@app/constants/constants';
+import { DrawingService } from '../editor/drawing/drawing.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,7 @@ export class AlbumGalleryService {
 
   currentDrawing: IDrawing;
 
-  constructor(private httpClient: HttpClient, private loginService: LoginService) {
+  constructor(private httpClient: HttpClient, private loginService: LoginService, private drawingService: DrawingService) {
     this.publicAlbums = [];
     this.myAlbums = [];
 
@@ -28,7 +29,6 @@ export class AlbumGalleryService {
   }
 
   createDrawing(drawingName: string): void {
-    console.log("CREATE DRAWING")
     this.currentDrawing.name = drawingName;
 
     console.log(this.currentDrawing)
@@ -46,34 +46,43 @@ export class AlbumGalleryService {
   }
 
   addDrawingToAlbum(drawing: IDrawing, albumId: string | void): void {
-    console.log("ADD DRAWING TO ALBUM");
-
     const data = {
       drawing: drawing._id,
     };
 
     this.httpClient.put(ADD_DRAWING_TO_ALBUM_URL + `/${albumId}`, data).subscribe(
       (result) => {
-        console.log(result);
+        console.log("Résultat du serveur:", result);
       },
       (error) => {
-        console.log(error);
+        console.log(`Impossible d'ajouter le dessin ${drawing.name} dans l'album avec l'ID ${albumId}.\nErreur: ${error}`);
       });
   }
 
   saveDrawing(): void {
-    const body = {
-      filename: this.currentDrawing._id
-    };
+    const drawingMetadata = {
+      name: this.currentDrawing.name,
+      owner: this.loginService.username,
+    }
 
-    this.httpClient.post(UPLOAD_DRAWING_URL, body).subscribe(
+    // Envoi des métadonnées du dessin
+    this.httpClient.post(`${SAVE_DRAWING_URL}/${this.currentDrawing._id}`, drawingMetadata).subscribe(
       (result) => {
-        console.log(result);
+        console.log("Résultat du serveur:", result);
+
+        // Envoi du dessin en base64. Celui-ci sera reconverti en image png du côté serveur.
+        const drawingData = { data: this.drawingService.canvas.toDataURL() };
+
+        this.httpClient.put(`${SAVE_DRAWING_URL}/${this.currentDrawing._id}`, drawingData).subscribe(
+          (result) => {console.log("Résultat du serveur:", result)},
+          (error) => {console.log(`Impossible d'enregistrer le dessin en image de type png sur la base de données.\nErreur:`, error);});
+
       },
       (error) => {
-        console.log(error);
-      });
-  }
+        console.log(`Impossible d'enregistrer les attributs du dessin sur la base de données.\nErreur:`, error);
+      }
+    )
+ }
 
   createAlbum(name: string, description: string): void {
     const newAlbum: IAlbum = {
