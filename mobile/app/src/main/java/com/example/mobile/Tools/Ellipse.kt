@@ -102,17 +102,20 @@ class  Ellipse(context: Context, baseCanvas: Canvas, val socket : DrawingCollabo
             strokeJoin = Paint.Join.MITER
             strokeCap = Paint.Cap.SQUARE
         }
-        baseCanvas!!.drawOval(stroke.center.x-stroke.radius.x,
-            stroke.center.y-stroke.radius.y,
-            stroke.center.x+stroke.radius.x,
-            stroke.center.y+stroke.radius.y,
-            upcomingPaintStroke!!)
 
         baseCanvas!!.drawOval(stroke.center.x-stroke.radius.x,
             stroke.center.y-stroke.radius.y,
             stroke.center.x+stroke.radius.x,
             stroke.center.y+stroke.radius.y,
             upcomingPaintFill!!)
+
+        baseCanvas!!.drawOval(stroke.center.x-stroke.radius.x,
+            stroke.center.y-stroke.radius.y,
+            stroke.center.x+stroke.radius.x,
+            stroke.center.y+stroke.radius.y,
+            upcomingPaintStroke!!)
+
+
     }
 
 

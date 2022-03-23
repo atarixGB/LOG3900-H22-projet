@@ -103,13 +103,13 @@ class Rectangle (context: Context, baseCanvas: Canvas, val socket : DrawingColla
             stroke.topLeftCorner.y,
             stroke.topLeftCorner.x + stroke.width,
             stroke.topLeftCorner.y + stroke.height,
-            upcomingPaintStroke!!)
-
+            upcomingPaintFill!!)
         baseCanvas!!.drawRect(stroke.topLeftCorner.x,
             stroke.topLeftCorner.y,
             stroke.topLeftCorner.x + stroke.width,
             stroke.topLeftCorner.y + stroke.height,
-            upcomingPaintFill!!)
+            upcomingPaintStroke!!)
+
     }
 
     private fun getBoundingPoints():ArrayList<IVec2>{
