@@ -8,6 +8,7 @@ import com.example.mobile.Interface.IEllipseStroke
 import com.example.mobile.Interface.IRectangleStroke
 import com.example.mobile.Interface.IVec2
 import com.example.mobile.activity.drawing.DrawingCollaboration
+import com.example.mobile.activity.drawing.ToolbarFragment
 import org.json.JSONArray
 import org.json.JSONObject
 import java.util.ArrayList
@@ -19,9 +20,12 @@ class  Ellipse(context: Context, baseCanvas: Canvas, val socket : DrawingCollabo
     var bottom = 0F
     var left = 0F
 
+    override var nextTool: ToolbarFragment.MenuItem = ToolbarFragment.MenuItem.OVAL
+
     override fun touchStart() {
         mStartX = mx
         mStartY = my
+
     }
 
     override fun touchMove() {}
@@ -39,6 +43,14 @@ class  Ellipse(context: Context, baseCanvas: Canvas, val socket : DrawingCollabo
             getCenter(),
             getRadius())
         selection.addStroke(iEllipseStroke)
+
+        //selectionner ce stroke
+        selection.selectStroke(iEllipseStroke)
+
+        //changer le tool a selection
+        selection.isToolSelection = false
+        selection.oldTool = ToolbarFragment.MenuItem.OVAL
+        nextTool = ToolbarFragment.MenuItem.SELECTION
     }
 
     private fun getCenter(): IVec2{

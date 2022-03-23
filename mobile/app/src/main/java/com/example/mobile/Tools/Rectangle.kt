@@ -7,6 +7,7 @@ import android.graphics.Paint
 import com.example.mobile.activity.drawing.DrawingCollaboration
 import com.example.mobile.Interface.IRectangleStroke
 import com.example.mobile.Interface.IVec2
+import com.example.mobile.activity.drawing.ToolbarFragment
 import org.json.JSONArray
 import org.json.JSONObject
 import java.util.*
@@ -18,6 +19,8 @@ class Rectangle (context: Context, baseCanvas: Canvas, val socket : DrawingColla
     var right = 0F
     var bottom = 0F
     var left = 0F
+
+    override var nextTool: ToolbarFragment.MenuItem = ToolbarFragment.MenuItem.RECTANGLE
 
     override fun touchStart(){
         mStartX = mx
@@ -41,6 +44,14 @@ class Rectangle (context: Context, baseCanvas: Canvas, val socket : DrawingColla
             getRectWidthAndHeight().y,
             getTopLeftCorner())
         selection.addStroke(iRectangleStroke)
+
+        //selectionner ce stroke
+        selection.selectStroke(iRectangleStroke)
+
+        //changer le tool a selection
+        selection.isToolSelection = false
+        selection.oldTool = ToolbarFragment.MenuItem.RECTANGLE
+        nextTool = ToolbarFragment.MenuItem.SELECTION
     }
 
     private fun getRectWidthAndHeight(): IVec2{

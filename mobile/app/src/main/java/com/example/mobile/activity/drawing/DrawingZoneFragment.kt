@@ -132,12 +132,12 @@ class DrawingZoneFragment : Fragment() {
                 MotionEvent.ACTION_DOWN -> {
                     isDrawing = true
                     toolManager.currentTool.touchStart()
-                    if (toolManager.currentTool.nextTool == ToolbarFragment.MenuItem.PENCIL) {
-                        this.toolManager.changeTool(ToolbarFragment.MenuItem.PENCIL)
+                    if (toolManager.currentTool.nextTool != ToolbarFragment.MenuItem.SELECTION) {
+                        this.toolManager.changeTool(toolManager.currentTool.nextTool)
                         resetPath()
                         toolManager.currentTool.mx = event.x
                         toolManager.currentTool.my = event.y
-                        toolManager.pencil.touchStart()
+                        toolManager.currentTool.touchStart()
                     }
 //                    if (toolManager.currentTool.nextTool != ToolbarFragment.MenuItem.SELECTION) {
 //                        changeTool(toolManager.currentTool.nextTool)
@@ -186,9 +186,9 @@ class DrawingZoneFragment : Fragment() {
             if (this::toolManager.isInitialized) {
                 this.toolManager.changeTool(tool)
                 resetPath()
+                toolManager.selection.resetSelection()
                 if (tool == ToolbarFragment.MenuItem.SELECTION) {
                     toolManager.selection.isToolSelection = true
-                    toolManager.selection.resetSelection()
                 }
             }
         }

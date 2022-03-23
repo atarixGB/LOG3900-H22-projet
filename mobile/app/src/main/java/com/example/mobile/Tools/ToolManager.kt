@@ -21,7 +21,6 @@ class ToolManager {
         this.context = context
         initialiseTools()
         this.currentTool = pencil
-        this.currentTool.nextTool = ToolbarFragment.MenuItem.PENCIL
     }
 
     private fun initialiseTools(){

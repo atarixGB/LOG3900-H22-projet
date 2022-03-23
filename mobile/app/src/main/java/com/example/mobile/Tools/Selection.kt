@@ -21,6 +21,9 @@ class  Selection(context: Context, baseCanvas: Canvas, socket : DrawingCollabora
     private var selectionBitmap: Bitmap? = null
     private var selectedIndex:Int=0
     var isToolSelection: Boolean? = null
+    var oldTool: ToolbarFragment.MenuItem? = null
+
+    override var nextTool: ToolbarFragment.MenuItem = ToolbarFragment.MenuItem.SELECTION
 
     override fun touchStart() {
         mStartX = mx
@@ -41,9 +44,9 @@ class  Selection(context: Context, baseCanvas: Canvas, socket : DrawingCollabora
             }
 
             if (!isInBounds(currentStroke!!.boundingPoints, IVec2(mx, my)) && !isToolSelection!!) {
-                changeTool(ToolbarFragment.MenuItem.PENCIL)
+                nextTool = oldTool!!
             } else {
-                changeTool(ToolbarFragment.MenuItem.SELECTION)
+                nextTool = ToolbarFragment.MenuItem.SELECTION
             }
             currentStroke = null
 
@@ -67,7 +70,7 @@ class  Selection(context: Context, baseCanvas: Canvas, socket : DrawingCollabora
                 element.drawStroke(baseCanvas) //redessiner toutes les formes sur le base canvas
             }
             currentStroke = null
-            changeTool(ToolbarFragment.MenuItem.SELECTION)
+            nextTool = ToolbarFragment.MenuItem.SELECTION
         }
     }
 
@@ -79,7 +82,7 @@ class  Selection(context: Context, baseCanvas: Canvas, socket : DrawingCollabora
             currentStroke = strokes[selectedIndex]
             selectStroke(currentStroke!!)
         }
-        changeTool(ToolbarFragment.MenuItem.SELECTION)
+        nextTool = ToolbarFragment.MenuItem.SELECTION
     }
 
     override fun onStrokeReceived(stroke: JSONObject) {

@@ -18,6 +18,8 @@ class Pencil(context: Context, baseCanvas: Canvas, val socket : DrawingCollabora
     var lowestCoord: Float = 0F;
     var highestCoord: Float = 0F;
 
+    override var nextTool: ToolbarFragment.MenuItem = ToolbarFragment.MenuItem.PENCIL
+
     override fun touchStart() {
         points.clear()
         mStartX = mx
@@ -31,6 +33,7 @@ class Pencil(context: Context, baseCanvas: Canvas, val socket : DrawingCollabora
         highestCoord = baseCanvas.height.toFloat()
         rightestCoord = 0F;
         lowestCoord = 0F;
+
     }
 
     override fun touchMove() {
@@ -68,7 +71,8 @@ class Pencil(context: Context, baseCanvas: Canvas, val socket : DrawingCollabora
 
         //changer le tool a selection
         selection.isToolSelection = false
-        changeTool(ToolbarFragment.MenuItem.SELECTION)
+        selection.oldTool = ToolbarFragment.MenuItem.PENCIL
+        nextTool = ToolbarFragment.MenuItem.SELECTION
     }
 
     private fun getPointsList():ArrayList<IVec2> {

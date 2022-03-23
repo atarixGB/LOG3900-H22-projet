@@ -23,10 +23,11 @@ abstract class Tool(context: Context, baseCanvas: Canvas, socket: DrawingCollabo
     var my = 0f
     var path = Path()
     val TOUCH_TOLERANCE = 4f
-    lateinit var nextTool: ToolbarFragment.MenuItem
     protected val drawColor = ResourcesCompat.getColor(context.resources, R.color.black, null)
     protected val backgroundColor = ResourcesCompat.getColor(context.resources, R.color.white, null)
     var points : ArrayList<IVec2> = ArrayList<IVec2>()
+
+    abstract var nextTool: ToolbarFragment.MenuItem
 
     protected val paint = Paint().apply {
         color = drawColor
@@ -54,9 +55,9 @@ abstract class Tool(context: Context, baseCanvas: Canvas, socket: DrawingCollabo
         this.paint.color = color
     }
 
-    fun changeTool(nextTool: ToolbarFragment.MenuItem) {
-        this.nextTool = nextTool
-    }
+//    fun changeTool(nextTool: ToolbarFragment.MenuItem) {
+//        this.nextTool = nextTool
+//    }
 
     abstract fun onStrokeReceived(stroke : JSONObject)
 
