@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import * as sounds from '@app/constants/soundPaths';
+import * as sounds from '@app/constants/sounds';
 
 @Injectable({
   providedIn: 'root'
