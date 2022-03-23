@@ -80,21 +80,36 @@ class Rectangle (context: Context, baseCanvas: Canvas, val socket : DrawingColla
     }
 
     private fun draw(stroke: IRectangleStroke) {
-        val upcomingPaint = Paint().apply {
+        val upcomingPaintStroke = Paint().apply {
             color = stroke.primaryColor
             strokeWidth = stroke.strokeWidth
             isAntiAlias = true
-            // Dithering affects how colors with higher-precision than the device are down-sampled.
             isDither = true
-            style = Paint.Style.STROKE // default: FILL
-            strokeJoin = Paint.Join.MITER // default: MITER
+            style = Paint.Style.STROKE
+            strokeJoin = Paint.Join.MITER
+            strokeCap = Paint.Cap.SQUARE
+        }
+
+        val upcomingPaintFill = Paint().apply {
+            color = stroke.secondaryColor
+            strokeWidth = stroke.strokeWidth
+            isAntiAlias = true
+            isDither = true
+            style = Paint.Style.FILL
+            strokeJoin = Paint.Join.MITER
             strokeCap = Paint.Cap.SQUARE
         }
         baseCanvas!!.drawRect(stroke.topLeftCorner.x,
             stroke.topLeftCorner.y,
             stroke.topLeftCorner.x + stroke.width,
             stroke.topLeftCorner.y + stroke.height,
-            upcomingPaint!!)
+            upcomingPaintStroke!!)
+
+        baseCanvas!!.drawRect(stroke.topLeftCorner.x,
+            stroke.topLeftCorner.y,
+            stroke.topLeftCorner.x + stroke.width,
+            stroke.topLeftCorner.y + stroke.height,
+            upcomingPaintFill!!)
     }
 
     private fun getBoundingPoints():ArrayList<IVec2>{

@@ -57,7 +57,7 @@ class  Ellipse(context: Context, baseCanvas: Canvas, val socket : DrawingCollabo
         canvas!!.drawOval(left, top, right, bottom, strokePaint!!)
 
         canvas.drawOval(left, top, right, bottom, fillPaint!!)
-        canvas!!.drawRect(left, top, right, bottom, strokePaint!!)
+        canvas!!.drawOval(left, top, right, bottom, strokePaint!!)
     }
     private fun sendEllipseStroke(left : Float, top: Float, right: Float, bottom: Float){
         var bounding = JSONArray()
@@ -83,21 +83,36 @@ class  Ellipse(context: Context, baseCanvas: Canvas, val socket : DrawingCollabo
     }
 
     private fun draw(stroke: IEllipseStroke) {
-        val upcomingPaint = Paint().apply {
+        val upcomingPaintStroke = Paint().apply {
             color = stroke.primaryColor
             strokeWidth = stroke.strokeWidth
             isAntiAlias = true
-            // Dithering affects how colors with higher-precision than the device are down-sampled.
             isDither = true
-            style = Paint.Style.STROKE // default: FILL
-            strokeJoin = Paint.Join.MITER // default: MITER
-            strokeCap = Paint.Cap.SQUARE // default: BUTT
+            style = Paint.Style.STROKE
+            strokeJoin = Paint.Join.MITER
+            strokeCap = Paint.Cap.SQUARE
+        }
+
+        val upcomingPaintFill = Paint().apply {
+            color = stroke.secondaryColor
+            strokeWidth = stroke.strokeWidth
+            isAntiAlias = true
+            isDither = true
+            style = Paint.Style.FILL
+            strokeJoin = Paint.Join.MITER
+            strokeCap = Paint.Cap.SQUARE
         }
         baseCanvas!!.drawOval(stroke.center.x-stroke.radius.x,
             stroke.center.y-stroke.radius.y,
             stroke.center.x+stroke.radius.x,
             stroke.center.y+stroke.radius.y,
-            upcomingPaint!!)
+            upcomingPaintStroke!!)
+
+        baseCanvas!!.drawOval(stroke.center.x-stroke.radius.x,
+            stroke.center.y-stroke.radius.y,
+            stroke.center.x+stroke.radius.x,
+            stroke.center.y+stroke.radius.y,
+            upcomingPaintFill!!)
     }
 
 
