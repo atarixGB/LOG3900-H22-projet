@@ -391,13 +391,13 @@ app.post(
   "/upload/:drawingId",
   multer({
     storage: storage
-  }).single('upload'), function(req, res) {
+  }).single('upload'), function(req, res) { //dans le response tu va avoir le fichier en question
     //console.log(req.file);
     console.log(req.body);
-    res.redirect("/uploads/" + req.file.filename);
+    res.redirect("/uploads/" + req.file.filename);// ici tu mets le fichier dans le directory uploads
     console.log(req.file.filename);
     DB.collection("drawings").findOneAndUpdate({ _id: mongoose.Types.ObjectId(req.params.drawingId.replaceAll(/"/g, '')) }, { $set: {"data": req.file.filename}}, { returnDocument: 'after' }, (err, res) => {
-      });
+      });// ici tu par chercher le drawingID en base et tu mets le data de cet element au filename 
     return res.status(200).end(); 
   });
 

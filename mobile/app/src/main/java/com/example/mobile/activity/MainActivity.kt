@@ -1,5 +1,6 @@
 package com.example.mobile.activity
 
+import android.app.ActivityOptions
 import android.content.Intent
 import android.media.MediaPlayer
 import android.os.Bundle
@@ -94,8 +95,9 @@ class MainActivity : AppCompatActivity()  {
 
         createAccountBtn.setOnClickListener {
             val intent = Intent(this, Registration::class.java)
+            var bundle:Bundle = ActivityOptions.makeSceneTransitionAnimation(this).toBundle()
 //            intent.putExtra("userName",identifiant.text.toString())
-            startActivity(intent)
+            startActivity(intent,bundle)
         }
 
         showHideBtn.setOnClickListener {
@@ -118,8 +120,9 @@ class MainActivity : AppCompatActivity()  {
     private fun openDashboard(){
         isDashboardOpen = true
         val intent = Intent(this, Dashboard::class.java)
+        var bundle:Bundle =ActivityOptions.makeSceneTransitionAnimation(this).toBundle()
         intent.putExtra("userName",identifiant)
-        startActivity(intent)
+        startActivity(intent,bundle)
     }
 
 

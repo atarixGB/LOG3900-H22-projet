@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.*
 import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
@@ -160,6 +161,7 @@ class CreateDrawingPopUp(val user: String, val isAlbumAlreadySelected: Boolean) 
             } else {
                 // s'il n'a pas selectionner de drawing name, rend visible le champ d'erreur
                 drawingNameEmptyError.isVisible = true
+                drawingName.animation=AnimationUtils.loadAnimation(context,R.anim.shake_animation)
             }
         }
 

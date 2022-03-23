@@ -5,7 +5,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.*
+import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
 import com.example.mobile.R
 
@@ -16,6 +18,7 @@ class CreateAlbumPopUp : DialogFragment() {
     private lateinit var submitButton: Button
     private lateinit var cancelButton: Button
     private lateinit var listener: DialogListener
+    private lateinit var albumNameEmptyError:TextView
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,19 +31,27 @@ class CreateAlbumPopUp : DialogFragment() {
         albumDescription=rootView.findViewById(R.id.albumDescription)
         submitButton= rootView.findViewById(R.id.submitBtn)
         cancelButton=rootView.findViewById(R.id.cancelBtn)
+        albumNameEmptyError=rootView.findViewById(R.id.albumNameEmptyError)
+
+        albumNameEmptyError.isVisible=false
 
         cancelButton.setOnClickListener(){
             dismiss()
         }
 
         submitButton.setOnClickListener(){
-            if(albumName.text.toString()!="album public"){
+            if(albumName.text.toString()!="album public" && !albumName.text.toString().isNullOrBlank()){
                 var name= albumName.text.toString()
                 var description = albumDescription.text.toString()
-
+                albumNameEmptyError.isVisible=false
                 listener.popUpListener(name,description)
 
                 dismiss()
+            }
+            else if(albumName.text.toString().isNullOrBlank() || albumName.text.toString().isEmpty() ){
+                albumNameEmptyError.isVisible=true
+                albumName.animation=AnimationUtils.loadAnimation(context,R.anim.shake_animation)
+
             }
             else {
                 Toast.makeText(context,"Album public est un nom reservé", Toast.LENGTH_SHORT).show()

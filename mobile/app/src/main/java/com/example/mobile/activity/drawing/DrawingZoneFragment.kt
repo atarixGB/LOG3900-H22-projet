@@ -186,7 +186,6 @@ class DrawingZoneFragment : Fragment() {
                 mBitmap!!.compress(Bitmap.CompressFormat.PNG, 0, bos);
                 var bitmapdata: ByteArray = convertBitmapToByteArray(mBitmap!!)
 
-
                 var fos: FileOutputStream = FileOutputStream(file);
                 fos.write(bitmapdata);
                 fos.flush();

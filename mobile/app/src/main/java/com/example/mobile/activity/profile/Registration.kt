@@ -1,6 +1,7 @@
 package com.example.mobile.activity.profile
 
 import android.app.Activity
+import android.app.ActivityOptions
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -153,7 +154,8 @@ class Registration : AppCompatActivity(), SelectAvatarPopUp.DialogListener {
 
         loginAccountBtn.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
+            var bundle:Bundle =ActivityOptions.makeSceneTransitionAnimation(this).toBundle()
+            startActivity(intent,bundle)
         }
 
     }
@@ -185,7 +187,8 @@ class Registration : AppCompatActivity(), SelectAvatarPopUp.DialogListener {
 //                    intent.putExtra("email",edt_email.text.toString())
                     acceptMemberRequest(identifiant.text.toString(),"","album public")
                     mediaPlayerSuccess.start()
-                    startActivity(intent)
+                    var bundle:Bundle =ActivityOptions.makeSceneTransitionAnimation(this).toBundle()
+                    startActivity(intent,bundle)
                 }else{
                     mediaPlayerFail.start()
                     Toast.makeText(this,"Nom d'utilisateur ou courriel déjà existants", Toast.LENGTH_SHORT).show()
