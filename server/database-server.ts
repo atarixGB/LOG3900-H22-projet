@@ -423,7 +423,7 @@ app.post(
       likes: result.likes
     };
     res.json(returnedJson)
-    //console.log("ressss", res);
+    console.log("GotDrawing");
       }
     });
 
