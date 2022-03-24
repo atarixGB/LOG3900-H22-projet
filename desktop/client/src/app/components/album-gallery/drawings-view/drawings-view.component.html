@@ -10,22 +10,46 @@
     </div>
 
     <div fxLayout="column" fxLayoutAlign="space-evenly center">
-      <p>Les dessins de l'album {{this.albumGalleryService.currentAlbum.name }} apparaîtront ici!</p>
-      <p>ID: {{this.albumGalleryService.currentAlbum._id}},
-        Proprio: {{this.albumGalleryService.currentAlbum.owner}},
-        Description: {{this.albumGalleryService.currentAlbum.description}}</p>
+      <p>
+        Tu es actuellement dans l'album <span class="italic">{{this.albumGalleryService.currentAlbum.name }}</span>
+      </p>
+      <p>
+        <span class="bold">Propriétaire:</span> {{this.albumGalleryService.currentAlbum.owner}}<br>
+        <span class="bold">Description:</span> {{this.albumGalleryService.currentAlbum.description}}<br>
+      </p>
     </div>
-
 
     <div>
       <div fxLayout="row" fxLayoutAlign="space-evenly center">
         <button mat-raised-button color="primary" (click)="viewMembersList()">Voir les membres de l'album</button>
-        <button *ngIf="this.isCurrentAlbumMine" mat-raised-button color="primary" (click)="openSettingsDialog()">Modifer l'album</button>
         <button *ngIf="this.isCurrentAlbumMine" mat-raised-button color="primary" (click)="viewRequests()">Voir les demandes d'adhésion</button>
+        <button *ngIf="this.isCurrentAlbumMine" mat-raised-button color="primary" (click)="openSettingsDialog()">Modifer l'album</button>
         <button *ngIf="!this.isCurrentAlbumMine && !this.isPublicAlbum" mat-raised-button color="primary" (click)="leaveAlbumButton()">Quitter l'album</button>
         <button *ngIf="this.isCurrentAlbumMine" mat-raised-button color="primary" (click)="deleteAlbumButton()">Supprimer l'album</button>
       </div>
     </div>
+
+    <div class="content">
+      <div fxLayout="row wrap" fxLayoutGap="16px grid">
+        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%" *ngFor="let num of [1,2,3,4]">
+          <mat-card class="mat-elevation-z4" >
+            <mat-card-header>
+              <mat-card-title>Shiba {{num}}</mat-card-title>
+            </mat-card-header>
+            <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg">
+            <mat-card-content>
+              <p>
+                Shiba are the best!
+              </p>
+            </mat-card-content>
+            <mat-card-actions>
+              <button mat-button id="like-btn">J'aime <mat-icon>favorite</mat-icon> </button>
+              <button mat-button id="share-btn">Partager <mat-icon>share</mat-icon> </button>
+            </mat-card-actions>
+          </mat-card>
+        </div>
+      </div>
+      </div>
 
   </div>
 </div>

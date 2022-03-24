@@ -24,6 +24,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { MaterialFileInputModule } from 'ngx-material-file-input';
 import { AppRoutingModule } from './app-routing.module';
 import { MatMenuModule} from '@angular/material/menu';
+import { MatCardModule } from '@angular/material/card';
 import { AppComponent } from './components/app/app.component';
 import { AvatarImportModalComponent } from './components/avatar/avatar-import-modal/avatar-import-modal.component';
 import { AvatarSelectionModalComponent } from './components/avatar/avatar-selection-modal/avatar-selection-modal.component';
@@ -142,6 +143,7 @@ import { JoinRequestDialogComponent } from './components/album-gallery/public-al
         FlexLayoutModule,
         MaterialFileInputModule,
         MatMenuModule,
+        MatCardModule
     ],
     providers: [],
     bootstrap: [AppComponent],

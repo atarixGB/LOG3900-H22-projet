@@ -1,13 +1,25 @@
 :host {
-  height: 100%;
+  height: 100vh;
 }
 
-mat-icon {
-  transform: scale(4);
-  color: lightgreen;
+.italic {
+  font-style: italic;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.content {
+  margin: 16px;
 }
 
 #back-btn {
   transform: scale(2);
+}
+
+mat-icon {
+  transform: scale(0.75);
+  color: #A8D08C;
 }
 
