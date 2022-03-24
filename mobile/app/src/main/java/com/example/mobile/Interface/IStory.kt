@@ -2,4 +2,4 @@ package com.example.mobile.Interface
 
 import android.graphics.Bitmap
 
-data class IStory (val owner: String, val avatar: Bitmap, val drawingsData: ArrayList<String>)
+data class IStory(var owner: String, var avatar: Bitmap, var drawingsId: ArrayList<String>)

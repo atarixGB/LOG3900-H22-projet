@@ -41,7 +41,7 @@ class StoryAdapter (val context: Context?, var stories: ArrayList<IStory>, val u
             userAvatar.setImageBitmap(currentStory.avatar)
 
             userAvatar.setOnClickListener {
-                listener.storyAdapterListener(currentStory.drawingsData)
+                listener.storyAdapterListener(currentStory)
             }
         }
     }
@@ -50,16 +50,12 @@ class StoryAdapter (val context: Context?, var stories: ArrayList<IStory>, val u
         stories.add(story)
     }
 
-    fun addDrawingToStory (index: Int, drawing: String) {
-        stories[index].drawingsData.add(drawing)
-    }
-
     override fun getItemCount(): Int {
         return stories.size
     }
 
     public interface StoryAdapterListener {
-        fun storyAdapterListener(drawingsData: ArrayList<String>)
+        fun storyAdapterListener(drawingsId: IStory)
     }
 
 
