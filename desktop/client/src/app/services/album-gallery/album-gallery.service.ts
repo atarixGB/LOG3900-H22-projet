@@ -245,12 +245,10 @@ export class AlbumGalleryService {
   fetchDrawingsFromSelectedAlbum(album: IAlbum): void {
     console.log("Fetching drawings from album: " + album.name);
 
-    // find right album from publicAlbums array
-    // album == the right album
-    // then this foreach:
-
     album.drawingIDs.forEach(id => {
-      this.httpClient.get<any>(GET_DRAWING_URL + id).subscribe(
+      console.log(id);
+      
+      this.httpClient.get(GET_DRAWING_URL + id).subscribe(
         (result) => {
           console.log(result);
           this.drawings.push(result);
