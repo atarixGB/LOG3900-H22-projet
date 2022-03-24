@@ -4,7 +4,7 @@ import android.provider.SyncStateContract
 import io.socket.client.IO
 
 class DrawingCollaboration {
-    val port = "http://10.0.2.2:3001/"
+    val port = "http://10.0.2.2:3002/"
     var socket = IO.socket(port)
 
     fun init() {

@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProfileService } from '../profile/profile.service';
 import { LOGIN_URL } from '@app/constants/api-urls';
+import { SoundEffectsService } from '../sound-effects/sound-effects.service';
 
 @Injectable({
     providedIn: 'root',
@@ -16,7 +17,7 @@ export class LoginService {
     isValidEmail: boolean;
     isValidPW: boolean;
 
-    constructor(private httpClient: HttpClient, private router: Router, private route: ActivatedRoute, private profileService: ProfileService) {
+    constructor(private httpClient: HttpClient, private router: Router, private route: ActivatedRoute, private profileService: ProfileService, private soundEffectsService: SoundEffectsService) {
         this.email = '';
         this.password = '';
     }
@@ -40,8 +41,10 @@ export class LoginService {
                   this.fetchUserInfo();
                 } else if (result == 403) {
                   this.isValidPW = false;
+                  this.soundEffectsService.playFailureSound();
                 } else if (result == 404) {
                   this.isValidEmail = false;
+                  this.soundEffectsService.playFailureSound();
                 }
             },
             (error) => {

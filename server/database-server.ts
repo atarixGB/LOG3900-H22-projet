@@ -411,25 +411,24 @@ app.post(
       if (err) {
         console.log("error getting");
       } else {
-    const file = result.data;
-    var img = fs.readFileSync(__dirname + "/uploads/" + file, {encoding: 'base64'});
-    //console.log("image", img)
-    //res.writeHead(200, {'Content-Type': 'image/png' });
-    // res.end(img, 'binary');
-    var returnedJson = {
-      _id: result._id,
-      name: result.name,
-      owner: result.owner,
-      description: result.description,
-      data: img,
-      members: result.members,
-      likes: result.likes
-    };
-    res.json(returnedJson)
-    //console.log("ressss", res);
+        const file = result.data;
+        var img = fs.readFileSync(__dirname + "/uploads/" + file, {encoding: 'base64'});
+        //console.log("image", img)
+        //res.writeHead(200, {'Content-Type': 'image/png' });
+        // res.end(img, 'binary');
+        var returnedJson = {
+          _id: result._id,
+          name: result.name,
+          owner: result.owner,
+          description: result.description,
+          data: img,
+          members: result.members,
+          likes: result.likes
+        };
+        res.json(returnedJson)
+        console.log("GotDrawing");
       }
     });
-
   });
 //==========================================================================================================
 // Album Management
@@ -804,62 +803,6 @@ app.post(
         `connected to MongoDB server, webserver running on port ${SERVER_PORT}`
       );
     });
-
-//==========================================================================================================
-//THIS BLOCK NEEDS TO BE TRANSFERED TO COLLAB SERVER
-//==========================================================================================================
-
-    // Collaboration
-    const ioCollab = socket(server);
-
-    ioCollab.on('connection', (socket) => {
-      console.log("New socket connection in collab : " + socket.id)
-
-      socket.on('broadcastStroke', (strokeData) => {
-        // console.log("StrokeData : " , strokeData);
-        ioCollab.emit('receiveStroke', strokeData);
-      })
-
-      socket.on('broadcastSelection', (selectionData) => {
-        // console.log("Broadcasting selection : ", selectionData);
-        ioCollab.emit('receiveSelection', selectionData);
-      })
-  
-      socket.on('broadcastSelectionPos', (posData) => {
-        // console.log("Broadcasting new selection position : ", posData);
-        ioCollab.emit('receiveSelectionPos', posData);
-      })
-  
-      socket.on('broadcastSelectionSize', (sizeData) => {
-        // console.log("Broadcasting new selection size : ", sizeData);
-        ioCollab.emit('receiveSelectionSize', sizeData);
-      })
-  
-      socket.on('broadcastPasteRequest', (pasteReqData) => {
-        // console.log("Broadcasting paste request from :", pasteReqData);
-        ioCollab.emit('receivePasteRequest', pasteReqData);
-      })
-  
-      socket.on('broadcastDeleteRequest', (delReqData) => {
-        // console.log("Broadcasting delete request from :", delReqData);
-        ioCollab.emit('receiveDeleteRequest', delReqData);
-      })
-  
-      socket.on('broadcastNewStrokeWidth', (widthData) => {
-        // console.log("Broadcasting new stroke width :", widthData);
-        ioCollab.emit('receiveStrokeWidth', widthData);
-      })
-
-      socket.on('broadcastNewPrimaryColor', (colorData) => {
-        // console.log("Broadcasting NewPrimaryColor :", colorData);
-        ioCollab.emit('receiveNewPrimaryColor', colorData);
-      })
-
-      socket.on('broadcastNewSecondaryColor', (colorData) => {
-        // console.log("Broadcasting NewSecondaryColor :", colorData);
-        ioCollab.emit('receiveNewSecondaryColor', colorData);
-      })
-    })
   }
 });
 

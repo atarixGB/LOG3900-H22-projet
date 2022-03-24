@@ -1,8 +1,9 @@
 <div fxLayout="row" fxLayoutAlign="center stretch" fxFlex="100">
+   <!-- Side-menu -->
    <app-side-menu fxLayout="column" fxLayoutAlign="start stretch" fxFlex="15%"></app-side-menu>
 
-   <div fxLayout="row" fxLayoutAlign="space-evenly center"  fxFlex="auto">
-      <button mat-raised-button color="primary" routerLink="/editor">Créer une session</button>
-      <button mat-raised-button color="primary" routerLink="/my-albums">Joindre une session</button>
+   <!-- dashboard -->
+   <div fxLayout="column" fxLayoutAlign="space-evenly center"  fxFlex="auto">
+      <app-dashboard></app-dashboard>
    </div>
 </div>

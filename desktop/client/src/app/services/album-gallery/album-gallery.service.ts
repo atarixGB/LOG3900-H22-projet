@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { IAlbum } from '@app/interfaces-enums/IAlbum'
 import { IDrawing } from '@app/interfaces-enums/IDrawing'
 import { LoginService } from '@app/services/login/login.service';
-import { ALBUM_URL, PUBLIC_DRAWINGS_URL, CREATE_DRAWING_URL, JOIN_ALBUM_URL, DECLINE_MEMBERSHIP_REQUEST_URL, ACCEPT_MEMBERSHIP_REQUEST_URL, UPDATE_ALBUM_PARAMETERS_URL, ADD_DRAWING_TO_ALBUM_URL, SAVE_DRAWING_URL} from '@app/constants/api-urls';
+import { ALBUM_URL, PUBLIC_DRAWINGS_URL, CREATE_DRAWING_URL, JOIN_ALBUM_URL, DECLINE_MEMBERSHIP_REQUEST_URL, ACCEPT_MEMBERSHIP_REQUEST_URL, UPDATE_ALBUM_PARAMETERS_URL, ADD_DRAWING_TO_ALBUM_URL, GET_DRAWING_URL, SAVE_DRAWING_URL } from '@app/constants/api-urls';
 import { PUBLIC_ALBUM } from '@app/constants/constants';
 import { DrawingService } from '../editor/drawing/drawing.service';
 
@@ -17,6 +17,7 @@ export class AlbumGalleryService {
   selectedAlbumId: string | void;
 
   currentDrawing: IDrawing;
+  drawings: any;
 
   constructor(private httpClient: HttpClient, private loginService: LoginService, private drawingService: DrawingService) {
     this.publicAlbums = [];
@@ -267,8 +268,22 @@ export class AlbumGalleryService {
   }
 
   fetchDrawingsFromSelectedAlbum(album: IAlbum): void {
-    // console.log("Fetching drawings from album with id: " + album._id);
-    console.log(album);
+    console.log("Fetching drawings from album: " + album.name);
+
+    album.drawingIDs.forEach(id => {
+      console.log(id);
+      
+      this.httpClient.get(GET_DRAWING_URL + id).subscribe(
+        (result) => {
+          console.log(result);
+          this.drawings.push(result);
+        },
+        (error) => {
+          console.log(`Erreur en allant chercher un dessin.\nErreur: ${error}`);
+        }
+      );
+      
+    });
 
     // TODO: fetch album's drawings from db
   }

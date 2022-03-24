@@ -21,9 +21,9 @@ import { MatSliderModule } from '@angular/material/slider';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialFileInputModule } from 'ngx-material-file-input';
 import { AppRoutingModule } from './app-routing.module';
+import { MatMenuModule} from '@angular/material/menu';
 import { AppComponent } from './components/app/app.component';
 import { AvatarImportModalComponent } from './components/avatar/avatar-import-modal/avatar-import-modal.component';
 import { AvatarSelectionModalComponent } from './components/avatar/avatar-selection-modal/avatar-selection-modal.component';
@@ -55,9 +55,14 @@ import { PublicDrawingGalleryComponent } from './components/album-gallery/public
 import { ColorConfigComponent } from './components/editor/sidebar/color-config/color-config.component';
 import { CreateRoomDialogComponent } from './components/chat/create-room-dialog/create-room-dialog.component';
 import { PublicChatroomsComponent } from './components/chat/public-chatrooms/public-chatrooms.component';
-import { DeleteRoomDialogComponent } from './components/chat/delete-room-dialog/delete-room-dialog.component';
+import { DeleteRoomDialogComponent } from './components/chat/chatroom/delete-room-dialog/delete-room-dialog.component';
 import { CreateDrawingDialogComponent } from './components/editor/create-drawing-dialog/create-drawing-dialog.component';
 import { RequestsDialogComponent } from './components/album-gallery/drawings-view/requests-dialog/requests-dialog.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { JoinRoomDialogComponent } from './components/chat/public-chatrooms/join-room-dialog/join-room-dialog.component';
+import { LeaveRoomDialogComponent } from './components/chat/chatroom/leave-room-dialog/leave-room-dialog.component';
+import { ChatroomUsersDialogComponent } from './components/chat/chatroom/chatroom-users-dialog/chatroom-users-dialog.component';
 import { MembersListDialogComponent } from './components/album-gallery/drawings-view/members-list-dialog/members-list-dialog.component';
 import { AlbumSettingsDialogComponent } from './components/album-gallery/drawings-view/album-settings-dialog/album-settings-dialog.component';
 import { JoinRequestDialogComponent } from './components/album-gallery/public-albums/join-request-dialog/join-request-dialog.component';
@@ -100,6 +105,10 @@ import { JoinRequestDialogComponent } from './components/album-gallery/public-al
         DeleteRoomDialogComponent,
         CreateDrawingDialogComponent,
         RequestsDialogComponent,
+        DashboardComponent,
+        JoinRoomDialogComponent,
+        LeaveRoomDialogComponent,
+        ChatroomUsersDialogComponent,
         MembersListDialogComponent,
         AlbumSettingsDialogComponent,
         JoinRequestDialogComponent,
@@ -132,6 +141,7 @@ import { JoinRequestDialogComponent } from './components/album-gallery/public-al
         MatCheckboxModule,
         FlexLayoutModule,
         MaterialFileInputModule,
+        MatMenuModule,
     ],
     providers: [],
     bootstrap: [AppComponent],

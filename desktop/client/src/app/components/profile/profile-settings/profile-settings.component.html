@@ -21,7 +21,7 @@
                <span>Avatar</span>
             </div>
             <div class="topPadding" fxLayout="row" fxLayoutAlign="space-evenly stretch">
-               <div id="avatarDisplay" fxLayoutAlign="center center">
+               <div id="avatarDisplay" fxLayoutAlign="center center" class="animate__animated" [ngClass]="{animate__headShake: this.profileSettingsService.isAvatarTooLarge}">
                   <img id="avatarImg" src="data:image/png;base64,{{this.profileSettingsService.newAvatarSrc}}">
                </div>
                <div fxLayout="column" fxLayoutAlign="space-evenly center" >
@@ -39,7 +39,7 @@
             </div>
             <div class="topBottomPadding" fxLayout="row" fxLayoutAlign="space-evenly center">
                <div fxLayout="column" fxLayoutAlign="center center">
-                  <mat-form-field appearance="outline">
+                  <mat-form-field class="animate__animated" [ngClass]="{animate__headShake: this.profileSettingsService.isExistingUsername || !this.profileSettingsService.isValidUsername}" appearance="outline">
                      <mat-label>Entrez un nouveau nom</mat-label>
                      <input matInput [(ngModel)]="this.profileSettingsService.newUsername">
                   </mat-form-field>

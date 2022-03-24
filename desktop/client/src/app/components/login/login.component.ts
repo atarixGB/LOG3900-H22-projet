@@ -1,10 +1,14 @@
 import { Component } from '@angular/core';
 import { LoginService } from '@app/services/login/login.service';
+import { SoundEffectsService } from '@app/services/sound-effects/sound-effects.service';
+import { fadeInAnimation } from '@app/constants/animations';
 
 @Component({
     selector: 'app-login',
     templateUrl: './login.component.html',
     styleUrls: ['./login.component.scss'],
+    animations: [fadeInAnimation],
+    host: { '[@fadeInAnimation]': '' }
 })
 export class LoginComponent {
     email: string;
@@ -13,7 +17,7 @@ export class LoginComponent {
 
     isValidFields: boolean;
 
-    constructor(public loginService: LoginService) {
+    constructor(public loginService: LoginService, private soundEffetsService: SoundEffectsService) {
         this.email = '';
         this.password = '';
         this.setBoolsToDefault();
@@ -32,6 +36,7 @@ export class LoginComponent {
             this.loginService.connect();
         } else {
             this.isValidFields = false;
+            this.soundEffetsService.playFailureSound();
         }
     }
 
