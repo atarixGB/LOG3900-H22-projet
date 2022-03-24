@@ -3,12 +3,14 @@
 
   <div fxLayout="column" fxLayoutAlign="space-evenly stretch" fxFlex="auto">
 
+    <!-- Return button -->
     <div fxLayout="row" fxLayoutAlign="space-evenly start">
       <button mat-icon-button disableRipple="true" routerLink="/my-albums">
         <mat-icon id="back-btn">keyboard_arrow_left</mat-icon> Retour vers Mes Albums
       </button>
     </div>
 
+    <!-- Drawings -->
     <div fxLayout="column" fxLayoutAlign="space-evenly center">
       <p>Les dessins de l'album {{this.albumGalleryService.currentAlbum.name }} apparaîtront ici!</p>
       <p>ID: {{this.albumGalleryService.currentAlbum._id}},
@@ -16,7 +18,7 @@
         Description: {{this.albumGalleryService.currentAlbum.description}}</p>
     </div>
 
-
+    <!-- Buttons -->
     <div>
       <div fxLayout="row" fxLayoutAlign="space-evenly center">
         <button mat-raised-button color="primary" (click)="viewMembersList()">Voir les membres de l'album</button>
