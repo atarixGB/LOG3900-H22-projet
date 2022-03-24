@@ -9,6 +9,7 @@ import { DrawingService } from '@app/services/editor/drawing/drawing.service';
 import { RectangleService } from '@app/services/editor/tools/rectangle/rectangle.service';
 import { SelectionService } from '@app/services/editor/tools/selection/selection.service';
 import { ShapeService } from '@app/services/editor/tools/shape/shape.service';
+import { SoundEffectsService } from '@app/services/sound-effects/sound-effects.service';
 @Injectable({
     providedIn: 'root',
 })
@@ -22,8 +23,9 @@ export class EllipseService extends ShapeService {
         colorManager: ColorManagerService,
         private collaborationService: CollaborationService,
         private selectionService: SelectionService,
+        protected soundEffectsService: SoundEffectsService,
     ) {
-        super(drawingService, colorManager);
+        super(drawingService, colorManager,soundEffectsService);
     }
 
     getPositionFromMouse(event: MouseEvent): Vec2 {
@@ -37,7 +39,7 @@ export class EllipseService extends ShapeService {
         ctx.beginPath();
         ctx.ellipse(this.origin.x, this.origin.y, this.size.x / 2, this.size.y / 2, 0, 2 * Math.PI, 0);
         
-        ctx.fillStyle = this.isClearSecondary ? 'rgba(0, 0, 0, 0)' : this.colorSecond;
+        ctx.fillStyle = this.colorSecond;
         ctx.strokeStyle = this.colorPrime;
         ctx.fill();
         ctx.stroke();
@@ -86,8 +88,11 @@ export class EllipseService extends ShapeService {
             this.height = this.radius;
             this.isShiftShape = false;
         }
+        if (this.mouseDown) {
+            this.mouseDown = false;
+            this.soundEffectsService.stopDrawSound();
+        }
 
-        this.mouseDown = false;
         this.clearPath();
     }
     
@@ -139,8 +144,7 @@ export class EllipseService extends ShapeService {
             this.lineWidth,
             this.colorSecond,
             this.origin,
-            { x: this.size.x / 2, y: this.size.y / 2 },
-            this.isClearSecondary,
+            { x: this.size.x / 2, y: this.size.y / 2 }
         );
         this.collaborationService.broadcastStroke(ellipseStroke);
         this.selectionService.addStroke(ellipseStroke);

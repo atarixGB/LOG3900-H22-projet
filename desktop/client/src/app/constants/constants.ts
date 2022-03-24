@@ -1,3 +1,9 @@
+/******** ALBUMS *******/
+export const PUBLIC_ALBUM = {
+  name: "album public",
+  id: "622f77abc04d88938c916084"
+}
+/***********************/
 export const CNV_WIDTH = 1200;
 export const CNV_HEIGTH = 1000;
 export const MAX_DEC_RANGE = 255;

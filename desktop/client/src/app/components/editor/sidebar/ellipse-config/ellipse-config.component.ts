@@ -1,42 +1,30 @@
 import { AfterViewInit, Component } from '@angular/core';
 import { EllipseService } from '@app/services/editor/tools/ellipse/ellipse.service';
-import { colors } from '@app/constants/colors'
+import { BIGGEST_STROKE_WIDTH, NUMBER_WIDTH_CHOICES } from '@app/constants/constants';
 
 @Component({
     selector: 'app-ellipse-config',
     templateUrl: './ellipse-config.component.html',
     styleUrls: ['./ellipse-config.component.scss'],
 })
-export class EllipseConfigComponent implements AfterViewInit {
-    ellipseService: EllipseService;
-    colors: string[];
-    secondaryColorBtns: HTMLCollection;
+export class EllipseConfigComponent implements AfterViewInit{
+    widthBtns: HTMLCollection;
 
-    constructor(ellipseService: EllipseService) {
-        this.ellipseService = ellipseService;
-        this.colors = colors;
-    }
-
-    updateLineWidth(value: number): number {
-        return value;
-    }
+    constructor(public ellipseService: EllipseService) {}
 
     ngAfterViewInit(): void {
-        this.secondaryColorBtns = document.getElementsByClassName('ellipseColor'); 
-        for(let i = 0; i < colors.length; i++) {
-          (this.secondaryColorBtns.item(i) as HTMLElement).style.backgroundColor = colors[i];
+        const circleDiam = (document.getElementById('circle') as HTMLElement).offsetHeight;
+        this.widthBtns = document.getElementsByClassName('thicknessE'); 
+        let diam = '';
+        for(let i = 0; i < NUMBER_WIDTH_CHOICES; i++) {
+            diam = ((i+1)/NUMBER_WIDTH_CHOICES * circleDiam).toString() + 'px';
+            (this.widthBtns.item(i) as HTMLElement).style.width = diam;
+            (this.widthBtns.item(i) as HTMLElement).style.height = diam;
         }
     }
 
-    changeSecondaryColorTo(color: string, div: HTMLElement): void {
-        this.ellipseService.colorSecond = color;
-        this.displayActiveColor(div);
-    }
-
-    displayActiveColor(div: HTMLElement): void {
-        for(let i = 0; i < colors.length; i++) {
-            (this.secondaryColorBtns.item(i) as HTMLElement).className = "color ellipseColor";
-        }
-        div.className += " selected";
+    changeWidth(widthChoice: number): void {
+        this.ellipseService.selectedWidth = widthChoice;
+        this.ellipseService.lineWidth = widthChoice/NUMBER_WIDTH_CHOICES * BIGGEST_STROKE_WIDTH;
     }
 }

@@ -367,6 +367,23 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
         });
     });
 
+    //Save drawing data
+    app.put("/drawing/:drawingId", (request, response, next) => {
+
+      var drawingId = request.params.drawingId.replaceAll(/"/g, '');
+      var data =  request.body.data;
+
+      console.log(drawingId);
+      console.log(data);
+
+      DB.collection("drawings").findOneAndUpdate({ _id: mongoose.Types.ObjectId(drawingId) }, { $set: {"data": data}}, { returnDocument: 'after' }, (err, res) => {
+        response.json(200);
+        console.log(drawingId);
+        console.log(data);
+        console.log(res);
+      });
+    });
+    
     const upload = multer({dest: '/public/data/uploads/'});
 
 // Post files
@@ -443,7 +460,7 @@ app.post(
             response.status(400).send("Error fetching albums");
           } else {
             response.json(result)
-            console.log(result, "fetching succes");
+            console.log("fetching succes");
           }
         });
     });
@@ -469,11 +486,10 @@ app.post(
     //add drawing to an album
     app.put("/albums/addDrawing/:albumId", (request, response, next) => {
       let albumId = request.params.albumId;
-      console.log(albumId);
-      let drawingtoAdd = request.body.drawing;
-      DB.collection("albums").findOneAndUpdate({ name: albumId }, { $push: { drawingIDs: drawingtoAdd } }, { returnDocument: 'after' }, (err, res) => {
+      let drawingID = request.body.drawing;
+      DB.collection("albums").findOneAndUpdate({ name:albumId }, { $push: { drawingIDs: drawingID } }, { returnDocument: 'after' }, (err, res) => {
         response.json(201)
-        console.log(drawingtoAdd, "is added to ", albumId);
+        console.log(drawingID, "is added to ", albumId);
       })
     });
 
@@ -570,6 +586,34 @@ app.post(
           } else {
             response.json(result)
             console.log("Getting One Album", result);
+          }
+        });
+    });
+
+    //update album attributes
+    app.post("/albumUpdate", (request, response, next) => {
+      var post_data = request.body;
+      var oldAlbumName = post_data.oldAlbumName;
+      var newAlbumName = post_data.newAlbumName;
+      var newDescription = post_data.newDescription;
+    
+      //check if an album already has the new name
+      DB.collection("albums")
+        .find({ name: newAlbumName })
+        .count(function (err, number) {
+          if (number != 0 && oldAlbumName != newAlbumName) {
+            response.json(false);
+            console.log("album name already used");
+          } else {
+            // Update album data
+            DB.collection("albums").updateOne({ name: oldAlbumName }, {
+              $set: {
+                "name": newAlbumName,
+                "description": newDescription,
+              },
+            }).then(result => {
+              response.json(200);
+            });
           }
         });
     });
@@ -711,7 +755,6 @@ app.post(
           var post_data = request.body;
     
           var roomName = post_data.roomName;
-          
     
           var db = client.db("PolyGramDB");
 
@@ -758,51 +801,5 @@ app.post(
         `connected to MongoDB server, webserver running on port ${SERVER_PORT}`
       );
     });
-
-//==========================================================================================================
-//THIS BLOCK NEEDS TO BE TRANSFERED TO COLLAB SERVER
-//==========================================================================================================
-
-    // Collaboration
-    const ioCollab = socket(server);
-
-    ioCollab.on('connection', (socket) => {
-      console.log("New socket connection in collab : " + socket.id)
-
-      socket.on('broadcastStroke', (strokeData) => {
-        console.log("StrokeData : " , strokeData);
-        ioCollab.emit('receiveStroke', strokeData);
-      })
-
-      socket.on('broadcastSelection', (selectionData) => {
-        console.log("Broadcasting selection : ", selectionData);
-        ioCollab.emit('receiveSelection', selectionData);
-      })
-  
-      socket.on('broadcastSelectionPos', (posData) => {
-        console.log("Broadcasting new selection position : ", posData);
-        ioCollab.emit('receiveSelectionPos', posData);
-      })
-  
-      socket.on('broadcastSelectionSize', (sizeData) => {
-        console.log("Broadcasting new selection size : ", sizeData);
-        ioCollab.emit('receiveSelectionSize', sizeData);
-      })
-  
-      socket.on('broadcastPasteRequest', (pasteReqData) => {
-        console.log("Broadcasting paste request from :", pasteReqData);
-        ioCollab.emit('receivePasteRequest', pasteReqData);
-      })
-  
-      socket.on('broadcastDeleteRequest', (delReqData) => {
-        console.log("Broadcasting delete request from :", delReqData);
-        ioCollab.emit('receiveDeleteRequest', delReqData);
-      })
-  
-      socket.on('broadcastNewStrokeWidth', (widthData) => {
-        console.log("Broadcasting new stroke width :", widthData);
-        ioCollab.emit('receiveStrokeWidth', widthData);
-      })
-    })
   }
 });

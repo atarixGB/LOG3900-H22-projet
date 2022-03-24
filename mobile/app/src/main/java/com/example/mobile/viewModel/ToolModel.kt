@@ -1,4 +1,4 @@
-package com.example.mobile.model
+package com.example.mobile.viewModel
 
 import android.graphics.Bitmap
 import androidx.lifecycle.LiveData

@@ -18,8 +18,7 @@ import com.example.mobile.Tools.ToolItem
 import com.example.mobile.Tools.ToolWeightAdapter
 import com.example.mobile.Tools.ToolWeightItem
 import com.example.mobile.adapter.ColorAdapter
-import com.example.mobile.model.ToolModel
-import com.example.mobile.model.ToolParameters
+import com.example.mobile.viewModel.ToolParameters
 
 
 class CustomToolFragment : Fragment(), AdapterView.OnItemClickListener {

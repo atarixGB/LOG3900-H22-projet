@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProfileService } from './profile.service';
 import { PROFILE_UPDATE_URL } from '@app/constants/api-urls';
+import { SoundEffectsService } from '../sound-effects/sound-effects.service';
 
 @Injectable({
     providedIn: 'root',
@@ -16,7 +17,7 @@ export class ProfileSettingsService {
     isValidUsername: boolean;
     isExistingUsername: boolean;
 
-    constructor(private httpClient: HttpClient,  private router: Router, private route: ActivatedRoute, public profileService: ProfileService) {
+    constructor(private httpClient: HttpClient,  private router: Router, private route: ActivatedRoute, public profileService: ProfileService, private soundEffectsService: SoundEffectsService) {
         this.getUserInfoFromProfile();
         this.setBoolsToDefault();
     }
@@ -36,7 +37,12 @@ export class ProfileSettingsService {
     saveChanges() : void {
         this.setBoolsToDefault();
         if(this.somethingChanged()) {
-            this.isValidNewUsername() ? this.sendChangesToDB() : this.isValidUsername = false;
+            if (this.isValidNewUsername()) {
+                this.sendChangesToDB()
+            } else {
+                this.isValidUsername = false
+                this.soundEffectsService.playFailureSound();
+            }
         } else {
             this.router.navigate(['../profile'], { relativeTo: this.route });
         }
@@ -57,20 +63,24 @@ export class ProfileSettingsService {
             oldUsername: this.profileService.username,
             newUsername: this.newUsername,
             newAvatar: this.newAvatarSrc,
-            newDescription : this.newDescription
+            newDescription : this.newDescription,
+            newEmail: this.profileService.email
         };
 
         this.httpClient.post(PROFILE_UPDATE_URL, newInfos).subscribe(
             (isSuccess) => {
                 if (isSuccess) {
                     this.profileService.setUsername(this.newUsername);
+                    this.soundEffectsService.playSuccessSound();
                     this.router.navigate(['../profile'], { relativeTo: this.route });
                 } else {
+                    this.soundEffectsService.playFailureSound();
                     this.isExistingUsername = true;
                 }
             },
             (error) => {
                 console.log('Error:', error);
+                this.soundEffectsService.playFailureSound();
                 this.isAvatarTooLarge = true;
             },
         );

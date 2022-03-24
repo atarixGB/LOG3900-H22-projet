@@ -1,7 +1,14 @@
 import { formatDate } from '@angular/common';
 import { AfterViewInit, Component, HostListener } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { IChatroom } from '@app/interfaces-enums/IChatroom';
 import { IMessage } from '@app/interfaces-enums/IMessage';
 import { ChatService } from '@app/services/chat/chat.service';
+import { SoundEffectsService } from '@app/services/sound-effects/sound-effects.service';
+import { LoginService } from '@app/services/login/login.service';
+import { ChatroomUsersDialogComponent } from './chatroom-users-dialog/chatroom-users-dialog.component';
+import { DeleteRoomDialogComponent } from './delete-room-dialog/delete-room-dialog.component';
+import { LeaveRoomDialogComponent } from './leave-room-dialog/leave-room-dialog.component';
 
 @Component({
     selector: 'app-chatroom',
@@ -15,15 +22,19 @@ export class ChatroomComponent implements AfterViewInit {
     userList: string[];
     socket: any;
 
-    currentRoom: string;
+    currentRoom: IChatroom;
+    isCurrentChatroomMine: boolean;
 
-    constructor(public chatService: ChatService) {
+    constructor(public chatService: ChatService, public loginService: LoginService, public dialog: MatDialog, private soundEffectsService: SoundEffectsService) {
         this.userName = '';
         this.message = '';
         this.messageList = [];
         this.userList = [];
         this.socket = this.chatService.socket;
         this.currentRoom = this.chatService.currentRoom;
+        this.isCurrentChatroomMine = this.chatService.currentRoom.identifier == loginService.username;
+        console.log(`current room mine? ${this.isCurrentChatroomMine}`);
+
     }
 
     ngAfterViewInit(): void {
@@ -36,7 +47,7 @@ export class ChatroomComponent implements AfterViewInit {
             const data = {
                 message: this.message,
                 userName: this.userName,
-                room: this.currentRoom,
+                room: this.currentRoom.roomName,
                 time: formatDate(new Date(), 'hh:mm:ss a', 'en-US'),
             };
 
@@ -44,6 +55,7 @@ export class ChatroomComponent implements AfterViewInit {
 
             this.socket.emit('message', data);
             this.message = '';
+            this.soundEffectsService.playSendMsgSound();
         }
         this.refocusMsgInputField();
     }
@@ -57,7 +69,7 @@ export class ChatroomComponent implements AfterViewInit {
                 const isMine = data.userName == this.userName;
 
                 // This condition is a workaround to not display messages sent from the default public channel in other rooms... Not final code, the problem is still not fixed!
-                if (data.room == this.chatService.currentRoom) {
+                if (data.room == this.chatService.currentRoom.roomName) {
                   this.messageList.push({
                       message: data.message,
                       userName: data.userName + ' - ' + formatDate(new Date(), 'hh:mm:ss a', 'en-US'),
@@ -92,5 +104,24 @@ export class ChatroomComponent implements AfterViewInit {
     refocusMsgInputField(): void {
         const inputField = document.getElementById('msgInput');
         if (inputField) inputField.focus();
+    }
+
+    viewUsers(): void {
+      this.dialog.open(ChatroomUsersDialogComponent, {
+        data: this.chatService.currentRoom
+      })
+
+    }
+
+    leaveChatroom(): void {
+      this.dialog.open(LeaveRoomDialogComponent, {
+        data: this.chatService.currentRoom
+      });
+    }
+
+    deleteChatroom(): void {
+      this.dialog.open(DeleteRoomDialogComponent, {
+        data: this.chatService.currentRoom
+      });
     }
 }

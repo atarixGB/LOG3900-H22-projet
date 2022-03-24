@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { Stroke } from '@app/classes/strokes/stroke';
 import { Vec2 } from '@app/classes/vec2';
 
-const MIN_WIDTH = 15;
-const MIN_HEIGHT = 15;
+const MIN_WIDTH = 2;
+const MIN_HEIGHT = 2;
 
 @Injectable({
     providedIn: 'root',
