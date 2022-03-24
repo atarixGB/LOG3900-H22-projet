@@ -5,6 +5,7 @@ export const CHAT_URL = `http://localhost:3000`;
 export const ALBUM_URL = `${DATABASE_URL}/albums`;
 export const JOIN_ALBUM_URL = `${DATABASE_URL}/albums/sendRequest`;
 export const CREATE_DRAWING_URL = `${DATABASE_URL}/drawing/create`;
+export const GET_DRAWING_URL = `${DATABASE_URL}/drawing/`;
 
 export const ADD_DRAWING_TO_ALBUM_URL = `${DATABASE_URL}/albums/addDrawing`;
 export const ACCEPT_MEMBERSHIP_REQUEST_URL = `${DATABASE_URL}/albums/request/add`;
