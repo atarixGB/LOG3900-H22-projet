@@ -1,22 +1,6 @@
 <div fxLayout="row" fxLayoutAlign="center stretch" fxFlex="100">
    <!-- Side-menu -->
-   <div fxLayout="column" fxLayoutAlign="start stretch" fxFlex="15%">
-      <div class="green" fxFlex="100">
-         <div fxLayout="row" fxLayoutAlign="space-between stretch" >
-            <div fxFlex></div>
-            <img src="./assets/PolyGramLogo.png" alt="Logo" fxFlex="80">
-            <div fxFlex></div>
-         </div>
-      
-         <div fxLayout="column" fxLayoutAlign="center stretch">
-            <button class="margin" mat-raised-button>Tableau de bord</button>
-            <button class="margin" mat-raised-button routerLink="/chatmenu">Clavardage</button>
-            <button class="margin" mat-raised-button routerLink="/editor">Zone de dessin</button>
-            <button class="margin" mat-raised-button routerLink="/my-albums">Albums</button>
-            <button class="margin" mat-raised-button routerLink="/profile">Mon profil</button>
-         </div>
-      </div>
-   </div>
+   <app-side-menu fxLayout="column" fxLayoutAlign="start stretch" fxFlex="15%"></app-side-menu>
 
    <!-- dashboard -->
    <div fxLayout="column" fxLayoutAlign="space-evenly center"  fxFlex="auto">
