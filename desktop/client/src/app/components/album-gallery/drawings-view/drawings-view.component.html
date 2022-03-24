@@ -21,7 +21,7 @@
         matTooltip="Créer un dessin pour cet album">
         <mat-icon>add_photo_alternate</mat-icon>
       </button>
-      <button fxFlex="5%" mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+      <button fxFlex="5%" mat-icon-button [matMenuTriggerFor]="menu" *ngIf="!this.isPublicAlbum">
         <mat-icon>more_vert</mat-icon>
       </button>
       <mat-menu #menu="matMenu">
