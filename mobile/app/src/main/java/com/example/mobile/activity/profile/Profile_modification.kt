@@ -16,7 +16,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.example.mobile.Interface.User
+import com.example.mobile.Interface.IUser
 import com.example.mobile.R
 import com.example.mobile.Retrofit.IMyService
 import com.example.mobile.Retrofit.RetrofitClient
@@ -173,13 +173,13 @@ class Profile_modification : AppCompatActivity(), SelectAvatarPopUp.DialogListen
 
 
     private fun getUserFromDB(user:String) {
-        var call: Call<User> = iMyService.getUserFromDB(user)
-        call.enqueue(object: retrofit2.Callback<User> {
-            override fun onResponse(call: Call<User>, response: Response<User>) {
+        var call: Call<IUser> = iMyService.getUserFromDB(user)
+        call.enqueue(object: retrofit2.Callback<IUser> {
+            override fun onResponse(call: Call<IUser>, response: Response<IUser>) {
                 Toast.makeText(this@Profile_modification, "Bienvenu!", Toast.LENGTH_SHORT).show()
                 userAvatarModif.setImageBitmap(bitmapDecoder(response.body()?.avatar))
             }
-            override fun onFailure(call: Call<User>, t: Throwable) {
+            override fun onFailure(call: Call<IUser>, t: Throwable) {
                 Toast.makeText(this@Profile_modification, "erreur importation avatar", Toast.LENGTH_SHORT).show()
             }
         })

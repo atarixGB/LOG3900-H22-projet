@@ -178,6 +178,20 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
       );
     });
 
+    //get all users
+    app.get("/getAllUsers", (request, response, next) => {
+      var post_data = request.body;
+
+      DB.collection("users")
+        .find({}).limit(50).toArray(function (err, result) {
+          if (err) {
+            response.status(400).send("Error fetching rooms");
+          } else {
+            response.json(result)
+          }
+        });
+    });
+
 //==========================================================================================================
 // ROOM management
 //==========================================================================================================
@@ -367,6 +381,20 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
         });
     });
 
+    //get all user drawings in DB
+    app.get("/getAllUserDrawings/:user", (request, response, next) => {
+      var user = request.params.user.replaceAll(/"/g, '');;
+      console.log(user);
+      DB.collection("drawings")
+        .find({owner: user}).limit(50).toArray(function (err, result) {
+          if (err) {
+            response.status(400).send("Error fetching drawings");
+          } else {
+            response.json(result)
+          }
+        });
+    });
+
     //Save drawing data
     app.put("/drawing/:drawingId", (request, response, next) => {
 
@@ -501,6 +529,16 @@ app.post(
       DB.collection("drawings").findOneAndUpdate({ _id: mongoose.Types.ObjectId(drawingId) }, { $push: { likes: user } }, { returnDocument: 'after' }, (err, res) => {
         response.json(201)
         console.log(drawingId, "is liked");
+      })
+    });
+
+    //add drawing to a story
+    app.put("/drawings/addDrawingToStory/:drawingId", (request, response, next) => {
+      let drawingId = request.params.drawingId.replaceAll(/"/g, '');
+
+      DB.collection("drawings").findOneAndUpdate({ _id: mongoose.Types.ObjectId(drawingId) }, { $set: { isStory: true } }, { returnDocument: 'after' }, (err, res) => {
+        response.json(201)
+        console.log(drawingId, "is a story");
       })
     });
 

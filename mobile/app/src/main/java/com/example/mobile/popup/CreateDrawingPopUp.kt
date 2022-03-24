@@ -113,7 +113,7 @@ class CreateDrawingPopUp(val user: String, val isAlbumAlreadySelected: Boolean) 
         }
 
         rootView.submitBtn.setOnClickListener {
-            val data: String = ""
+            val data: String = "" //TODO on doit envoyer un dessin blanc au lieu d'une chaine vide au moment de la creation!!
             val members = ArrayList<String>()
             val likes = ArrayList<String>()
 
@@ -122,7 +122,7 @@ class CreateDrawingPopUp(val user: String, val isAlbumAlreadySelected: Boolean) 
                 drawingNameEmptyError.isVisible = false
                 albumEmptyError.isVisible = false
                 if (isAlbumAlreadySelected) {
-                    createDrawing(albumName, drawingName.text.toString(), user, data, members, likes)
+                    createDrawing(albumName, drawingName.text.toString(), user, data, members, likes, false)
                     Toast.makeText(
                         context,
                         "ajout du dessin a $albumName",
@@ -134,7 +134,7 @@ class CreateDrawingPopUp(val user: String, val isAlbumAlreadySelected: Boolean) 
                 } else if (rb.text.toString().equals("privé")) {
                     //add drawing to private album
                         if (albumName.isNotEmpty()) {
-                            createDrawing(albumName, drawingName.text.toString(), user, data, members, likes)
+                            createDrawing(albumName, drawingName.text.toString(), user, data, members, likes, false)
                             Toast.makeText(
                                 context,
                                 "ajout du dessin a $albumName",
@@ -150,7 +150,7 @@ class CreateDrawingPopUp(val user: String, val isAlbumAlreadySelected: Boolean) 
                         }
                 } else {
                     //add drawing to public album
-                    createDrawing("album public", drawingName.text.toString(), user, data, members, likes)
+                    createDrawing("album public", drawingName.text.toString(), user, data, members, likes, false)
 //                    addDrawingToAlbum("Album public", drawingName.text.toString())
                     Toast.makeText(context, "ajout du dessin a l'album public", Toast.LENGTH_LONG)
                         .show()
@@ -167,8 +167,8 @@ class CreateDrawingPopUp(val user: String, val isAlbumAlreadySelected: Boolean) 
 
     }
 
-    private fun createDrawing(albumName: String, drawingName: String, owner: String, data:String, members:ArrayList<String>, likes:ArrayList<String>) {
-        compositeDisposable.add(iMyService.createDrawing(drawingName, owner, data, members, likes)
+    private fun createDrawing(albumName: String, drawingName: String, owner: String, data:String, members:ArrayList<String>, likes:ArrayList<String>, isStory: Boolean) {
+        compositeDisposable.add(iMyService.createDrawing(drawingName, owner, data, members, likes, isStory)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { result ->

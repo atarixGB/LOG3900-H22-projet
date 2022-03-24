@@ -7,11 +7,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mobile.Interface.IDrawing
 import com.example.mobile.Interface.IStory
 import com.example.mobile.R
 import com.example.mobile.bitmapDecoder
+import com.example.mobile.viewModel.SharedViewModelToolBar
 import com.mikhaellopez.circularimageview.CircularImageView
 import kotlinx.android.synthetic.main.item_drawing.view.*
 import kotlinx.android.synthetic.main.item_story.view.*
@@ -19,7 +21,7 @@ import java.util.ArrayList
 
 class StoryAdapter (val context: Context?, var stories: ArrayList<IStory>, val user: String) : RecyclerView.Adapter<StoryAdapter.StoryViewHolder>() {
 
-//    private var listener: StoryAdapterListener = context as StoryAdapterListener
+    private var listener: StoryAdapterListener = context as StoryAdapterListener
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StoryViewHolder {
         return StoryViewHolder(
@@ -37,21 +39,28 @@ class StoryAdapter (val context: Context?, var stories: ArrayList<IStory>, val u
         holder.itemView.apply {
             storyOwner.text = currentStory.owner
             userAvatar.setImageBitmap(currentStory.avatar)
+
+            userAvatar.setOnClickListener {
+                listener.storyAdapterListener(currentStory.drawingsData)
+            }
         }
     }
 
-    fun addDrawing (story: IStory) {
+    fun addStory (story: IStory) {
         stories.add(story)
+    }
+
+    fun addDrawingToStory (index: Int, drawing: String) {
+        stories[index].drawingsData.add(drawing)
     }
 
     override fun getItemCount(): Int {
         return stories.size
     }
 
-//    public interface DrawingAdapterListener {
-//        fun drawingAdapterListener(drawingName: String)
-//        fun addLikeToDrawingAdapterListener(drawingId: String)
-//    }
+    public interface StoryAdapterListener {
+        fun storyAdapterListener(drawingsData: ArrayList<String>)
+    }
 
 
     class StoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
