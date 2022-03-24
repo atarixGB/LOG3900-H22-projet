@@ -123,6 +123,7 @@ class CustomToolFragment : Fragment(), AdapterView.OnItemClickListener {
         arrayList.add(ToolColorItem(R.drawable.sky_blue_color, resources.getColor(R.color.sky_blue)))
         arrayList.add(ToolColorItem(R.drawable.blue_color, resources.getColor(R.color.blue)))
         arrayList.add(ToolColorItem(R.drawable.purple_color, resources.getColor(R.color.purple)))
+        arrayList.add(ToolColorItem(R.drawable.circle_transparent, resources.getColor(R.color.black_transparent)))
         return arrayList
     }
 

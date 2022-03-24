@@ -3,7 +3,7 @@
     <!-- Larger blue circle in back -->
     <item>
         <shape android:shape="oval">
-            <solid android:color="@color/greenOnClick"/>
+            <solid android:color="@color/white"/>
             <size
                 android:width="30dp"
                 android:height="30dp"/>
