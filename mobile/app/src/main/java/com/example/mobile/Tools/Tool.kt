@@ -82,10 +82,28 @@ abstract class Tool(
         return "rgb($red,$green,$blue)"
     }
 
+    fun toRGBAColor(color : Int) : String {
+        val red = Color.red(color)
+        val green = Color.green(color)
+        val blue = Color.blue(color)
+        val alpha = Color.alpha(color)
+        return "rgba($red,$green,$blue,$alpha)"
+    }
+
+
     fun toIntColor(color : String): Int{
-        var colorBuffer = color.substring(4)
-        colorBuffer = colorBuffer.substring(0, colorBuffer.length - 1);//get only the numbers
+        var colorBuffer = color.substringAfter("(");//get only the numbers
+        colorBuffer = colorBuffer.substringBefore(")")
         val splitColor = colorBuffer.split(",")
-        return Color.rgb(splitColor[0].toInt(),splitColor[1].toInt(), splitColor[2].toInt())
+        var buffer = arrayListOf<Int>()
+        // remove unecessary whitespace
+        for (item in splitColor)
+            buffer.add(item.replace(" ", "").toInt())
+        if(splitColor.size == 3) { // RGB color
+            return Color.rgb(buffer[0],buffer[1], buffer[2])
+        }else{
+            return Color.argb(buffer[3],buffer[0],buffer[1], buffer[2])
+        }
+
     }
 }
