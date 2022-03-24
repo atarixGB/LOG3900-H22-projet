@@ -70,7 +70,7 @@ class Rectangle (context: Context, baseCanvas: Canvas, val socket : DrawingColla
         jo.put("boundingPoints", bounding) //TODO
         jo.put("toolType", 1)
         jo.put("primaryColor", toRBGColor(strokePaint.color))
-        jo.put("secondaryColor", toRBGColor(fillPaint.color))
+        jo.put("secondaryColor", toRGBAColor(fillPaint.color))
         jo.put("strokeWidth", this.strokePaint.strokeWidth)
         jo.put("topLeftCorner", topLeftCorner)
         jo.put("width", abs(left-right))

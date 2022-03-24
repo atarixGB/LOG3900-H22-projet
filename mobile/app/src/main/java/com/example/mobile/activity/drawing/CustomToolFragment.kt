@@ -87,12 +87,29 @@ class CustomToolFragment : Fragment(), AdapterView.OnItemClickListener {
     }
 
     private fun setDefault(){
+        setDefaultWeight()
+        setDefaultColor()
+    }
+
+    private fun setDefaultWeight(){
         setAllWeightToUnselectedIcon()
         val weightItem: ToolWeightItem = weights!!.get(0)
         weights!!.set(0, ToolWeightItem(R.drawable.circle1_selected, 1f))
         toolParametersModel.changeWeight(weightItem.size!!)
-        selectedWeight = weightItem.size!!
         weightAdapter!!.notifyDataSetChanged()
+    }
+
+    private fun setDefaultColor(){
+        setAllColorToUnselectedIcon()
+        val colorItem: ToolColorItem = colors!!.get(0)
+        colors!!.set(0,ToolColorItem(R.drawable.brown_selected, resources.getColor(R.color.brown)))
+        toolParametersModel.changeStroke(true)
+        toolParametersModel.changeColor(colorItem.color!!)
+        colorAdapter!!.notifyDataSetChanged()
+
+        toolParametersModel.changeStroke(false)
+        toolParametersModel.changeColor(colors!!.get(12).color!!)
+        colorAdapter!!.notifyDataSetChanged()
     }
 
     private fun setWeightList():ArrayList<ToolWeightItem>{
@@ -149,6 +166,24 @@ class CustomToolFragment : Fragment(), AdapterView.OnItemClickListener {
             val colorItem: ToolColorItem = colors!!.get(position)
             toolParametersModel.changeColor(colorItem.color!!)
             selectedColor = colorItem.color
+            setAllColorToUnselectedIcon()
+
+            when (position) {
+                0 -> colors!!.set(0,ToolColorItem(R.drawable.brown_selected, resources.getColor(R.color.brown)))
+                1 -> colors!!.set(1,ToolColorItem(R.drawable.white_selected, resources.getColor(R.color.white)))
+                2 -> colors!!.set(2,ToolColorItem(R.drawable.black_color_selected, resources.getColor(R.color.black)))
+                3 -> colors!!.set(3,ToolColorItem(R.drawable.red_selected, resources.getColor(R.color.red)))
+                4 -> colors!!.set(4,ToolColorItem(R.drawable.red_orange_selected, resources.getColor(R.color.red_orange)))
+                5 -> colors!!.set(5,ToolColorItem(R.drawable.orange_selected, resources.getColor(R.color.orange)))
+                6 -> colors!!.set(6,ToolColorItem(R.drawable.yellow_selected, resources.getColor(R.color.yellow)))
+                7 -> colors!!.set(7,ToolColorItem(R.drawable.yellow_green_color, resources.getColor(R.color.yellow_green)))
+                8 -> colors!!.set(8,ToolColorItem(R.drawable.green_selected, resources.getColor(R.color.green)))
+                9 -> colors!!.set(9,ToolColorItem(R.drawable.sky_blue_selected, resources.getColor(R.color.sky_blue)))
+                10 -> colors!!.set(10,ToolColorItem(R.drawable.blue_selected, resources.getColor(R.color.blue)))
+                11 -> colors!!.set(11,ToolColorItem(R.drawable.purple_selected, resources.getColor(R.color.purple)))
+                12 -> colors!!.set(12,ToolColorItem(R.drawable.circle_transparent_selected, resources.getColor(R.color.black_transparent)))
+            }
+            colorAdapter!!.notifyDataSetChanged()
         }
     }
 
@@ -162,6 +197,22 @@ class CustomToolFragment : Fragment(), AdapterView.OnItemClickListener {
         weights!!.set(6, ToolWeightItem(R.drawable.circle20, 20f))
         weights!!.set(7, ToolWeightItem(R.drawable.circle24, 24f))
         weights!!.set(8, ToolWeightItem(R.drawable.circle30, 30f))
+    }
+
+    private fun setAllColorToUnselectedIcon(){
+        colors!!.set(0,ToolColorItem(R.drawable.brown_color, resources.getColor(R.color.brown)))
+        colors!!.set(1,ToolColorItem(R.drawable.white_color, resources.getColor(R.color.white)))
+        colors!!.set(2,ToolColorItem(R.drawable.black_color, resources.getColor(R.color.black)))
+        colors!!.set(3,ToolColorItem(R.drawable.red_color, resources.getColor(R.color.red)))
+        colors!!.set(4,ToolColorItem(R.drawable.red_orange_color, resources.getColor(R.color.red_orange)))
+        colors!!.set(5,ToolColorItem(R.drawable.orange_color, resources.getColor(R.color.orange)))
+        colors!!.set(6,ToolColorItem(R.drawable.yellow_color, resources.getColor(R.color.yellow)))
+        colors!!.set(7,ToolColorItem(R.drawable.yellow_green_color, resources.getColor(R.color.yellow_green)))
+        colors!!.set(8,ToolColorItem(R.drawable.green_color, resources.getColor(R.color.green)))
+        colors!!.set(9,ToolColorItem(R.drawable.sky_blue_color, resources.getColor(R.color.sky_blue)))
+        colors!!.set(10,ToolColorItem(R.drawable.blue_color, resources.getColor(R.color.blue)))
+        colors!!.set(11,ToolColorItem(R.drawable.purple_color, resources.getColor(R.color.purple)))
+        colors!!.set(12,ToolColorItem(R.drawable.circle_transparent, resources.getColor(R.color.black_transparent)))
     }
 
 

@@ -65,7 +65,7 @@ class  Ellipse(context: Context, baseCanvas: Canvas, val socket : DrawingCollabo
         jo.put("boundingPoints", bounding) //TODO
         jo.put("toolType", 2) //number of the ellipse
         jo.put("primaryColor", toRBGColor(strokePaint.color))
-        jo.put("secondaryColor", toRBGColor(fillPaint.color))
+        jo.put("secondaryColor", toRGBAColor(fillPaint.color))
         jo.put("strokeWidth", this.strokePaint.strokeWidth)
 
         var center = JSONObject()
