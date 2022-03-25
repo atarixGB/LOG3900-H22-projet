@@ -1,14 +1,12 @@
 <div fxLayout="row" fxLayoutAlign="center stretch" fxFlex="100">
   <app-side-menu fxLayout="column" fxLayoutAlign="start stretch" fxFlex="15%"></app-side-menu>
 
-  <div fxLayout="column" fxLayoutAlign="space-evenly stretch" fxFlex="auto">
+  <div fxLayout="column" fxLayoutAlign="start stretch" fxFlex="auto">
 
-
-    <div fxLayout="row" fxLayoutAlign="space-evenly center">
-      <button mat-icon-button disableRipple="true" routerLink="/chatmenu">
-        <mat-icon id="back-btn">keyboard_arrow_left</mat-icon> Retour vers Mes Conversations
-      </button>
-    </div>
+    <div fxFlex="5%" fxLayoutAlign="start center"></div>
+    <button mat-icon-button disableRipple="true" routerLink="/my-albums">
+      <mat-icon id="back-btn">keyboard_arrow_left</mat-icon> Retour vers Mes conversations
+    </button>
 
     <div fxLayoutAlign="center">
       <mat-form-field appearance="outline" id="search-bar">
@@ -23,31 +21,36 @@
       </button>
     </div>
 
-    <mat-grid-list cols="2" rowHeight="5:1" *ngIf="!this.chatService.filterActivated">
-      <mat-grid-tile *ngFor="let room of this.chatService.publicRooms">
+    <div id="scroll-container">
 
-        <div class="roomname-container" mat-raised-button color="primary">
+      <mat-grid-list cols="2" rowHeight="5:1" *ngIf="!this.chatService.filterActivated">
+        <mat-grid-tile *ngFor="let room of this.chatService.publicRooms">
+
+          <div class="roomname-container" mat-raised-button color="primary">
             {{room.roomName}}
-        </div>
-        <button mat-raised-button color="primary" (click)="this.onChatroomClick(room)">
-          Joindre
-        </button>
+          </div>
+          <button mat-raised-button color="primary" (click)="this.onChatroomClick(room)">
+            Joindre
+          </button>
 
-      </mat-grid-tile>
-    </mat-grid-list>
+        </mat-grid-tile>
+      </mat-grid-list>
 
-    <mat-grid-list cols="2" rowHeight="5:1" *ngIf="this.chatService.filterActivated">
-      <mat-grid-tile *ngFor="let room of this.chatService.filteredRooms">
+      <mat-grid-list cols="2" rowHeight="5:1" *ngIf="this.chatService.filterActivated">
+        <mat-grid-tile *ngFor="let room of this.chatService.filteredRooms">
 
-        <div class="roomname-container" mat-raised-button color="primary">
+          <div class="roomname-container" mat-raised-button color="primary">
             {{room.roomName}}
-        </div>
-        <button mat-raised-button color="primary" (click)="this.onChatroomClick(room)">
-          Joindre
-        </button>
+          </div>
+          <button mat-raised-button color="primary" (click)="this.onChatroomClick(room)">
+            Joindre
+          </button>
 
-      </mat-grid-tile>
-    </mat-grid-list>
+        </mat-grid-tile>
+      </mat-grid-list>
+
+    </div>
+
 
   </div>
 </div>
