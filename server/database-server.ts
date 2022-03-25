@@ -486,12 +486,12 @@ app.post(
 
 
     //add drawing to an album
-    app.put("/albums/addDrawing/:albumId", (request, response, next) => {
-      let albumId = request.params.albumId;
+    app.put("/albums/addDrawing/:albumName", (request, response, next) => {
+      let albumName = request.params.albumName;
       let drawingID = request.body.drawing;
-      DB.collection("albums").findOneAndUpdate({ name:albumId }, { $push: { drawingIDs: drawingID } }, { returnDocument: 'after' }, (err, res) => {
+      DB.collection("albums").findOneAndUpdate({ name:albumName }, { $push: { drawingIDs: drawingID } }, { returnDocument: 'after' }, (err, res) => {
         response.json(201)
-        console.log(drawingID, "is added to ", albumId);
+        console.log(drawingID, "is added to ", albumName);
       })
     });
 
