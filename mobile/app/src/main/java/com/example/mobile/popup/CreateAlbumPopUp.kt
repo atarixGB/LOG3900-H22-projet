@@ -1,6 +1,7 @@
 package com.example.mobile.popup
 
 import android.content.Context
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -32,6 +33,8 @@ class CreateAlbumPopUp : DialogFragment() {
         submitButton= rootView.findViewById(R.id.submitBtn)
         cancelButton=rootView.findViewById(R.id.cancelBtn)
         albumNameEmptyError=rootView.findViewById(R.id.albumNameEmptyError)
+        var mediaPlayerMagic: MediaPlayer = MediaPlayer.create(context,R.raw.magic)
+        var mediaPlayerFail: MediaPlayer = MediaPlayer.create(context,R.raw.failure)
 
         albumNameEmptyError.isVisible=false
 
@@ -45,16 +48,20 @@ class CreateAlbumPopUp : DialogFragment() {
                 var description = albumDescription.text.toString()
                 albumNameEmptyError.isVisible=false
                 listener.popUpListener(name,description)
+                mediaPlayerMagic.start()
 
                 dismiss()
             }
             else if(albumName.text.toString().isNullOrBlank() || albumName.text.toString().isEmpty() ){
                 albumNameEmptyError.isVisible=true
                 albumName.animation=AnimationUtils.loadAnimation(context,R.anim.shake_animation)
+                mediaPlayerFail.start()
 
             }
             else {
                 Toast.makeText(context,"Album public est un nom reservé", Toast.LENGTH_SHORT).show()
+                albumName.animation=AnimationUtils.loadAnimation(context,R.anim.shake_animation)
+                mediaPlayerFail.start()
             }
 
         }

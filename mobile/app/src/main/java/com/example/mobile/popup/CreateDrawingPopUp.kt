@@ -2,6 +2,7 @@ package com.example.mobile.popup
 
 import android.content.Context
 import android.content.Intent
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -67,6 +68,9 @@ class CreateDrawingPopUp(val user: String, val isAlbumAlreadySelected: Boolean) 
             Toast.makeText(context, "$albumName choisi" , Toast.LENGTH_LONG).show()
         }
 
+        var mediaPlayerMagic: MediaPlayer = MediaPlayer.create(context,R.raw.magic)
+        var mediaPlayerFail: MediaPlayer = MediaPlayer.create(context,R.raw.failure)
+
         drawingName = rootView.drawingName
         radioGroup = rootView.accessibilityRadioGroup
         publicRB = rootView.publicRB
@@ -130,6 +134,7 @@ class CreateDrawingPopUp(val user: String, val isAlbumAlreadySelected: Boolean) 
                         Toast.LENGTH_LONG
                     )
                         .show()
+                    mediaPlayerMagic.start()
                     listener.popUpListener(albumName, drawingName.text.toString(), drawingId)
                     dismiss()
                 } else if (rb.text.toString().equals("privé")) {
@@ -142,6 +147,7 @@ class CreateDrawingPopUp(val user: String, val isAlbumAlreadySelected: Boolean) 
                                 Toast.LENGTH_LONG
                             )
                                 .show()
+                            mediaPlayerMagic.start()
                             listener.popUpListener(albumName, drawingName.text.toString(), drawingId)
                             dismiss()
                         } else {
@@ -155,6 +161,7 @@ class CreateDrawingPopUp(val user: String, val isAlbumAlreadySelected: Boolean) 
 //                    addDrawingToAlbum("Album public", drawingName.text.toString())
                     Toast.makeText(context, "ajout du dessin a l'album public", Toast.LENGTH_LONG)
                         .show()
+                    mediaPlayerMagic.start()
                     listener.popUpListener(albumName, drawingName.text.toString(), drawingId)
                     dismiss()
                 }
@@ -162,6 +169,7 @@ class CreateDrawingPopUp(val user: String, val isAlbumAlreadySelected: Boolean) 
                 // s'il n'a pas selectionner de drawing name, rend visible le champ d'erreur
                 drawingNameEmptyError.isVisible = true
                 drawingName.animation=AnimationUtils.loadAnimation(context,R.anim.shake_animation)
+                mediaPlayerFail.start()
             }
         }
 
