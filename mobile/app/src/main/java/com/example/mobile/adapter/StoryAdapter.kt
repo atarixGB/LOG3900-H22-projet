@@ -38,7 +38,7 @@ class StoryAdapter (val context: Context?, var stories: ArrayList<IStory>, val u
 
         holder.itemView.apply {
             storyOwner.text = currentStory.owner
-            userAvatar.setImageBitmap(currentStory.avatar)
+            userAvatar.setImageBitmap(bitmapDecoder(currentStory.avatar))
 
             userAvatar.setOnClickListener {
                 listener.storyAdapterListener(currentStory)

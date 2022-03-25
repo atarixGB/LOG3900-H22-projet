@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,8 +17,6 @@ import com.example.mobile.Retrofit.IMyService
 import com.example.mobile.Retrofit.RetrofitClient
 import com.example.mobile.activity.drawing.DrawingActivity
 import com.example.mobile.adapter.StoryAdapter
-import com.example.mobile.bitmapDecoder
-import com.example.mobile.viewModel.SharedViewModelStories
 import com.example.mobile.viewModel.SharedViewModelToolBar
 import io.reactivex.disposables.CompositeDisposable
 import retrofit2.Call
@@ -25,7 +24,7 @@ import retrofit2.Response
 import java.io.Serializable
 
 
-class Dashboard : Serializable, AppCompatActivity(), StoryAdapter.StoryAdapterListener {
+class Dashboard : AppCompatActivity(), StoryAdapter.StoryAdapterListener {
 
     lateinit var user: String
     private lateinit var rvOutputStories: RecyclerView
@@ -34,7 +33,6 @@ class Dashboard : Serializable, AppCompatActivity(), StoryAdapter.StoryAdapterLi
     private lateinit var sessionStartBtn: Button
 
     private val sharedViewModel: SharedViewModelToolBar by viewModels()
-    private val sharedViewModelStories: SharedViewModelStories by viewModels()
 
     private lateinit var iMyService: IMyService
     internal var compositeDisposable = CompositeDisposable()
@@ -125,8 +123,7 @@ class Dashboard : Serializable, AppCompatActivity(), StoryAdapter.StoryAdapterLi
 
     private fun addStory(owner: String, avatar: String, drawingsId: ArrayList<String>) {
 
-        val userAvatarBitmap = bitmapDecoder(avatar)
-        val story = IStory(owner, userAvatarBitmap, drawingsId)
+        val story = IStory(owner, avatar, drawingsId)
 
         storyAdapter.addStory(story)
         storyAdapter.notifyItemInserted((rvOutputStories.adapter as StoryAdapter).itemCount)
@@ -152,7 +149,7 @@ class Dashboard : Serializable, AppCompatActivity(), StoryAdapter.StoryAdapterLi
                             val intent = Intent(this@Dashboard, Stories::class.java)
                             intent.putExtra("userName",user)
                             intent.putExtra("owner", currentStory.owner)
-//                            intent.putExtra("avatar", currentStory.avatar)
+                            intent.putExtra("avatar", currentStory.avatar)
                             intent.putExtra("drawingsData", drawingsData)
                             startActivity(intent)
                         }

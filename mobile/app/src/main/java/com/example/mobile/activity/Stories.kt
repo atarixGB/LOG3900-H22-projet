@@ -5,12 +5,12 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View.OnTouchListener
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.example.mobile.Interface.IStory
 import com.example.mobile.R
 import com.example.mobile.Retrofit.IMyService
+import com.example.mobile.adapter.StoryAdapter
 import com.example.mobile.bitmapDecoder
-import com.example.mobile.viewModel.SharedViewModelStories
 import io.reactivex.disposables.CompositeDisposable
 import jp.shts.android.storiesprogressview.StoriesProgressView
 import kotlinx.android.synthetic.main.activity_stories.*
@@ -21,9 +21,8 @@ class Stories : AppCompatActivity() {
     private var counter = 0
     private lateinit var userName: String
     var owner = String()
+    var avatar = String()
     var drawingsData = ArrayList<String>()
-
-    private val sharedViewModelStories: SharedViewModelStories by viewModels()
 
     private lateinit var iMyService: IMyService
     internal var compositeDisposable = CompositeDisposable()
@@ -40,9 +39,11 @@ class Stories : AppCompatActivity() {
 
         userName = intent.getStringExtra("userName").toString()
         owner = intent.getStringExtra("owner").toString()
+        avatar = intent.getStringExtra("avatar").toString()
         drawingsData = intent.getStringArrayListExtra("drawingsData") as ArrayList<String>
 
         storyOwner.text = owner
+        userAvatar.setImageBitmap(bitmapDecoder(avatar))
 
         stories.setStoriesCount(drawingsData.size)
         stories.setStoryDuration(5000L)
