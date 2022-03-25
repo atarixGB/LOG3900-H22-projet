@@ -18,10 +18,40 @@ h3 {
   border: solid 2px;
   border-radius: 5px;
   height: 100%;
+  margin: 16px;
   overflow-y: auto;
+  overflow-x: hidden;
 }
 
 #drawingRow {
   height: 100%;
 }
+
+:host {
+  height: 100vh;
+}
+
+.italic {
+  font-style: italic;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+  }
+
+  ::-webkit-scrollbar-track {
+  border: 1px solid #A8D08C;
+  border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+  background: #A8D08C;
+  border-radius: 10px;
+  }
+
 
