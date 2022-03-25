@@ -1,6 +1,7 @@
 package com.example.mobile.popup
 
 import android.content.Context
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -30,7 +31,7 @@ class CreateRoomPopUp : DialogFragment() {
 
         this.editTextNewRoomName = rootView.findViewById<EditText>(R.id.newRoomName)
         this.roomNameEmptyError=rootView.findViewById<EditText>(R.id.roomNameEmptyError)
-
+        var mediaPlayerMagic: MediaPlayer = MediaPlayer.create(context,R.raw.magic)
         roomNameEmptyError.isVisible=false
 
         rootView.cancelBtn.setOnClickListener {
@@ -41,6 +42,7 @@ class CreateRoomPopUp : DialogFragment() {
             if(!editTextNewRoomName.text.toString().isNullOrBlank()) {
                 roomName = this.editTextNewRoomName.text.toString()
                 roomNameEmptyError.isVisible=false
+                mediaPlayerMagic.start()
                 listener.popUpListener(roomName)
 
             }
