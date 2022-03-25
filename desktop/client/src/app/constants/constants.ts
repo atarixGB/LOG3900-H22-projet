@@ -1,7 +1,7 @@
 /******** ALBUMS *******/
 export const PUBLIC_ALBUM = {
   name: "album public",
-  id: "622f77abc04d88938c916084"
+  id: "623e00d4c46d4d7f5c3118a3"
 }
 /***********************/
 export const CNV_WIDTH = 1200;

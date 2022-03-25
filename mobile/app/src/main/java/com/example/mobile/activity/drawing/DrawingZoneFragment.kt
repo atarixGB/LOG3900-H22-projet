@@ -31,7 +31,7 @@ import java.io.FileOutputStream
 
 class DrawingZoneFragment : Fragment() {
     private lateinit var mDrawingView: DrawingView
-    private val viewModel: ToolParameters by activityViewModels()
+    private val toolParameters: ToolParameters by activityViewModels()
     private val toolModel: ToolModel by activityViewModels()
     var socket = DrawingCollaboration()
     private val sharedViewModelToolBar: SharedViewModelToolBar by activityViewModels()
@@ -49,12 +49,16 @@ class DrawingZoneFragment : Fragment() {
         mDrawingView = DrawingView(requireContext(),this.socket)
         socket.init()
         socket.socket.on("receiveStroke", onReceiveStroke)
-        viewModel.weight.observe(viewLifecycleOwner, Observer { weight ->
+        toolParameters.weight.observe(viewLifecycleOwner, Observer { weight ->
             mDrawingView.changeWeight(weight)
         })
-        viewModel.color.observe(viewLifecycleOwner, Observer { color ->
+        toolParameters.color.observe(viewLifecycleOwner, Observer { color ->
             mDrawingView.changeColor(color)
         })
+        toolParameters.isStroke.observe(viewLifecycleOwner, Observer { isStroke ->
+            mDrawingView.changeStroke(isStroke)
+        })
+
         toolModel.tool.observe(viewLifecycleOwner, Observer { tool ->
             mDrawingView.changeTool(tool)
         })
@@ -71,7 +75,10 @@ class DrawingZoneFragment : Fragment() {
     }
     private var onReceiveStroke = Emitter.Listener {
         val drawEvent = it[0] as JSONObject
-        mDrawingView.onStrokeReceive(drawEvent)
+        if(drawEvent.getString("sender") != this.socket.socket.id()){
+            mDrawingView.onStrokeReceive(drawEvent)
+        }
+
     }
 
     class DrawingView (context: Context, val socket: DrawingCollaboration) : View(context){
@@ -206,6 +213,12 @@ class DrawingZoneFragment : Fragment() {
                         Toast.makeText(context, "erreur", Toast.LENGTH_SHORT).show()
                     }
                 })
+            }
+        }
+
+        fun changeStroke(stroke: Boolean) {
+            if (this::toolManager.isInitialized) {
+                toolManager.currentTool.isStrokeSelected= stroke
             }
         }
     }
