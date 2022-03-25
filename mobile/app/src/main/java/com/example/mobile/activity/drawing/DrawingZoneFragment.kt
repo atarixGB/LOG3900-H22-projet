@@ -36,6 +36,7 @@ class DrawingZoneFragment : Fragment() {
     private val toolModel: ToolModel by activityViewModels()
     var socket = DrawingCollaboration()
     private val sharedViewModelToolBar: SharedViewModelToolBar by activityViewModels()
+    private lateinit var mediaPlayerDraw: MediaPlayer
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,6 +48,7 @@ class DrawingZoneFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         mDrawingView = DrawingView(requireContext(),this.socket)
         socket.init()
         socket.socket.on("receiveStroke", onReceiveStroke)
@@ -115,10 +117,12 @@ class DrawingZoneFragment : Fragment() {
         override fun onDraw(canvas: Canvas) {
             super.onDraw(canvas)
             canvas.drawBitmap(mBitmap!!, 0f, 0f, mPaint)
-            var mediaPlayerDraw: MediaPlayer = MediaPlayer.create(context,R.raw.draw)
+            var mediaPlayerDrawing: MediaPlayer = MediaPlayer.create(context,R.raw.draw)
+
             if (isDrawing) {
                 toolManager.currentTool.onDraw(canvas)
-                mediaPlayerDraw.start()
+                mediaPlayerDrawing.start()
+
 
             }
         }
@@ -132,21 +136,26 @@ class DrawingZoneFragment : Fragment() {
             toolManager.currentTool.mx = event.x
             toolManager.currentTool.my = event.y
 
+
+
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
                     isDrawing = true
                     toolManager.currentTool.touchStart()
                     invalidate()
+
+
                 }
                 MotionEvent.ACTION_MOVE -> {
                     toolManager.currentTool.touchMove()
                     invalidate()
+//                    mediaPlayerDrawing.stop()
                 }
                 MotionEvent.ACTION_UP -> {
                     isDrawing = false
                     toolManager.currentTool.touchUp()
-
                     invalidate()
+//                    mediaPlayerDrawing.stop()
                 }
             }
             return true
