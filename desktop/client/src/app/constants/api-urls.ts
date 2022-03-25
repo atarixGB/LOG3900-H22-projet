@@ -12,7 +12,8 @@ export const UPDATE_ALBUM_PARAMETERS_URL = `${DATABASE_URL}/albumUpdate`
 
 export const CREATE_DRAWING_URL = `${DATABASE_URL}/drawing/create`;
 export const SAVE_DRAWING_URL = `${DATABASE_URL}/drawing/save`
-export const GET_DRAWING_URL = `${DATABASE_URL}/drawings/`;
+export const GET_DRAWING_URL = `${DATABASE_URL}/drawings`;
+export const LIKE_DRAWING_URL = `${DATABASE_URL}/drawings/addLike`;
 
 export const PROFILE_UPDATE_URL = `${DATABASE_URL}/profileUpdate`;
 export const PROFILE_URL = `${DATABASE_URL}/profile`;

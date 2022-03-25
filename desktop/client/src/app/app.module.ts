@@ -143,7 +143,7 @@ import { JoinRequestDialogComponent } from './components/album-gallery/public-al
         FlexLayoutModule,
         MaterialFileInputModule,
         MatMenuModule,
-        MatCardModule,
+        MatCardModule
     ],
     providers: [],
     bootstrap: [AppComponent],

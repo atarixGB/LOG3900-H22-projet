@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PUBLIC_ALBUM } from '@app/constants/constants';
+import { IDrawing } from '@app/interfaces-enums/IDrawing';
 import { AlbumGalleryService } from '@app/services/album-gallery/album-gallery.service';
 import { CollaborationService } from '@app/services/collaboration/collaboration.service';
 import { LoginService } from '@app/services/login/login.service';
@@ -53,5 +54,15 @@ export class DrawingsViewComponent {
     console.log(`Deleted album id : ${this.albumGalleryService.currentAlbum._id}`);
     this.albumGalleryService.deleteAlbum(this.albumGalleryService.currentAlbum._id);
     this.router.navigate(['../my-albums'], { relativeTo: this.route });
+  }
+
+  onLikeBtn(drawing: IDrawing): void {
+    console.log(`Le dessin ${drawing.name} a été aimé par ${this.loginService.username}.`);
+    this.albumGalleryService.likeDrawing(drawing);
+  }
+
+  onShareBtn(drawing: IDrawing): void {
+    console.log(`Partage du dessin ${drawing.name} sur Dropbox ou OneDrive...`);
+
   }
 }

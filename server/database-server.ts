@@ -342,12 +342,13 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
 //==========================================================================================================
     //create drawing
     app.post("/drawing/create", (request, response, next)=> {
-      DB.collection("drawings").insertOne(request.body, (err, res) => {
-        const drawingData = request.body; 
-        drawingData._id = res.insertedId.toHexString();
-        console.log(`Drawing "${drawingData.name}" created successfully with ID: ${drawingData._id}!`);
-        response.json(drawingData._id); // Drawing ID is send back to client. We will use it to add the corresponding drawing to an album
-      })
+        DB.collection("drawings").insertOne(request.body, (err, res) => {
+          if (err) throw err;
+          const drawingData = request.body; 
+          drawingData._id = res.insertedId.toHexString();
+          console.log(`Drawing "${drawingData.name}" created successfully with ID: ${drawingData._id}!`);
+          response.json(drawingData._id); // Drawing ID is send back to client. We will use it to add the corresponding drawing to an album
+        })
     })
 
     //get drawing Parameters
@@ -395,10 +396,7 @@ app.post(
   multer({
     storage: storage
   }).single('upload'), function(req, res) {
-    console.log("REQUEST FILE",req.file);
-    console.log("REQUEST BODY", req.body);
     res.redirect("/uploads/" + req.file.filename);
-    // console.log(req.file.filename);
     DB.collection("drawings").findOneAndUpdate({ _id: mongoose.Types.ObjectId(req.params.drawingId.replaceAll(/"/g, '')) }, { $set: {"data": req.file.filename}}, { returnDocument: 'after' }, (err, res) => {
       });
     return res.status(200).end(); 
@@ -407,15 +405,11 @@ app.post(
   //get image from DB
    app.get('/drawings/:drawingId', function (req, res){
     DB.collection("drawings")
-    .findOne({ _id: mongoose.Types.ObjectId(req.params.drawingId.replaceAll(/"/g, '')) }, function (err, result) {
-      if (err) {
-        console.log("error getting");
-      } else {
+    .findOne({ _id: mongoose.Types.ObjectId(req.params.drawingId.replace(/"/g, '')) }, function (err, result) {
+      if (err) throw err
+      else {
         const file = result.data;
         var img = fs.readFileSync(__dirname + "/uploads/" + file, {encoding: 'base64'});
-        //console.log("image", img)
-        //res.writeHead(200, {'Content-Type': 'image/png' });
-        // res.end(img, 'binary');
         var returnedJson = {
           _id: result._id,
           name: result.name,
@@ -497,12 +491,12 @@ app.post(
 
     //add one like to a drawing
     app.put("/drawings/addLike/:drawingId", (request, response, next) => {
-      let drawingId = request.params.drawingId.replaceAll(/"/g, '');
+      let drawingId = request.params.drawingId.replace(/"/g, '');
       let user = request.body.user
 
       DB.collection("drawings").findOneAndUpdate({ _id: mongoose.Types.ObjectId(drawingId) }, { $push: { likes: user } }, { returnDocument: 'after' }, (err, res) => {
         response.json(201)
-        console.log(drawingId, "is liked");
+        console.log(`Drawing with ID ${drawingId} is liked by ${user}`);
       })
     });
 
