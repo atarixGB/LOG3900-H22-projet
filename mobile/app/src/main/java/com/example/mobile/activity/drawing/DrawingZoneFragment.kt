@@ -53,6 +53,7 @@ class DrawingZoneFragment : Fragment() {
         socket.socket.on("receiveStrokeWidth", onReceiveStrokeWidth)
         socket.socket.on("receiveNewPrimaryColor", onReceiveNewPrimaryColor)
         socket.socket.on("receivePasteRequest", onPasteRequest)
+        socket.socket.on("receiveDeleteRequest", onDeleteRequest)
 
         viewModel.weight.observe(viewLifecycleOwner, Observer { weight ->
             mDrawingView.changeWeight(weight)
@@ -101,6 +102,11 @@ class DrawingZoneFragment : Fragment() {
     private var onPasteRequest = Emitter.Listener {
         val drawEvent = it[0] as JSONObject
         mDrawingView.onPasteRequest (drawEvent)
+    }
+
+    private var onDeleteRequest = Emitter.Listener {
+        val drawEvent = it[0] as JSONObject
+        mDrawingView.onDeleteRequest (drawEvent)
     }
 
     class DrawingView (context: Context, val socket: DrawingCollaboration) : View(context){
@@ -154,6 +160,14 @@ class DrawingZoneFragment : Fragment() {
             if (socket.socket.id() != stroke.getString("sender")) {
                 val strokeIndex = stroke.getInt("strokeIndex")
                 toolManager.selection.onPasteRequest(strokeIndex)
+                invalidate()
+            }
+        }
+
+        fun onDeleteRequest(stroke: JSONObject){
+            if (socket.socket.id() != stroke.getString("sender")) {
+                val strokeIndex = stroke.getInt("strokeIndex")
+                toolManager.selection.onDeleteRequest(strokeIndex)
                 invalidate()
             }
         }

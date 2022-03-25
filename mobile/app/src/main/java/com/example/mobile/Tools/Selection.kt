@@ -443,4 +443,42 @@ class  Selection(context: Context, baseCanvas: Canvas, val socket : DrawingColla
             }
         }
     }
+
+    fun onDeleteRequest(strokeIndex: Int) {
+        val currentStroke = strokes[strokeIndex]
+        strokes.remove(currentStroke)
+        strokesSelected.remove(currentStroke)
+
+        if (otherSelectionCanvas != null) {
+            otherSelectionCanvas!!.drawColor(
+                Color.TRANSPARENT,
+                PorterDuff.Mode.CLEAR
+            ) //clear le canvas de selection
+            //clear le canvas
+        }
+            baseCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR) //clear le base canvas
+
+            //redessiner les autres formes
+            strokes.forEachIndexed { i, element ->
+                if (i != selectedIndex ) {
+                    element.drawStroke(baseCanvas) //redessiner les autres formes sauf la forme selectionner
+                }
+            }
+
+            //redessiner la forme selectionner
+            if (selectionBitmap != null && this.currentStroke != null) {
+                baseCanvas.drawBitmap(
+                    selectionBitmap!!,
+                    this.currentStroke!!.boundingPoints[0].x,
+                    this.currentStroke!!.boundingPoints[0].y,
+                    null
+                ) //dessiner la forme selectionner sur le base
+            }
+
+            //redessiner les formes selectionner par les autres
+            strokesSelected.forEachIndexed { i, element ->
+                createOtherSelectionCanvas(element)
+            }
+
+    }
 }
