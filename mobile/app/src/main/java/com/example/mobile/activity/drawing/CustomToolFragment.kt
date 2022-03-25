@@ -33,9 +33,6 @@ class CustomToolFragment : Fragment(), AdapterView.OnItemClickListener {
     private var colors:ArrayList<ToolColorItem> ? = null
     private var colorAdapter: ColorAdapter? = null
 
-    private var strokeButton: ToggleButton  ? = null
-    private var filllButton: ToggleButton  ? = null
-
     private var selectedColor : Int ? = null
     private var selectedWeight : Float = 1f
 
@@ -101,14 +98,9 @@ class CustomToolFragment : Fragment(), AdapterView.OnItemClickListener {
 
     private fun setDefaultColor(){
         setAllColorToUnselectedIcon()
-        val colorItem: ToolColorItem = colors!!.get(0)
-        colors!!.set(0,ToolColorItem(R.drawable.brown_selected, resources.getColor(R.color.brown)))
-        toolParametersModel.changeStroke(true)
+        val colorItem: ToolColorItem = colors!!.get(2)
+        colors!!.set(2, ToolColorItem(R.drawable.black_color_selected,resources.getColor(R.color.black)))
         toolParametersModel.changeColor(colorItem.color!!)
-        colorAdapter!!.notifyDataSetChanged()
-
-        toolParametersModel.changeStroke(false)
-        toolParametersModel.changeColor(colors!!.get(12).color!!)
         colorAdapter!!.notifyDataSetChanged()
     }
 
@@ -165,7 +157,6 @@ class CustomToolFragment : Fragment(), AdapterView.OnItemClickListener {
         }else{
             val colorItem: ToolColorItem = colors!!.get(position)
             toolParametersModel.changeColor(colorItem.color!!)
-            selectedColor = colorItem.color
             setAllColorToUnselectedIcon()
 
             when (position) {

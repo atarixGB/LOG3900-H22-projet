@@ -42,7 +42,7 @@ abstract class Tool(
     }
 
     protected val fillPaint = Paint().apply {
-        color = Color.WHITE
+        color = Color.TRANSPARENT
         // Smooths out edges of what is drawn without affecting shape.
         isAntiAlias = true
         // Dithering affects how colors with higher-precision than the device are down-sampled.
