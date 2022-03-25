@@ -14,14 +14,12 @@ const MAX_NAME_LENGTH = 40;
 export class CreateDrawingDialogComponent implements OnInit {
   name: string;
   isPrivate: boolean;
-  selectedAlbumName: string;
-  selectedAlbumId: string | void;
 
   constructor(public albumGalleryService: AlbumGalleryService, public loginService: LoginService, private currentDialogRef: MatDialogRef<CreateDrawingDialogComponent>) {
-    this.name = "dessin1";
+    this.name = "Mon dessin";
     this.isPrivate = false;
-    this.selectedAlbumName = PUBLIC_ALBUM.name;
-    this.selectedAlbumId = PUBLIC_ALBUM.id;
+    this.albumGalleryService.selectedAlbumName = PUBLIC_ALBUM.name;
+    this.albumGalleryService.selectedAlbumId = PUBLIC_ALBUM.id;
   }
 
   ngOnInit(): void {
@@ -35,16 +33,16 @@ export class CreateDrawingDialogComponent implements OnInit {
   changeAccess(value: number): void {
     this.isPrivate = value == 1;
     if (this.isPrivate) {
-      this.selectedAlbumName = this.albumGalleryService.myAlbums[0].name;
+      this.albumGalleryService.selectedAlbumName = this.albumGalleryService.myAlbums[0].name;
       this.albumGalleryService.selectedAlbumId = this.albumGalleryService.myAlbums[0]._id;
     } else {
-      this.selectedAlbumName = PUBLIC_ALBUM.name;
-      this.selectedAlbumId = PUBLIC_ALBUM.id;
+      this.albumGalleryService.selectedAlbumName = PUBLIC_ALBUM.name;
+      this.albumGalleryService.selectedAlbumId = PUBLIC_ALBUM.id;
     }
   }
 
   createDrawingButton(): void {
-    console.log("createDrawingButton\n",this.name, this.selectedAlbumName, this.selectedAlbumId);
+    console.log("createDrawingButton\n",this.name, this.albumGalleryService.selectedAlbumName, this.albumGalleryService.selectedAlbumId);
 
     if (this.isValidInput(this.name) && this.name.length <= MAX_NAME_LENGTH) {
       this.albumGalleryService.createDrawing(this.name);
@@ -57,9 +55,8 @@ export class CreateDrawingDialogComponent implements OnInit {
   }
 
   onAlbumClick(album: IAlbum): void {
-    this.selectedAlbumName = album.name;
+    this.albumGalleryService.selectedAlbumName = album.name;
     this.albumGalleryService.selectedAlbumId = album._id;
-    console.log("onAlbumClick",this.selectedAlbumName, this.albumGalleryService.selectedAlbumId);
   }
 
   private getAlbums(): void {
