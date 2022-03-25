@@ -13,16 +13,20 @@
       <h2>Albums disponibles</h2>
     </div>
 
-    <mat-grid-list cols="3" rowHeight="3:1">
-      <mat-grid-tile *ngFor="let album of this.albumGalleryService.publicAlbums">
-        <button mat-icon-button disableRipple="true" (click)="this.onAlbumClick(album)">
-          <div>
-            <mat-icon>folder</mat-icon>
-          </div>
-          <div>{{album.name}}</div>
-        </button>
-      </mat-grid-tile>
-    </mat-grid-list>
+    <div fxFlex="65%">
+      <div id="albumRow" fxLayout="row" fxLayoutAlign="center stretch">
+        <div id="albumsDiv" fxFlex="85%">
+          <mat-grid-list cols="4">
+            <mat-grid-tile *ngFor="let album of this.albumGalleryService.publicAlbums">
+              <button mat-icon-button disableRipple="true" (click)="this.onAlbumClick(album)">
+                <div><mat-icon>folder</mat-icon></div>
+                <div>{{album.name}}</div>
+              </button>
+            </mat-grid-tile>
+          </mat-grid-list>
+        </div>
+      </div>
+    </div>
 
   </div>
 </div>
