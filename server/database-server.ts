@@ -368,6 +368,24 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
         });
     });
 
+    // //Save drawing data
+    // app.put("/drawing/:drawingId", (request, response, next) => {
+
+    //   var drawingId = request.params.drawingId.replaceAll(/"/g, '');
+    //   var data =  request.body.data;
+
+    //   console.log(drawingId);
+    //   console.log(data);
+
+    //   DB.collection("drawings").findOneAndUpdate({ _id: mongoose.Types.ObjectId(drawingId) }, { $set: {"data": data}}, { returnDocument: 'after' }, (err, res) => {
+    //     response.json(200);
+    //     console.log(drawingId);
+    //     console.log(data);
+    //     console.log(res);
+    //   });
+    // });
+    
+    // const upload = multer({dest: '/public/data/uploads/'});
     //Save drawing data
     app.post("/drawing/save/:drawingId", (request, response, next) => {
       let drawingId = request.params.drawingId;
@@ -395,12 +413,10 @@ app.post(
   multer({
     storage: storage
   }).single('upload'), function(req, res) {
-    console.log("REQUEST FILE",req.file);
-    console.log("REQUEST BODY", req.body);
     res.redirect("/uploads/" + req.file.filename);
     // console.log(req.file.filename);
     DB.collection("drawings").findOneAndUpdate({ _id: mongoose.Types.ObjectId(req.params.drawingId.replaceAll(/"/g, '')) }, { $set: {"data": req.file.filename}}, { returnDocument: 'after' }, (err, res) => {
-      });
+      });// ici tu par chercher le drawingID en base et tu mets le data de cet element au filename 
     return res.status(200).end(); 
   });
 

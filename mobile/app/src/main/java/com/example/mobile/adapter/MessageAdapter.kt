@@ -1,6 +1,7 @@
 package com.example.mobile.adapter
 
 import android.content.Context
+import android.media.MediaPlayer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,10 +16,12 @@ class MessageAdapter(val context : Context, val msgs: ArrayList<IMessage>, val o
     val ITEM_RECEIVE = 1
     val ITEM_SENT = 2
     var ITEM_JOINED = 3
-
+    var mediaPlayerSendSuccess: MediaPlayer = MediaPlayer.create(context,R.raw.send)
+    var mediaPlayerReceiveSuccess: MediaPlayer = MediaPlayer.create(context,R.raw.receive)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         if (viewType == 1) {
+            mediaPlayerReceiveSuccess.start()
             return ReceiveMessageViewHolder(
                 LayoutInflater.from(parent.context).inflate(
                     R.layout.receivemessage,
@@ -27,6 +30,7 @@ class MessageAdapter(val context : Context, val msgs: ArrayList<IMessage>, val o
                 )
             )
         } else if (viewType == 2) {
+            mediaPlayerSendSuccess.start()
             return SentMessageViewHolder(
                 LayoutInflater.from(parent.context).inflate(
                     R.layout.sentmessage,

@@ -24,6 +24,15 @@
         android:layout_marginTop="67dp"
         android:hint="Adresse courriel"
         android:inputType="text" />
+    <TextView
+        android:id="@+id/emailEmptyError"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/edt_email"
+        android:layout_centerHorizontal="true"
+        android:text="Veuillez saisir un courriel"
+        android:textColor="@color/red"
+        android:textSize="15sp" />
 
     <EditText
         android:id="@+id/edt_password"
@@ -34,6 +43,15 @@
         android:layout_marginTop="25dp"
         android:hint="Mot de passe"
         android:inputType="textPassword" />
+    <TextView
+        android:id="@+id/mdpEmptyError"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/edt_password"
+        android:layout_centerHorizontal="true"
+        android:text="Veuillez saisir un mot de passe"
+        android:textColor="@color/red"
+        android:textSize="15sp" />
 
     <Button
         android:id="@+id/showHideBtn"
@@ -54,7 +72,7 @@
         android:layout_below="@id/edt_email"
         android:layout_alignParentEnd="false"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="68dp"
+        android:layout_marginTop="100dp"
         android:text="Se connecter" />
 
     <TextView
