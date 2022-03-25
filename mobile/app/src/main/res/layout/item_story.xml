@@ -23,8 +23,8 @@
             android:layout_height="90dp"
             android:src="@drawable/placeholder_logo"
             app:civ_border="true"
-            app:civ_border_color="@color/purple_700"
-            app:civ_border_width="1dp" />
+            app:civ_border_color="#d45b9f"
+            app:civ_border_width="5dp" />
 
         <TextView
             android:id="@+id/storyOwner"

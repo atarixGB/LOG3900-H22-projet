@@ -1,5 +1,6 @@
 package com.example.mobile.activity
 
+import android.app.ProgressDialog.show
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -17,6 +18,7 @@ import com.example.mobile.Retrofit.IMyService
 import com.example.mobile.Retrofit.RetrofitClient
 import com.example.mobile.activity.drawing.DrawingActivity
 import com.example.mobile.adapter.StoryAdapter
+import com.example.mobile.popup.StoriesPopUp
 import com.example.mobile.viewModel.SharedViewModelToolBar
 import io.reactivex.disposables.CompositeDisposable
 import retrofit2.Call
@@ -31,6 +33,8 @@ class Dashboard : AppCompatActivity(), StoryAdapter.StoryAdapterListener {
     private lateinit var storyAdapter: StoryAdapter
     private lateinit var stories: ArrayList<IStory>
     private lateinit var sessionStartBtn: Button
+
+    private lateinit var displayStoriesPopUp: StoriesPopUp
 
     private val sharedViewModel: SharedViewModelToolBar by viewModels()
 
@@ -146,12 +150,21 @@ class Dashboard : AppCompatActivity(), StoryAdapter.StoryAdapterListener {
                     if (currentDrawing != null) {
                         drawingsData.add(currentDrawing.data!!)
                         if (drawingsData.size == currentStory.drawingsId.size) {
-                            val intent = Intent(this@Dashboard, Stories::class.java)
-                            intent.putExtra("userName",user)
-                            intent.putExtra("owner", currentStory.owner)
-                            intent.putExtra("avatar", currentStory.avatar)
-                            intent.putExtra("drawingsData", drawingsData)
-                            startActivity(intent)
+//                            val intent = Intent(this@Dashboard, Stories::class.java)
+//                            intent.putExtra("userName",user)
+//                            intent.putExtra("owner", currentStory.owner)
+//                            intent.putExtra("avatar", currentStory.avatar)
+//                            intent.putExtra("drawingsData", drawingsData)
+//                            startActivity(intent)
+                            displayStoriesPopUp = StoriesPopUp(
+                                currentStory.owner,
+                                currentStory.avatar,
+                                drawingsData
+                            )
+                            displayStoriesPopUp.show(
+                                supportFragmentManager,
+                                "customDialog"
+                            )
                         }
                     }
                 }
