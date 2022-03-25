@@ -9,6 +9,7 @@ import { COLLAB_URL } from '@app/constants/api-urls';
 })
 export class CollaborationService {
     socket: any;
+    room: string;
 
     newStroke: Subject<any>;
     newStroke$: Observable<any>;
@@ -70,64 +71,61 @@ export class CollaborationService {
         this.socket = io.io(COLLAB_URL, { transports: ['websocket'] });
 
         this.socket.on('receiveStroke', (stroke: any) => {
-            if (stroke.sender !== this.socket.id) {
-                this.newStroke.next(stroke);
-            }
+            this.newStroke.next(stroke);
         });
 
         this.socket.on('receiveSelection', (selection: any) => {
-            if (selection.sender !== this.socket.id) {
-                this.newSelection.next(selection);
-            }
+            this.newSelection.next(selection);
         });
 
         this.socket.on('receiveSelectionPos', (selectionPos: any) => {
-            if (selectionPos.sender !== this.socket.id) {
-                this.newSelectionPos.next(selectionPos);
-            }
+            this.newSelectionPos.next(selectionPos);
         });
 
         this.socket.on('receiveSelectionSize', (selectionSize: any) => {
-            if (selectionSize.sender !== this.socket.id) {
-                this.newSelectionSize.next(selectionSize); 
-            }
+            this.newSelectionSize.next(selectionSize); 
         });
 
         this.socket.on('receivePasteRequest', (pasteReq: any) => {
-            if (pasteReq.sender !== this.socket.id) {
-                this.pasteRequest.next(pasteReq); 
-            }
+            this.pasteRequest.next(pasteReq); 
         });
 
         this.socket.on('receiveDeleteRequest', (delReq: any) => {
-            if (delReq.sender !== this.socket.id) {
-                this.deleteRequest.next(delReq); 
-            }
+            this.deleteRequest.next(delReq); 
         });
 
         this.socket.on('receiveStrokeWidth', (width: any) => {
-            if (width.sender !== this.socket.id) {
-                this.newStrokeWidth.next(width); 
-            }
+            this.newStrokeWidth.next(width); 
         });
 
         this.socket.on('receiveNewPrimaryColor', (color: any) => {
-            if (color.sender !== this.socket.id) {
-                this.newPrimaryColor.next(color); 
-            }
+            this.newPrimaryColor.next(color); 
         });
 
         this.socket.on('receiveNewSecondaryColor', (color: any) => {
-            if (color.sender !== this.socket.id) {
-                this.newSecondaryColor.next(color); 
-            }
+            this.newSecondaryColor.next(color); 
         });
     } 
 
+    // COLLAB ROOM BROADCASTS
+    joinCollab(drawingId: any): void {
+        this.room = drawingId.replaceAll(/"/g, '');
+        this.socket.emit('joinCollab', this.room);
+    }
+
+    leaveCollab(): void {
+        this.socket.emit('leaveCollab', this.room);
+    }
+
+    // EDITOR BROADCASTS
     // Un stroke: voir les classes Stroke, StrokePencil, StrokeRectangle et StrokeEllipse
     broadcastStroke(stroke: any): void {
         stroke.sender = this.socket.id;
-        this.socket.emit('broadcastStroke', stroke);
+        const data = {
+            room: this.room,
+            data: stroke
+        }
+        this.socket.emit('broadcastStroke', data);
     }
 
     /* selection:
@@ -137,7 +135,11 @@ export class CollaborationService {
     }*/
     broadcastSelection(selection: any): void {
         selection.sender = this.socket.id;
-        this.socket.emit('broadcastSelection', selection);
+        const data = {
+            room: this.room,
+            data: selection
+        }
+        this.socket.emit('broadcastSelection', data);
     }
 
     /* selectionPos:
@@ -147,7 +149,11 @@ export class CollaborationService {
     }*/
     broadcastSelectionPos(selectionPos: any): void {
         selectionPos.sender = this.socket.id;
-        this.socket.emit('broadcastSelectionPos', selectionPos);
+        const data = {
+            room: this.room,
+            data: selectionPos
+        }
+        this.socket.emit('broadcastSelectionPos', data);
     }
 
     /* selectionSize:
@@ -160,7 +166,11 @@ export class CollaborationService {
     }*/
     broadcastSelectionSize(selectionSize: any): void {
         selectionSize.sender = this.socket.id;
-        this.socket.emit('broadcastSelectionSize', selectionSize);
+        const data = {
+            room: this.room,
+            data: selectionSize
+        }
+        this.socket.emit('broadcastSelectionSize', data);
     }
 
     /* pasteData:
@@ -170,7 +180,11 @@ export class CollaborationService {
     }*/
     broadcastPasteRequest(pasteData: any): void {
         pasteData.sender = this.socket.id;
-        this.socket.emit('broadcastPasteRequest', pasteData);
+        const data = {
+            room: this.room,
+            data: pasteData
+        }
+        this.socket.emit('broadcastPasteRequest', data);
     }
 
     /* delData:
@@ -180,7 +194,11 @@ export class CollaborationService {
     }*/
     broadcastDeleteRequest(delData: any): void {
         delData.sender = this.socket.id;
-        this.socket.emit('broadcastDeleteRequest', delData);
+        const data = {
+            room: this.room,
+            data: delData
+        }
+        this.socket.emit('broadcastDeleteRequest', data);
     }
 
     /* width:
@@ -191,7 +209,11 @@ export class CollaborationService {
     }*/
     broadcastNewStrokeWidth(width: any): void {
         width.sender = this.socket.id;
-        this.socket.emit('broadcastNewStrokeWidth', width);
+        const data = {
+            room: this.room,
+            data: width
+        }
+        this.socket.emit('broadcastNewStrokeWidth', data);
     }
 
     /* color:
@@ -202,7 +224,11 @@ export class CollaborationService {
     }*/
     broadcastNewPrimaryColor(color: any): void {
         color.sender = this.socket.id;
-        this.socket.emit('broadcastNewPrimaryColor', color);
+        const data = {
+            room: this.room,
+            data: color
+        }
+        this.socket.emit('broadcastNewPrimaryColor', data);
     }
 
      /* color:
@@ -213,6 +239,10 @@ export class CollaborationService {
     }*/
     broadcastNewSecondaryColor(color: any): void {
         color.sender = this.socket.id;
-        this.socket.emit('broadcastNewSecondaryColor', color);
+        const data = {
+            room: this.room,
+            data: color
+        }
+        this.socket.emit('broadcastNewSecondaryColor', data);
     }
 }

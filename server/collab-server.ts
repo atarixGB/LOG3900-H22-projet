@@ -12,48 +12,70 @@ app.use(express.static('public'));
 console.log('Server is running');
 
 ioCollab.on('connection', (socket) => {
-      socket.on('broadcastStroke', (strokeData) => {
-        console.log("StrokeData : " , strokeData);
-        ioCollab.emit('receiveStroke', strokeData);
+
+      // COLLAB ROOM EVENTS
+      socket.on('joinCollab', (collabDrawingId) => {
+        console.log("Trying to join drawing: " , collabDrawingId);
+        socket.join(collabDrawingId);
       })
 
-      socket.on('broadcastSelection', (selectionData) => {
-        console.log("Broadcasting selection : ", selectionData);
-        ioCollab.emit('receiveSelection', selectionData);
-      })
-  
-      socket.on('broadcastSelectionPos', (posData) => {
-        console.log("Broadcasting new selection position : ", posData);
-        ioCollab.emit('receiveSelectionPos', posData);
-      })
-  
-      socket.on('broadcastSelectionSize', (sizeData) => {
-        console.log("Broadcasting new selection size : ", sizeData);
-        ioCollab.emit('receiveSelectionSize', sizeData);
-      })
-  
-      socket.on('broadcastPasteRequest', (pasteReqData) => {
-        console.log("Broadcasting paste request from :", pasteReqData);
-        ioCollab.emit('receivePasteRequest', pasteReqData);
-      })
-  
-      socket.on('broadcastDeleteRequest', (delReqData) => {
-        console.log("Broadcasting delete request from :", delReqData);
-        ioCollab.emit('receiveDeleteRequest', delReqData);
-      })
-  
-      socket.on('broadcastNewStrokeWidth', (widthData) => {
-        console.log("Broadcasting new stroke width :", widthData);
-        ioCollab.emit('receiveStrokeWidth', widthData);
+      socket.on('leaveCollab', (collabDrawingId) => {
+        console.log("Trying to leave drawing: " , collabDrawingId);
+        socket.leave(collabDrawingId);
       })
 
-      socket.on('broadcastNewPrimaryColor', (colorData) => {
-        console.log("Broadcasting NewPrimaryColor :", colorData);
-        ioCollab.emit('receiveNewPrimaryColor', colorData);
+      // DRAWING EVENTS
+      socket.on('broadcastStroke', (data) => {
+        const room = data.room;
+        const stroke = data.data
+        socket.broadcast.to(room).emit('receiveStroke', stroke);
       })
 
-      socket.on('broadcastNewSecondaryColor', (colorData) => {
-        console.log("Broadcasting NewSecondaryColor :", colorData);
-        ioCollab.emit('receiveNewSecondaryColor', colorData);
+      socket.on('broadcastSelection', (data) => {
+        const room = data.room;
+        const selection = data.data
+        socket.broadcast.to(room).emit('receiveSelection', selection);
+      })
+  
+      socket.on('broadcastSelectionPos', (data) => {
+        const room = data.room;
+        const pos = data.data
+        socket.broadcast.to(room).emit('receiveSelectionPos', pos);
+      })
+  
+      socket.on('broadcastSelectionSize', (data) => {
+        const room = data.room;
+        const size = data.data
+        socket.broadcast.to(room).emit('receiveSelectionSize', size);
+      })
+  
+      socket.on('broadcastPasteRequest', (data) => {
+        const room = data.room;
+        const pasteReq = data.data
+        socket.broadcast.to(room).emit('receivePasteRequest', pasteReq);
+      })
+  
+      socket.on('broadcastDeleteRequest', (data) => {
+        const room = data.room;
+        const delReq = data.data
+        socket.broadcast.to(room).emit('receiveDeleteRequest', delReq);
+      })
+  
+      socket.on('broadcastNewStrokeWidth', (data) => {
+        const room = data.room;
+        const width = data.data
+        socket.broadcast.to(room).emit('receiveStrokeWidth', width);
+      })
+
+      socket.on('broadcastNewPrimaryColor', (data) => {
+        const room = data.room;
+        const primeColor = data.data
+        socket.broadcast.to(room).emit('receiveNewPrimaryColor', primeColor);
+      })
+
+      socket.on('broadcastNewSecondaryColor', (data) => {
+        const room = data.room;
+        const secondColor = data.data
+        socket.broadcast.to(room).emit('receiveNewSecondaryColor', secondColor);
       })
 })

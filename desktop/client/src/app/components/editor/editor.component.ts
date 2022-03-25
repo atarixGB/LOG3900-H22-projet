@@ -2,7 +2,6 @@ import { AfterViewInit, Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ToolList } from '@app/interfaces-enums/tool-list';
 import { ToolManagerService } from '@app/services/editor/tools/tool-manager.service';
-import { CollaborationService } from '@app/services/collaboration/collaboration.service';
 import { CreateDrawingDialogComponent } from './create-drawing-dialog/create-drawing-dialog.component';
 
 @Component({
@@ -12,7 +11,7 @@ import { CreateDrawingDialogComponent } from './create-drawing-dialog/create-dra
 })
 export class EditorComponent implements AfterViewInit {
     ToolList: typeof ToolList = ToolList;
-    constructor(public toolManagerService: ToolManagerService, private collaborationService : CollaborationService, public dialog: MatDialog) {}
+    constructor(public toolManagerService: ToolManagerService, public dialog: MatDialog) {}
 
     ngOnInit(): void {
         this.dialog.open(CreateDrawingDialogComponent, {
@@ -21,7 +20,5 @@ export class EditorComponent implements AfterViewInit {
         });
     }
 
-    ngAfterViewInit(): void {
-        this.collaborationService.enterCollaboration();
-    }
+    ngAfterViewInit(): void {}
 }

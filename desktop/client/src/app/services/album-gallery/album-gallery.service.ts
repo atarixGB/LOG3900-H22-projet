@@ -6,6 +6,7 @@ import { LoginService } from '@app/services/login/login.service';
 import { ALBUM_URL, PUBLIC_DRAWINGS_URL, CREATE_DRAWING_URL, JOIN_ALBUM_URL, DECLINE_MEMBERSHIP_REQUEST_URL, ACCEPT_MEMBERSHIP_REQUEST_URL, UPDATE_ALBUM_PARAMETERS_URL, ADD_DRAWING_TO_ALBUM_URL, GET_DRAWING_URL, SAVE_DRAWING_URL } from '@app/constants/api-urls';
 import { PUBLIC_ALBUM } from '@app/constants/constants';
 import { DrawingService } from '../editor/drawing/drawing.service';
+import { CollaborationService } from '../collaboration/collaboration.service';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,7 @@ export class AlbumGalleryService {
   currentDrawing: IDrawing;
   drawings: any;
 
-  constructor(private httpClient: HttpClient, private loginService: LoginService, private drawingService: DrawingService) {
+  constructor(private httpClient: HttpClient, private loginService: LoginService, private drawingService: DrawingService, private collaborationService: CollaborationService) {
     this.publicAlbums = [];
     this.myAlbums = [];
     this.drawings = [];
@@ -41,6 +42,7 @@ export class AlbumGalleryService {
         console.log("Résultat du serveur:", result);
         this.currentDrawing._id = result;
         this.addDrawingToAlbum(this.currentDrawing, this.selectedAlbumName); // Should be ID not name but we did it with the name
+        this.collaborationService.joinCollab(this.currentDrawing._id);
       },
       (error) => {
         console.log(`Impossible de créer le dessin ${drawingName} dans la base de données.\nErreur: ${error}`);

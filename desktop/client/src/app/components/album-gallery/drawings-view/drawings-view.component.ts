@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PUBLIC_ALBUM } from '@app/constants/constants';
 import { AlbumGalleryService } from '@app/services/album-gallery/album-gallery.service';
+import { CollaborationService } from '@app/services/collaboration/collaboration.service';
 import { LoginService } from '@app/services/login/login.service';
 import { AlbumSettingsDialogComponent } from './album-settings-dialog/album-settings-dialog.component';
 import { MembersListDialogComponent } from './members-list-dialog/members-list-dialog.component';
@@ -17,7 +18,7 @@ export class DrawingsViewComponent {
   isCurrentAlbumMine: boolean;
   isPublicAlbum: boolean;
 
-  constructor(public albumGalleryService: AlbumGalleryService, public loginService: LoginService, public dialog: MatDialog, private router: Router, private route: ActivatedRoute) {
+  constructor(public albumGalleryService: AlbumGalleryService, public loginService: LoginService, public dialog: MatDialog, private router: Router, private route: ActivatedRoute, public collaborationService: CollaborationService) {
     this.isCurrentAlbumMine = this.loginService.username == albumGalleryService.currentAlbum.owner;
     this.isPublicAlbum = albumGalleryService.currentAlbum.name == PUBLIC_ALBUM.name;
   }
