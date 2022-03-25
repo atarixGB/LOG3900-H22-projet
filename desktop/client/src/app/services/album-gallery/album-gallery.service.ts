@@ -3,9 +3,9 @@ import { Injectable } from '@angular/core';
 import { IAlbum } from '@app/interfaces-enums/IAlbum'
 import { IDrawing } from '@app/interfaces-enums/IDrawing'
 import { LoginService } from '@app/services/login/login.service';
-import { ALBUM_URL, PUBLIC_DRAWINGS_URL, CREATE_DRAWING_URL, JOIN_ALBUM_URL, DECLINE_MEMBERSHIP_REQUEST_URL, ACCEPT_MEMBERSHIP_REQUEST_URL, UPDATE_ALBUM_PARAMETERS_URL, ADD_DRAWING_TO_ALBUM_URL } from '@app/constants/api-urls';
-import { DrawingService } from '../editor/drawing/drawing.service';
+import { ALBUM_URL, PUBLIC_DRAWINGS_URL, CREATE_DRAWING_URL, JOIN_ALBUM_URL, DECLINE_MEMBERSHIP_REQUEST_URL, ACCEPT_MEMBERSHIP_REQUEST_URL, UPDATE_ALBUM_PARAMETERS_URL, ADD_DRAWING_TO_ALBUM_URL, GET_DRAWING_URL, SAVE_DRAWING_URL } from '@app/constants/api-urls';
 import { PUBLIC_ALBUM } from '@app/constants/constants';
+import { DrawingService } from '../editor/drawing/drawing.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,28 +15,32 @@ export class AlbumGalleryService {
   myAlbums: IAlbum[];
   currentAlbum: IAlbum;
   selectedAlbumId: string | void;
+  selectedAlbumName: string | void;
+
+  currentDrawing: IDrawing;
+  drawings: any;
 
   constructor(private httpClient: HttpClient, private loginService: LoginService, private drawingService: DrawingService) {
     this.publicAlbums = [];
     this.myAlbums = [];
+    this.drawings = [];
+
+    this.currentDrawing = {
+      name: "",
+      owner: this.loginService.username,
+    }
   }
 
   createDrawing(drawingName: string): void {
-    const drawingData: IDrawing = {
-      name: drawingName,
-      owner: this.loginService.username,
-      contributors: [this.loginService.username],
-      likes: [],
-      data: this.drawingService.canvas.toDataURL(),
-    }
+    this.currentDrawing.name = drawingName;
 
-    console.log(drawingData)
+    console.log(this.currentDrawing)
 
-    this.httpClient.post(CREATE_DRAWING_URL, drawingData).subscribe(
+    this.httpClient.post(CREATE_DRAWING_URL, this.currentDrawing).subscribe(
       (result) => {
         console.log("Résultat du serveur:", result);
-        drawingData._id = result;
-        this.addDrawingToAlbum(drawingData, this.selectedAlbumId);
+        this.currentDrawing._id = result;
+        this.addDrawingToAlbum(this.currentDrawing, this.selectedAlbumName); // Should be ID not name but we did it with the name
       },
       (error) => {
         console.log(`Impossible de créer le dessin ${drawingName} dans la base de données.\nErreur: ${error}`);
@@ -51,12 +55,37 @@ export class AlbumGalleryService {
 
     this.httpClient.put(ADD_DRAWING_TO_ALBUM_URL + `/${albumId}`, data).subscribe(
       (result) => {
-        console.log(result);
+        console.log("Résultat du serveur:", result);
       },
       (error) => {
-        console.log(error);
+        console.log(`Impossible d'ajouter le dessin ${drawing.name} dans l'album avec l'ID ${albumId}.\nErreur: ${error}`);
       });
   }
+
+  saveDrawing(): void {
+    const drawingMetadata = {
+      name: this.currentDrawing.name,
+      owner: this.loginService.username,
+    }
+
+    // Envoi des métadonnées du dessin
+    this.httpClient.post(`${SAVE_DRAWING_URL}/${this.currentDrawing._id}`, drawingMetadata).subscribe(
+      (result) => {
+        console.log("Résultat du serveur:", result);
+
+        // Envoi du dessin en base64. Celui-ci sera reconverti en image png du côté serveur.
+        const drawingData = { data: this.drawingService.canvas.toDataURL() };
+
+        this.httpClient.put(`${SAVE_DRAWING_URL}/${this.currentDrawing._id}`, drawingData).subscribe(
+          (result) => {console.log("Résultat du serveur:", result)},
+          (error) => {console.log(`Impossible d'enregistrer le dessin en image de type png sur la base de données.\nErreur:`, error);});
+
+      },
+      (error) => {
+        console.log(`Impossible d'enregistrer les attributs du dessin sur la base de données.\nErreur:`, error);
+      }
+    )
+ }
 
   createAlbum(name: string, description: string): void {
     const newAlbum: IAlbum = {
@@ -226,7 +255,6 @@ export class AlbumGalleryService {
     console.log(url);
     this.httpClient.get<IAlbum[]>(url).subscribe(
       (albums: IAlbum[]) => {
-
         for (let i = 0; i < albums.length; i++) {
           if (albums[i].name != "album public") {
             this.publicAlbums.push(albums[i]);
@@ -241,10 +269,22 @@ export class AlbumGalleryService {
   }
 
   fetchDrawingsFromSelectedAlbum(album: IAlbum): void {
-    // console.log("Fetching drawings from album with id: " + album._id);
-    console.log(album);
+    console.log("Fetching drawings from album: " + album.name);
 
-    // TODO: fetch album's drawings from db
+    this.drawings = [];
+    album.drawingIDs.forEach(id => {
+      this.httpClient.get(GET_DRAWING_URL + id).subscribe(
+        (result) => {
+          console.log(result);
+          this.drawings.push(result);
+        },
+        (error) => {
+          console.log(`Erreur en allant chercher un dessin.\nErreur: ${error}`);
+        }
+      );
+    });
+
+    console.log(this.drawings);
   }
 
   fetchAllPublicDrawings(): void {
