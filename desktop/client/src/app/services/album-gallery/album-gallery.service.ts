@@ -15,6 +15,7 @@ export class AlbumGalleryService {
   myAlbums: IAlbum[];
   currentAlbum: IAlbum;
   selectedAlbumId: string | void;
+  selectedAlbumName: string | void;
 
   currentDrawing: IDrawing;
   drawings: any;
@@ -22,6 +23,7 @@ export class AlbumGalleryService {
   constructor(private httpClient: HttpClient, private loginService: LoginService, private drawingService: DrawingService) {
     this.publicAlbums = [];
     this.myAlbums = [];
+    this.drawings = [];
 
     this.currentDrawing = {
       name: "",
@@ -38,7 +40,7 @@ export class AlbumGalleryService {
       (result) => {
         console.log("Résultat du serveur:", result);
         this.currentDrawing._id = result;
-        this.addDrawingToAlbum(this.currentDrawing, this.selectedAlbumId);
+        this.addDrawingToAlbum(this.currentDrawing, this.selectedAlbumName); // Should be ID not name but we did it with the name
       },
       (error) => {
         console.log(`Impossible de créer le dessin ${drawingName} dans la base de données.\nErreur: ${error}`);
@@ -253,7 +255,6 @@ export class AlbumGalleryService {
     console.log(url);
     this.httpClient.get<IAlbum[]>(url).subscribe(
       (albums: IAlbum[]) => {
-
         for (let i = 0; i < albums.length; i++) {
           if (albums[i].name != "album public") {
             this.publicAlbums.push(albums[i]);
@@ -270,9 +271,8 @@ export class AlbumGalleryService {
   fetchDrawingsFromSelectedAlbum(album: IAlbum): void {
     console.log("Fetching drawings from album: " + album.name);
 
+    this.drawings = [];
     album.drawingIDs.forEach(id => {
-      console.log(id);
-      
       this.httpClient.get(GET_DRAWING_URL + id).subscribe(
         (result) => {
           console.log(result);
@@ -282,10 +282,9 @@ export class AlbumGalleryService {
           console.log(`Erreur en allant chercher un dessin.\nErreur: ${error}`);
         }
       );
-      
     });
 
-    // TODO: fetch album's drawings from db
+    console.log(this.drawings);
   }
 
   fetchAllPublicDrawings(): void {
