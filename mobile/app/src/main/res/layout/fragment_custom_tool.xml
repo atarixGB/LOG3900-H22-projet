@@ -6,18 +6,34 @@
     android:background="#C4E0B2"
     tools:context="com.example.mobile.activity.drawing.CustomToolFragment">
 
+    <ImageButton
+        android:id="@+id/deleteSelection"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:src="@drawable/ic_baseline_delete_forever_24" />
+
+    <ImageButton
+        android:id="@+id/pasteSelection"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:src="@drawable/ic_baseline_content_copy_24"/>
+
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="60dp"
         android:fontFamily="@font/roboto"
         android:text="Epaisseur"
         android:textColor="@color/black"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@id/deleteSelection" />
 
     <GridView
         android:id="@+id/weight_view"

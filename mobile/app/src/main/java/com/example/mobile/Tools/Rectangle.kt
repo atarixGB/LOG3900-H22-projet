@@ -82,6 +82,10 @@ class Rectangle (context: Context, baseCanvas: Canvas, val socket : DrawingColla
     override fun onStrokeReceived(stroke: JSONObject) {
         var boundingPoints = ArrayList<IVec2>()
         val boundingPointsData = stroke["boundingPoints"]  as JSONArray
+        for (i in 0 until boundingPointsData.length()) {
+            val obj = boundingPointsData[i] as JSONObject
+            boundingPoints.add( IVec2(obj.getDouble("x").toFloat(), obj.getDouble("y").toFloat()) )
+        }
         val topCornerData = stroke.get("topLeftCorner") as JSONObject
         var topLeftCorner = IVec2(topCornerData.getDouble("x").toFloat(), topCornerData.getDouble("y").toFloat())
         val iRectangleStroke = IRectangleStroke(boundingPoints,

@@ -72,6 +72,11 @@ class  Ellipse(context: Context, baseCanvas: Canvas, val socket : DrawingCollabo
 
     override fun onStrokeReceived(stroke: JSONObject) {
         var boundingPoints = ArrayList<IVec2>()
+        val boundingPointsData = stroke["boundingPoints"]  as JSONArray
+        for (i in 0 until boundingPointsData.length()) {
+            val obj = boundingPointsData[i] as JSONObject
+            boundingPoints.add( IVec2(obj.getDouble("x").toFloat(), obj.getDouble("y").toFloat()) )
+        }
         val center = stroke.getJSONObject("center")
         val radius = stroke.getJSONObject("radius")
         val iEllipseStroke = IEllipseStroke(boundingPoints,

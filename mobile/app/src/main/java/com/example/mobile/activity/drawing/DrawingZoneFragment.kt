@@ -52,12 +52,16 @@ class DrawingZoneFragment : Fragment() {
         socket.socket.on("receiveSelection", onReceiveSelection)
         socket.socket.on("receiveStrokeWidth", onReceiveStrokeWidth)
         socket.socket.on("receiveNewPrimaryColor", onReceiveNewPrimaryColor)
+        socket.socket.on("receivePasteRequest", onPasteRequest)
 
         viewModel.weight.observe(viewLifecycleOwner, Observer { weight ->
             mDrawingView.changeWeight(weight)
         })
         viewModel.color.observe(viewLifecycleOwner, Observer { color ->
             mDrawingView.changeColor(color)
+        })
+        viewModel.deleteSelection.observe(viewLifecycleOwner, Observer { deleteSelection ->
+            mDrawingView.deleteSelection(deleteSelection)
         })
         toolModel.tool.observe(viewLifecycleOwner, Observer { tool ->
             mDrawingView.changeTool(tool)
@@ -92,6 +96,11 @@ class DrawingZoneFragment : Fragment() {
     private var onReceiveNewPrimaryColor = Emitter.Listener {
         val drawEvent = it[0] as JSONObject
         mDrawingView.onSelectionReceivePrimaryColor (drawEvent)
+    }
+
+    private var onPasteRequest = Emitter.Listener {
+        val drawEvent = it[0] as JSONObject
+        mDrawingView.onPasteRequest (drawEvent)
     }
 
     class DrawingView (context: Context, val socket: DrawingCollaboration) : View(context){
@@ -137,6 +146,14 @@ class DrawingZoneFragment : Fragment() {
                 val color = toolManager.currentTool.toIntColor(newColor.getString("color"))
                 val strokeIndex = newColor.getInt("strokeIndex")
                 toolManager.selection.changeReceivedColor(color, strokeIndex)
+                invalidate()
+            }
+        }
+
+        fun onPasteRequest(stroke: JSONObject){
+            if (socket.socket.id() != stroke.getString("sender")) {
+                val strokeIndex = stroke.getInt("strokeIndex")
+                toolManager.selection.onPasteRequest(strokeIndex)
                 invalidate()
             }
         }
@@ -227,10 +244,16 @@ class DrawingZoneFragment : Fragment() {
             if (this::toolManager.isInitialized) {
                 this.toolManager.changeTool(tool)
                 resetPath()
-                toolManager.selection.resetSelection()
+                toolManager.selection.sendPasteSelection()
                 if (tool == ToolbarFragment.MenuItem.SELECTION) {
                     toolManager.selection.isToolSelection = true
                 }
+            }
+        }
+
+        fun deleteSelection (delete: Boolean) {
+            if (this::toolManager.isInitialized && delete) {
+                toolManager.selection.deleteStroke()
             }
         }
 
