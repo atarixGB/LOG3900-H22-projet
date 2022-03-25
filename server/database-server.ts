@@ -32,6 +32,7 @@ const SERVER_PORT = 3001;
 
 //express service
 var app = express();
+app.use(express.json({  limit: '100mb' }))
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors({origin:true,credentials: true}));
@@ -368,23 +369,25 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
     });
 
     //Save drawing data
-    app.put("/drawing/:drawingId", (request, response, next) => {
+    app.post("/drawing/save/:drawingId", (request, response, next) => {
+      let drawingId = request.params.drawingId;
+      let drawingName = request.body.name;
+      let owner = request.body.owner;
+      console.log(`DRAWING NAME:${drawingName}\nOWNER:${owner}`);
 
-      var drawingId = request.params.drawingId.replaceAll(/"/g, '');
-      var data =  request.body.data;
-
-      console.log(drawingId);
-      console.log(data);
-
-      DB.collection("drawings").findOneAndUpdate({ _id: mongoose.Types.ObjectId(drawingId) }, { $set: {"data": data}}, { returnDocument: 'after' }, (err, res) => {
-        response.json(200);
-        console.log(drawingId);
-        console.log(data);
-        console.log(res);
+      DB.collection("drawings").findOneAndUpdate({ _id: mongoose.Types.ObjectId(drawingId) }, { $set: {data: `${drawingId}.png`}}, { returnDocument: 'after' }, (err, res) => {
+        response.json("Metadata sauvegardé")
       });
+
     });
-    
-    const upload = multer({dest: '/public/data/uploads/'});
+
+    app.put("/drawing/save/:drawingId", (request, response) => {
+      const imageData = request.body.data;
+      
+      saveImageAsPNG(imageData, request.params.drawingId, './uploads');
+
+      response.json("DataUrl sauvegardé")
+    })
 
 // Post files
 app.post(
@@ -392,10 +395,10 @@ app.post(
   multer({
     storage: storage
   }).single('upload'), function(req, res) {
-    //console.log(req.file);
-    console.log(req.body);
+    console.log("REQUEST FILE",req.file);
+    console.log("REQUEST BODY", req.body);
     res.redirect("/uploads/" + req.file.filename);
-    console.log(req.file.filename);
+    // console.log(req.file.filename);
     DB.collection("drawings").findOneAndUpdate({ _id: mongoose.Types.ObjectId(req.params.drawingId.replaceAll(/"/g, '')) }, { $set: {"data": req.file.filename}}, { returnDocument: 'after' }, (err, res) => {
       });
     return res.status(200).end(); 
@@ -408,25 +411,24 @@ app.post(
       if (err) {
         console.log("error getting");
       } else {
-    const file = result.data;
-    var img = fs.readFileSync(__dirname + "/uploads/" + file, {encoding: 'base64'});
-    //console.log("image", img)
-    //res.writeHead(200, {'Content-Type': 'image/png' });
-    // res.end(img, 'binary');
-    var returnedJson = {
-      _id: result._id,
-      name: result.name,
-      owner: result.owner,
-      description: result.description,
-      data: img,
-      members: result.members,
-      likes: result.likes
-    };
-    res.json(returnedJson)
-    //console.log("ressss", res);
+        const file = result.data;
+        var img = fs.readFileSync(__dirname + "/uploads/" + file, {encoding: 'base64'});
+        //console.log("image", img)
+        //res.writeHead(200, {'Content-Type': 'image/png' });
+        // res.end(img, 'binary');
+        var returnedJson = {
+          _id: result._id,
+          name: result.name,
+          owner: result.owner,
+          description: result.description,
+          data: img,
+          members: result.members,
+          likes: result.likes
+        };
+        res.json(returnedJson)
+        console.log("GotDrawing");
       }
     });
-
   });
 //==========================================================================================================
 // Album Management
@@ -484,12 +486,12 @@ app.post(
 
 
     //add drawing to an album
-    app.put("/albums/addDrawing/:albumId", (request, response, next) => {
-      let albumId = request.params.albumId;
+    app.put("/albums/addDrawing/:albumName", (request, response, next) => {
+      let albumName = request.params.albumName;
       let drawingID = request.body.drawing;
-      DB.collection("albums").findOneAndUpdate({ name:albumId }, { $push: { drawingIDs: drawingID } }, { returnDocument: 'after' }, (err, res) => {
+      DB.collection("albums").findOneAndUpdate({ name:albumName }, { $push: { drawingIDs: drawingID } }, { returnDocument: 'after' }, (err, res) => {
         response.json(201)
-        console.log(drawingID, "is added to ", albumId);
+        console.log(drawingID, "is added to ", albumName);
       })
     });
 
@@ -803,3 +805,17 @@ app.post(
     });
   }
 });
+
+//==========================================================================================================
+// UTILITY FUNCTIONS
+//==========================================================================================================
+
+let saveImageAsPNG = function(imageData, drawingId, filepath) {
+  console.log("SAVE IMAGE AS PNG!!!")
+  const metadata = imageData.replace(/^data:image\/\w+;base64,/, '');
+  const dataBuffer = Buffer.from(metadata, "base64");
+  console.log("DATA BUFFER:", dataBuffer)
+  fs.writeFile(`${filepath}/${drawingId}.png` , dataBuffer, (error) => {
+      if (error) throw error;
+  });
+}
