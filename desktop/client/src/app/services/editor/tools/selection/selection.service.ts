@@ -58,14 +58,12 @@ export class SelectionService extends Tool {
     });
 
     this.collaborationService.newCollabData$.subscribe((newCollabData: any) => {
-      this.loadCurrentSessionData(newCollabData.strokes, newCollabData.strokesSelected);
+      this.loadCurrentSessionData(newCollabData.strokes);
     });
   }
 
-  private loadCurrentSessionData(strokes: any[], strokesSelected: any[]): void {
+  private loadCurrentSessionData(strokes: any[]): void {
     this.strokes = [];
-    this.strokesSelected = [];
-
     strokes.forEach(s => {
       this.addIncomingStrokeFromOtherUser(s);
     });
@@ -86,7 +84,6 @@ export class SelectionService extends Tool {
     this.collaborationService.updateCollabInfo({
       collabDrawingId: '',
       strokes: this.strokes,
-      strokesSelected: this.strokesSelected
     });
     this.isActiveSelection = false;
   }
@@ -122,7 +119,6 @@ export class SelectionService extends Tool {
     this.collaborationService.updateCollabInfo({
       collabDrawingId: '',
       strokes: this.strokes,
-      strokesSelected: this.strokesSelected
     });
   }
 
@@ -180,7 +176,6 @@ export class SelectionService extends Tool {
       this.collaborationService.updateCollabInfo({
         collabDrawingId: '',
         strokes: this.strokes,
-        strokesSelected: this.strokesSelected
       });
     } else if(this.isResizing) {
       this.isResizing = false;
@@ -196,7 +191,6 @@ export class SelectionService extends Tool {
       this.collaborationService.updateCollabInfo({
         collabDrawingId: '',
         strokes: this.strokes,
-        strokesSelected: this.strokesSelected
       });
     }
   }
@@ -224,7 +218,6 @@ export class SelectionService extends Tool {
     this.collaborationService.updateCollabInfo({
       collabDrawingId: '',
       strokes: this.strokes,
-      strokesSelected: this.strokesSelected
     });
   }
 
@@ -240,7 +233,6 @@ export class SelectionService extends Tool {
     this.collaborationService.updateCollabInfo({
       collabDrawingId: '',
       strokes: this.strokes,
-      strokesSelected: this.strokesSelected
     });
   }
 
@@ -256,7 +248,6 @@ export class SelectionService extends Tool {
     this.collaborationService.updateCollabInfo({
       collabDrawingId: '',
       strokes: this.strokes,
-      strokesSelected: this.strokesSelected
     });
   }
 
@@ -276,7 +267,6 @@ export class SelectionService extends Tool {
     this.collaborationService.updateCollabInfo({
       collabDrawingId: '',
       strokes: this.strokes,
-      strokesSelected: this.strokesSelected
     });
   }
 

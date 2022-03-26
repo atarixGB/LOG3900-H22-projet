@@ -3,6 +3,9 @@ import { DrawingService } from '@app/services/editor/drawing/drawing.service';
 import * as io from 'socket.io-client';
 import { Observable, Subject } from 'rxjs';
 import { COLLAB_URL } from '@app/constants/api-urls';
+import { ActivatedRoute, Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { CouldntJoinDialogComponent } from '@app/components/editor/couldnt-join-dialog/couldnt-join-dialog.component';
 
 @Injectable({
     providedIn: 'root',
@@ -41,7 +44,7 @@ export class CollaborationService {
     newCollabData: Subject<any>;
     newCollabData$: Observable<any>;
 
-    constructor(public drawingService: DrawingService) { 
+    constructor(public dialog: MatDialog, public drawingService: DrawingService, private router: Router, private route: ActivatedRoute) { 
         this.newStroke = new Subject();
         this.newStroke$ = this.newStroke.asObservable();
 
@@ -82,6 +85,10 @@ export class CollaborationService {
 
         this.socket.on('joinFailure', () => {
             console.log('Couldnt join, already 4 members');
+            this.router.navigate(['../my-albums'], { relativeTo: this.route });
+            this.dialog.open(CouldntJoinDialogComponent, {
+                width: "50%"
+            });
         });
 
         this.socket.on('receiveStroke', (stroke: any) => {
@@ -133,8 +140,7 @@ export class CollaborationService {
 
     /* collabData:
         collabDrawingId: string,
-        strokes: Strokes[],
-        strokesSelected: Strokes[]
+        strokes: Strokes[]
     */
     updateCollabInfo(collabData: any): void {
         collabData.collabDrawingId = this.room;

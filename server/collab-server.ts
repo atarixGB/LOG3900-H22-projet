@@ -16,7 +16,6 @@ console.log('Server is running');
   value:  {
             nbMembers
             strokes
-            strokesSelected 
           }
 */// vvvvvvvvvvvvvv
 let infoOnActiveRooms = new Map();
@@ -31,8 +30,8 @@ ioCollab.on('connection', (socket) => {
         if (!infoOnActiveRooms.has(collabDrawingId)) {
            const value = {
             nbMembers: 1,
-            strokes: '',
-            strokesSelected: ''
+            strokes: [],
+            strokesSelected: []
           }
           infoOnActiveRooms.set(collabDrawingId, value);
           // Joining
@@ -50,8 +49,6 @@ ioCollab.on('connection', (socket) => {
         } else {
           socket.emit('joinFailure');
         }
-        console.log(infoOnActiveRooms);
-        
       })
 
       socket.on('leaveCollab', (collabDrawingId) => {
@@ -64,13 +61,9 @@ ioCollab.on('connection', (socket) => {
 
         // Leaving
         socket.leave(collabDrawingId);
-
-        console.log(infoOnActiveRooms);
-
       })
 
       socket.on('updateCollabInfo', (collabData) => {
-        console.log("Updating collab room data");
         let value = infoOnActiveRooms.get(collabData.collabDrawingId);
         value.strokes = collabData.strokes;
         value.strokesSelected = collabData.strokesSelected;
