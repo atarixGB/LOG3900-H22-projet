@@ -558,7 +558,6 @@ app.post(
       })
     });
 
-
     //send request to an album
     app.put("/albums/sendRequest/:albumName", (request, response, next) => {
       let albumName = request.params.albumName;
@@ -623,6 +622,30 @@ app.post(
         response.json(201)
       });
     });    
+
+    //remove a drawing id from drawingIDs in album
+    app.post("/removeDrawing", (request, response, next) => {
+      var post_data = request.body;
+
+      var drawingID = post_data.drawingID;
+      var albumName = post_data.albumName;
+
+      DB.collection("albums")
+        .find({ name: albumName })
+        .count(function (err, number) {
+          if (number == 0) {
+            response.json(404);
+            console.log("album does not exist");
+          } else {
+            DB.collection("albums").findOneAndUpdate({ name: albumName }, { "$pull": { drawingIDs: drawingID } },
+              function (error, result) {
+                response.json(201);
+                console.log("album updated");
+              }
+            );
+          }
+        });
+    });
 
     //Getting album parameters
     app.get("/getAlbumParameters", (request, response, next) => {
