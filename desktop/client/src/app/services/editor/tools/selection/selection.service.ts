@@ -58,6 +58,11 @@ export class SelectionService extends Tool {
     });
   }
 
+  clearArrays(): void {
+    this.strokes = [];
+    this.strokesSelected = [];
+  }
+
   delete(): void {
     this.soundEffectsService.playDeleteSound();
     this.deleteSelection(this.selectionCnv);

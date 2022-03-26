@@ -65,4 +65,9 @@ export class DrawingsViewComponent {
     console.log(`Partage du dessin ${drawing.name} sur Dropbox ou OneDrive...`);
 
   }
+
+  enterCollab(drawing: IDrawing): void {
+    this.collaborationService.joinCollab(drawing._id)
+    this.albumGalleryService.currentDrawing
+  }
 }
