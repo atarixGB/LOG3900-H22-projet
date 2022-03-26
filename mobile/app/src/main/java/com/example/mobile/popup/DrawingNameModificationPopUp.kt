@@ -26,7 +26,7 @@ class DrawingNameModificationPopUp (val oldDrawingName: String) : DialogFragment
         drawingName=rootView.findViewById(R.id.modifiedDrawingName)
         drawingName.setText(oldDrawingName)
 
-        submitButton= rootView.findViewById(R.id.modifyAlbumBtn)
+        submitButton= rootView.findViewById(R.id.modifyDrawingBtn)
         cancelButton=rootView.findViewById(R.id.cancelBtn)
 
         cancelButton.setOnClickListener(){
@@ -50,7 +50,7 @@ class DrawingNameModificationPopUp (val oldDrawingName: String) : DialogFragment
     override fun onAttach(context: Context) {
         super.onAttach(context)
         listener = try {
-            context as DrawingNameModificationPopUp.DialogListener
+            context as DialogListener
         } catch (e: ClassCastException) {
             throw ClassCastException(
                 context.toString() + "must implement DialogListener"

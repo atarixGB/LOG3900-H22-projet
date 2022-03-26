@@ -15,6 +15,7 @@ import com.example.mobile.Retrofit.IMyService
 import com.example.mobile.Retrofit.RetrofitClient
 import com.example.mobile.adapter.AlbumAdapter
 import com.example.mobile.popup.CreateAlbumPopUp
+import com.example.mobile.popup.DrawingNameModificationPopUp
 import com.example.mobile.viewModel.SharedViewModelToolBar
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -73,6 +74,7 @@ class Albums : AppCompatActivity(), CreateAlbumPopUp.DialogListener , AlbumAdapt
             //open popup window
             var dialog= CreateAlbumPopUp()
             dialog.show(supportFragmentManager,"customDialog")
+
         }
 
         getAllAvailableAlbums()
@@ -105,7 +107,7 @@ class Albums : AppCompatActivity(), CreateAlbumPopUp.DialogListener , AlbumAdapt
 
             override fun onResponse(call: Call<List<IAlbum>>, response: Response<List<IAlbum>>) {
                 for (album in response.body()!!) {
-                    if (album._id != "622f77abc04d88938c916084") {
+                    if (album._id != "623e5f7cbd233e887bcb6034") {
                         if (album.members.contains(user)!!) {
                             albumAdapter.addAlbum(album)
                             albumAdapter.notifyItemInserted((rvOutputAlbums.adapter as AlbumAdapter).itemCount)

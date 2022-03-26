@@ -154,4 +154,7 @@ interface IMyService {
     @FormUrlEncoded
     fun addLikeToDrawing(@Path("drawingId") drawingId: String,
                          @Field("user")user:String): Observable<String>
+
+    @DELETE("/drawing/delete/{id}")
+    fun deleteDrawing(@Path("id")drawingID:String): Observable<String>
 }

@@ -1,31 +1,38 @@
 package com.example.mobile.adapter
 
+
 import android.content.Context
-import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mobile.Interface.IDrawing
 import com.example.mobile.R
-import com.example.mobile.activity.albums.Albums
+import com.example.mobile.Retrofit.IMyService
+import com.example.mobile.Retrofit.RetrofitClient
 import com.example.mobile.bitmapDecoder
-
-
 import com.example.mobile.popup.DrawingNameModificationPopUp
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.item_drawing.view.*
-import java.util.ArrayList
+
 
 class DrawingAdapter (val context: Context?, var drawings: ArrayList<IDrawing>, val user: String) : RecyclerView.Adapter<DrawingAdapter.DrawingViewHolder>(),DrawingNameModificationPopUp.DialogListener {
 
     private var listener: DrawingAdapterListener = context as DrawingAdapterListener
     private lateinit var dialogEditDrawingName: DrawingNameModificationPopUp
+    private lateinit var iMyService: IMyService
+    internal var compositeDisposable = CompositeDisposable()
 //    private var alreadyLiked: Boolean = false
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DrawingViewHolder {
+        val retrofit = RetrofitClient.getInstance()
+        iMyService = retrofit.create(IMyService::class.java)
         return DrawingViewHolder(
             LayoutInflater.from(parent.context).inflate(
                 R.layout.item_drawing,
@@ -75,13 +82,14 @@ class DrawingAdapter (val context: Context?, var drawings: ArrayList<IDrawing>, 
                         R.id.menu_editDrawingParameters -> {
                             //ouvrir pop up modification nom album
                             dialogEditDrawingName= DrawingNameModificationPopUp(currentDrawing.name)
-                            dialogEditDrawingName.showsDialog
+                            dialogEditDrawingName.show((context as AppCompatActivity).supportFragmentManager,"customDialog")
                             true
                         }
                         R.id.menu_changeAlbum -> {
                         true
                         }
                         R.id.menu_deleteDrawing -> {
+                            removeDrawing(currentDrawing)
                             deleteDrawing(currentDrawing._id!!)
                             true
                         }
@@ -128,6 +136,10 @@ class DrawingAdapter (val context: Context?, var drawings: ArrayList<IDrawing>, 
         drawings.add(drawing)
     }
 
+    fun removeDrawing(drawing:IDrawing){
+        drawings.remove(drawing)
+    }
+
     fun searchArrayList (list: ArrayList<IDrawing>) {
         drawings = list
         notifyDataSetChanged()
@@ -146,6 +158,16 @@ class DrawingAdapter (val context: Context?, var drawings: ArrayList<IDrawing>, 
     class DrawingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     private fun deleteDrawing(drawingId: String){
+            compositeDisposable.add(iMyService.deleteDrawing(drawingId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe { result ->
+                    if (result == "201") {
+                        Toast.makeText(context, "dessin supprimé", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(context, "erreur de suppression de dessin", Toast.LENGTH_SHORT).show()
+                    }
+                })
 
     }
 
