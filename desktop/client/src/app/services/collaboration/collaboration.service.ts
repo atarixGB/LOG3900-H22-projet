@@ -13,6 +13,7 @@ import { CouldntJoinDialogComponent } from '@app/components/editor/couldnt-join-
 export class CollaborationService {
     socket: any;
     room: string;
+    nbMembersInCollab: number;
 
     newStroke: Subject<any>;
     newStroke$: Observable<any>;
@@ -45,30 +46,24 @@ export class CollaborationService {
     newCollabData$: Observable<any>;
 
     constructor(public dialog: MatDialog, public drawingService: DrawingService, private router: Router, private route: ActivatedRoute) { 
+        this.nbMembersInCollab = 0;
+
         this.newStroke = new Subject();
         this.newStroke$ = this.newStroke.asObservable();
-
         this.newSelection = new Subject();
         this.newSelection$ = this.newSelection.asObservable();
-
         this.newSelectionPos = new Subject();
         this.newSelectionPos$ = this.newSelectionPos.asObservable();
-
         this.newSelectionSize = new Subject();
         this.newSelectionSize$ = this.newSelectionSize.asObservable();
-
         this.pasteRequest = new Subject();
         this.pasteRequest$ = this.pasteRequest.asObservable();
-
         this.deleteRequest = new Subject();
         this.deleteRequest$ = this.deleteRequest.asObservable();
-
         this.newStrokeWidth = new Subject();
         this.newStrokeWidth$ = this.newStrokeWidth.asObservable();
-
         this.newPrimaryColor = new Subject();
         this.newPrimaryColor$ = this.newPrimaryColor.asObservable();
-
         this.newSecondaryColor = new Subject();
         this.newSecondaryColor$ = this.newSecondaryColor.asObservable();
 
@@ -84,11 +79,14 @@ export class CollaborationService {
         });
 
         this.socket.on('joinFailure', () => {
-            console.log('Couldnt join, already 4 members');
             this.router.navigate(['../my-albums'], { relativeTo: this.route });
             this.dialog.open(CouldntJoinDialogComponent, {
                 width: "50%"
             });
+        });
+
+        this.socket.on('memberNbUpdate', (nbMembersRemaining: any) => {
+            this.nbMembersInCollab = nbMembersRemaining;
         });
 
         this.socket.on('receiveStroke', (stroke: any) => {

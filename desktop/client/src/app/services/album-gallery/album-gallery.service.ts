@@ -46,6 +46,7 @@ export class AlbumGalleryService {
         this.addDrawingToAlbum(this.currentDrawing, this.selectedAlbumName); // Should be ID not name but we did it with the name
         this.drawingService.setCurrentDrawingBlanc();
         this.collaborationService.joinCollab(this.currentDrawing._id);
+        this.saveDrawing();
       },
       (error) => {
         console.log(`Impossible de créer le dessin ${drawingName} dans la base de données.\nErreur: ${error}`);

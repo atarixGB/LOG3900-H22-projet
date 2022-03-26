@@ -31,11 +31,11 @@ ioCollab.on('connection', (socket) => {
            const value = {
             nbMembers: 1,
             strokes: [],
-            strokesSelected: []
           }
           infoOnActiveRooms.set(collabDrawingId, value);
           // Joining
           socket.join(collabDrawingId);
+          ioCollab.in(collabDrawingId).emit('memberNbUpdate', value.nbMembers);
           socket.emit('joinSuccessful', infoOnActiveRooms.get(collabDrawingId));
 
         } else if (infoOnActiveRooms.get(collabDrawingId).nbMembers < 4) {
@@ -44,6 +44,7 @@ ioCollab.on('connection', (socket) => {
           infoOnActiveRooms.set(collabDrawingId, value);
           // Joining
           socket.join(collabDrawingId);
+          ioCollab.in(collabDrawingId).emit('memberNbUpdate', value.nbMembers);
           socket.emit('joinSuccessful', infoOnActiveRooms.get(collabDrawingId));
 
         } else {
@@ -60,13 +61,13 @@ ioCollab.on('connection', (socket) => {
         value.nbMembers == 0 ? infoOnActiveRooms.delete(collabDrawingId) : infoOnActiveRooms.set(collabDrawingId, value);
 
         // Leaving
+        ioCollab.in(collabDrawingId).emit('memberNbUpdate', value.nbMembers);
         socket.leave(collabDrawingId);
       })
 
       socket.on('updateCollabInfo', (collabData) => {
         let value = infoOnActiveRooms.get(collabData.collabDrawingId);
         value.strokes = collabData.strokes;
-        value.strokesSelected = collabData.strokesSelected;
         infoOnActiveRooms.set(collabData.collabDrawingId, value);
       })
 
