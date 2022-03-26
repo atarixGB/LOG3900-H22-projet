@@ -44,6 +44,7 @@ export class AlbumGalleryService {
         console.log("Résultat du serveur:", result);
         this.currentDrawing._id = result;
         this.addDrawingToAlbum(this.currentDrawing, this.selectedAlbumName); // Should be ID not name but we did it with the name
+        this.drawingService.setCurrentDrawingBlanc();
         this.collaborationService.joinCollab(this.currentDrawing._id);
       },
       (error) => {

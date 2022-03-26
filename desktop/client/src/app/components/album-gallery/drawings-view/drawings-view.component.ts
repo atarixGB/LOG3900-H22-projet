@@ -5,6 +5,7 @@ import { PUBLIC_ALBUM } from '@app/constants/constants';
 import { IDrawing } from '@app/interfaces-enums/IDrawing';
 import { AlbumGalleryService } from '@app/services/album-gallery/album-gallery.service';
 import { CollaborationService } from '@app/services/collaboration/collaboration.service';
+import { DrawingService } from '@app/services/editor/drawing/drawing.service';
 import { LoginService } from '@app/services/login/login.service';
 import { AlbumSettingsDialogComponent } from './album-settings-dialog/album-settings-dialog.component';
 import { MembersListDialogComponent } from './members-list-dialog/members-list-dialog.component';
@@ -19,7 +20,7 @@ export class DrawingsViewComponent {
   isCurrentAlbumMine: boolean;
   isPublicAlbum: boolean;
 
-  constructor(public albumGalleryService: AlbumGalleryService, public loginService: LoginService, public dialog: MatDialog, private router: Router, private route: ActivatedRoute, public collaborationService: CollaborationService) {
+  constructor(public albumGalleryService: AlbumGalleryService, public loginService: LoginService, public dialog: MatDialog, private router: Router, private route: ActivatedRoute, public collaborationService: CollaborationService, private drawingService: DrawingService) {
     this.isCurrentAlbumMine = this.loginService.username == albumGalleryService.currentAlbum.owner;
     this.isPublicAlbum = albumGalleryService.currentAlbum.name == PUBLIC_ALBUM.name;
   }
@@ -67,7 +68,8 @@ export class DrawingsViewComponent {
   }
 
   enterCollab(drawing: IDrawing): void {
-    this.collaborationService.joinCollab(drawing._id)
-    this.albumGalleryService.currentDrawing
+    this.albumGalleryService.currentDrawing = drawing;
+    this.drawingService.setCurrentDrawing(drawing);
+    this.collaborationService.joinCollab(drawing._id);
   }
 }

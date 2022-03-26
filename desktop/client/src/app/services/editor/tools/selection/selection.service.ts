@@ -63,6 +63,7 @@ export class SelectionService extends Tool {
   }
 
   private loadCurrentSessionData(strokes: any[]): void {
+    this.drawingService.loadCurrentDrawing();
     this.strokes = [];
     strokes.forEach(s => {
       this.addIncomingStrokeFromOtherUser(s);
@@ -300,7 +301,7 @@ export class SelectionService extends Tool {
   }
 
   redrawAllStrokesExceptSelected(): void {
-    this.drawingService.clearCanvas(this.drawingService.baseCtx);
+    this.drawingService.loadCurrentDrawing();
     this.strokes.forEach(stroke => {
       if (!this.strokesSelected.includes(stroke)) {
         stroke.drawStroke(this.drawingService.baseCtx);
