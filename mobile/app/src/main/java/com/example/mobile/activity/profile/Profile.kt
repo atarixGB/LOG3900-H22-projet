@@ -1,5 +1,6 @@
 package com.example.mobile.activity.profile
 
+import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
 import android.widget.ImageButton
@@ -84,7 +85,8 @@ class Profile : AppCompatActivity() {
             intent.putExtra("userName",user)
             intent.putExtra("email",user_email.text.toString())
             intent.putExtra("description",description_field.text.toString())
-            startActivity(intent)
+            var bundle:Bundle = ActivityOptions.makeSceneTransitionAnimation(this).toBundle()
+            startActivity(intent,bundle)
         }
 
     }

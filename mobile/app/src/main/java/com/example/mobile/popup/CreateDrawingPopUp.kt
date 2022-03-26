@@ -2,11 +2,13 @@ package com.example.mobile.popup
 
 import android.content.Context
 import android.content.Intent
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.*
 import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
@@ -65,6 +67,9 @@ class CreateDrawingPopUp(val user: String, val isAlbumAlreadySelected: Boolean) 
             albumName = it
             Toast.makeText(context, "$albumName choisi" , Toast.LENGTH_LONG).show()
         }
+
+        var mediaPlayerMagic: MediaPlayer = MediaPlayer.create(context,R.raw.magic)
+        var mediaPlayerFail: MediaPlayer = MediaPlayer.create(context,R.raw.failure)
 
         drawingName = rootView.drawingName
         radioGroup = rootView.accessibilityRadioGroup
@@ -129,6 +134,7 @@ class CreateDrawingPopUp(val user: String, val isAlbumAlreadySelected: Boolean) 
                         Toast.LENGTH_LONG
                     )
                         .show()
+                    mediaPlayerMagic.start()
                     listener.popUpListener(albumName, drawingName.text.toString(), drawingId)
                     dismiss()
                 } else if (rb.text.toString().equals("privé")) {
@@ -141,6 +147,7 @@ class CreateDrawingPopUp(val user: String, val isAlbumAlreadySelected: Boolean) 
                                 Toast.LENGTH_LONG
                             )
                                 .show()
+                            mediaPlayerMagic.start()
                             listener.popUpListener(albumName, drawingName.text.toString(), drawingId)
                             dismiss()
                         } else {
@@ -154,12 +161,15 @@ class CreateDrawingPopUp(val user: String, val isAlbumAlreadySelected: Boolean) 
 //                    addDrawingToAlbum("Album public", drawingName.text.toString())
                     Toast.makeText(context, "ajout du dessin a l'album public", Toast.LENGTH_LONG)
                         .show()
+                    mediaPlayerMagic.start()
                     listener.popUpListener(albumName, drawingName.text.toString(), drawingId)
                     dismiss()
                 }
             } else {
                 // s'il n'a pas selectionner de drawing name, rend visible le champ d'erreur
                 drawingNameEmptyError.isVisible = true
+                drawingName.animation=AnimationUtils.loadAnimation(context,R.anim.shake_animation)
+                mediaPlayerFail.start()
             }
         }
 
@@ -203,7 +213,7 @@ class CreateDrawingPopUp(val user: String, val isAlbumAlreadySelected: Boolean) 
 
             override fun onResponse(call: Call<List<IAlbum>>, response: Response<List<IAlbum>>) {
                 for (album in response.body()!!) {
-                    if (album._id != "622f77abc04d88938c916084"){
+                    if (album._id != "623e00d4c46d4d7f5c3118a3"){
                         if (album.members.contains(user)) {
                             albumAdapter.addAlbum(album)
                             albumAdapter.notifyItemInserted((rvOutputAlbums.adapter as AlbumAdapter).itemCount)

@@ -1,24 +1,25 @@
 package com.example.mobile.activity.profile
 
 import android.app.Activity
+import android.app.ActivityOptions
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
+import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.util.Base64
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageButton
-import android.widget.Toast
+import android.view.animation.AnimationUtils
+import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import com.example.mobile.R
 import com.example.mobile.Retrofit.IMyService
 import com.example.mobile.Retrofit.RetrofitClient
@@ -34,8 +35,13 @@ import java.io.ByteArrayOutputStream
 class Registration : AppCompatActivity(), SelectAvatarPopUp.DialogListener {
     private lateinit var iMyService: IMyService
     internal var compositeDisposable = CompositeDisposable()
+    private lateinit var idEmptyError:TextView
+    private lateinit var mdpEmptyError:TextView
+    private lateinit var emailEmptyError:TextView
+
     private lateinit var identifiant: EditText
     private lateinit var pwd: EditText
+    private lateinit var email:EditText
     private lateinit var showHideBtn: Button
     private lateinit var registerAccountBtn: Button
     private lateinit var loginAccountBtn: Button
@@ -61,10 +67,18 @@ class Registration : AppCompatActivity(), SelectAvatarPopUp.DialogListener {
         showHideBtn = findViewById(R.id.showHideBtn)
         pwd = findViewById(R.id.edt_pwd)
         identifiant = findViewById(R.id.edt_id)
+        email=findViewById(R.id.edt_email)
         avatarPicker = findViewById(R.id.displaypicture)
         cameraBtn= findViewById(R.id.edt_camera)
         avatarBtn=findViewById(R.id.edt_avatar)
         description="Accédez aux paramètres du profil pour ajouter une description!"
+        idEmptyError=findViewById(R.id.idEmptyError)
+        mdpEmptyError=findViewById(R.id.mdpEmptyError)
+        emailEmptyError=findViewById(R.id.emailEmptyError)
+
+        idEmptyError.isVisible=false
+        mdpEmptyError.isVisible=false
+        emailEmptyError.isVisible=false
 
         //init api
         val retrofit = RetrofitClient.getInstance()
@@ -119,20 +133,32 @@ class Registration : AppCompatActivity(), SelectAvatarPopUp.DialogListener {
         }
 
         registerAccountBtn.setOnClickListener {
-            registerUser(identifiant.text.toString(), pwd.text.toString(),displaypicture,edt_email.text.toString(),description)
-
+            var mediaPlayerFail:MediaPlayer=MediaPlayer.create(this,R.raw.failure)
+            if(!identifiant.text.toString().isNullOrBlank() && !pwd.text.toString().isNullOrBlank() && !email.text.toString().isNullOrBlank()){
+                idEmptyError.isVisible=false
+                mdpEmptyError.isVisible=false
+                emailEmptyError.isVisible=false
+                registerUser(identifiant.text.toString(), pwd.text.toString(),displaypicture,edt_email.text.toString(),description)
+            }
+            else if(identifiant.text.toString().isEmpty() || pwd.text.toString().isEmpty()|| email.text.toString().isEmpty()){
+                idEmptyError.isVisible=true
+                mdpEmptyError.isVisible=true
+                emailEmptyError.isVisible=true
+                identifiant.animation=AnimationUtils.loadAnimation(this,R.anim.shake_animation)
+                pwd.animation=AnimationUtils.loadAnimation(this,R.anim.shake_animation)
+                email.animation=AnimationUtils.loadAnimation(this,R.anim.shake_animation)
+                mediaPlayerFail.start()
+            }
 
         }
 
         loginAccountBtn.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
+            var bundle:Bundle =ActivityOptions.makeSceneTransitionAnimation(this).toBundle()
+            startActivity(intent,bundle)
         }
 
     }
-
-
-
 
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -148,19 +174,24 @@ class Registration : AppCompatActivity(), SelectAvatarPopUp.DialogListener {
     private fun registerUser(identifier: String, password: String, avatar:CircularImageView,email: String,description:String) {
         var avatarByteArray:ByteArray = convertToByteArray(avatar)
         var avatar_str:String = Base64.encodeToString(avatarByteArray,0)
+        var mediaPlayerSuccess:MediaPlayer=MediaPlayer.create(this,R.raw.success)
+        var mediaPlayerFail:MediaPlayer=MediaPlayer.create(this,R.raw.failure)
         compositeDisposable.add(iMyService.registerUser(identifier, password,avatar_str,email,description)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { result->
                 if(result == "201"){
                     Toast.makeText(this,"Enregistrement fait avec succès", Toast.LENGTH_SHORT).show()
-                    val intent = Intent(this, Profile::class.java)
-                    intent.putExtra("userName",identifiant.text.toString())
-                    intent.putExtra("email",edt_email.text.toString())
+                    val intent = Intent(this, MainActivity::class.java)
+//                    intent.putExtra("userName",identifiant.text.toString())
+//                    intent.putExtra("email",edt_email.text.toString())
                     acceptMemberRequest(identifiant.text.toString(),"","album public")
-                    startActivity(intent)
+                    mediaPlayerSuccess.start()
+                    var bundle:Bundle =ActivityOptions.makeSceneTransitionAnimation(this).toBundle()
+                    startActivity(intent,bundle)
                 }else{
-                    Toast.makeText(this,"Nom d'utilisateur déjà existant", Toast.LENGTH_SHORT).show()
+                    mediaPlayerFail.start()
+                    Toast.makeText(this,"Nom d'utilisateur ou courriel déjà existants", Toast.LENGTH_SHORT).show()
                 }
             })
     }
