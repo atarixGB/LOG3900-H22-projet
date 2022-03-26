@@ -427,18 +427,23 @@ app.post(
       if (err) throw err
       else {
         const file = result.data;
-        var img = fs.readFileSync(__dirname + "/uploads/" + file, {encoding: 'base64'});
-        var returnedJson = {
-          _id: result._id,
-          name: result.name,
-          owner: result.owner,
-          description: result.description,
-          data: img,
-          members: result.members,
-          likes: result.likes
-        };
-        res.json(returnedJson)
-        console.log("GotDrawing");
+
+        if (fs.existsSync(__dirname + "/uploads/" + file, {encoding: 'base64'})) {
+          var img = fs.readFileSync(__dirname + "/uploads/" + file, {encoding: 'base64'});
+          var returnedJson = {
+            _id: result._id,
+            name: result.name,
+            owner: result.owner,
+            description: result.description,
+            data: img,
+            members: result.members,
+            likes: result.likes
+          };
+          res.json(returnedJson)
+          console.log("GotDrawing");
+        } else {
+          console.log(`File ${file} does not exist on server`);
+        }
       }
     });
   });
