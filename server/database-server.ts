@@ -412,21 +412,28 @@ app.post(
         console.log("error getting");
       } else {
         const file = result.data;
-        var img = fs.readFileSync(__dirname + "/uploads/" + file, {encoding: 'base64'});
-        //console.log("image", img)
-        //res.writeHead(200, {'Content-Type': 'image/png' });
-        // res.end(img, 'binary');
-        var returnedJson = {
-          _id: result._id,
-          name: result.name,
-          owner: result.owner,
-          description: result.description,
-          data: img,
-          members: result.members,
-          likes: result.likes
-        };
-        res.json(returnedJson)
-        console.log("GotDrawing");
+        
+        if(fs.readFileSync(__dirname + "/uploads/" + file, {encoding: 'base64'})){
+          var img = fs.readFileSync(__dirname + "/uploads/" + file, {encoding: 'base64'});
+
+          var returnedJson = {
+            _id: result._id,
+            name: result.name,
+            owner: result.owner,
+            description: result.description,
+            data: img,
+            members: result.members,
+            likes: result.likes
+          };
+          res.json(returnedJson)
+          console.log("GotDrawing");
+
+        }
+
+        else{
+          console.log(`File ${file} does not exist on server`);
+        }
+
       }
     });
   });

@@ -1,6 +1,7 @@
 package com.example.mobile.popup
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +11,15 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import com.example.mobile.R
+import com.example.mobile.Retrofit.IMyService
+import com.example.mobile.Retrofit.RetrofitClient
+import com.example.mobile.activity.albums.DrawingsCollection
+import com.example.mobile.activity.profile.Profile_modification
+import com.example.mobile.adapter.DrawingAdapter
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
+import kotlinx.android.synthetic.main.activity_profile.*
 
 
 class DrawingNameModificationPopUp (val oldDrawingName: String) : DialogFragment(){
@@ -17,6 +27,8 @@ class DrawingNameModificationPopUp (val oldDrawingName: String) : DialogFragment
     private lateinit var submitButton: Button
     private lateinit var cancelButton: Button
     private lateinit var drawingName: EditText
+    private lateinit var iMyService: IMyService
+    internal var compositeDisposable = CompositeDisposable()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -26,8 +38,13 @@ class DrawingNameModificationPopUp (val oldDrawingName: String) : DialogFragment
         drawingName=rootView.findViewById(R.id.modifiedDrawingName)
         drawingName.setText(oldDrawingName)
 
+        val retrofit = RetrofitClient.getInstance()
+        iMyService = retrofit.create(IMyService::class.java)
+
         submitButton= rootView.findViewById(R.id.modifyDrawingBtn)
         cancelButton=rootView.findViewById(R.id.cancelBtn)
+
+
 
         cancelButton.setOnClickListener(){
             dismiss()
@@ -39,8 +56,9 @@ class DrawingNameModificationPopUp (val oldDrawingName: String) : DialogFragment
 
             listener.popUpListener(modifiedName)
 
-            dismiss()
+            updateDrawing(oldDrawingName,modifiedName)
 
+            dismiss()
         }
 
         return rootView
@@ -59,5 +77,14 @@ class DrawingNameModificationPopUp (val oldDrawingName: String) : DialogFragment
     }
     public interface DialogListener {
         fun popUpListener(drawingName: String)
+    }
+
+    private fun updateDrawing(oldDrawingName: String, newDrawingName:String) {
+        compositeDisposable.add(iMyService.updateDrawing(oldDrawingName,newDrawingName)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+
+            })
     }
 }

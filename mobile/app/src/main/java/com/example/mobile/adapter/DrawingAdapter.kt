@@ -28,6 +28,7 @@ class DrawingAdapter (val context: Context?, var drawings: ArrayList<IDrawing>, 
     private lateinit var dialogEditDrawingName: DrawingNameModificationPopUp
     private lateinit var iMyService: IMyService
     internal var compositeDisposable = CompositeDisposable()
+    var newDrawingName:String ="testing new name"
 //    private var alreadyLiked: Boolean = false
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DrawingViewHolder {
@@ -83,6 +84,7 @@ class DrawingAdapter (val context: Context?, var drawings: ArrayList<IDrawing>, 
                             //ouvrir pop up modification nom album
                             dialogEditDrawingName= DrawingNameModificationPopUp(currentDrawing.name)
                             dialogEditDrawingName.show((context as AppCompatActivity).supportFragmentManager,"customDialog")
+                            currentDrawing.name=newDrawingName
                             true
                         }
                         R.id.menu_changeAlbum -> {
@@ -98,6 +100,8 @@ class DrawingAdapter (val context: Context?, var drawings: ArrayList<IDrawing>, 
                 }
 
                 popupMenu.inflate(R.menu.drawing_options_menu)
+
+
 
                 if (user != currentDrawing.owner) {
                     popupMenu.menu.findItem(R.id.menu_editDrawingParameters).isVisible = false
@@ -117,6 +121,8 @@ class DrawingAdapter (val context: Context?, var drawings: ArrayList<IDrawing>, 
                     popupMenu.show()
                 }
             }
+
+
 
             likeBtn.setOnClickListener {
                 if (!likes.contains(user)){
@@ -171,21 +177,9 @@ class DrawingAdapter (val context: Context?, var drawings: ArrayList<IDrawing>, 
 
     }
 
-    private fun updateDrawing(oldDrawingName: String, newDrawingName:String) {
-        compositeDisposable.add(iMyService.updateDrawing(oldDrawingName,newDrawingName)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { result->
-                if(result == "200"){
-                    Toast.makeText(context,"Modification faite avec succès", Toast.LENGTH_SHORT).show()
 
-                }else{
-                    Toast.makeText(context,"Échec de modification", Toast.LENGTH_SHORT).show()
-                }
-            })
-    }
 
     override fun popUpListener(drawingName: String) {
-
+        this.newDrawingName=drawingName
     }
 }

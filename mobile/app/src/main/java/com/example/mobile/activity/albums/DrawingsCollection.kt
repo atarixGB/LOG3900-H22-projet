@@ -352,7 +352,7 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
     }
 
     override fun popUpListener(drawingName: String) {
-        TODO("Not yet implemented")
+        drawingAdapter.newDrawingName=drawingName
     }
 
     private fun filter(newText: String?) {
