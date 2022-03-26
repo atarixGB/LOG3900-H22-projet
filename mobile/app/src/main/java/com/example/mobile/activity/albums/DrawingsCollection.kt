@@ -261,6 +261,7 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
         })
     }
 
+    //this one is added juste because I had to add the popuplistner for drawing modification as extend to this activity
     override fun drawingAdapterListener(drawingName: String) {
         this.drawingName = drawingName
     }

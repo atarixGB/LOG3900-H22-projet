@@ -168,7 +168,7 @@ class CreateDrawingPopUp(val user: String, val isAlbumAlreadySelected: Boolean) 
     }
 
     private fun createDrawing(albumName: String, drawingName: String, owner: String, data:String, members:ArrayList<String>, likes:ArrayList<String>) {
-        compositeDisposable.add(iMyService.createDrawing(drawingName, owner, data, members, likes)
+        compositeDisposable.add(iMyService.createDrawing(drawingName, owner, data, members, likes,albumName)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { result ->

@@ -101,7 +101,8 @@ interface IMyService {
                       @Field("owner")ownerID:String,
                       @Field("data")data:String,
                       @Field("members")members:ArrayList<String>,
-                      @Field("likes")likes:ArrayList<String>): Observable<String>
+                      @Field("likes")likes:ArrayList<String>,
+                      @Field("albumName")albumName:String): Observable<String>
 
     @PUT("albums/addDrawing/{albumId}")
     @FormUrlEncoded
@@ -157,6 +158,11 @@ interface IMyService {
 
     @DELETE("/drawing/delete/{id}")
     fun deleteDrawing(@Path("id")drawingID:String): Observable<String>
+
+    @POST("removeDrawing")
+    @FormUrlEncoded
+    fun removeDrawing(@Field("drawingID") drawingID:String,
+                 @Field("albumName")albumName:String) : Observable<String>
 
     @POST("drawingUpdate")
     @FormUrlEncoded

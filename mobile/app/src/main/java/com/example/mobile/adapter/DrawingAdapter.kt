@@ -91,8 +91,9 @@ class DrawingAdapter (val context: Context?, var drawings: ArrayList<IDrawing>, 
                         true
                         }
                         R.id.menu_deleteDrawing -> {
+                            removeDrawingFromAlbum(currentDrawing._id!!.toString(),currentDrawing.albumName)
+//                            deleteDrawing(currentDrawing._id!!)
                             removeDrawing(currentDrawing)
-                            deleteDrawing(currentDrawing._id!!)
                             true
                         }
                         else -> false
@@ -163,13 +164,28 @@ class DrawingAdapter (val context: Context?, var drawings: ArrayList<IDrawing>, 
 
     class DrawingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
+    private fun removeDrawingFromAlbum(drawingId: String, albumName:String){
+        compositeDisposable.add(iMyService.removeDrawing(drawingId, albumName)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { result ->
+                if (result == "201") {
+                    Toast.makeText(context, "dessin supprimé de l'album", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(context, "erreur de suppression de dessin", Toast.LENGTH_SHORT).show()
+                }
+            })
+
+    }
+
+
     private fun deleteDrawing(drawingId: String){
             compositeDisposable.add(iMyService.deleteDrawing(drawingId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { result ->
                     if (result == "201") {
-                        Toast.makeText(context, "dessin supprimé", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "dessin supprimé définitivement", Toast.LENGTH_SHORT).show()
                     } else {
                         Toast.makeText(context, "erreur de suppression de dessin", Toast.LENGTH_SHORT).show()
                     }

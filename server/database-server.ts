@@ -423,7 +423,8 @@ app.post(
             description: result.description,
             data: img,
             members: result.members,
-            likes: result.likes
+            likes: result.likes,
+            albumName:result.albumName
           };
           res.json(returnedJson)
           console.log("GotDrawing");
@@ -626,9 +627,10 @@ app.post(
     //remove a drawing id from drawingIDs in album
     app.post("/removeDrawing", (request, response, next) => {
       var post_data = request.body;
-
-      var drawingID = post_data.drawingID;
+      
+      
       var albumName = post_data.albumName;
+      var drawingID = post_data.drawingID;
 
       DB.collection("albums")
         .find({ name: albumName })
