@@ -136,9 +136,9 @@ interface IMyService {
     @POST("albumUpdate")
     @FormUrlEncoded
     fun updateAlbum(
-        @Field("oldAlbumName") oldUsername: String,
-        @Field("newAlbumName") newUsername: String,
-        @Field("newDescription") newAvatar: String,
+        @Field("oldAlbumName") oldAlbumName: String,
+        @Field("newAlbumName") newAlbumname: String,
+        @Field("newDescription") newDescription: String,
     ): Observable<String>
 
     @Multipart
@@ -157,4 +157,11 @@ interface IMyService {
 
     @DELETE("/drawing/delete/{id}")
     fun deleteDrawing(@Path("id")drawingID:String): Observable<String>
+
+    @POST("drawingUpdate")
+    @FormUrlEncoded
+    fun updateDrawing(
+        @Field("oldDrawingName") oldDrawingname: String,
+        @Field("newDrawingName") newDrawingname: String,
+    ): Observable<String>
 }

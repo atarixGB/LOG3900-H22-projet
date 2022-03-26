@@ -171,6 +171,20 @@ class DrawingAdapter (val context: Context?, var drawings: ArrayList<IDrawing>, 
 
     }
 
+    private fun updateDrawing(oldDrawingName: String, newDrawingName:String) {
+        compositeDisposable.add(iMyService.updateDrawing(oldDrawingName,newDrawingName)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { result->
+                if(result == "200"){
+                    Toast.makeText(context,"Modification faite avec succès", Toast.LENGTH_SHORT).show()
+
+                }else{
+                    Toast.makeText(context,"Échec de modification", Toast.LENGTH_SHORT).show()
+                }
+            })
+    }
+
     override fun popUpListener(drawingName: String) {
 
     }
