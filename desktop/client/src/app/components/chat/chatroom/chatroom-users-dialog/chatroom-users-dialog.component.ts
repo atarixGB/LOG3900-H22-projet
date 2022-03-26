@@ -12,6 +12,7 @@ export class ChatroomUsersDialogComponent implements OnInit {
   constructor(@Inject(MAT_DIALOG_DATA) public data: IChatroom) { }
 
   ngOnInit(): void {
+    console.log(this.data)
   }
 
 }

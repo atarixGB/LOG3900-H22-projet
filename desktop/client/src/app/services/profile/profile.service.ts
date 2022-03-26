@@ -11,6 +11,8 @@ export class ProfileService {
     email: string;
     description: string;
 
+
+
     constructor(private httpClient: HttpClient) {}
 
     setUsername(name : string) :void {
@@ -30,5 +32,16 @@ export class ProfileService {
                 console.log('Error: ', error);
             },
         );
+    }
+
+    getUserProfileInfos(username: string) {
+      this.httpClient.get(`${PROFILE_URL}/${username}`).subscribe(
+        (result) => {
+          console.log("Résultat du serveur:",result);
+        },
+        (error) => {
+          console.log(`Impossible d'obtenir les informations de profil de l'utilisateur ${username} de la base do données.\nErreur: ${error}`);
+        }
+      )
     }
 }

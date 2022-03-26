@@ -42,7 +42,7 @@
                 <div fxFlex="47" fxLayout="column" fxLayoutAlign="center end">
 
                   <div class="username">
-                    {{message.userName}}
+                    {{message.userName}} - {{ this.timestamp }} <mat-icon class="profile-infos" (click)="this.getUserProfileInfos(message.userName)">info</mat-icon>
                   </div>
                   <div class="message mine">
                     {{message.message}}
@@ -58,7 +58,7 @@
                 <div fxFlex="47" fxLayout="column" fxLayoutAlign="center start">
 
                   <div class="username">
-                    {{message.userName}}
+                      {{message.userName}} - {{ this.timestamp }} <mat-icon class="profile-infos" (click)="this.getUserProfileInfos(message.userName)">info</mat-icon>
                   </div>
                   <div class="message yours">
                     {{message.message}}
