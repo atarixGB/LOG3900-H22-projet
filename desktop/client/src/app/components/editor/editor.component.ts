@@ -12,9 +12,7 @@ export class EditorComponent implements AfterViewInit {
     ToolList: typeof ToolList = ToolList;
     constructor(public toolManagerService: ToolManagerService, public selectionService: SelectionService) {}
 
-    ngOnInit(): void {
-        this.selectionService.clearArrays();
-    }
+    ngOnInit(): void {}
 
     ngAfterViewInit(): void {}
 }

@@ -38,6 +38,9 @@ export class CollaborationService {
     newSecondaryColor: Subject<any>;
     newSecondaryColor$: Observable<any>;
 
+    newCollabData: Subject<any>;
+    newCollabData$: Observable<any>;
+
     constructor(public drawingService: DrawingService) { 
         this.newStroke = new Subject();
         this.newStroke$ = this.newStroke.asObservable();
@@ -65,10 +68,21 @@ export class CollaborationService {
 
         this.newSecondaryColor = new Subject();
         this.newSecondaryColor$ = this.newSecondaryColor.asObservable();
+
+        this.newCollabData = new Subject();
+        this.newCollabData$ = this.newCollabData.asObservable();
     }
 
     enterCollaboration(): void {
         this.socket = io.io(COLLAB_URL, { transports: ['websocket'] });
+
+        this.socket.on('joinSuccessful', (collabData: any) => {
+            this.newCollabData.next(collabData);
+        });
+
+        this.socket.on('joinFailure', () => {
+            console.log('Couldnt join, already 4 members');
+        });
 
         this.socket.on('receiveStroke', (stroke: any) => {
             this.newStroke.next(stroke);
@@ -107,7 +121,7 @@ export class CollaborationService {
         });
     } 
 
-    // COLLAB ROOM BROADCASTS
+    // COLLAB ROOM EMITS
     joinCollab(drawingId: any): void {
         this.room = drawingId.replaceAll(/"/g, '');
         this.socket.emit('joinCollab', this.room);
@@ -115,6 +129,16 @@ export class CollaborationService {
 
     leaveCollab(): void {
         this.socket.emit('leaveCollab', this.room);
+    }
+
+    /* collabData:
+        collabDrawingId: string,
+        strokes: Strokes[],
+        strokesSelected: Strokes[]
+    */
+    updateCollabInfo(collabData: any): void {
+        collabData.collabDrawingId = this.room;
+        this.socket.emit('updateCollabInfo', collabData);
     }
 
     // EDITOR BROADCASTS

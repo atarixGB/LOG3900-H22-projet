@@ -56,11 +56,21 @@ export class SelectionService extends Tool {
     this.collaborationService.newStroke$.subscribe((newStroke: any) => {
       this.addIncomingStrokeFromOtherUser(newStroke);
     });
+
+    this.collaborationService.newCollabData$.subscribe((newCollabData: any) => {
+      this.loadCurrentSessionData(newCollabData.strokes, newCollabData.strokesSelected);
+    });
   }
 
-  clearArrays(): void {
+  private loadCurrentSessionData(strokes: any[], strokesSelected: any[]): void {
     this.strokes = [];
     this.strokesSelected = [];
+
+    strokes.forEach(s => {
+      this.addIncomingStrokeFromOtherUser(s);
+    });
+
+    // To do: Gérer les strokes sélectionné
   }
 
   delete(): void {
@@ -72,6 +82,11 @@ export class SelectionService extends Tool {
     this.collaborationService.broadcastDeleteRequest({
       sender: '',
       strokeIndex: this.selectedIndex
+    });
+    this.collaborationService.updateCollabInfo({
+      collabDrawingId: '',
+      strokes: this.strokes,
+      strokesSelected: this.strokesSelected
     });
     this.isActiveSelection = false;
   }
@@ -103,6 +118,11 @@ export class SelectionService extends Tool {
     this.collaborationService.broadcastSelection({
       sender: '',
       strokeIndex: this.selectedIndex,
+    });
+    this.collaborationService.updateCollabInfo({
+      collabDrawingId: '',
+      strokes: this.strokes,
+      strokesSelected: this.strokesSelected
     });
   }
 
@@ -157,6 +177,11 @@ export class SelectionService extends Tool {
         sender: '',
         pos: { x: this.selectionCnv.offsetLeft, y: this.selectionCnv.offsetTop },
       });
+      this.collaborationService.updateCollabInfo({
+        collabDrawingId: '',
+        strokes: this.strokes,
+        strokesSelected: this.strokesSelected
+      });
     } else if(this.isResizing) {
       this.isResizing = false;
       const currentDimensions = {x: this.selectionCnv.width, y: this.selectionCnv.height};
@@ -167,6 +192,11 @@ export class SelectionService extends Tool {
         newPos: { x: this.selectionCnv.offsetLeft, y: this.selectionCnv.offsetTop },
         newDimensions: currentDimensions,
         scale: scale,
+      });
+      this.collaborationService.updateCollabInfo({
+        collabDrawingId: '',
+        strokes: this.strokes,
+        strokesSelected: this.strokesSelected
       });
     }
   }
@@ -191,6 +221,11 @@ export class SelectionService extends Tool {
       strokeIndex: this.selectedIndex,
       value: newWidth,
     });
+    this.collaborationService.updateCollabInfo({
+      collabDrawingId: '',
+      strokes: this.strokes,
+      strokesSelected: this.strokesSelected
+    });
   }
 
   updateSelectionPrimaryColor(newPrimary: string): void {
@@ -202,6 +237,11 @@ export class SelectionService extends Tool {
       strokeIndex: this.selectedIndex,
       color: newPrimary,
     });
+    this.collaborationService.updateCollabInfo({
+      collabDrawingId: '',
+      strokes: this.strokes,
+      strokesSelected: this.strokesSelected
+    });
   }
 
   updateSelectionSecondaryColor(newSecondary: string): void {
@@ -212,6 +252,11 @@ export class SelectionService extends Tool {
       sender: '',
       strokeIndex: this.selectedIndex,
       color: newSecondary,
+    });
+    this.collaborationService.updateCollabInfo({
+      collabDrawingId: '',
+      strokes: this.strokes,
+      strokesSelected: this.strokesSelected
     });
   }
 
@@ -227,6 +272,11 @@ export class SelectionService extends Tool {
     this.collaborationService.broadcastPasteRequest({
       sender: '',
       strokeIndex: this.selectedIndex,
+    });
+    this.collaborationService.updateCollabInfo({
+      collabDrawingId: '',
+      strokes: this.strokes,
+      strokesSelected: this.strokesSelected
     });
   }
 
@@ -332,19 +382,19 @@ export class SelectionService extends Tool {
       case ToolList.Rectangle: {
           const strokeRect: Stroke = new StrokeRectangle(stroke.boundingPoints, stroke.primaryColor, stroke.strokeWidth, stroke.secondaryColor, stroke.topLeftCorner, stroke.width, stroke.height);
           strokeRect.drawStroke(this.drawingService.baseCtx);
-          this.addStroke(strokeRect);
+          this.strokes.push(strokeRect);
           break;
       }
       case ToolList.Ellipse: {
           const strokeEllipse: Stroke = new StrokeEllipse(stroke.boundingPoints, stroke.primaryColor, stroke.strokeWidth, stroke.secondaryColor, stroke.center, stroke.radius);
           strokeEllipse.drawStroke(this.drawingService.baseCtx);
-          this.addStroke(strokeEllipse);
+          this.strokes.push(strokeEllipse);
           break;
       }
       case ToolList.Pencil: {
           const strokePencil: Stroke = new StrokePencil(stroke.boundingPoints, stroke.primaryColor, stroke.strokeWidth, stroke.points);
           strokePencil.drawStroke(this.drawingService.baseCtx);
-          this.addStroke(strokePencil);
+          this.strokes.push(strokePencil);
           break;
       }
     }

@@ -11,17 +11,70 @@ app.use(express.static('public'));
 
 console.log('Server is running');
 
+/*
+  key: collabRoom (drawingId)
+  value:  {
+            nbMembers
+            strokes
+            strokesSelected 
+          }
+*/// vvvvvvvvvvvvvv
+let infoOnActiveRooms = new Map();
+
 ioCollab.on('connection', (socket) => {
 
       // COLLAB ROOM EVENTS
       socket.on('joinCollab', (collabDrawingId) => {
         console.log("Trying to join drawing: " , collabDrawingId);
-        socket.join(collabDrawingId);
+
+        // Updating collabRoom info
+        if (!infoOnActiveRooms.has(collabDrawingId)) {
+           const value = {
+            nbMembers: 1,
+            strokes: '',
+            strokesSelected: ''
+          }
+          infoOnActiveRooms.set(collabDrawingId, value);
+          // Joining
+          socket.join(collabDrawingId);
+          socket.emit('joinSuccessful', infoOnActiveRooms.get(collabDrawingId));
+
+        } else if (infoOnActiveRooms.get(collabDrawingId).nbMembers < 4) {
+          let value = infoOnActiveRooms.get(collabDrawingId);
+          value.nbMembers = value.nbMembers + 1;
+          infoOnActiveRooms.set(collabDrawingId, value);
+          // Joining
+          socket.join(collabDrawingId);
+          socket.emit('joinSuccessful', infoOnActiveRooms.get(collabDrawingId));
+
+        } else {
+          socket.emit('joinFailure');
+        }
+        console.log(infoOnActiveRooms);
+        
       })
 
       socket.on('leaveCollab', (collabDrawingId) => {
         console.log("Trying to leave drawing: " , collabDrawingId);
+
+        // Updating collabRoom info
+        let value = infoOnActiveRooms.get(collabDrawingId);
+        value.nbMembers = value.nbMembers - 1;
+        value.nbMembers == 0 ? infoOnActiveRooms.delete(collabDrawingId) : infoOnActiveRooms.set(collabDrawingId, value);
+
+        // Leaving
         socket.leave(collabDrawingId);
+
+        console.log(infoOnActiveRooms);
+
+      })
+
+      socket.on('updateCollabInfo', (collabData) => {
+        console.log("Updating collab room data");
+        let value = infoOnActiveRooms.get(collabData.collabDrawingId);
+        value.strokes = collabData.strokes;
+        value.strokesSelected = collabData.strokesSelected;
+        infoOnActiveRooms.set(collabData.collabDrawingId, value);
       })
 
       // DRAWING EVENTS
