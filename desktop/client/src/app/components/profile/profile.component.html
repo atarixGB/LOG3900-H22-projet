@@ -4,39 +4,65 @@
 
    <!-- Profil page -->
    <div fxLayout="column" fxLayoutAlign="start stretch" fxFlex="auto">
-      <div fxFlex="10"></div>
+      <div fxFlex="10%"></div>
       <div fxLayout="row" fxLayoutAlign="center center" >
          <h1 id="title">Profil</h1>
       </div>
-      
-      <!-- Avatar, username, email and description -->
-      <div fxLayout="row" fxLayoutAlign="center center" >
 
-         <div fxLayout="column" fxLayoutAlign="center center">
+      <div fxLayout="row" fxLayoutAlign="center center" >
+         <!-- Settings -->
+         <div fxLayout="row" fxLayoutAlign="center center" fxFlex="20%" routerLink="/profileSettings">
+            <div fxLayoutAlign="center center" id="settingsBtnDiv">
+               <mat-icon id="pencil">create</mat-icon>
+               <span id="modifierProfil">Modifier profil</span>
+            </div>
+         </div>
+         <!-- Avatar -->
+         <div fxLayout="column" fxLayoutAlign="center center" fxFlex="20%">
              <div id="avatarDisplay" fxLayoutAlign="center center">
                  <img id="avatarImg" src="data:image/png;base64,{{this.profileService.avatarSrc}}">
              </div>
-             <h2 id="username">{{this.profileService.username}}</h2>
-             <h3 id="email">{{this.profileService.email}}</h3>
          </div>
-
-         <div fxFlex="2"></div>
-
-         <div fxLayout="column" fxLayoutAlign="start start" fxFlex="50">
-            <span class="sectionTitle">Description:</span>
-            <p id="description">{{this.profileService.description}}</p>
+         <!-- Badge -->
+         <div fxLayout="column" fxLayoutAlign="center center" fxFlex="20%">
+            <img id="badge" src="{{this.profileService.currentBadge}}">
          </div>
-         
+      </div>
+
+      <div fxLayout="row" fxLayoutAlign="center center">
+         <div fxLayout="column" fxLayoutAlign="start stretch" fxFlex="50">
+            <!-- Username -->
+            <div class="sectionTitleContainer" fxLayout="row" fxLayoutAlign="start center">
+               <mat-icon fxFlex="5%">person</mat-icon>
+               <span class="bold" fxFlex="20%">Nom d'utilisateur</span>
+               <span class="userInfo">{{this.profileService.username}}</span>
+            </div>
+            <!-- Email -->
+            <div class="sectionTitleContainer" fxLayout="row" fxLayoutAlign="start center">
+               <mat-icon fxFlex="5%">email</mat-icon>
+               <span class="bold" fxFlex="20%">Adresse courriel</span>
+               <span class="userInfo">{{this.profileService.email}}</span>
+            </div>
+            <!-- Description -->
+            <div class="sectionTitleContainer" fxLayout="row" fxLayoutAlign="start center">
+               <mat-icon fxFlex="5%">text_snippet</mat-icon>
+               <span class="bold" fxFlex="20%">Description</span>
+               <span class="userInfo">{{this.profileService.description}}</span>
+            </div>
+         </div>
       </div>
    
       <div fxFlex="5"></div>
 
       <!-- Statistics -->
       <div fxLayout="row" fxLayoutAlign="center start">
-         <div id="statsContainer" fxLayout="row" fxLayoutAlign="start start" fxFlex="75">
+         <div id="statsContainer" fxLayout="row" fxLayoutAlign="center center" fxFlex="50">
             <div fxFlex="2"></div>
+            <div fxLayout="column" fxLayoutAlign="center center" fxFlex="20%">
+               <img id="statsImg" src="{{this.profileService.statsImg}}">
+            </div>
 
-            <div fxLayout="column" fxLayoutAlign="start stretch" >
+            <div fxLayout="column" fxLayoutAlign="center center" fxFlex="56%">
                <span class="sectionTitle">Statistiques:</span>
                <div fxLayout="row" fxLayoutAlign="start start">
                   <span>Nombre de collaborations : </span>
@@ -59,15 +85,32 @@
                   <span>Un billion de temps</span>
                </div>
             </div>
-         
+            
+            <div fxLayout="column" fxLayoutAlign="center center" fxFlex="20%">
+               <img id="statsImg" src="{{this.profileService.statsImg}}">
+            </div>
             <div fxFlex="2"></div>
          </div>
       </div>
-   
-      <!-- Settings -->
-      <div fxFlex="5"></div>
-      <div fxLayout="row" fxLayoutAlign="center start">
-         <button mat-raised-button color="warn" routerLink="/profileSettings">Paramètres du profil</button>
+      <div fxFlex="5%"></div>
+
+      <div fxLayout="row" fxLayoutAlign="center center" >
+         <!-- Favorites -->
+         <div fxLayout="column" fxLayoutAlign="center center">
+            <img id="favoritesImg" src="{{this.profileService.favoritesImg}}">
+            <div fxLayoutAlign="center center" id="settingsBtnDiv">
+               <span>Mes favoris</span>
+            </div>
+         </div>
+         <div fxFlex="20%"></div>
+         <!-- Most Liked -->
+         <div fxLayout="column" fxLayoutAlign="center center">
+            <img id="mostLikedImg" src="{{this.profileService.mostLikedImg}}">
+            <div fxLayoutAlign="center center" id="settingsBtnDiv">
+               <span>Mes dessins gagnants</span>
+            </div>
+         </div>
       </div>
+      
    </div>
 </div>
