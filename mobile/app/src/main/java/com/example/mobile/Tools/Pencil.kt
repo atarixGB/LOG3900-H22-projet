@@ -50,29 +50,33 @@ class Pencil(context: Context, baseCanvas: Canvas, val socket : DrawingCollabora
     }
 
     override fun touchUp() {
-        path!!.lineTo(mStartX, mStartY)
-        points.add(IVec2(mStartX, mStartY))
-        this.sendPencilStroke()
-        paint.strokeJoin = Paint.Join.ROUND // default: MITER
-        paint.strokeCap = Paint.Cap.ROUND
-        baseCanvas!!.drawPath(path!!, paint!!)
-        path!!.reset()
+        if (mStartX != mx || mStartY != my) {
+            path!!.lineTo(mStartX, mStartY)
+            points.add(IVec2(mStartX, mStartY))
+            this.sendPencilStroke()
+            paint.strokeJoin = Paint.Join.ROUND // default: MITER
+            paint.strokeCap = Paint.Cap.ROUND
+            baseCanvas!!.drawPath(path!!, paint!!)
+            path!!.reset()
 
-        //ajout a l'array list des strokes
-        val iPencilStroke = IPencilStroke(getBoundingPoints(),
-            getPaintParameters().color,
-            getPaintParameters().strokeWidth,
-            false,
-            getPointsList())
-        selection.addStroke(iPencilStroke)
+            //ajout a l'array list des strokes
+            val iPencilStroke = IPencilStroke(
+                getBoundingPoints(),
+                getPaintParameters().color,
+                getPaintParameters().strokeWidth,
+                false,
+                getPointsList()
+            )
+            selection.addStroke(iPencilStroke)
 
-        //selectionner ce stroke
-        selection.selectStroke(iPencilStroke)
+            //selectionner ce stroke
+            selection.selectStroke(iPencilStroke)
 
-        //changer le tool a selection
-        selection.isToolSelection = false
-        selection.oldTool = ToolbarFragment.MenuItem.PENCIL
-        nextTool = ToolbarFragment.MenuItem.SELECTION
+            //changer le tool a selection
+            selection.isToolSelection = false
+            selection.oldTool = ToolbarFragment.MenuItem.PENCIL
+            nextTool = ToolbarFragment.MenuItem.SELECTION
+        }
     }
 
     private fun getPointsList():ArrayList<IVec2> {

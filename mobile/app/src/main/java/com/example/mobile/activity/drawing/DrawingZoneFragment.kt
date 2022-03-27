@@ -11,6 +11,7 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import com.example.mobile.Interface.IVec2
 import com.example.mobile.R
 import com.example.mobile.Tools.ToolManager
 import io.socket.emitter.Emitter
@@ -54,6 +55,7 @@ class DrawingZoneFragment : Fragment() {
         socket.socket.on("receiveNewPrimaryColor", onReceiveNewPrimaryColor)
         socket.socket.on("receivePasteRequest", onPasteRequest)
         socket.socket.on("receiveDeleteRequest", onDeleteRequest)
+        socket.socket.on("receiveSelectionPos", onMoveRequest)
 
         viewModel.weight.observe(viewLifecycleOwner, Observer { weight ->
             mDrawingView.changeWeight(weight)
@@ -107,6 +109,11 @@ class DrawingZoneFragment : Fragment() {
     private var onDeleteRequest = Emitter.Listener {
         val drawEvent = it[0] as JSONObject
         mDrawingView.onDeleteRequest (drawEvent)
+    }
+
+    private var onMoveRequest = Emitter.Listener {
+        val drawEvent = it[0] as JSONObject
+        mDrawingView.onMoveRequest (drawEvent)
     }
 
     class DrawingView (context: Context, val socket: DrawingCollaboration) : View(context){
@@ -168,6 +175,15 @@ class DrawingZoneFragment : Fragment() {
             if (socket.socket.id() != stroke.getString("sender")) {
                 val strokeIndex = stroke.getInt("strokeIndex")
                 toolManager.selection.onDeleteRequest(strokeIndex)
+                invalidate()
+            }
+        }
+
+        fun onMoveRequest(stroke: JSONObject){
+            if (socket.socket.id() != stroke.getString("sender")) {
+                var obj = stroke["pos"] as JSONObject
+                val pos = IVec2(obj.getDouble("x").toFloat(), obj.getDouble("y").toFloat())
+                toolManager.selection.onMoveRequest(pos)
                 invalidate()
             }
         }

@@ -5,7 +5,7 @@ import android.graphics.Paint
 import com.example.mobile.activity.drawing.ToolbarFragment
 
 data class IEllipseStroke (
-    override val boundingPoints: ArrayList<IVec2>,
+    override var boundingPoints: ArrayList<IVec2>,
     override var currentStrokeColor: Int,
     val secondaryColor : Int,
     override var currentStrokeWidth: Float,
@@ -39,5 +39,13 @@ data class IEllipseStroke (
     override fun prepForBaseCanvas() {
         center = IVec2(center.x + boundingPoints[0].x, center.y + boundingPoints[0].y)
     }
+
+    override fun updateMove(pos: IVec2) {
+        center = IVec2(center.x + pos.x, center.y +pos.y)
+    }
+//
+//    override fun moveStroke(newPosition: IVec2) {
+//        TODO("Not yet implemented")
+//    }
 
 }

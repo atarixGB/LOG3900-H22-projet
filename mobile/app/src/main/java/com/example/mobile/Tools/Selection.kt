@@ -2,6 +2,7 @@ package com.example.mobile.Tools
 
 import android.content.Context
 import android.graphics.*
+import android.net.ipsec.ike.exceptions.InvalidMajorVersionException
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.activityViewModels
 import com.example.mobile.Interface.IPencilStroke
@@ -15,6 +16,7 @@ import org.json.JSONArray
 import org.json.JSONObject
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.math.abs
 
 class  Selection(context: Context, baseCanvas: Canvas, val socket : DrawingCollaboration) : Tool(context, baseCanvas, socket) {
     var strokes = ArrayList<Stroke>()
@@ -27,58 +29,38 @@ class  Selection(context: Context, baseCanvas: Canvas, val socket : DrawingColla
     private var selectedIndex: Int? = null
     var isToolSelection: Boolean? = null
     var oldTool: ToolbarFragment.MenuItem? = null
+    var oldMousePosition: IVec2 = IVec2(0F, 0F)
+    var isMoving: Boolean = false
+    var isResizing: Boolean = false
 
     override var nextTool: ToolbarFragment.MenuItem = ToolbarFragment.MenuItem.SELECTION
 
     override fun touchStart() {
         mStartX = mx
         mStartY = my
-//        var isInStrokesSelected = false
-//        strokesSelected.forEach {
-//            if (isInBounds(it.boundingPoints,IVec2(mStartX, mStartY))) {
-//                isInStrokesSelected = true
-//            }
-//        }
+        oldMousePosition = IVec2(mStartX, mStartY)
 
         if (currentStroke != null && !strokesSelected.contains(currentStroke)) {
-//            if (!strokesSelected.contains(currentStroke)) {
-            currentStroke!!.prepForBaseCanvas()
-//            }
-            currentStroke!!.isSelected = false
+            if (!isInBounds(currentStroke!!.boundingPoints, IVec2(mx, my))) {
 
-            if (selectionCanvas != null) {
-                selectionCanvas!!.drawColor(
-                    Color.TRANSPARENT,
-                    PorterDuff.Mode.CLEAR
-                ) //clear le canvas de selection
-            }
-            baseCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR) //clear le base canvas
-            strokes.forEach { element ->
-                if (!strokesSelected.contains(element)) {
-                    element.drawStroke(baseCanvas) //redessiner toutes les formes sur le base canvas
+                resetSelection()
+
+                var jo = JSONObject()
+                jo.put("strokeIndex", selectedIndex)
+                jo.put("sender", socket.socket.id())
+                socket.socket.emit("broadcastPasteRequest", jo)
+
+                if (isToolSelection == false) {
+                    nextTool = oldTool!!
                 }
-            }
 
-            strokesSelected.forEachIndexed { i, element ->
-                createOtherSelectionCanvas(element)
-            }
-
-            var jo = JSONObject()
-            jo.put("strokeIndex", selectedIndex)
-            jo.put("sender", socket.socket.id())
-            socket.socket.emit("broadcastPasteRequest", jo)
-
-            if (!isInBounds(currentStroke!!.boundingPoints, IVec2(mx, my)) && !isToolSelection!!) {
-                nextTool = oldTool!!
-            } else {
+            } else if (isInBounds(
+                    currentStroke!!.boundingPoints,
+                    IVec2(mx, my)
+                ) || isToolSelection == true
+            ) {
                 nextTool = ToolbarFragment.MenuItem.SELECTION
             }
-            currentStroke = null
-            selectedIndex = null
-        }
-
-        if (isToolSelection == true) {
-            nextTool = ToolbarFragment.MenuItem.SELECTION
         }
     }
 
@@ -113,15 +95,40 @@ class  Selection(context: Context, baseCanvas: Canvas, val socket : DrawingColla
     }
 
 
-    override fun touchMove() {}
+    override fun touchMove() {
+        if (currentStroke != null) {
+            currentStroke!!.moveStroke(IVec2(mx - oldMousePosition.x, my - oldMousePosition.y))
+            drawStrokesOnBaseCanvas(currentStroke!!)
+            oldMousePosition = IVec2(mx, my)
+            isMoving = true
+        }
+    }
 
     override fun touchUp() {
+        if (isMoving) {
+            //send
+            var pos = JSONObject()
+            pos.put("x", currentStroke!!.boundingPoints[0].x)
+            pos.put("y", currentStroke!!.boundingPoints[0].y)
+            var jo = JSONObject()
+            jo.put("pos", pos)
+            jo.put("sender", socket.socket.id())
+            socket.socket.emit("broadcastSelectionPos", jo)
+            isMoving = false
+        }
+        var isInStrokesSelected = false
+        strokesSelected.forEach {
+            if (isInBounds(it.boundingPoints, IVec2(mStartX, mStartY))) {
+                isInStrokesSelected = true
+            }
+        }
+
         if ((isStrokeFound(
                 IVec2(
                     mStartX,
                     mStartY
                 )
-            )) && !strokesSelected.contains(strokes[selectedIndex!!]) && currentStroke == null
+            )) && !strokesSelected.contains(strokes[selectedIndex!!]) && currentStroke == null && !isInStrokesSelected
         ) {
             currentStroke = strokes[selectedIndex!!]
             if (!strokesSelected.contains(currentStroke)) {
@@ -149,6 +156,13 @@ class  Selection(context: Context, baseCanvas: Canvas, val socket : DrawingColla
     }
 
     private fun drawStrokeOnSelectionCanvas(stroke: Stroke, canvas: Canvas) {
+        if (!isMoving) {
+            stroke.prepForSelection()
+        }
+        stroke.drawStroke(canvas)
+    }
+
+    private fun drawStrokeOnOtherSelectionCanvas(stroke: Stroke, canvas: Canvas) {
         stroke.prepForSelection()
         stroke.drawStroke(canvas)
     }
@@ -169,21 +183,20 @@ class  Selection(context: Context, baseCanvas: Canvas, val socket : DrawingColla
                 stroke.boundingPoints[0].y,
                 null
             ) //dessiner la forme selectionner sur le base
+            strokes[selectedIndex!!] = stroke
         }
 
         strokesSelected.forEachIndexed { i, element ->
             createOtherSelectionCanvas(element)
         }
 
-        strokes[selectedIndex!!] = stroke
+
     }
 
     private fun drawOtherSelectedStrokesOnBaseCanvas(
         stroke: Stroke,
         otherSelectionBitmap: Bitmap?
     ) {
-//        baseCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR) //clear le base canvas
-
         if (otherSelectionBitmap != null) {
             baseCanvas.drawBitmap(
                 otherSelectionBitmap,
@@ -376,7 +389,7 @@ class  Selection(context: Context, baseCanvas: Canvas, val socket : DrawingColla
         }
         otherSelectionCanvas!!.drawRect(0f, 0f, width.toFloat(), height.toFloat(), borderPaint)
 
-        drawStrokeOnSelectionCanvas(stroke, otherSelectionCanvas!!)
+        drawStrokeOnOtherSelectionCanvas(stroke, otherSelectionCanvas!!)
         drawOtherSelectedStrokesOnBaseCanvas(stroke, otherSelectionBitmap)
     }
 
@@ -411,9 +424,6 @@ class  Selection(context: Context, baseCanvas: Canvas, val socket : DrawingColla
 
             strokesSelected.remove(currentStroke)
             //redessiner les formes selectionner par les autres
-            strokesSelected.forEachIndexed { i, element ->
-                createOtherSelectionCanvas(element)
-            }
         }
 
     }
@@ -428,7 +438,7 @@ class  Selection(context: Context, baseCanvas: Canvas, val socket : DrawingColla
     }
 
     fun deleteStroke() {
-        if (selectedIndex != null && currentStroke != null) {
+        if (selectedIndex != null && currentStroke != null && !strokesSelected.contains(strokes[selectedIndex!!])) {
             var jo = JSONObject()
             jo.put("strokeIndex", selectedIndex)
             jo.put("sender", socket.socket.id())
@@ -453,32 +463,74 @@ class  Selection(context: Context, baseCanvas: Canvas, val socket : DrawingColla
             otherSelectionCanvas!!.drawColor(
                 Color.TRANSPARENT,
                 PorterDuff.Mode.CLEAR
-            ) //clear le canvas de selection
-            //clear le canvas
+            )
         }
+        baseCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR) //clear le base canvas
+
+        //redessiner les autres formes
+        strokes.forEachIndexed { i, element ->
+            if (i != selectedIndex) {
+                element.drawStroke(baseCanvas) //redessiner les autres formes sauf la forme selectionner
+            }
+        }
+
+        //redessiner la forme selectionner
+        if (selectionBitmap != null && this.currentStroke != null) {
+            baseCanvas.drawBitmap(
+                selectionBitmap!!,
+                this.currentStroke!!.boundingPoints[0].x,
+                this.currentStroke!!.boundingPoints[0].y,
+                null
+            ) //dessiner la forme selectionner sur le base
+        }
+
+        //redessiner les formes selectionner par les autres
+        strokesSelected.forEachIndexed { i, element ->
+            createOtherSelectionCanvas(element)
+        }
+    }
+
+    fun onMoveRequest(pos: IVec2) {
+        //on doit avoir un map pour voir quelle selection des strokes selected on va move
+        if (strokesSelected[0] != null) {
+            var index = strokes.indexOf(strokesSelected[0])
+
+            strokes[index].updateMove(pos)
+
+            strokes[index].boundingPoints[1] = IVec2(
+                pos.x - strokesSelected[0].boundingPoints[0].x + strokesSelected[0].boundingPoints[1].x,
+                pos.y - strokesSelected[0].boundingPoints[0].y + strokesSelected[0].boundingPoints[1].y
+            )
+            strokes[index].boundingPoints[0] = IVec2(pos.x, pos.y)
+
+            strokesSelected[0] = strokes[index]
+
+
+
             baseCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR) //clear le base canvas
 
-            //redessiner les autres formes
             strokes.forEachIndexed { i, element ->
-                if (i != selectedIndex ) {
+                if (i != selectedIndex && !strokesSelected.contains(element)) {
                     element.drawStroke(baseCanvas) //redessiner les autres formes sauf la forme selectionner
                 }
             }
 
-            //redessiner la forme selectionner
-            if (selectionBitmap != null && this.currentStroke != null) {
+            if (selectionBitmap != null && currentStroke != null) {
                 baseCanvas.drawBitmap(
                     selectionBitmap!!,
-                    this.currentStroke!!.boundingPoints[0].x,
-                    this.currentStroke!!.boundingPoints[0].y,
+                    currentStroke!!.boundingPoints[0].x,
+                    currentStroke!!.boundingPoints[0].y,
                     null
                 ) //dessiner la forme selectionner sur le base
+                strokes[selectedIndex!!] = currentStroke!!
             }
 
-            //redessiner les formes selectionner par les autres
-            strokesSelected.forEachIndexed { i, element ->
-                createOtherSelectionCanvas(element)
-            }
-
+            baseCanvas.drawBitmap(
+                otherSelectionBitmap!!,
+                pos.x,
+                pos.y,
+                null
+            ) //dessiner la forme selectionner sur le base
+        }
     }
 }

@@ -40,4 +40,8 @@ data class IRectangleStroke(
     override fun prepForBaseCanvas() {
         topLeftCorner = IVec2(boundingPoints[0].x, boundingPoints[0].y)
     }
+
+    override fun updateMove(pos: IVec2) {
+        topLeftCorner = IVec2(pos.x, pos.y)
+    }
 }

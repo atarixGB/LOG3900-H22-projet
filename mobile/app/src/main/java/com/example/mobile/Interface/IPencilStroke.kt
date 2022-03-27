@@ -64,6 +64,22 @@ data class IPencilStroke (
 //        boundingPoints.add(bottomRightCorner)
     }
 
+    override fun updateMove(pos: IVec2) {
+        for (i in 0 until points.size) {
+            points[i].x = pos.x - boundingPoints[0].x + points[i].x
+            points[i].y = pos.y - boundingPoints[0].y + points[i].y
+        }
+    }
+
+//    override fun moveStroke(newPosition: IVec2) {
+//        boundingPoints[0] = IVec2(boundingPoints[0].x + newPosition.x, boundingPoints[0].y + newPosition.y)
+//        boundingPoints[1] = IVec2(boundingPoints[1].x + newPosition.x, boundingPoints[1].y + newPosition.y)
+////        for (i in 0 until points.size) {
+////            points[i].x = points[i].x + newPosition.x
+////            points[i].y = points[i].y + newPosition.y
+////        }
+//    }
+
 
     //code Leon
 //    override fun prepForSelection() {
