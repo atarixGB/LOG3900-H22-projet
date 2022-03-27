@@ -1,0 +1,19 @@
+<div fxLayout="row" fxLayoutAlign="center stretch" fxFlex="100">
+
+  <!-- Side Menu -->
+  <app-side-menu fxLayout="column" fxLayoutAlign="start stretch" fxFlex="15%"></app-side-menu>
+
+  <div fxLayout="column" fxLayoutAlign="start stretch" fxFlex="auto">
+    <div fxFlex="5%"></div>
+    <div fxLayout="row" fxLayoutAlign="center center">
+      <h1 id="title">Mon Top</h1>
+    </div>
+
+    <button mat-icon-button disableRipple="true" (click)="backToProfil(this.profileService.username)">
+      <mat-icon id="back-btn">keyboard_arrow_left</mat-icon> Retour
+    </button>
+
+
+  </div>
+
+</div>

@@ -22,6 +22,9 @@ export class AlbumGalleryService {
 
   drawings: IDrawing[];
 
+  currentUserFavoriteDrawings: IDrawing[];
+  currentUserTopDrawings: IDrawing[];
+
   constructor(private httpClient: HttpClient, private loginService: LoginService, private drawingService: DrawingService) {
     this.publicAlbums = [];
     this.myAlbums = [];
@@ -32,6 +35,9 @@ export class AlbumGalleryService {
       name: "",
       owner: this.loginService.username,
     }
+
+    this.currentUserFavoriteDrawings = [];
+    this.currentUserTopDrawings = [];
   }
 
   createDrawing(drawingName: string): void {
@@ -315,14 +321,36 @@ export class AlbumGalleryService {
   }
 
   // All drawings that current user liked
-  fetchTopDrawings(username: string): void {
-    const url = `${GET_USER_FAVORITE_DRAWINGS_URL}/${this.loginService.username}`;
+  fetchFavoriteDrawings(username: string): void {
+    const url = `${GET_USER_FAVORITE_DRAWINGS_URL}/${username}`;
     console.log(url);
+    this.httpClient.get(url).subscribe(
+      (drawings: IDrawing[]) => {
+        console.log(drawings);
+        for (const drawing of drawings) {
+          this.currentUserFavoriteDrawings.push(drawing);
+        }
+      },
+      (error) => {
+        console.log("Impossible de charger les dessins de la base de données", error);
+      }
+    )
   }
 
   // All current user's drawings that has at least one like
-  fetchFavoriteDrawings(username: string): void {
-    const url = `${GET_USER_TOP_X_DRAWINGS_URL}/${this.loginService.username}`;
+  fetchTopDrawings(username: string): void {
+    const url = `${GET_USER_TOP_X_DRAWINGS_URL}/${username}`;
     console.log(url);
+    this.httpClient.get(url).subscribe(
+      (drawings: IDrawing[]) => {
+        console.log(drawings);
+        for (const drawing of drawings) {
+          this.currentUserTopDrawings.push(drawing);
+        }
+      },
+      (error) => {
+        console.log("Impossible de charger les dessins de la base de données", error);
+      }
+    )
   }
 }

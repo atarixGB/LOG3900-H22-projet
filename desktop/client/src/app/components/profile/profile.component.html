@@ -101,7 +101,7 @@
       <!-- Favorites -->
       <div fxLayout="column" fxLayoutAlign="center center">
         <img id="favoritesImg" src="{{this.profileService.favoritesImg}}">
-        <div fxLayoutAlign="center center" id="settingsBtnDiv">
+        <div fxLayoutAlign="center center" id="settingsBtnDiv" routerLink="/favorite-drawings">
           <span>Mes favoris</span>
         </div>
       </div>
@@ -109,7 +109,7 @@
       <!-- Most Liked -->
       <div fxLayout="column" fxLayoutAlign="center center">
         <img id="mostLikedImg" src="{{this.profileService.mostLikedImg}}">
-        <div fxLayoutAlign="center center" id="settingsBtnDiv">
+        <div fxLayoutAlign="center center" id="settingsBtnDiv" routerLink="/top-drawings">
           <span>Mes dessins gagnants</span>
         </div>
       </div>
