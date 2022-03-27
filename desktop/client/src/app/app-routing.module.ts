@@ -27,7 +27,7 @@ const routes: Routes = [
     { path: 'all-albums', component: PublicAlbumsComponent },
     { path: 'public-gallery', component: PublicDrawingGalleryComponent },
     { path: 'drawing-view', component: DrawingsViewComponent },
-    { path: 'profile', component: ProfileComponent },
+    { path: 'profile/:username', component: ProfileComponent },
     { path: 'profileSettings', component: ProfileSettingsComponent },
     { path: '**', redirectTo: '/home' },
 ];

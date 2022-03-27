@@ -51,9 +51,9 @@
       <div fxLayout="row" fxLayoutAlign="space-evenly center">
         <h1><u>{{this.albumGalleryService.currentAlbum.name }}</u></h1>
       </div>
-      <div *ngIf="!this.isPublicAlbum" fxLayout="row" fxLayoutAlign="space-evenly center">
-        <span>Propriétaire: {{this.albumGalleryService.currentAlbum.owner}}</span>
-      </div>
+    </div>
+    <div *ngIf="!this.isPublicAlbum" fxLayout="row" fxLayoutAlign="center">
+      Propriétaire:&nbsp;<span id="username" (click)="this.getUserProfileInfos(this.albumGalleryService.currentAlbum.owner)">{{this.albumGalleryService.currentAlbum.owner}}</span>
     </div>
 
     <!-- Description -->

@@ -128,7 +128,7 @@ export class AlbumGalleryService {
   addUserToPublicAlbum(username: string): void {
     const body = {
       userToAdd: username,
-      currentUser: "SYSTEM",
+      currentUser: PUBLIC_ALBUM.owner,
       albumName: PUBLIC_ALBUM.name,
     }
 
