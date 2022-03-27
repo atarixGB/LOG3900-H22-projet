@@ -26,6 +26,7 @@ export class ChatroomComponent implements AfterViewInit {
 
     currentRoom: IChatroom;
     isCurrentChatroomMine: boolean;
+    isPublicChatroom: boolean;
 
     constructor(public chatService: ChatService, public loginService: LoginService, public profileService: ProfileService, public dialog: MatDialog, private soundEffectsService: SoundEffectsService) {
         this.userName = '';
@@ -35,7 +36,7 @@ export class ChatroomComponent implements AfterViewInit {
         this.socket = this.chatService.socket;
         this.currentRoom = this.chatService.currentRoom;
         this.isCurrentChatroomMine = this.chatService.currentRoom.identifier == loginService.username;
-        console.log(`current room mine? ${this.isCurrentChatroomMine}`);
+        this.isPublicChatroom = this.currentRoom.roomName == 'default-public-room';
 
     }
 

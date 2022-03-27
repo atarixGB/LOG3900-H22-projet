@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { PUBLIC_ALBUM } from '@app/constants/constants';
 import { AlbumGalleryService } from '@app/services/album-gallery/album-gallery.service';
 import { LoginService } from '@app/services/login/login.service';
+import { ProfileService } from '@app/services/profile/profile.service';
 import { AlbumSettingsDialogComponent } from './album-settings-dialog/album-settings-dialog.component';
 import { MembersListDialogComponent } from './members-list-dialog/members-list-dialog.component';
 import { RequestsDialogComponent } from './requests-dialog/requests-dialog.component';
@@ -17,7 +18,13 @@ export class DrawingsViewComponent {
   isCurrentAlbumMine: boolean;
   isPublicAlbum: boolean;
 
-  constructor(public albumGalleryService: AlbumGalleryService, public loginService: LoginService, public dialog: MatDialog, private router: Router, private route: ActivatedRoute) {
+  constructor(
+    public albumGalleryService: AlbumGalleryService,
+    public loginService: LoginService,
+    public dialog: MatDialog,
+    public profileService: ProfileService,
+    private router: Router,
+    private route: ActivatedRoute) {
     this.isCurrentAlbumMine = this.loginService.username == albumGalleryService.currentAlbum.owner;
     this.isPublicAlbum = albumGalleryService.currentAlbum.name == PUBLIC_ALBUM.name;
   }
@@ -52,5 +59,10 @@ export class DrawingsViewComponent {
     console.log(`Deleted album id : ${this.albumGalleryService.currentAlbum._id}`);
     this.albumGalleryService.deleteAlbum(this.albumGalleryService.currentAlbum._id);
     this.router.navigate(['../my-albums'], { relativeTo: this.route });
+  }
+
+  getUserProfileInfos(username: string): void {
+    console.log("Get info of", username);
+    this.profileService.getUserProfileInfos(username);
   }
 }

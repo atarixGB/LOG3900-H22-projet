@@ -2,6 +2,15 @@
   height: 100%;
 }
 
+#username {
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#username:hover {
+  color:#A8D08C;
+}
+
 mat-icon {
   color: rgb(52, 52, 52);
 }

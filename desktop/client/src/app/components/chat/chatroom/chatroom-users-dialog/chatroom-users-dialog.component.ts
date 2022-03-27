@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { IChatroom } from '@app/interfaces-enums/IChatroom';
+import { ProfileService } from '@app/services/profile/profile.service';
 
 @Component({
   selector: 'app-chatroom-users-dialog',
@@ -9,10 +10,14 @@ import { IChatroom } from '@app/interfaces-enums/IChatroom';
 })
 export class ChatroomUsersDialogComponent implements OnInit {
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: IChatroom) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: IChatroom, public profileService: ProfileService) { }
 
   ngOnInit(): void {
-    console.log(this.data)
+  }
+
+  getUserProfileInfos(username:string): void {
+    console.log("Get info of", username);
+    this.profileService.getUserProfileInfos(username);
   }
 
 }

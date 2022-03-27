@@ -38,6 +38,19 @@
     word-wrap: break-word;
 }
 
+.username-link {
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.username-link:hover {
+  color: #A8D08C;
+}
+
+.timestamp {
+  font-size: small;
+}
+
 input {
   margin: 2px;
 }
