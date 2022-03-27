@@ -481,6 +481,20 @@ app.post(
         }
       });
   });
+
+  //change the album containing the drawing in the drawing interface
+  app.post("/changeAlbum", (request, response, next) => {
+    var post_data = request.body;
+    var newAlbumName = post_data.newAlbumName;
+    var drawingID= post_data.drawingID
+    console.log(newAlbumName);
+    
+    DB.collection("drawings").findOneAndUpdate({ _id: mongoose.Types.ObjectId(drawingID) }, { $set: { "albumName": newAlbumName } }, { returnDocument: 'after' }, (err, res) => {
+      response.json(201)
+      console.log(drawingID, "is now contained in ", newAlbumName);
+    })
+
+  });
   
 
 //==========================================================================================================

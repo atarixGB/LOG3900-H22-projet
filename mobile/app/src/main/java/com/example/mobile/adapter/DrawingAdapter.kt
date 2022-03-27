@@ -9,12 +9,14 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mobile.Interface.IDrawing
 import com.example.mobile.R
 import com.example.mobile.Retrofit.IMyService
 import com.example.mobile.Retrofit.RetrofitClient
 import com.example.mobile.bitmapDecoder
+import com.example.mobile.popup.ChangeAlbumPopUp
 import com.example.mobile.popup.DrawingNameModificationPopUp
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -22,13 +24,15 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.item_drawing.view.*
 
 
-class DrawingAdapter (val context: Context?, var drawings: ArrayList<IDrawing>, val user: String) : RecyclerView.Adapter<DrawingAdapter.DrawingViewHolder>(),DrawingNameModificationPopUp.DialogListener {
+class DrawingAdapter (val context: Context?, var drawings: ArrayList<IDrawing>, val user: String) : RecyclerView.Adapter<DrawingAdapter.DrawingViewHolder>(),DrawingNameModificationPopUp.DialogListener,ChangeAlbumPopUp.DialogListener {
 
     private var listener: DrawingAdapterListener = context as DrawingAdapterListener
     private lateinit var dialogEditDrawingName: DrawingNameModificationPopUp
+    private lateinit var dialogChangeAlbumName: ChangeAlbumPopUp
     private lateinit var iMyService: IMyService
     internal var compositeDisposable = CompositeDisposable()
-    var newDrawingName:String ="testing new name"
+    var newDrawingName:String ="new name"
+    var newAlbum:String=""
 //    private var alreadyLiked: Boolean = false
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DrawingViewHolder {
@@ -88,12 +92,16 @@ class DrawingAdapter (val context: Context?, var drawings: ArrayList<IDrawing>, 
                             true
                         }
                         R.id.menu_changeAlbum -> {
-                        true
+                            dialogChangeAlbumName= ChangeAlbumPopUp(currentDrawing._id!!,currentDrawing.albumName,user)
+                            dialogChangeAlbumName.show((context as AppCompatActivity).supportFragmentManager,"customDialog")
+
+                            true
                         }
                         R.id.menu_deleteDrawing -> {
                             removeDrawingFromAlbum(currentDrawing._id!!,currentDrawing.albumName)
-//                            deleteDrawing(currentDrawing._id!!)
+                            deleteDrawing(currentDrawing._id!!)
                             removeDrawing(currentDrawing)
+                            containerImg.isVisible=false
                             true
                         }
                         else -> false
@@ -101,8 +109,6 @@ class DrawingAdapter (val context: Context?, var drawings: ArrayList<IDrawing>, 
                 }
 
                 popupMenu.inflate(R.menu.drawing_options_menu)
-
-
 
                 if (user != currentDrawing.owner) {
                     popupMenu.menu.findItem(R.id.menu_editDrawingParameters).isVisible = false
@@ -171,6 +177,7 @@ class DrawingAdapter (val context: Context?, var drawings: ArrayList<IDrawing>, 
             .subscribe { result ->
                 if (result == "201") {
                     Toast.makeText(context, "dessin supprimé de l'album", Toast.LENGTH_SHORT).show()
+
                 } else {
                     Toast.makeText(context, "erreur de suppression de dessin", Toast.LENGTH_SHORT).show()
                 }
@@ -197,5 +204,9 @@ class DrawingAdapter (val context: Context?, var drawings: ArrayList<IDrawing>, 
 
     override fun popUpListener(drawingName: String) {
         this.newDrawingName=drawingName
+    }
+
+    override fun changeAlbumPopUpListener(albumName: String) {
+        this.newAlbum=albumName
     }
 }

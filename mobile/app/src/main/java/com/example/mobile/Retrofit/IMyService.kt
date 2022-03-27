@@ -170,4 +170,11 @@ interface IMyService {
         @Field("oldDrawingName") oldDrawingname: String,
         @Field("newDrawingName") newDrawingname: String,
     ): Observable<String>
+
+    @POST("changeAlbum")
+    @FormUrlEncoded
+    fun changeAlbumOfDrawing(
+        @Field("newAlbumName") newAlbumName: String,
+        @Field("drawingID") drawingID: String,
+    ): Observable<String>
 }

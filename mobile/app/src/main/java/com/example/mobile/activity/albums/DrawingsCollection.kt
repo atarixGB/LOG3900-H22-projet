@@ -20,10 +20,7 @@ import com.example.mobile.Retrofit.IMyService
 import com.example.mobile.Retrofit.RetrofitClient
 import com.example.mobile.adapter.DrawingAdapter
 import com.example.mobile.adapter.UserAdapter
-import com.example.mobile.popup.AcceptMembershipRequestsPopUp
-import com.example.mobile.popup.AlbumAttributeModificationPopUp
-import com.example.mobile.popup.DrawingNameModificationPopUp
-import com.example.mobile.popup.UsersListPopUp
+import com.example.mobile.popup.*
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -35,7 +32,7 @@ import kotlin.collections.ArrayList
 
 
 class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterListener, UserAdapter.UserAdapterListener,
-    AlbumAttributeModificationPopUp.DialogListener,DrawingNameModificationPopUp.DialogListener {
+    AlbumAttributeModificationPopUp.DialogListener,DrawingNameModificationPopUp.DialogListener,ChangeAlbumPopUp.DialogListener {
     private lateinit var leaveAlbumBtn: ImageButton
     private lateinit var albumNameTextView: TextView
     private lateinit var currentAlbum: IAlbum
@@ -351,9 +348,13 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
         updateAlbum(this.albumName,albumName,albumDescription)
         this.albumName=albumName
     }
-
+    //listener added for changing the name of the drawing
     override fun popUpListener(drawingName: String) {
         drawingAdapter.newDrawingName=drawingName
+    }
+
+    override fun changeAlbumPopUpListener (albumName: String){
+        drawingAdapter.newAlbum=albumName
     }
 
     private fun filter(newText: String?) {
