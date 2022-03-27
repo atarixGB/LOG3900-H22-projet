@@ -87,8 +87,8 @@
                <div fxLayout="column" fxLayoutAlign="center start">
                   <span>Musique</span>
                   <mat-form-field class="soundField" appearance="fill">
-                     <mat-select [(ngModel)]="this.soundEffectsService.isMusicEnabled">
-                       <mat-option [value]="0">Désactivés</mat-option>
+                     <mat-select [(ngModel)]="this.soundEffectsService.songChoice" (selectionChange)="this.soundEffectsService.startMusic()">
+                       <mat-option [value]="0">Désactivé</mat-option>
                        <mat-option [value]="1">Lofi 1</mat-option>
                        <mat-option [value]="2">Lofi 2</mat-option>
                        <mat-option [value]="3">Minecraft</mat-option>
