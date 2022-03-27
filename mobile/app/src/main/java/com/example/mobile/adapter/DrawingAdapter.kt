@@ -91,7 +91,7 @@ class DrawingAdapter (val context: Context?, var drawings: ArrayList<IDrawing>, 
                         true
                         }
                         R.id.menu_deleteDrawing -> {
-                            removeDrawingFromAlbum(currentDrawing._id!!.toString(),currentDrawing.albumName)
+                            removeDrawingFromAlbum(currentDrawing._id!!,currentDrawing.albumName)
 //                            deleteDrawing(currentDrawing._id!!)
                             removeDrawing(currentDrawing)
                             true

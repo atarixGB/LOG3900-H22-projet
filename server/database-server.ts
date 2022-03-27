@@ -639,7 +639,7 @@ app.post(
             response.json(404);
             console.log("album does not exist");
           } else {
-            DB.collection("albums").findOneAndUpdate({ name: albumName }, { "$pull": { drawingIDs: drawingID } },
+            DB.collection("albums").findOneAndUpdate({name: albumName }, { "$pull": { drawingIDs: drawingID } },
               function (error, result) {
                 response.json(201);
                 console.log("album updated");
