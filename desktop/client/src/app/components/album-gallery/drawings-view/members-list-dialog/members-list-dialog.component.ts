@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AlbumGalleryService } from '@app/services/album-gallery/album-gallery.service';
 
 @Component({
@@ -8,9 +9,14 @@ import { AlbumGalleryService } from '@app/services/album-gallery/album-gallery.s
 })
 export class MembersListDialogComponent implements OnInit {
 
-  constructor(public albumGalleryService: AlbumGalleryService) { }
+  constructor(public albumGalleryService: AlbumGalleryService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
+  }
+
+  getUserProfileInfos(username:string): void {
+    console.log("Get info of", username);
+    this.router.navigate([`../profile/${username}`], { relativeTo: this.route });
   }
 
 }

@@ -11,8 +11,7 @@ import { ProfileService } from '@app/services/profile/profile.service';
 })
 export class ChatroomUsersDialogComponent implements OnInit {
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: IChatroom, public profileService: ProfileService, private router: Router,
-  private route: ActivatedRoute) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: IChatroom, public profileService: ProfileService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
   }
