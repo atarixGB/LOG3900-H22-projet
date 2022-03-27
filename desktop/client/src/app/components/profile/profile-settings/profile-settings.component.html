@@ -4,7 +4,7 @@
 
    <!-- Profil settings page -->
    <div fxLayout="column" fxLayoutAlign="start stretch" fxFlex="auto">
-      <div fxFlex="10"></div>
+      <div fxFlex="5"></div>
 
       <!-- Header -->
       <div fxLayout="row" fxLayoutAlign="center center" >
@@ -17,16 +17,25 @@
          <div fxLayout="column" fxLayoutAlign="start stretch" fxFlex="50">
 
             <!-- Avatar settings -->
-            <div class="sectionTitleContainer" fxLayout="row" fxLayoutAlign="start center">
-               <span>Avatar</span>
-            </div>
             <div class="topPadding" fxLayout="row" fxLayoutAlign="space-evenly stretch">
                <div id="avatarDisplay" fxLayoutAlign="center center" class="animate__animated" [ngClass]="{animate__headShake: this.profileSettingsService.isAvatarTooLarge}">
                   <img id="avatarImg" src="data:image/png;base64,{{this.profileSettingsService.newAvatarSrc}}">
                </div>
                <div fxLayout="column" fxLayoutAlign="space-evenly center" >
-                   <button mat-raised-button color="primary" (click)="this.openAvatarSelectionModal()">Choisir un nouvel avatar</button>
-                   <button mat-raised-button color="primary" (click)="this.openAvatarImportModal()">Importer un nouvel avatar</button>
+                  <div fxLayout="row" fxLayoutAlign="center center" fxFlex="20%" (click)="this.openAvatarSelectionModal()">
+                     <div fxLayoutAlign="center center" id="avatarBtnDiv">
+                        <mat-icon id="pencil">photo_library</mat-icon>
+                        <div fxFlex="5%"></div>
+                        <span id="modifierProfil">Choisir un nouvel avatar</span>
+                     </div>
+                  </div>
+                  <div fxLayout="row" fxLayoutAlign="center center" fxFlex="20%" (click)="this.openAvatarImportModal()">
+                     <div fxLayoutAlign="center center" id="avatarBtnDiv">
+                        <mat-icon id="pencil">add_photo_alternate</mat-icon>
+                        <div fxFlex="5%"></div>
+                        <span id="modifierProfil">Importer un nouvel avatar</span>
+                     </div>
+                  </div>
                </div>
             </div>
             <div class="topPadding" fxLayout="row" fxLayoutAlign="center center">
@@ -35,11 +44,12 @@
 
             <!-- Username settings -->
             <div class="sectionTitleContainer" fxLayout="row" fxLayoutAlign="start center">
-               <span>Pseudonyme</span>
+               <mat-icon fxFlex="5%">person</mat-icon>
+               <span class="bold">Nom d'utilisateur</span>
             </div>
-            <div class="topBottomPadding" fxLayout="row" fxLayoutAlign="space-evenly center">
+            <div id="usernameChangeDiv" fxLayout="row" fxLayoutAlign="space-evenly center">
                <div fxLayout="column" fxLayoutAlign="center center">
-                  <mat-form-field class="animate__animated" [ngClass]="{animate__headShake: this.profileSettingsService.isExistingUsername || !this.profileSettingsService.isValidUsername}" appearance="outline">
+                  <mat-form-field id="nameInput" class="animate__animated" [ngClass]="{animate__headShake: this.profileSettingsService.isExistingUsername || !this.profileSettingsService.isValidUsername}" appearance="outline">
                      <mat-label>Entrez un nouveau nom</mat-label>
                      <input matInput [(ngModel)]="this.profileSettingsService.newUsername">
                   </mat-form-field>
@@ -49,23 +59,64 @@
             </div>
 
             <!-- Description settings -->
-             <div class="sectionTitleContainer" fxLayout="row" fxLayoutAlign="start center">
-               <span>Description</span>
+            <div class="sectionTitleContainer" fxLayout="row" fxLayoutAlign="start center">
+               <mat-icon fxFlex="5%">email</mat-icon>
+               <span class="bold">Description</span>
             </div>
             <mat-form-field class="topPadding" appearance="outline">
                <mat-label>Modifiez votre description!</mat-label>
                <textarea id="descriptionInput" matInput [(ngModel)]="this.profileSettingsService.newDescription"></textarea>
             </mat-form-field>
 
+            <!-- Sound settings -->
+            <div class="sectionTitleContainer" fxLayout="row" fxLayoutAlign="start center">
+               <mat-icon fxFlex="5%">library_music</mat-icon>
+               <span class="bold">Sons</span>
+            </div>
+            <div class="topPadding" fxLayout="row" fxLayoutAlign="center center">
+               <div fxLayout="column" fxLayoutAlign="center start">
+                  <span>Effets sonores</span>
+                  <mat-form-field class="soundField" appearance="fill">
+                     <mat-select [(ngModel)]="this.soundEffectsService.isSoundEnabled">
+                       <mat-option [value]="true">Activés</mat-option>
+                       <mat-option [value]="false">Désactivés</mat-option>
+                     </mat-select>
+                   </mat-form-field>
+               </div>
+               <div fxFlex="20%"></div>
+               <div fxLayout="column" fxLayoutAlign="center start">
+                  <span>Musique</span>
+                  <mat-form-field class="soundField" appearance="fill">
+                     <mat-select [(ngModel)]="this.soundEffectsService.isMusicEnabled">
+                       <mat-option [value]="0">Désactivés</mat-option>
+                       <mat-option [value]="1">Lofi 1</mat-option>
+                       <mat-option [value]="2">Lofi 2</mat-option>
+                       <mat-option [value]="3">Minecraft</mat-option>
+                       <mat-option [value]="4">Kahoot</mat-option>
+                     </mat-select>
+                   </mat-form-field>
+               </div>
+            </div>
          </div>
       </div>
 
       <!-- Confirmation btn -->
       <div fxFlex="5"></div>
-      <div fxLayout="row" fxLayoutAlign="center start">
-        <button mat-raised-button color="primary" (click)="onCancel()">Annuler</button>
-         <button mat-raised-button color="warn" (click)="this.profileSettingsService.saveChanges()">Sauvegarder les changements</button>
+
+      <div class="topPadding" fxLayout="row" fxLayoutAlign="center center" (click)="this.profileSettingsService.saveChanges()">
+         <div fxLayoutAlign="center center" id="saveBtnDiv">
+            <mat-icon id="pencil">save</mat-icon>
+            <div fxFlex="10%"></div>
+            <span id="modifierProfil">Sauvegarder</span>
+         </div>
       </div>
+      <div class="topPadding" fxLayout="row" fxLayoutAlign="center center" (click)="onCancel()">
+        <div fxLayoutAlign="center center" id="saveBtnDiv">
+           <mat-icon>cancel</mat-icon>
+           <div fxFlex="10%"></div>
+           <span>Annuler</span>
+        </div>
+     </div>
 
    </div>
 </div>

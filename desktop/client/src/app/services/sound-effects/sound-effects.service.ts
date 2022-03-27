@@ -8,10 +8,15 @@ export class SoundEffectsService {
   soundEffectAudio: any;
   drawAudio: any;
 
+  isSoundEnabled: boolean;
+  isMusicEnabled: number;
+
   constructor() {
     this.soundEffectAudio = new Audio();
     this.drawAudio = new Audio(sounds.DRAW);
     this.drawAudio.loop = true;
+    this.isSoundEnabled = true;
+    this.isMusicEnabled = 0;
   }
 
   // Sounds 1: Signup and login

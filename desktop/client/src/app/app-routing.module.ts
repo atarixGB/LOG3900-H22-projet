@@ -29,7 +29,7 @@ const routes: Routes = [
     { path: 'drawing-view', component: DrawingsViewComponent },
     { path: 'profile/:username', component: ProfileComponent },
     { path: 'profileSettings', component: ProfileSettingsComponent },
-    { path: '**', redirectTo: '/home' },
+    { path: '**', redirectTo: '/menu' },
 ];
 
 @NgModule({

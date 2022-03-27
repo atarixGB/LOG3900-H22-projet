@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { ChatService } from '@app/services/chat/chat.service';
 import { LoginService } from '@app/services/login/login.service';
+import { ProfileService } from '@app/services/profile/profile.service';
 
 @Component({
   selector: 'app-side-menu',
@@ -10,11 +11,13 @@ import { LoginService } from '@app/services/login/login.service';
 })
 export class SideMenuComponent implements OnInit {
 
-  constructor(public chatService: ChatService, public loginService: LoginService, private router: Router, private route: ActivatedRoute) { }
+  constructor(public chatService: ChatService, public profileService: ProfileService, public loginService: LoginService, private router: Router) { }
 
   ngOnInit(): void {}
 
-  onMyProfileBtn(username: string): void {
-    this.router.navigate([`../profile/${username}`], { relativeTo: this.route });
+  onMyProfileBtn(): void {
+    console.log("Current profil", this.loginService.username)
+    console.log("Current route", this.router.url)
+    this.router.navigate([`../profile/${this.loginService.username}`]);
   }
 }
