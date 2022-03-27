@@ -10,6 +10,7 @@ import { ChatroomUsersDialogComponent } from './chatroom-users-dialog/chatroom-u
 import { DeleteRoomDialogComponent } from './delete-room-dialog/delete-room-dialog.component';
 import { LeaveRoomDialogComponent } from './leave-room-dialog/leave-room-dialog.component';
 import { ProfileService } from '@app/services/profile/profile.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
     selector: 'app-chatroom',
@@ -28,7 +29,14 @@ export class ChatroomComponent implements AfterViewInit {
     isCurrentChatroomMine: boolean;
     isPublicChatroom: boolean;
 
-    constructor(public chatService: ChatService, public loginService: LoginService, public profileService: ProfileService, public dialog: MatDialog, private soundEffectsService: SoundEffectsService) {
+    constructor(
+      public chatService: ChatService,
+      public loginService: LoginService,
+      public profileService: ProfileService,
+      public dialog: MatDialog,
+      private soundEffectsService: SoundEffectsService,
+      private router: Router,
+      private route: ActivatedRoute) {
         this.userName = '';
         this.message = '';
         this.messageList = [];
@@ -132,6 +140,6 @@ export class ChatroomComponent implements AfterViewInit {
 
     getUserProfileInfos(username: string): void {
       console.log("Get info of", username);
-      this.profileService.getUserProfileInfos(username);
+      this.router.navigate([`../profile/${username}`], { relativeTo: this.route });
     }
 }

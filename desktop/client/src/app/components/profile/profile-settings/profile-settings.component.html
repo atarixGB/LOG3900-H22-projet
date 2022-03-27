@@ -5,7 +5,7 @@
    <!-- Profil settings page -->
    <div fxLayout="column" fxLayoutAlign="start stretch" fxFlex="auto">
       <div fxFlex="10"></div>
-      
+
       <!-- Header -->
       <div fxLayout="row" fxLayoutAlign="center center" >
          <h1 id="title">Paramètres du profil</h1>
@@ -54,7 +54,7 @@
             </div>
             <mat-form-field class="topPadding" appearance="outline">
                <mat-label>Modifiez votre description!</mat-label>
-               <textarea id="descriptionInput" matInput [(ngModel)]="this.profileSettingsService.newDescription"></textarea> 
+               <textarea id="descriptionInput" matInput [(ngModel)]="this.profileSettingsService.newDescription"></textarea>
             </mat-form-field>
 
          </div>
@@ -63,6 +63,7 @@
       <!-- Confirmation btn -->
       <div fxFlex="5"></div>
       <div fxLayout="row" fxLayoutAlign="center start">
+        <button mat-raised-button color="primary" (click)="onCancel()">Annuler</button>
          <button mat-raised-button color="warn" (click)="this.profileSettingsService.saveChanges()">Sauvegarder les changements</button>
       </div>
 

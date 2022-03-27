@@ -8,7 +8,7 @@
       <div fxLayout="row" fxLayoutAlign="center center" >
          <h1 id="title">Profil</h1>
       </div>
-      
+
       <!-- Avatar, username, email and description -->
       <div fxLayout="row" fxLayoutAlign="center center" >
 
@@ -26,9 +26,9 @@
             <span class="sectionTitle">Description:</span>
             <p id="description">{{this.profileService.description}}</p>
          </div>
-         
+
       </div>
-   
+
       <div fxFlex="5"></div>
 
       <!-- Statistics -->
@@ -59,14 +59,14 @@
                   <span>Un billion de temps</span>
                </div>
             </div>
-         
+
             <div fxFlex="2"></div>
          </div>
       </div>
-   
+
       <!-- Settings -->
       <div fxFlex="5"></div>
-      <div fxLayout="row" fxLayoutAlign="center start">
+      <div fxLayout="row" fxLayoutAlign="center start" *ngIf="this.isCurrentUserProfile">
          <button mat-raised-button color="warn" routerLink="/profileSettings">Paramètres du profil</button>
       </div>
    </div>

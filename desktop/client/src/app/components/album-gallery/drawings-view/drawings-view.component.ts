@@ -63,6 +63,6 @@ export class DrawingsViewComponent {
 
   getUserProfileInfos(username: string): void {
     console.log("Get info of", username);
-    this.profileService.getUserProfileInfos(username);
+    this.router.navigate([`../profile/${username}`], { relativeTo: this.route });
   }
 }

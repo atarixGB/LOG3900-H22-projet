@@ -1,5 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { ActivatedRoute, Router } from '@angular/router';
 import { IChatroom } from '@app/interfaces-enums/IChatroom';
 import { ProfileService } from '@app/services/profile/profile.service';
 
@@ -10,14 +11,15 @@ import { ProfileService } from '@app/services/profile/profile.service';
 })
 export class ChatroomUsersDialogComponent implements OnInit {
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: IChatroom, public profileService: ProfileService) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: IChatroom, public profileService: ProfileService, private router: Router,
+  private route: ActivatedRoute) { }
 
   ngOnInit(): void {
   }
 
   getUserProfileInfos(username:string): void {
     console.log("Get info of", username);
-    this.profileService.getUserProfileInfos(username);
+    this.router.navigate([`../profile/${username}`], { relativeTo: this.route });
   }
 
 }
