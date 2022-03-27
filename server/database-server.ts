@@ -447,6 +447,26 @@ app.post(
       }
     });
   });
+
+  //get all drawings that specified user liked
+  app.get("/drawings/favorite/:username", (request,response) => {
+    DB.collection("drawings").find( { likes: { $all: [ request.params.username ] } }).toArray(function (error, result) {
+      response.json(result);
+    })
+  })
+
+  //get all drawings of specified user that has at least one Like
+  app.get("/drawings/top/:username", (request,response) => {
+    let username = request.params.username;
+    DB.collection("drawings")
+    .find(
+      { owner: username },
+      { likes : { $exists : true, $type: "array", $ne : [] }})
+      .toArray(function (error, result) {
+      response.json(result);
+    })
+  })
+
 //==========================================================================================================
 // Album Management
 //==========================================================================================================

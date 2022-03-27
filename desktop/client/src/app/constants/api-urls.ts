@@ -14,11 +14,12 @@ export const CREATE_DRAWING_URL = `${DATABASE_URL}/drawing/create`;
 export const SAVE_DRAWING_URL = `${DATABASE_URL}/drawing/save`
 export const GET_DRAWING_URL = `${DATABASE_URL}/drawings`;
 export const LIKE_DRAWING_URL = `${DATABASE_URL}/drawings/addLike`;
+export const GET_USER_FAVORITE_DRAWINGS_URL = `${DATABASE_URL}/drawings/favorite`
+export const GET_USER_TOP_X_DRAWINGS_URL = `${DATABASE_URL}/drawings/top`
 
 export const PROFILE_UPDATE_URL = `${DATABASE_URL}/profileUpdate`;
 export const PROFILE_URL = `${DATABASE_URL}/profile`;
 
-export const PUBLIC_DRAWINGS_URL = `${DATABASE_URL}/public-drawings`;
 export const SIGN_UP_URL = `${DATABASE_URL}/register`;
 export const LOGIN_URL = `${DATABASE_URL}/login`;
 

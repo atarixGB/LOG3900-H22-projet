@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { IAlbum } from '@app/interfaces-enums/IAlbum'
 import { IDrawing } from '@app/interfaces-enums/IDrawing'
 import { LoginService } from '@app/services/login/login.service';
-import { ALBUM_URL, PUBLIC_DRAWINGS_URL, CREATE_DRAWING_URL, JOIN_ALBUM_URL, DECLINE_MEMBERSHIP_REQUEST_URL, ACCEPT_MEMBERSHIP_REQUEST_URL, UPDATE_ALBUM_PARAMETERS_URL, ADD_DRAWING_TO_ALBUM_URL, GET_DRAWING_URL, SAVE_DRAWING_URL, LIKE_DRAWING_URL } from '@app/constants/api-urls';
+import { ALBUM_URL, CREATE_DRAWING_URL, JOIN_ALBUM_URL, DECLINE_MEMBERSHIP_REQUEST_URL, ACCEPT_MEMBERSHIP_REQUEST_URL, UPDATE_ALBUM_PARAMETERS_URL, ADD_DRAWING_TO_ALBUM_URL, GET_DRAWING_URL, SAVE_DRAWING_URL, LIKE_DRAWING_URL, GET_USER_FAVORITE_DRAWINGS_URL, GET_USER_TOP_X_DRAWINGS_URL } from '@app/constants/api-urls';
 import { PUBLIC_ALBUM } from '@app/constants/constants';
 import { DrawingService } from '../editor/drawing/drawing.service';
 
@@ -13,11 +13,13 @@ import { DrawingService } from '../editor/drawing/drawing.service';
 export class AlbumGalleryService {
   publicAlbums: IAlbum[];
   myAlbums: IAlbum[];
+
   currentAlbum: IAlbum;
+  currentDrawing: IDrawing;
+
   selectedAlbumId: string | void;
   selectedAlbumName: string | void;
 
-  currentDrawing: IDrawing;
   drawings: IDrawing[];
 
   constructor(private httpClient: HttpClient, private loginService: LoginService, private drawingService: DrawingService) {
@@ -305,12 +307,22 @@ export class AlbumGalleryService {
   }
 
   fetchAllPublicDrawings(): void {
-    const url = PUBLIC_DRAWINGS_URL;
-    console.log(url);
     console.log("Fetching all public drawings from server...");
     // this.httpClient.get(url).subscribe(
     //   (result) => {},
     //   (error) => {}
     // )
+  }
+
+  // All drawings that current user liked
+  fetchTopDrawings(username: string): void {
+    const url = `${GET_USER_FAVORITE_DRAWINGS_URL}/${this.loginService.username}`;
+    console.log(url);
+  }
+
+  // All current user's drawings that has at least one like
+  fetchFavoriteDrawings(username: string): void {
+    const url = `${GET_USER_TOP_X_DRAWINGS_URL}/${this.loginService.username}`;
+    console.log(url);
   }
 }
