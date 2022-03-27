@@ -67,7 +67,6 @@ import { ChatroomUsersDialogComponent } from './components/chat/chatroom/chatroo
 import { MembersListDialogComponent } from './components/album-gallery/drawings-view/members-list-dialog/members-list-dialog.component';
 import { AlbumSettingsDialogComponent } from './components/album-gallery/drawings-view/album-settings-dialog/album-settings-dialog.component';
 import { JoinRequestDialogComponent } from './components/album-gallery/public-albums/join-request-dialog/join-request-dialog.component';
-import { ViewProfileDialogComponent } from './components/profile/view-profile-dialog/view-profile-dialog.component';
 
 @NgModule({
     declarations: [
@@ -114,7 +113,6 @@ import { ViewProfileDialogComponent } from './components/profile/view-profile-di
         MembersListDialogComponent,
         AlbumSettingsDialogComponent,
         JoinRequestDialogComponent,
-        ViewProfileDialogComponent,
     ],
     imports: [
         BrowserModule,
