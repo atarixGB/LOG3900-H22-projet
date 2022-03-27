@@ -24,6 +24,8 @@ export class AlbumGalleryService {
 
   currentUserFavoriteDrawings: IDrawing[];
   currentUserTopDrawings: IDrawing[];
+  currentUserFavoriteDrawingsData: IDrawing[];
+  currentUserTopDrawingsID: IDrawing[];
 
   constructor(private httpClient: HttpClient, private loginService: LoginService, private drawingService: DrawingService) {
     this.publicAlbums = [];
@@ -38,6 +40,8 @@ export class AlbumGalleryService {
 
     this.currentUserFavoriteDrawings = [];
     this.currentUserTopDrawings = [];
+    this.currentUserFavoriteDrawingsData  = [];
+    this.currentUserTopDrawingsID = [];
   }
 
   createDrawing(drawingName: string): void {
@@ -324,12 +328,24 @@ export class AlbumGalleryService {
   fetchFavoriteDrawings(username: string): void {
     const url = `${GET_USER_FAVORITE_DRAWINGS_URL}/${username}`;
     console.log(url);
+
     this.httpClient.get(url).subscribe(
       (drawings: IDrawing[]) => {
         console.log(drawings);
+
         for (const drawing of drawings) {
           this.currentUserFavoriteDrawings.push(drawing);
         }
+
+        this.currentUserFavoriteDrawings.forEach(drawing => {
+          this.httpClient.get(`${GET_DRAWING_URL}/${drawing._id}`).subscribe(
+            (result: IDrawing) => {
+              this.currentUserFavoriteDrawingsData.push(result);
+            },
+            (error) => {
+              console.log(`Impossible de charger le dessin avec le ID ${drawing._id} de la base de données`, error);
+            })
+        })
       },
       (error) => {
         console.log("Impossible de charger les dessins de la base de données", error);

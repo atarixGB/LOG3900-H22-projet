@@ -17,6 +17,11 @@
     </button>
 
 
+    <div *ngFor="let drawing of this.albumGalleryService.currentUserFavoriteDrawingsData">
+      <img height="100px" src="data:image/png;base64,{{ drawing.data }}">
+    </div>
+
+
   </div>
 
 </div>
