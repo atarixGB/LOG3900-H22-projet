@@ -369,24 +369,6 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
         });
     });
 
-    // //Save drawing data
-    // app.put("/drawing/:drawingId", (request, response, next) => {
-
-    //   var drawingId = request.params.drawingId.replaceAll(/"/g, '');
-    //   var data =  request.body.data;
-
-    //   console.log(drawingId);
-    //   console.log(data);
-
-    //   DB.collection("drawings").findOneAndUpdate({ _id: mongoose.Types.ObjectId(drawingId) }, { $set: {"data": data}}, { returnDocument: 'after' }, (err, res) => {
-    //     response.json(200);
-    //     console.log(drawingId);
-    //     console.log(data);
-    //     console.log(res);
-    //   });
-    // });
-
-    // const upload = multer({dest: '/public/data/uploads/'});
     //Save drawing data
     app.post("/drawing/save/:drawingId", (request, response, next) => {
       let drawingId = request.params.drawingId;
@@ -519,8 +501,6 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
         // console.log(res.drawingIDs);
       })
     });
-
-
 
     //add drawing to an album
     app.put("/albums/addDrawing/:albumName", (request, response, next) => {
@@ -657,37 +637,10 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
         });
     });
 
-    //update album attributes
-    app.post("/albumUpdate", (request, response, next) => {
-      var post_data = request.body;
-      var oldAlbumName = post_data.oldAlbumName;
-      var newAlbumName = post_data.newAlbumName;
-      var newDescription = post_data.newDescription;
-
-      //check if an album already has the new name
-      DB.collection("albums")
-        .find({ name: newAlbumName })
-        .count(function (err, number) {
-          if (number != 0 && oldAlbumName != newAlbumName) {
-            response.json(false);
-            console.log("album name already used");
-          } else {
-            // Update album data
-            DB.collection("albums").updateOne({ name: oldAlbumName }, {
-              $set: {
-                "name": newAlbumName,
-                "description": newDescription,
-              },
-            }).then(result => {
-              response.json(200);
-            });
-          }
-        });
-    });
-
     //==========================================================================================================
-    // Profile modification
+    // Profile 
     //==========================================================================================================
+    
     //Getting a user's data 
     app.get("/profile/:username", (request, response, next) => {
       var identifier = request.params.username;
@@ -756,84 +709,6 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
       );
     });
 
-    //Updating a users data
-    app.post("/profileUpdate", (request, response, next) => {
-      var post_data = request.body;
-      var oldUsername = post_data.oldUsername;
-      var newUsername = post_data.newUsername;
-      var avatar = post_data.newAvatar;
-      var newEmail = post_data.newEmail;
-      var description = post_data.newDescription;
-
-      var db = client.db("PolyGramDB");
-
-      //check if a user already has the new name
-      db.collection("users")
-        .find({ identifier: newUsername })
-        .count(function (err, number) {
-          if (number != 0 && oldUsername != newUsername) {
-            response.json(403);
-            console.log("identifier already exists");
-          } else {
-            // Update user data
-            db.collection("users").updateOne({ identifier: oldUsername }, {
-              $set: {
-                "identifier": newUsername,
-                "avatar": avatar,
-                "description": description,
-                "email": newEmail,
-              },
-            }).then(result => {
-              response.json(200);
-              console.log(result)
-            });
-          }
-        });
-    });
-    app.post("/deleteRoom", (request, response, next) => {
-      var post_data = request.body;
-
-      var roomName = post_data.roomName;
-
-      var db = client.db("PolyGramDB");
-
-      db.collection("rooms")
-        .find({ roomName: roomName })
-        .count(function (err, number) {
-          if (number == 0) {
-            response.json(404);
-            console.log("room does not exists");
-          } else {
-            db.collection("rooms").deleteOne({ roomName: roomName },
-              function (error, result) {
-                response.json(201);
-                console.log("room deleted");
-              }
-            );
-          }
-        });
-    });
-
-    app.get("/getRoomParameters", (request, response, next) => {
-
-      var post_data = request.query;
-      var roomName = post_data.roomName;
-
-      var db = client.db("PolyGramDB");
-
-      db.collection("rooms")
-        .findOne({ roomName: roomName }, function (err, result) {
-          if (err) {
-            console.log("error getting");
-            response.status(400).send("Error fetching rooms");
-          } else {
-            response.json(result)
-            console.log("Getting One Room");
-          }
-        });
-    });
-
-
     // Start web server
     const server = app.listen(SERVER_PORT, () => {
       console.log(
@@ -848,10 +723,10 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
 //==========================================================================================================
 
 let saveImageAsPNG = function (imageData, drawingId, filepath) {
-  console.log("SAVE IMAGE AS PNG!!!")
+  console.log("Image succesfully saved in the server as PNG")
   const metadata = imageData.replace(/^data:image\/\w+;base64,/, '');
   const dataBuffer = Buffer.from(metadata, "base64");
-  console.log("DATA BUFFER:", dataBuffer)
+  console.log("Data buffer:", dataBuffer)
   fs.writeFile(`${filepath}/${drawingId}.png`, dataBuffer, (error) => {
     if (error) throw error;
   });
