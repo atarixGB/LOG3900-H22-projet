@@ -709,6 +709,14 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
       );
     });
 
+    // For Development Purpose Only: Delete all drawings from DB
+    app.delete("/delete", (request, response) => {
+      DB.collection("drawings").remove({}, (err, result) => {
+        if (err) console.log("CANNOT DELETE");
+        else response.json("DELETE OK")
+      })
+    })
+
     // Start web server
     const server = app.listen(SERVER_PORT, () => {
       console.log(
