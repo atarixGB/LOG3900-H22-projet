@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.*
 import android.net.ipsec.ike.exceptions.InvalidMajorVersionException
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.graphics.set
 import androidx.fragment.app.activityViewModels
 import com.example.mobile.Interface.IPencilStroke
 import com.example.mobile.Interface.IVec2
@@ -21,6 +22,7 @@ import kotlin.math.abs
 class  Selection(context: Context, baseCanvas: Canvas, val socket : DrawingCollaboration) : Tool(context, baseCanvas, socket) {
     var strokes = ArrayList<Stroke>()
     var strokesSelected = ArrayList<Stroke>()
+    var strokesSelectedBitmap: MutableMap<String, Bitmap> = mutableMapOf()
     private var currentStroke: Stroke? = null
     private var selectionCanvas: Canvas? = null
     private var otherSelectionCanvas: Canvas? = null
@@ -43,12 +45,13 @@ class  Selection(context: Context, baseCanvas: Canvas, val socket : DrawingColla
         if (currentStroke != null && !strokesSelected.contains(currentStroke)) {
             if (!isInBounds(currentStroke!!.boundingPoints, IVec2(mx, my))) {
 
+                sendPasteSelection()
                 resetSelection()
 
-                var jo = JSONObject()
-                jo.put("strokeIndex", selectedIndex)
-                jo.put("sender", socket.socket.id())
-                socket.socket.emit("broadcastPasteRequest", jo)
+//                var jo = JSONObject()
+//                jo.put("strokeIndex", selectedIndex)
+//                jo.put("sender", socket.socket.id())
+//                socket.socket.emit("broadcastPasteRequest", jo)
 
                 if (isToolSelection == false) {
                     nextTool = oldTool!!
@@ -65,10 +68,10 @@ class  Selection(context: Context, baseCanvas: Canvas, val socket : DrawingColla
     }
 
     fun resetSelection() {
-        if (currentStroke != null) {
-            if (!strokesSelected.contains(currentStroke)) {
+        if (currentStroke != null && !strokesSelected.contains(currentStroke)) {
+//            if (!strokesSelected.contains(currentStroke)) {
                 currentStroke!!.prepForBaseCanvas()
-            }
+//            }
             currentStroke!!.isSelected = false
 
             if (selectionCanvas != null) {
@@ -84,8 +87,18 @@ class  Selection(context: Context, baseCanvas: Canvas, val socket : DrawingColla
                 }
             }
 
-            strokesSelected.forEachIndexed { i, element ->
-                createOtherSelectionCanvas(element)
+//            strokesSelected.forEachIndexed { i, element ->
+//                createOtherSelectionCanvas(null, element)
+//            }
+            var i = 0
+            strokesSelectedBitmap.forEach {
+                baseCanvas.drawBitmap(
+                    it.value, //hereeeeeeeeeeeeeeeeeeeeeeeeeeeee
+                    strokesSelected[i].boundingPoints[0].x,
+                    strokesSelected[i].boundingPoints[0].y,
+                    null
+                )
+                i++
             }
 
             currentStroke = null
@@ -186,8 +199,18 @@ class  Selection(context: Context, baseCanvas: Canvas, val socket : DrawingColla
             strokes[selectedIndex!!] = stroke
         }
 
-        strokesSelected.forEachIndexed { i, element ->
-            createOtherSelectionCanvas(element)
+//        strokesSelected.forEachIndexed { i, element ->
+//            createOtherSelectionCanvas(null, element)
+//        }
+        var i = 0
+        strokesSelectedBitmap.forEach {
+            baseCanvas.drawBitmap(
+                it.value, //hereeeeeeeeeeeeeeeeeeeeeeeeeeeee
+                strokesSelected[i].boundingPoints[0].x,
+                strokesSelected[i].boundingPoints[0].y,
+                null
+            )
+            i++
         }
 
 
@@ -277,7 +300,7 @@ class  Selection(context: Context, baseCanvas: Canvas, val socket : DrawingColla
         }
     }
 
-    fun changeReceivedWidth(width: Float, strokeIndex: Int) {
+    fun changeReceivedWidth(sender: String, width: Float, strokeIndex: Int) {
         val currentStroke = strokes[strokeIndex]
         if (currentStroke != null) {
             currentStroke.currentStrokeWidth = width
@@ -308,13 +331,29 @@ class  Selection(context: Context, baseCanvas: Canvas, val socket : DrawingColla
             }
 
             //redessiner les formes selectionner par les autres
-            strokesSelected.forEachIndexed { i, element ->
-                createOtherSelectionCanvas(element)
+//            strokesSelected.forEachIndexed { i, element ->
+//                createOtherSelectionCanvas(null, element)
+//            }
+            var i = 0
+            strokesSelectedBitmap.forEach {
+                if (it.key != sender) {
+                    baseCanvas.drawBitmap(
+                        it.value, //hereeeeeeeeeeeeeeeeeeeeeeeeeeeee
+                        strokesSelected[i].boundingPoints[0].x,
+                        strokesSelected[i].boundingPoints[0].y,
+                        null
+                    )
+                    i++
+                } else {
+                    strokesSelectedBitmap.remove(sender)
+                    strokesSelected[i] = currentStroke
+                    createOtherSelectionCanvas(sender, currentStroke)
+                }
             }
         }
     }
 
-    fun changeReceivedColor(color: Int, strokeIndex: Int) {
+    fun changeReceivedColor(sender: String, color: Int, strokeIndex: Int) {
         val currentStroke = strokes[strokeIndex]
         if (currentStroke != null) {
             currentStroke!!.currentStrokeColor = color
@@ -346,8 +385,24 @@ class  Selection(context: Context, baseCanvas: Canvas, val socket : DrawingColla
             }
 
             //redessiner les formes selectionner par les autres
-            strokesSelected.forEachIndexed { i, element ->
-                createOtherSelectionCanvas(element)
+//            strokesSelected.forEachIndexed { i, element ->
+//                createOtherSelectionCanvas(null, element)
+//            }
+            var i = 0
+            strokesSelectedBitmap.forEach {
+                if (it.key != sender) {
+                    baseCanvas.drawBitmap(
+                        it.value, //hereeeeeeeeeeeeeeeeeeeeeeeeeeeee
+                        strokesSelected[i].boundingPoints[0].x,
+                        strokesSelected[i].boundingPoints[0].y,
+                        null
+                    )
+                    i++
+                } else {
+                    strokesSelectedBitmap.remove(sender)
+                    strokesSelected[i] = currentStroke
+                    createOtherSelectionCanvas(sender, currentStroke)
+                }
             }
         }
     }
@@ -357,6 +412,7 @@ class  Selection(context: Context, baseCanvas: Canvas, val socket : DrawingColla
         val strokeIndex = stroke.getInt("strokeIndex")
 
         strokesSelected.add(strokes[strokeIndex])
+        //strokesSelectedBitmap[sender] =
         displaySelection(sender, strokeIndex)
     }
 
@@ -370,14 +426,14 @@ class  Selection(context: Context, baseCanvas: Canvas, val socket : DrawingColla
 
     private fun displaySelection(sender: String, strokeIndex: Int) {
         val stroke = strokes[strokeIndex]
-        createOtherSelectionCanvas(stroke)
+        createOtherSelectionCanvas(sender, stroke)
     }
 
-    private fun createOtherSelectionCanvas(stroke: Stroke) {
+    private fun createOtherSelectionCanvas(sender: String?, stroke: Stroke) {
         val width = (stroke.boundingPoints[1].x - stroke.boundingPoints[0].x).toInt()
         val height = (stroke.boundingPoints[1].y - stroke.boundingPoints[0].y).toInt()
-        otherSelectionBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
-        otherSelectionCanvas = Canvas(otherSelectionBitmap!!)
+        val otherSelectionBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+        val otherSelectionCanvas = Canvas(otherSelectionBitmap!!)
         val borderPaint = Paint().apply {
             color = ResourcesCompat.getColor(context.resources, R.color.blue, null)
             isAntiAlias = true
@@ -391,9 +447,10 @@ class  Selection(context: Context, baseCanvas: Canvas, val socket : DrawingColla
 
         drawStrokeOnOtherSelectionCanvas(stroke, otherSelectionCanvas!!)
         drawOtherSelectedStrokesOnBaseCanvas(stroke, otherSelectionBitmap)
+        strokesSelectedBitmap.put(sender!!, otherSelectionBitmap)
     }
 
-    fun onPasteRequest(strokeIndex: Int) {
+    fun onPasteRequest(sender: String, strokeIndex: Int) {
         val currentStroke = strokes[strokeIndex]
         if (currentStroke != null) {
             if (otherSelectionCanvas != null) {
@@ -423,18 +480,28 @@ class  Selection(context: Context, baseCanvas: Canvas, val socket : DrawingColla
             }
 
             strokesSelected.remove(currentStroke)
+            strokesSelectedBitmap.remove(sender)
             //redessiner les formes selectionner par les autres
+            var i = 0
+            strokesSelectedBitmap.forEach {
+                baseCanvas.drawBitmap(
+                    it.value, //hereeeeeeeeeeeeeeeeeeeeeeeeeeeee
+                    strokesSelected[i].boundingPoints[0].x,
+                    strokesSelected[i].boundingPoints[0].y,
+                    null
+                )
+                i++
+            }
         }
-
     }
 
     fun sendPasteSelection() {
-        var jo = JSONObject()
-        jo.put("strokeIndex", selectedIndex)
-        jo.put("sender", socket.socket.id())
-        socket.socket.emit("broadcastPasteRequest", jo)
-
-        resetSelection()
+        if (selectedIndex != null && currentStroke != null && !strokesSelected.contains(strokes[selectedIndex!!])) {
+            var jo = JSONObject()
+            jo.put("strokeIndex", selectedIndex)
+            jo.put("sender", socket.socket.id())
+            socket.socket.emit("broadcastPasteRequest", jo)
+        }
     }
 
     fun deleteStroke() {
@@ -445,6 +512,9 @@ class  Selection(context: Context, baseCanvas: Canvas, val socket : DrawingColla
             socket.socket.emit("broadcastDeleteRequest", jo)
 
             strokes.removeAt(selectedIndex!!)
+            strokesSelected.remove(currentStroke)
+            strokesSelectedBitmap.remove(socket.socket.id())
+//            sendPasteSelection()
             resetSelection()
             if (!isToolSelection!!) {
                 nextTool = oldTool!!
@@ -454,10 +524,11 @@ class  Selection(context: Context, baseCanvas: Canvas, val socket : DrawingColla
         }
     }
 
-    fun onDeleteRequest(strokeIndex: Int) {
+    fun onDeleteRequest(sender: String, strokeIndex: Int) {
         val currentStroke = strokes[strokeIndex]
         strokes.remove(currentStroke)
         strokesSelected.remove(currentStroke)
+        strokesSelectedBitmap.remove(sender)
 
         if (otherSelectionCanvas != null) {
             otherSelectionCanvas!!.drawColor(
@@ -485,52 +556,68 @@ class  Selection(context: Context, baseCanvas: Canvas, val socket : DrawingColla
         }
 
         //redessiner les formes selectionner par les autres
-        strokesSelected.forEachIndexed { i, element ->
-            createOtherSelectionCanvas(element)
+//        strokesSelected.forEachIndexed { i, element ->
+//            createOtherSelectionCanvas(null, element)
+//        }
+        var i = 0
+        strokesSelectedBitmap.forEach {
+            baseCanvas.drawBitmap(
+                it.value, //hereeeeeeeeeeeeeeeeeeeeeeeeeeeee
+                strokesSelected[i].boundingPoints[0].x,
+                strokesSelected[i].boundingPoints[0].y,
+                null
+            )
+            i++
         }
     }
 
-    fun onMoveRequest(pos: IVec2) {
-        //on doit avoir un map pour voir quelle selection des strokes selected on va move
-        if (strokesSelected[0] != null) {
-            var index = strokes.indexOf(strokesSelected[0])
+    fun onMoveRequest(sender: String, pos: IVec2) {
+//        var index = strokes.indexOf(strokesSelected[0])
 
-            strokes[index].updateMove(pos)
-
-            strokes[index].boundingPoints[1] = IVec2(
-                pos.x - strokesSelected[0].boundingPoints[0].x + strokesSelected[0].boundingPoints[1].x,
-                pos.y - strokesSelected[0].boundingPoints[0].y + strokesSelected[0].boundingPoints[1].y
-            )
-            strokes[index].boundingPoints[0] = IVec2(pos.x, pos.y)
-
-            strokesSelected[0] = strokes[index]
-
-
-
-            baseCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR) //clear le base canvas
-
-            strokes.forEachIndexed { i, element ->
-                if (i != selectedIndex && !strokesSelected.contains(element)) {
-                    element.drawStroke(baseCanvas) //redessiner les autres formes sauf la forme selectionner
-                }
+        var i = 0
+        strokesSelectedBitmap.forEach {
+            if (it.key != sender) {
+                i++
             }
+        }
+        var index = strokes.indexOf(strokesSelected[i])
 
-            if (selectionBitmap != null && currentStroke != null) {
-                baseCanvas.drawBitmap(
-                    selectionBitmap!!,
-                    currentStroke!!.boundingPoints[0].x,
-                    currentStroke!!.boundingPoints[0].y,
-                    null
-                ) //dessiner la forme selectionner sur le base
-                strokes[selectedIndex!!] = currentStroke!!
+        strokes[index].updateMove(pos)
+
+        strokes[index].boundingPoints[1] = IVec2(
+            pos.x - strokesSelected[0].boundingPoints[0].x + strokesSelected[0].boundingPoints[1].x,
+            pos.y - strokesSelected[0].boundingPoints[0].y + strokesSelected[0].boundingPoints[1].y
+        )
+        strokes[index].boundingPoints[0] = IVec2(pos.x, pos.y)
+
+        strokesSelected[0] = strokes[index]
+
+
+
+        baseCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR) //clear le base canvas
+
+        strokes.forEachIndexed { i, element ->
+            if (i != selectedIndex && !strokesSelected.contains(element)) {
+                element.drawStroke(baseCanvas) //redessiner les autres formes sauf la forme selectionner
             }
+        }
 
+        if (selectionBitmap != null && currentStroke != null) {
             baseCanvas.drawBitmap(
-                otherSelectionBitmap!!,
-                pos.x,
-                pos.y,
+                selectionBitmap!!,
+                currentStroke!!.boundingPoints[0].x,
+                currentStroke!!.boundingPoints[0].y,
                 null
             ) //dessiner la forme selectionner sur le base
+            strokes[selectedIndex!!] = currentStroke!!
         }
+
+        baseCanvas.drawBitmap(
+            strokesSelectedBitmap[sender]!!,
+            pos.x,
+            pos.y,
+            null
+        ) //dessiner la forme selectionner sur le base
     }
 }
+

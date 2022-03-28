@@ -149,7 +149,7 @@ class DrawingZoneFragment : Fragment() {
             if (socket.socket.id() != newWidth.getString("sender")) {
                 val width = newWidth.getInt("value").toFloat()
                 val strokeIndex = newWidth.getInt("strokeIndex")
-                toolManager.selection.changeReceivedWidth(width, strokeIndex)
+                toolManager.selection.changeReceivedWidth(newWidth.getString("sender"), width, strokeIndex)
                 invalidate()
             }
         }
@@ -158,7 +158,7 @@ class DrawingZoneFragment : Fragment() {
             if (socket.socket.id() != newColor.getString("sender")) {
                 val color = toolManager.currentTool.toIntColor(newColor.getString("color"))
                 val strokeIndex = newColor.getInt("strokeIndex")
-                toolManager.selection.changeReceivedColor(color, strokeIndex)
+                toolManager.selection.changeReceivedColor(newColor.getString("sender"), color, strokeIndex)
                 invalidate()
             }
         }
@@ -166,7 +166,7 @@ class DrawingZoneFragment : Fragment() {
         fun onPasteRequest(stroke: JSONObject){
             if (socket.socket.id() != stroke.getString("sender")) {
                 val strokeIndex = stroke.getInt("strokeIndex")
-                toolManager.selection.onPasteRequest(strokeIndex)
+                toolManager.selection.onPasteRequest(stroke.getString("sender"), strokeIndex)
                 invalidate()
             }
         }
@@ -174,7 +174,7 @@ class DrawingZoneFragment : Fragment() {
         fun onDeleteRequest(stroke: JSONObject){
             if (socket.socket.id() != stroke.getString("sender")) {
                 val strokeIndex = stroke.getInt("strokeIndex")
-                toolManager.selection.onDeleteRequest(strokeIndex)
+                toolManager.selection.onDeleteRequest(stroke.getString("sender"),strokeIndex)
                 invalidate()
             }
         }
@@ -183,7 +183,7 @@ class DrawingZoneFragment : Fragment() {
             if (socket.socket.id() != stroke.getString("sender")) {
                 var obj = stroke["pos"] as JSONObject
                 val pos = IVec2(obj.getDouble("x").toFloat(), obj.getDouble("y").toFloat())
-                toolManager.selection.onMoveRequest(pos)
+                toolManager.selection.onMoveRequest(stroke.getString("sender"), pos)
                 invalidate()
             }
         }
@@ -275,6 +275,7 @@ class DrawingZoneFragment : Fragment() {
                 this.toolManager.changeTool(tool)
                 resetPath()
                 toolManager.selection.sendPasteSelection()
+                toolManager.selection.resetSelection()
                 if (tool == ToolbarFragment.MenuItem.SELECTION) {
                     toolManager.selection.isToolSelection = true
                 }

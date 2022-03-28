@@ -31,27 +31,31 @@ class Rectangle (context: Context, baseCanvas: Canvas, val socket : DrawingColla
 
 
     override fun touchUp(){
-        onDraw(baseCanvas)
-        this.sendRectangleStroke(left, top, right, bottom)
+        if (mStartX != mx || mStartY != my) {
+            onDraw(baseCanvas)
+            this.sendRectangleStroke(left, top, right, bottom)
 
-        //ajout a l'array list des strokes
-        val iRectangleStroke = IRectangleStroke(getBoundingPoints(),
-            getPaintParameters().color,
-            Color.WHITE, //to change
-            getPaintParameters().strokeWidth,
-            false,
-            getRectWidthAndHeight().x,
-            getRectWidthAndHeight().y,
-            getTopLeftCorner())
-        selection.addStroke(iRectangleStroke)
+            //ajout a l'array list des strokes
+            val iRectangleStroke = IRectangleStroke(
+                getBoundingPoints(),
+                getPaintParameters().color,
+                Color.WHITE, //to change
+                getPaintParameters().strokeWidth,
+                false,
+                getRectWidthAndHeight().x,
+                getRectWidthAndHeight().y,
+                getTopLeftCorner()
+            )
+            selection.addStroke(iRectangleStroke)
 
-        //selectionner ce stroke
-        selection.selectStroke(iRectangleStroke)
+            //selectionner ce stroke
+            selection.selectStroke(iRectangleStroke)
 
-        //changer le tool a selection
-        selection.isToolSelection = false
-        selection.oldTool = ToolbarFragment.MenuItem.RECTANGLE
-        nextTool = ToolbarFragment.MenuItem.SELECTION
+            //changer le tool a selection
+            selection.isToolSelection = false
+            selection.oldTool = ToolbarFragment.MenuItem.RECTANGLE
+            nextTool = ToolbarFragment.MenuItem.SELECTION
+        }
     }
 
     private fun getRectWidthAndHeight(): IVec2{

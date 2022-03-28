@@ -31,26 +31,30 @@ class  Ellipse(context: Context, baseCanvas: Canvas, val socket : DrawingCollabo
     override fun touchMove() {}
 
     override fun touchUp() {
-        onDraw(baseCanvas)
-        this.sendEllipseStroke(left, top, right, bottom)
+        if (mStartX != mx || mStartY != my) {
+            onDraw(baseCanvas)
+            this.sendEllipseStroke(left, top, right, bottom)
 
-        //ajout a l'array list des strokes
-        val iEllipseStroke = IEllipseStroke(getBoundingPoints(),
-            getPaintParameters().color,
-            Color.WHITE, //to change
-            getPaintParameters().strokeWidth,
-            false,
-            getCenter(),
-            getRadius())
-        selection.addStroke(iEllipseStroke)
+            //ajout a l'array list des strokes
+            val iEllipseStroke = IEllipseStroke(
+                getBoundingPoints(),
+                getPaintParameters().color,
+                Color.WHITE, //to change
+                getPaintParameters().strokeWidth,
+                false,
+                getCenter(),
+                getRadius()
+            )
+            selection.addStroke(iEllipseStroke)
 
-        //selectionner ce stroke
-        selection.selectStroke(iEllipseStroke)
+            //selectionner ce stroke
+            selection.selectStroke(iEllipseStroke)
 
-        //changer le tool a selection
-        selection.isToolSelection = false
-        selection.oldTool = ToolbarFragment.MenuItem.OVAL
-        nextTool = ToolbarFragment.MenuItem.SELECTION
+            //changer le tool a selection
+            selection.isToolSelection = false
+            selection.oldTool = ToolbarFragment.MenuItem.OVAL
+            nextTool = ToolbarFragment.MenuItem.SELECTION
+        }
     }
 
     private fun getCenter(): IVec2{
