@@ -16,6 +16,10 @@ export class TopDrawingsComponent implements OnInit {
     this.albumGalleryService.fetchTopDrawings(this.profileService.username);
   }
 
+  ngOnDestroy(): void {
+    this.albumGalleryService.topDrawingsData = [];
+  }
+
   backToProfil(username: string): void {
     this.router.navigate([`../profile/${username}`], { relativeTo: this.route });
   }

@@ -16,6 +16,10 @@ export class FavoriteDrawingsComponent implements OnInit {
     this.albumGalleryService.fetchFavoriteDrawings(this.profileService.username);
   }
 
+  ngOnDestroy(): void {
+    this.albumGalleryService.favoriteDrawingsData = [];
+  }
+
   backToProfil(username: string): void {
     this.router.navigate([`../profile/${username}`], { relativeTo: this.route });
   }
