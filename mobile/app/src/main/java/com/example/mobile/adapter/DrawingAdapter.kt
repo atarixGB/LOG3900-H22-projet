@@ -24,7 +24,7 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.item_drawing.view.*
 
 
-class DrawingAdapter (val context: Context?, var drawings: ArrayList<IDrawing>, val user: String) : RecyclerView.Adapter<DrawingAdapter.DrawingViewHolder>(),DrawingNameModificationPopUp.DialogListener,ChangeAlbumPopUp.DialogListener {
+class DrawingAdapter (val context: Context?, var drawings: ArrayList<IDrawing>, val user: String) : RecyclerView.Adapter<DrawingAdapter.DrawingViewHolder>(), ChangeAlbumPopUp.DialogListener {
 
     private var listener: DrawingAdapterListener = context as DrawingAdapterListener
     private lateinit var dialogEditDrawingName: DrawingNameModificationPopUp
@@ -86,13 +86,14 @@ class DrawingAdapter (val context: Context?, var drawings: ArrayList<IDrawing>, 
                     when (menuItem.itemId) {
                         R.id.menu_editDrawingParameters -> {
                             //ouvrir pop up modification nom album
-                            dialogEditDrawingName= DrawingNameModificationPopUp(currentDrawing.name)
+                            dialogEditDrawingName= DrawingNameModificationPopUp(currentDrawing.name, position)
                             dialogEditDrawingName.show((context as AppCompatActivity).supportFragmentManager,"customDialog")
-                            currentDrawing.name=newDrawingName
+//                            currentDrawing.name=newDrawingName
+//                            drawingName.text = newDrawingName
                             true
                         }
                         R.id.menu_changeAlbum -> {
-                            dialogChangeAlbumName= ChangeAlbumPopUp(currentDrawing._id!!,currentDrawing.albumName,user)
+                            dialogChangeAlbumName= ChangeAlbumPopUp(currentDrawing._id!!,currentDrawing.albumName,user, position)
                             dialogChangeAlbumName.show((context as AppCompatActivity).supportFragmentManager,"customDialog")
 
                             true
@@ -149,6 +150,14 @@ class DrawingAdapter (val context: Context?, var drawings: ArrayList<IDrawing>, 
         drawings.add(drawing)
     }
 
+    fun changeDrawingName(newDrawingName: String, position: Int) {
+        drawings[position].name = newDrawingName
+    }
+
+    fun deleteDrawings(position: Int) {
+        drawings.removeAt(position)
+    }
+
     fun removeDrawing(drawing:IDrawing){
         drawings.remove(drawing)
     }
@@ -202,11 +211,11 @@ class DrawingAdapter (val context: Context?, var drawings: ArrayList<IDrawing>, 
 
 
 
-    override fun popUpListener(drawingName: String) {
-        this.newDrawingName=drawingName
-    }
+//    override fun popUpListener(drawingName: String) {
+//        this.newDrawingName=drawingName
+//    }
 
-    override fun changeAlbumPopUpListener(albumName: String) {
+    override fun changeAlbumPopUpListener(albumName: String, position: Int) {
         this.newAlbum=albumName
     }
 }

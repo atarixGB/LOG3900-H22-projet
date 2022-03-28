@@ -7,6 +7,7 @@ import android.widget.ImageButton
 import android.widget.SearchView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.view.isVisible
@@ -18,9 +19,11 @@ import com.example.mobile.Interface.IDrawing
 import com.example.mobile.R
 import com.example.mobile.Retrofit.IMyService
 import com.example.mobile.Retrofit.RetrofitClient
+import com.example.mobile.adapter.AlbumAdapter
 import com.example.mobile.adapter.DrawingAdapter
 import com.example.mobile.adapter.UserAdapter
 import com.example.mobile.popup.*
+import com.example.mobile.viewModel.SharedViewModelCreateDrawingPopUp
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -32,7 +35,7 @@ import kotlin.collections.ArrayList
 
 
 class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterListener, UserAdapter.UserAdapterListener,
-    AlbumAttributeModificationPopUp.DialogListener,DrawingNameModificationPopUp.DialogListener,ChangeAlbumPopUp.DialogListener {
+    AlbumAttributeModificationPopUp.DialogListener,DrawingNameModificationPopUp.DialogListener,ChangeAlbumPopUp.DialogListener, AlbumAdapter.AlbumAdapterListener{
     private lateinit var leaveAlbumBtn: ImageButton
     private lateinit var albumNameTextView: TextView
     private lateinit var currentAlbum: IAlbum
@@ -50,6 +53,8 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
     private lateinit var userNameAccepted: String
     private lateinit var dialogAcceptMembershipRequest: AcceptMembershipRequestsPopUp
     private lateinit var dialogEditAlbumAttributes: AlbumAttributeModificationPopUp
+
+    private val sharedViewModelCreateDrawingPopUp: SharedViewModelCreateDrawingPopUp by viewModels()
 
 
 
@@ -349,12 +354,16 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
         this.albumName=albumName
     }
     //listener added for changing the name of the drawing
-    override fun popUpListener(drawingName: String) {
+    override fun popUpListener(drawingName: String, position: Int) {
         drawingAdapter.newDrawingName=drawingName
+        drawingAdapter.changeDrawingName(drawingName, position)
+        drawingAdapter.notifyDataSetChanged()
     }
 
-    override fun changeAlbumPopUpListener (albumName: String){
+    override fun changeAlbumPopUpListener (albumName: String, position: Int){
         drawingAdapter.newAlbum=albumName
+        drawingAdapter.deleteDrawings(position)
+        drawingAdapter.notifyDataSetChanged()
     }
 
     private fun filter(newText: String?) {
@@ -374,5 +383,9 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
             searchArrayList.addAll(drawings)
             drawingAdapter.notifyDataSetChanged()
         }
+    }
+
+    override fun albumAdapterListener(albumName: String) {
+        sharedViewModelCreateDrawingPopUp.setAlbum(albumName)
     }
 }

@@ -32,15 +32,16 @@ import retrofit2.Call
 import retrofit2.Response
 import java.util.ArrayList
 
-class ChangeAlbumPopUp(val drawingID:String,val oldAlbumName:String,val user:String):DialogFragment() {
+class ChangeAlbumPopUp(val drawingID:String,val oldAlbumName:String,val user:String, val position: Int):DialogFragment() {
     private lateinit var listener: ChangeAlbumPopUp.DialogListener
     private lateinit var iMyService: IMyService
     internal var compositeDisposable = CompositeDisposable()
    // private lateinit var albumAdapter: AlbumAdapter
     private lateinit var rvOutputAlbums: RecyclerView
+    private lateinit var albumAdapter: AlbumAdapter
+    private lateinit var albums : ArrayList<IAlbum>
     private lateinit var publicRB: RadioButton
     private lateinit var radioGroup: RadioGroup
-    private lateinit var albums : ArrayList<IAlbum>
     private var albumName: String = ""
     private val sharedViewModelCreateDrawingPopUp: SharedViewModelCreateDrawingPopUp by activityViewModels()
 
@@ -72,13 +73,13 @@ class ChangeAlbumPopUp(val drawingID:String,val oldAlbumName:String,val user:Str
 
         albums = ArrayList()
 
-//        albumAdapter = AlbumAdapter(context, albums)
-//
-//        //Recycler View of rooms
-//        rvOutputAlbums.adapter = albumAdapter
-//        rvOutputAlbums.layoutManager = GridLayoutManager(context, 3)
+        albumAdapter = AlbumAdapter(context, albums)
 
-//        getAllAvailableAlbums()
+        //Recycler View of rooms
+        rvOutputAlbums.adapter = albumAdapter
+        rvOutputAlbums.layoutManager = GridLayoutManager(context, 3)
+
+        getAllAvailableAlbums()
 
 
         radioGroup.setOnCheckedChangeListener { radioGroup, i ->
@@ -95,16 +96,16 @@ class ChangeAlbumPopUp(val drawingID:String,val oldAlbumName:String,val user:Str
         rootView.submitBtn.setOnClickListener {
 
             //step 1 : we add the drawing to the destination album
-            addDrawingToAlbum("bonsoir",drawingID)
+            addDrawingToAlbum(albumName,drawingID)
             //step 2: we change the variable album name in the drawing element
-            changeAlbumOfDrawing("bonsoir",drawingID)
+            changeAlbumOfDrawing(albumName,drawingID)
             //step 3 : we remove the drawing from the drawing IDs in the oldAlbum
-            removeDrawingFromAlbum(drawingID,"hey")
+            removeDrawingFromAlbum(drawingID,oldAlbumName)
 
-            Toast.makeText(context, "le dessin a été transféré à l'album $albumName", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "le dessin a été transféré de ${oldAlbumName} à l'album $albumName", Toast.LENGTH_SHORT).show()
 
             //we send out the new album
-            listener.changeAlbumPopUpListener(albumName)
+            listener.changeAlbumPopUpListener(albumName, position)
             dismiss()
         }
 
@@ -136,6 +137,28 @@ class ChangeAlbumPopUp(val drawingID:String,val oldAlbumName:String,val user:Str
             .subscribe {
             })
 
+    }
+
+    private fun getAllAvailableAlbums() {
+        var call: Call<List<IAlbum>> = iMyService.getAllAvailableAlbums()
+        call.enqueue(object: retrofit2.Callback<List<IAlbum>> {
+
+            override fun onResponse(call: Call<List<IAlbum>>, response: Response<List<IAlbum>>) {
+                for (album in response.body()!!) {
+                    if (album._id != "623e5f7cbd233e887bcb6034"){
+                        if (album.members.contains(user)) {
+                            albumAdapter.addAlbum(album)
+                            albumAdapter.notifyItemInserted((rvOutputAlbums.adapter as AlbumAdapter).itemCount)
+                        }
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<List<IAlbum>>, t: Throwable) {
+                Log.d("Albums", "onFailure" +t.message )
+            }
+
+        })
     }
 
 //    private fun getAllAvailableAlbums() {
@@ -171,7 +194,7 @@ class ChangeAlbumPopUp(val drawingID:String,val oldAlbumName:String,val user:Str
         }
     }
     public interface DialogListener {
-        fun changeAlbumPopUpListener(albumName: String)
+        fun changeAlbumPopUpListener(albumName: String, position: Int)
     }
 
 }
