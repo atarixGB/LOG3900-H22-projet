@@ -178,13 +178,13 @@ class CreateDrawingPopUp(val user: String, val isAlbumAlreadySelected: Boolean) 
     }
 
     private fun createDrawing(albumName: String, drawingName: String, owner: String, data:String, members:ArrayList<String>, likes:ArrayList<String>) {
-        compositeDisposable.add(iMyService.createDrawing(drawingName, owner, data, members, likes)
+        compositeDisposable.add(iMyService.createDrawing(drawingName, owner, data, members, likes,albumName)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { result ->
                 //result est drawingID
                 //this.drawingId = result
-                listener.drawingIdPopUpListener(result)
+                listener.drawingIdPopUpListener(result as String)
                 addDrawingToAlbum(albumName, result)
 //                if (result == "201") {
 ////                    Toast.makeText(context, "added", Toast.LENGTH_SHORT).show()
@@ -213,7 +213,7 @@ class CreateDrawingPopUp(val user: String, val isAlbumAlreadySelected: Boolean) 
 
             override fun onResponse(call: Call<List<IAlbum>>, response: Response<List<IAlbum>>) {
                 for (album in response.body()!!) {
-                    if (album._id != "623e00d4c46d4d7f5c3118a3"){
+                    if (album._id != "623e5f7cbd233e887bcb6034"){
                         if (album.members.contains(user)) {
                             albumAdapter.addAlbum(album)
                             albumAdapter.notifyItemInserted((rvOutputAlbums.adapter as AlbumAdapter).itemCount)

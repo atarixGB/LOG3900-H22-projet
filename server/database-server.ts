@@ -437,16 +437,80 @@ app.post(
             description: result.description,
             data: img,
             members: result.members,
-            likes: result.likes
+            likes: result.likes,
+            albumName:result.albumName
           };
           res.json(returnedJson)
           console.log("GotDrawing");
-        } else {
+
+        }
+
+        else{
           console.log(`File ${file} does not exist on server`);
         }
+
       }
     });
   });
+
+  //delete drawing with specific id
+  app.delete("/drawing/delete/:id", (request, response, next) => {
+    let drawingId = request.params.id;
+    DB.collection("drawings").findOneAndDelete({ _id: mongoose.Types.ObjectId(drawingId) }, (err, res) => {
+      console.log(`Drawing with id ${request.params.id} has been deleted successfully!`);
+      response.json(201)
+    });
+  });    
+
+    //delete all drawings pour faire le menage
+    // app.delete("/drawing/deleteAll", (request, response, next) => {
+    //   DB.collection("drawings").deleteMany({}, (err, res) => {
+    //     response.json(201)
+    //   });
+    // }); 
+
+  //update drawing name
+  app.post("/drawingUpdate", (request, response, next) => {
+    var post_data = request.body;
+    var oldDrawingName = post_data.oldDrawingName;
+    var newDrawingName = post_data.newDrawingName;
+    
+  
+    //check if an Drawing already has the new name
+    DB.collection("drawings")
+      .find({ name: newDrawingName })
+      .count(function (err, number) {
+        if (number != 0 && oldDrawingName != newDrawingName) {
+          response.json(false);
+          console.log("Drawing name already used");
+        } else {
+          // Update drawing data
+          DB.collection("drawings").updateOne({ name: oldDrawingName }, {
+            $set: {
+              "name": newDrawingName,
+            },
+          }).then(result => {
+            response.json(200);
+          });
+        }
+      });
+  });
+
+  //change the album containing the drawing in the drawing interface
+  app.post("/changeAlbum", (request, response, next) => {
+    var post_data = request.body;
+    var newAlbumName = post_data.newAlbumName;
+    var drawingID= post_data.drawingID
+    console.log(newAlbumName);
+    
+    DB.collection("drawings").findOneAndUpdate({ _id: mongoose.Types.ObjectId(drawingID) }, { $set: { "albumName": newAlbumName } }, { returnDocument: 'after' }, (err, res) => {
+      response.json(201)
+      console.log(drawingID, "is now contained in ", newAlbumName);
+    })
+
+  });
+  
+
 //==========================================================================================================
 // Album Management
 //==========================================================================================================
@@ -523,7 +587,6 @@ app.post(
       })
     });
 
-
     //send request to an album
     app.put("/albums/sendRequest/:albumName", (request, response, next) => {
       let albumName = request.params.albumName;
@@ -589,6 +652,31 @@ app.post(
       });
     });    
 
+    //remove a drawing id from drawingIDs in album
+    app.post("/removeDrawing", (request, response, next) => {
+      var post_data = request.body;
+      
+      
+      var albumName = post_data.albumName;
+      var drawingID = post_data.drawingID;
+
+      DB.collection("albums")
+        .find({ name: albumName })
+        .count(function (err, number) {
+          if (number == 0) {
+            response.json(404);
+            console.log("album does not exist");
+          } else {
+            DB.collection("albums").findOneAndUpdate({name: albumName }, { "$pull": { drawingIDs: drawingID } },
+              function (error, result) {
+                response.json(201);
+                console.log("album updated");
+              }
+            );
+          }
+        });
+    });
+
     //Getting album parameters
     app.get("/getAlbumParameters", (request, response, next) => {
 
@@ -605,34 +693,6 @@ app.post(
           } else {
             response.json(result)
             console.log("Getting One Album", result);
-          }
-        });
-    });
-
-    //update album attributes
-    app.post("/albumUpdate", (request, response, next) => {
-      var post_data = request.body;
-      var oldAlbumName = post_data.oldAlbumName;
-      var newAlbumName = post_data.newAlbumName;
-      var newDescription = post_data.newDescription;
-    
-      //check if an album already has the new name
-      DB.collection("albums")
-        .find({ name: newAlbumName })
-        .count(function (err, number) {
-          if (number != 0 && oldAlbumName != newAlbumName) {
-            response.json(false);
-            console.log("album name already used");
-          } else {
-            // Update album data
-            DB.collection("albums").updateOne({ name: oldAlbumName }, {
-              $set: {
-                "name": newAlbumName,
-                "description": newDescription,
-              },
-            }).then(result => {
-              response.json(200);
-            });
           }
         });
     });

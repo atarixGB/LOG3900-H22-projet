@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mobile.Interface.IAlbum
 import com.example.mobile.R
+import com.example.mobile.popup.DrawingNameModificationPopUp
 import kotlinx.android.synthetic.main.item_album.view.*
 import java.util.ArrayList
 

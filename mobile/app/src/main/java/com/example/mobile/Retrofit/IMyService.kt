@@ -101,7 +101,8 @@ interface IMyService {
                       @Field("owner")ownerID:String,
                       @Field("data")data:String,
                       @Field("members")members:ArrayList<String>,
-                      @Field("likes")likes:ArrayList<String>): Observable<String>
+                      @Field("likes")likes:ArrayList<String>,
+                      @Field("albumName")albumName:String): Observable<Any>
 
     @PUT("albums/addDrawing/{albumId}")
     @FormUrlEncoded
@@ -136,9 +137,9 @@ interface IMyService {
     @POST("albumUpdate")
     @FormUrlEncoded
     fun updateAlbum(
-        @Field("oldAlbumName") oldUsername: String,
-        @Field("newAlbumName") newUsername: String,
-        @Field("newDescription") newAvatar: String,
+        @Field("oldAlbumName") oldAlbumName: String,
+        @Field("newAlbumName") newAlbumname: String,
+        @Field("newDescription") newDescription: String,
     ): Observable<String>
 
     @Multipart
@@ -154,4 +155,26 @@ interface IMyService {
     @FormUrlEncoded
     fun addLikeToDrawing(@Path("drawingId") drawingId: String,
                          @Field("user")user:String): Observable<String>
+
+    @DELETE("/drawing/delete/{id}")
+    fun deleteDrawing(@Path("id")drawingID:String): Observable<String>
+
+    @POST("removeDrawing")
+    @FormUrlEncoded
+    fun removeDrawing(@Field("drawingID") drawingID:String,
+                 @Field("albumName")albumName:String) : Observable<String>
+
+    @POST("drawingUpdate")
+    @FormUrlEncoded
+    fun updateDrawing(
+        @Field("oldDrawingName") oldDrawingname: String,
+        @Field("newDrawingName") newDrawingname: String,
+    ): Observable<String>
+
+    @POST("changeAlbum")
+    @FormUrlEncoded
+    fun changeAlbumOfDrawing(
+        @Field("newAlbumName") newAlbumName: String,
+        @Field("drawingID") drawingID: String,
+    ): Observable<String>
 }
