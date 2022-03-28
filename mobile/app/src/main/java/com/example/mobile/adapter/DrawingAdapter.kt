@@ -86,7 +86,7 @@ class DrawingAdapter (val context: Context?, var drawings: ArrayList<IDrawing>, 
                     when (menuItem.itemId) {
                         R.id.menu_editDrawingParameters -> {
                             //ouvrir pop up modification nom album
-                            dialogEditDrawingName= DrawingNameModificationPopUp(currentDrawing.name, position)
+                            dialogEditDrawingName= DrawingNameModificationPopUp(currentDrawing._id!!,currentDrawing.name, position)
                             dialogEditDrawingName.show((context as AppCompatActivity).supportFragmentManager,"customDialog")
 //                            currentDrawing.name=newDrawingName
 //                            drawingName.text = newDrawingName

@@ -79,8 +79,8 @@ interface IMyService {
     @GET("albums/{identifier}")
     fun getUserAlbums(@Path("identifier") username: String):Call<List<IAlbum>>
 
-    @GET("albums/Drawings/{albumName}")
-    fun getAllAlbumDrawings(@Path("albumName") albumName: String):Call<List<String>>
+    @GET("albums/Drawings/{albumID}")
+    fun getAllAlbumDrawings(@Path("albumID") albumID: String):Call<List<String>>
 
     //get tous les dessins des albums dont userName est membre
     @GET("/albums/getAllDrawings/{userName}")
@@ -93,7 +93,7 @@ interface IMyService {
                        @Field("description")description: String,
                        @Field("drawingIDs")drawingIDs:ArrayList<String>,
                        @Field("members")usersList:ArrayList<String>,
-                       @Field("membershipRequests")membershipRequests:ArrayList<String>): Observable<String>
+                       @Field("membershipRequests")membershipRequests:ArrayList<String>): Observable<Any>
 
     @POST("drawing/create")
     @FormUrlEncoded
@@ -167,7 +167,7 @@ interface IMyService {
     @POST("drawingUpdate")
     @FormUrlEncoded
     fun updateDrawing(
-        @Field("oldDrawingName") oldDrawingname: String,
+        @Field("drawingID") oldDrawingname: String,
         @Field("newDrawingName") newDrawingname: String,
     ): Observable<String>
 
