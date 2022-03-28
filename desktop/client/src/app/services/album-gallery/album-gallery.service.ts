@@ -280,12 +280,14 @@ export class AlbumGalleryService {
     console.log(url);
     this.httpClient.get<IAlbum[]>(url).subscribe(
       (albums: IAlbum[]) => {
+
         for (let i = 0; i < albums.length; i++) {
-          if (albums[i].name != "album public") {
+          if (albums[i].name != "album public" && !albums[i].members.includes(this.loginService.username)) {
             this.publicAlbums.push(albums[i]);
             console.log(albums[i]);
           }
         }
+
       },
       (error: any) => {
         console.log(`Impossible de retrouver les albums dans la base de données.\nErreur: ${error}`);
