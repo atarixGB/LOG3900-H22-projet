@@ -566,7 +566,7 @@ app.post(
 
 
 
-    //add drawing to an album
+    //add drawing to an album //IMPORTANT DE CHANGER VERS ALBUM ID CA FAIT DES INCOHERANCES
     app.put("/albums/addDrawing/:albumName", (request, response, next) => {
       let albumName = request.params.albumName;
       let drawingID = request.body.drawing;
