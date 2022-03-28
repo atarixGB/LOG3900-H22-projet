@@ -81,20 +81,24 @@
         android:background="@color/purple_500" />
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_centerHorizontal="true"
+        android:orientation="horizontal"
         android:paddingTop="70dp"
-        android:gravity="center"
+        android:layout_marginLeft="680dp"
         >
 
         <com.mikhaellopez.circularimageview.CircularImageView
-            android:layout_width="120dp"
-            android:layout_height="120dp"
+            android:layout_width="160dp"
+            android:layout_height="200dp"
             android:id="@+id/userAvatar"
-            android:layout_centerHorizontal="true"
-            android:layout_marginLeft="115dp"
+            />
+
+        <ImageView
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:src="@drawable/debutant"
+            android:layout_marginLeft="200dp"
             />
 
 
@@ -104,8 +108,8 @@
         android:id="@+id/bloc_profil"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="9dp"
         android:layout_marginLeft="250dp"
+        android:layout_marginTop="9dp"
         android:orientation="vertical">
 
         <LinearLayout
@@ -236,10 +240,229 @@
 
     <View
         android:layout_width="match_parent"
+        android:id="@+id/separation"
         android:layout_height="1.5dp"
         android:background="@color/purple_500"
         android:layout_marginLeft="250dp"
         android:layout_marginTop="5dp"
         android:layout_below="@id/bloc_profil"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/stat"
+        android:orientation="horizontal"
+        android:layout_below="@+id/separation"
+        android:layout_marginLeft="250dp"
+        android:layout_marginTop="10dp"
+        >
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginLeft="15dp"
+            android:src="@drawable/ico_stat"/>
+
+        <LinearLayout
+            android:id="@+id/stat1_bloc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:orientation="vertical"
+            android:paddingRight="15dp">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="10dp"
+                    android:text="Nombre de collaboration:"
+                    android:textColor="@android:color/background_dark"
+                    android:textSize="18dp"
+                    android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/nbCollaboration"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="5000"
+                    android:textColor="@color/brown"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="10dp"
+                    android:text="Nombre de dessins créés:"
+                    android:textColor="@android:color/background_dark"
+                    android:textSize="18dp"
+                    android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/nbCreatedDrawings"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="5000"
+                    android:textColor="@color/brown"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="10dp"
+                    android:text="Nombre d'albums privés:"
+                    android:textColor="@android:color/background_dark"
+                    android:textSize="18dp"
+                    android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/nbPrivateAlbums"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="5000"
+                    android:textColor="@color/brown"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="10dp"
+                    android:text="Temps moyen des séances de collaboration:"
+                    android:textColor="@android:color/background_dark"
+                    android:textSize="18dp"
+                    android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/avgCollabTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="5000"
+                    android:textColor="@color/brown"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="10dp"
+                    android:text="Temps total de collaboration:"
+                    android:textColor="@android:color/background_dark"
+                    android:textSize="18dp"
+                    android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/totalCollabTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="5000"
+                    android:textColor="@color/brown"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_below="@+id/stat"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="49dp"
+        android:layout_marginLeft="250dp"
+        android:background="@color/purple_500"
+        android:id="@+id/seperation2"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/seperation2"
+        android:layout_marginLeft="250dp"
+        android:layout_marginTop="-30dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="220dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:src="@drawable/ico_favoris" />
+
+            <TextView
+                android:id="@+id/showFavorites"
+                android:layout_width="180dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/bg_btn"
+                android:gravity="center"
+                android:paddingLeft="10dp"
+                android:text="Mes favoris"
+                android:textColor="@color/design_default_color_primary_dark"
+                android:textSize="18dp"
+                android:textStyle="normal" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_marginLeft="100dp"
+                android:src="@drawable/ico_mostliked" />
+
+            <TextView
+                android:id="@+id/showMostLiked"
+                android:layout_width="180dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="109dp"
+                android:background="@drawable/bg_btn"
+                android:gravity="center"
+                android:paddingLeft="10dp"
+                android:text="Mes dessins gagnants"
+                android:textColor="@color/design_default_color_primary_dark"
+                android:textSize="18dp"
+                android:textStyle="normal" />
+
+        </LinearLayout>
+    </LinearLayout>
+
 
 </RelativeLayout>
