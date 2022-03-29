@@ -12,7 +12,7 @@ app.use(express.static('public'));
 console.log('Server is running');
 
 /*
-  key: collabRoom (drawingId)
+  key: roomName (drawingId)
   value:  {
             nbMembers
             strokes
@@ -23,46 +23,51 @@ let infoOnActiveRooms = new Map();
 ioCollab.on('connection', (socket) => {
 
       // COLLAB ROOM EVENTS
-      socket.on('joinCollab', (collabDrawingId) => {
-        console.log("Trying to join drawing: " , collabDrawingId);
-
-        // Updating collabRoom info
-        if (!infoOnActiveRooms.has(collabDrawingId)) {
-           const value = {
-            nbMembers: 1,
-            strokes: [],
-          }
-          infoOnActiveRooms.set(collabDrawingId, value);
-          // Joining
-          socket.join(collabDrawingId);
-          ioCollab.in(collabDrawingId).emit('memberNbUpdate', value.nbMembers);
-          socket.emit('joinSuccessful', infoOnActiveRooms.get(collabDrawingId));
-
-        } else if (infoOnActiveRooms.get(collabDrawingId).nbMembers < 4) {
-          let value = infoOnActiveRooms.get(collabDrawingId);
-          value.nbMembers = value.nbMembers + 1;
-          infoOnActiveRooms.set(collabDrawingId, value);
-          // Joining
-          socket.join(collabDrawingId);
-          ioCollab.in(collabDrawingId).emit('memberNbUpdate', value.nbMembers);
-          socket.emit('joinSuccessful', infoOnActiveRooms.get(collabDrawingId));
-
-        } else {
-          socket.emit('joinFailure');
-        }
+      // This event is to make sure the other collaborator's selections are pasted before a new member joins
+      socket.on('prepForJoin', (data) => {
+        const room = data.room; // Note: The room name is the drawingID
+        const userJoining = data.username;
+        console.log("Prepping for join " , room);
+        if (infoOnActiveRooms.has(room)) {
+          socket.broadcast.to(room).emit('prepForNewMember', userJoining);
+        } 
+        socket.emit('readyToJoin', room);
       })
 
-      socket.on('leaveCollab', (collabDrawingId) => {
-        console.log("Trying to leave drawing: " , collabDrawingId);
+      socket.on('joinCollab', (room) => { // Note: The room name is the drawingID
+        console.log("Trying to join drawing: " , room);
 
         // Updating collabRoom info
-        let value = infoOnActiveRooms.get(collabDrawingId);
+        let value = {
+          nbMembers: 1,
+          strokes: [],
+        };
+        if (infoOnActiveRooms.has(room)) {
+          value = infoOnActiveRooms.get(room);
+          value.nbMembers = value.nbMembers + 1;
+        }
+        infoOnActiveRooms.set(room, value);
+
+        // Joining
+        socket.join(room);
+        ioCollab.in(room).emit('memberNbUpdate', value.nbMembers);
+        socket.emit('joinSuccessful', infoOnActiveRooms.get(room));
+      })
+
+      socket.on('leaveCollab', (data) => {
+        const room = data.room; // Note: The room name is the drawingID
+        const userLeaving = data.username;
+        console.log("Trying to leave drawing: " , room);
+
+        // Updating collabRoom info
+        let value = infoOnActiveRooms.get(room);
         value.nbMembers = value.nbMembers - 1;
-        value.nbMembers == 0 ? infoOnActiveRooms.delete(collabDrawingId) : infoOnActiveRooms.set(collabDrawingId, value);
+        value.nbMembers == 0 ? infoOnActiveRooms.delete(room) : infoOnActiveRooms.set(room, value);
 
         // Leaving
-        ioCollab.in(collabDrawingId).emit('memberNbUpdate', value.nbMembers);
-        socket.leave(collabDrawingId);
+        socket.leave(room);
+        ioCollab.in(room).emit('memberNbUpdate', value.nbMembers);
+        socket.broadcast.to(room).emit('memberLeft', userLeaving);
       })
 
       socket.on('updateCollabInfo', (collabData) => {

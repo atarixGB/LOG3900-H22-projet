@@ -68,6 +68,8 @@ import { MembersListDialogComponent } from './components/album-gallery/drawings-
 import { AlbumSettingsDialogComponent } from './components/album-gallery/drawings-view/album-settings-dialog/album-settings-dialog.component';
 import { JoinRequestDialogComponent } from './components/album-gallery/public-albums/join-request-dialog/join-request-dialog.component';
 import { CouldntJoinDialogComponent } from './components/editor/couldnt-join-dialog/couldnt-join-dialog.component';
+import { MemberJoinedDialogComponent } from './components/editor/member-joined-dialog/member-joined-dialog.component';
+import { MemberLeftDialogComponent } from './components/editor/member-left-dialog/member-left-dialog.component';
 
 @NgModule({
     declarations: [
@@ -115,6 +117,8 @@ import { CouldntJoinDialogComponent } from './components/editor/couldnt-join-dia
         AlbumSettingsDialogComponent,
         JoinRequestDialogComponent,
         CouldntJoinDialogComponent,
+        MemberJoinedDialogComponent,
+        MemberLeftDialogComponent,
     ],
     imports: [
         BrowserModule,

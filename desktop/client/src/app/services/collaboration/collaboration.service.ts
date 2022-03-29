@@ -6,6 +6,9 @@ import { COLLAB_URL } from '@app/constants/api-urls';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { CouldntJoinDialogComponent } from '@app/components/editor/couldnt-join-dialog/couldnt-join-dialog.component';
+import { ProfileService } from '../profile/profile.service';
+import { MemberJoinedDialogComponent } from '@app/components/editor/member-joined-dialog/member-joined-dialog.component';
+import { MemberLeftDialogComponent } from '@app/components/editor/member-left-dialog/member-left-dialog.component';
 
 @Injectable({
     providedIn: 'root',
@@ -17,35 +20,29 @@ export class CollaborationService {
 
     newStroke: Subject<any>;
     newStroke$: Observable<any>;
-
     newSelection: Subject<any>;
     newSelection$: Observable<any>;
-
     newSelectionPos: Subject<any>;
     newSelectionPos$: Observable<any>;
-
     newSelectionSize: Subject<any>;
     newSelectionSize$: Observable<any>;
-
     pasteRequest: Subject<any>;
     pasteRequest$: Observable<any>;
-
     deleteRequest: Subject<any>;
     deleteRequest$: Observable<any>;
-
     newStrokeWidth: Subject<any>;
     newStrokeWidth$: Observable<any>;
-
     newPrimaryColor: Subject<any>;
     newPrimaryColor$: Observable<any>;
-
     newSecondaryColor: Subject<any>;
     newSecondaryColor$: Observable<any>;
 
     newCollabData: Subject<any>;
     newCollabData$: Observable<any>;
+    pasteOnNewMemberJoin: Subject<any>;
+    pasteOnNewMemberJoin$: Observable<any>;
 
-    constructor(public dialog: MatDialog, public drawingService: DrawingService, private router: Router, private route: ActivatedRoute) { 
+    constructor(public dialog: MatDialog, public drawingService: DrawingService, private router: Router, private route: ActivatedRoute, private profileService: ProfileService) { 
         this.nbMembersInCollab = 0;
 
         this.newStroke = new Subject();
@@ -69,10 +66,25 @@ export class CollaborationService {
 
         this.newCollabData = new Subject();
         this.newCollabData$ = this.newCollabData.asObservable();
+        this.pasteOnNewMemberJoin = new Subject();
+        this.pasteOnNewMemberJoin$ = this.pasteOnNewMemberJoin.asObservable();
     }
 
     enterCollaboration(): void {
         this.socket = io.io(COLLAB_URL, { transports: ['websocket'] });
+
+        // -------------------Room receiving events
+        this.socket.on('prepForNewMember', (memberUsername: any) => {
+            this.pasteOnNewMemberJoin.next();
+            let dialogRef = this.dialog.open(MemberJoinedDialogComponent, {
+                width: "50%"
+            });
+            dialogRef.componentInstance.username = memberUsername;
+        });
+
+        this.socket.on('readyToJoin', (room: any) => {
+            this.socket.emit('joinCollab', room);
+        });
 
         this.socket.on('joinSuccessful', (collabData: any) => {
             this.newCollabData.next(collabData);
@@ -89,6 +101,14 @@ export class CollaborationService {
             this.nbMembersInCollab = nbMembersRemaining;
         });
 
+        this.socket.on('memberLeft', (memberUsername: any) => {
+            let dialogRef = this.dialog.open(MemberLeftDialogComponent, {
+                width: "50%"
+            });
+            dialogRef.componentInstance.username = memberUsername;
+        });
+
+        // -------------------Editor receiving events
         this.socket.on('receiveStroke', (stroke: any) => {
             this.newStroke.next(stroke);
         });
@@ -126,14 +146,22 @@ export class CollaborationService {
         });
     } 
 
-    // COLLAB ROOM EMITS
+    // -------------------Room emits
     joinCollab(drawingId: any): void {
         this.room = drawingId.replaceAll(/"/g, '');
-        this.socket.emit('joinCollab', this.room);
+        const data = {
+            username: this.profileService.username,
+            room: this.room
+        }
+        this.socket.emit('prepForJoin', data);
     }
 
     leaveCollab(): void {
-        this.socket.emit('leaveCollab', this.room);
+        const data = {
+            username: this.profileService.username,
+            room: this.room
+        }
+        this.socket.emit('leaveCollab', data);
     }
 
     /* collabData:
@@ -145,7 +173,7 @@ export class CollaborationService {
         this.socket.emit('updateCollabInfo', collabData);
     }
 
-    // EDITOR BROADCASTS
+    // -------------------Editor emits
     // Un stroke: voir les classes Stroke, StrokePencil, StrokeRectangle et StrokeEllipse
     broadcastStroke(stroke: any): void {
         stroke.sender = this.socket.id;

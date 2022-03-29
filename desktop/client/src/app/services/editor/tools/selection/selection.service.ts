@@ -60,6 +60,12 @@ export class SelectionService extends Tool {
     this.collaborationService.newCollabData$.subscribe((newCollabData: any) => {
       this.loadCurrentSessionData(newCollabData.strokes);
     });
+
+    this.collaborationService.pasteOnNewMemberJoin$.subscribe(() => {
+      if (this.isActiveSelection) {
+        this.pasteSelectionOnBaseCnv();
+      }
+    });
   }
 
   private loadCurrentSessionData(strokes: any[]): void {
@@ -68,8 +74,6 @@ export class SelectionService extends Tool {
     strokes.forEach(s => {
       this.addIncomingStrokeFromOtherUser(s);
     });
-
-    // To do: Gérer les strokes sélectionné
   }
 
   delete(): void {
