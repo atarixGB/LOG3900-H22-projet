@@ -5,20 +5,19 @@ import android.graphics.*
 import com.example.mobile.Interface.IPencilStroke
 import com.example.mobile.Interface.IVec2
 import com.example.mobile.activity.drawing.DrawingCollaboration
+import com.example.mobile.activity.drawing.ToolbarFragment
 import org.json.JSONArray
 import org.json.JSONObject
 import java.util.*
 import kotlin.math.abs
 
-class Pencil(context: Context, baseCanvas: Canvas, val socket : DrawingCollaboration) : Tool(
-    context,
-    baseCanvas,
-    socket,
-){
+class Pencil(context: Context, baseCanvas: Canvas, val socket : DrawingCollaboration, val selection: Selection) : Tool(context, baseCanvas, socket){
     var leftestCoord: Float = 0F;
     var rightestCoord: Float = 0F;
     var lowestCoord: Float = 0F;
     var highestCoord: Float = 0F;
+
+    override var nextTool: ToolbarFragment.MenuItem = ToolbarFragment.MenuItem.PENCIL
 
     override fun touchStart() {
         points.clear()
@@ -27,6 +26,13 @@ class Pencil(context: Context, baseCanvas: Canvas, val socket : DrawingCollabora
         path!!.reset()
         path!!.moveTo(mx, my)
         points.add(IVec2(mx,my))
+
+        //a verifier
+        leftestCoord = baseCanvas.width.toFloat()
+        highestCoord = baseCanvas.height.toFloat()
+        rightestCoord = 0F;
+        lowestCoord = 0F;
+
     }
 
     override fun touchMove() {
@@ -43,13 +49,46 @@ class Pencil(context: Context, baseCanvas: Canvas, val socket : DrawingCollabora
     }
 
     override fun touchUp() {
-        path!!.lineTo(mStartX, mStartY)
-        points.add(IVec2(mStartX, mStartY))
-        this.sendPencilStroke()
-        strokePaint.strokeJoin = Paint.Join.ROUND // default: MITER
-        strokePaint.strokeCap = Paint.Cap.ROUND
-        baseCanvas!!.drawPath(path!!, strokePaint!!)
-        path!!.reset()
+        if (mStartX != mx || mStartY != my) {
+            path!!.lineTo(mStartX, mStartY)
+            points.add(IVec2(mStartX, mStartY))
+            this.sendPencilStroke()
+            paint.strokeJoin = Paint.Join.ROUND // default: MITER
+            paint.strokeCap = Paint.Cap.ROUND
+            baseCanvas!!.drawPath(path!!, paint!!)
+            path!!.reset()
+
+            //ajout a l'array list des strokes
+            val iPencilStroke = IPencilStroke(
+                getBoundingPoints(),
+                getPaintParameters().color,
+                getPaintParameters().strokeWidth,
+                false,
+                getPointsList()
+            )
+            selection.addStroke(iPencilStroke)
+
+            //selectionner ce stroke
+            selection.selectStroke(iPencilStroke)
+
+            //changer le tool a selection
+            selection.isToolSelection = false
+            selection.oldTool = ToolbarFragment.MenuItem.PENCIL
+            nextTool = ToolbarFragment.MenuItem.SELECTION
+        }
+    }
+
+    private fun getPointsList():ArrayList<IVec2> {
+        val points = ArrayList<IVec2>()
+        points.addAll(this.points)
+        return points
+    }
+
+    private fun getPaintParameters(): Paint {
+        val paint = Paint()
+        paint.color = this.paint.color
+        paint.strokeWidth = this.paint.strokeWidth
+        return paint
     }
 
     override fun onStrokeReceived(stroke: JSONObject) {
@@ -69,8 +108,11 @@ class Pencil(context: Context, baseCanvas: Canvas, val socket : DrawingCollabora
         val iPencilStroke = IPencilStroke(boundingPoints,
             toIntColor(stroke.getString("primaryColor")),
             stroke.getString("strokeWidth").toFloat(),
+            false,
             points)
         draw(iPencilStroke)
+
+        selection.addStroke(iPencilStroke)
 
     }
 
@@ -78,8 +120,8 @@ class Pencil(context: Context, baseCanvas: Canvas, val socket : DrawingCollabora
 
     fun draw(stroke: IPencilStroke) {
         val upcomingPaint = Paint().apply {
-            color = stroke.color
-            strokeWidth = stroke.strokeWidth
+            color = stroke.currentStrokeColor
+            strokeWidth = stroke.currentStrokeWidth
             isAntiAlias = true
             // Dithering affects how colors with higher-precision than the device are down-sampled.
             isDither = true

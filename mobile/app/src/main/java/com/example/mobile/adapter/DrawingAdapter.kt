@@ -12,17 +12,23 @@ import androidx.appcompat.widget.PopupMenu
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mobile.Interface.IDrawing
+import com.example.mobile.Interface.IVec2
 import com.example.mobile.R
 import com.example.mobile.Retrofit.IMyService
 import com.example.mobile.Retrofit.RetrofitClient
+import com.example.mobile.activity.drawing.DrawingCollaboration
 import com.example.mobile.bitmapDecoder
 import com.example.mobile.popup.ChangeAlbumPopUp
 import com.example.mobile.popup.DrawingNameModificationPopUp
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import io.socket.client.Socket
+import io.socket.emitter.Emitter
 import kotlinx.android.synthetic.main.item_album.view.*
 import kotlinx.android.synthetic.main.item_drawing.view.*
+import org.json.JSONArray
+import org.json.JSONObject
 
 
 class DrawingAdapter (val context: Context?, var drawings: ArrayList<IDrawing>, val user: String, val albumID: String) : RecyclerView.Adapter<DrawingAdapter.DrawingViewHolder>(), ChangeAlbumPopUp.DialogListener {
@@ -34,6 +40,7 @@ class DrawingAdapter (val context: Context?, var drawings: ArrayList<IDrawing>, 
     internal var compositeDisposable = CompositeDisposable()
     var newDrawingName:String ="new name"
     var newAlbum:String=""
+    var socket = DrawingCollaboration()
 //    private var alreadyLiked: Boolean = false
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DrawingViewHolder {
@@ -50,6 +57,8 @@ class DrawingAdapter (val context: Context?, var drawings: ArrayList<IDrawing>, 
 
     override fun onBindViewHolder(holder: DrawingViewHolder, position: Int) {
         val currentDrawing = drawings[position]
+
+        socket.init()
 
 
 
@@ -148,6 +157,24 @@ class DrawingAdapter (val context: Context?, var drawings: ArrayList<IDrawing>, 
                     Toast.makeText(context, "already liked", Toast.LENGTH_SHORT).show()
                 }
             }
+
+            modifDrawing.setOnClickListener {
+                socket.socket.emit("joinCollab", currentDrawing._id)
+            }
+        }
+
+        socket.socket.on("joinSuccessful", onJoinCollab)
+    }
+
+    private var onJoinCollab = Emitter.Listener {
+        val joinEvent = it[0] as JSONObject
+        val drawingId = joinEvent.getString("collabDrawingId")
+        val strokes = joinEvent.getJSONArray("strokes")
+//        var strokes = java.util.ArrayList<IStroke>()
+        val boundingPointsData = stroke["boundingPoints"]  as JSONArray
+        for (i in 0 until boundingPointsData.length()) {
+            val obj = boundingPointsData[i] as JSONObject
+            boundingPoints.add( IVec2(obj.getDouble("x").toFloat(), obj.getDouble("y").toFloat()) )
         }
     }
 

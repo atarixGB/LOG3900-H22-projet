@@ -12,6 +12,7 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import com.example.mobile.Interface.IVec2
 import com.example.mobile.R
 import com.example.mobile.Tools.ToolManager
 import io.socket.emitter.Emitter
@@ -52,6 +53,13 @@ class DrawingZoneFragment : Fragment() {
         mDrawingView = DrawingView(requireContext(),this.socket)
         socket.init()
         socket.socket.on("receiveStroke", onReceiveStroke)
+        socket.socket.on("receiveSelection", onReceiveSelection)
+        socket.socket.on("receiveStrokeWidth", onReceiveStrokeWidth)
+        socket.socket.on("receiveNewPrimaryColor", onReceiveNewPrimaryColor)
+        socket.socket.on("receivePasteRequest", onPasteRequest)
+        socket.socket.on("receiveDeleteRequest", onDeleteRequest)
+        socket.socket.on("receiveSelectionPos", onMoveRequest)
+
         toolParameters.weight.observe(viewLifecycleOwner, Observer { weight ->
             mDrawingView.changeWeight(weight)
         })
@@ -62,6 +70,9 @@ class DrawingZoneFragment : Fragment() {
             mDrawingView.changeStroke(isStroke)
         })
 
+        toolParameters.deleteSelection.observe(viewLifecycleOwner, Observer { deleteSelection ->
+            mDrawingView.deleteSelection(deleteSelection)
+        })
         toolModel.tool.observe(viewLifecycleOwner, Observer { tool ->
             mDrawingView.changeTool(tool)
         })
@@ -76,12 +87,43 @@ class DrawingZoneFragment : Fragment() {
 
         view.findViewById<LinearLayout>(R.id.drawingView).addView(mDrawingView)
     }
+
     private var onReceiveStroke = Emitter.Listener {
         val drawEvent = it[0] as JSONObject
         if(drawEvent.getString("sender") != this.socket.socket.id()){
             mDrawingView.onStrokeReceive(drawEvent)
         }
 
+    }
+
+    private var onReceiveSelection = Emitter.Listener {
+        val drawEvent = it[0] as JSONObject
+        mDrawingView.onSelectionReceive(drawEvent)
+    }
+
+    private var onReceiveStrokeWidth = Emitter.Listener {
+        val drawEvent = it[0] as JSONObject
+        mDrawingView.onSelectionReceiveWidth(drawEvent)
+    }
+
+    private var onReceiveNewPrimaryColor = Emitter.Listener {
+        val drawEvent = it[0] as JSONObject
+        mDrawingView.onSelectionReceivePrimaryColor (drawEvent)
+    }
+
+    private var onPasteRequest = Emitter.Listener {
+        val drawEvent = it[0] as JSONObject
+        mDrawingView.onPasteRequest (drawEvent)
+    }
+
+    private var onDeleteRequest = Emitter.Listener {
+        val drawEvent = it[0] as JSONObject
+        mDrawingView.onDeleteRequest (drawEvent)
+    }
+
+    private var onMoveRequest = Emitter.Listener {
+        val drawEvent = it[0] as JSONObject
+        mDrawingView.onMoveRequest (drawEvent)
     }
 
     class DrawingView (context: Context, val socket: DrawingCollaboration) : View(context){
@@ -92,15 +134,68 @@ class DrawingZoneFragment : Fragment() {
         private var isDrawing = false
         private lateinit var drawingId: String
         internal var compositeDisposable = CompositeDisposable()
+
         fun onStrokeReceive(stroke: JSONObject){
-            if(stroke.getInt("toolType") == 0){
-                toolManager.pencil.onStrokeReceived(stroke)
-            }else if(stroke.getInt("toolType") == 1){
-                toolManager.rectangle.onStrokeReceived(stroke)
-            }else if(stroke.getInt("toolType") == 2){
-                toolManager.ellipse.onStrokeReceived(stroke)
+            if (socket.socket.id() != stroke.getString("sender")) {
+                if (stroke.getInt("toolType") == 0) {
+                    toolManager.pencil.onStrokeReceived(stroke)
+                } else if (stroke.getInt("toolType") == 1) {
+                    toolManager.rectangle.onStrokeReceived(stroke)
+                } else if (stroke.getInt("toolType") == 2) {
+                    toolManager.ellipse.onStrokeReceived(stroke)
+                }
+                invalidate()
             }
-            invalidate()
+        }
+
+        fun onSelectionReceive(stroke: JSONObject){
+            if (socket.socket.id() != stroke.getString("sender")) {
+                toolManager.selection.onStrokeReceived(stroke)
+                invalidate()
+            }
+        }
+
+        fun onSelectionReceiveWidth(newWidth: JSONObject){
+            if (socket.socket.id() != newWidth.getString("sender")) {
+                val width = newWidth.getInt("value").toFloat()
+                val strokeIndex = newWidth.getInt("strokeIndex")
+                toolManager.selection.changeReceivedWidth(newWidth.getString("sender"), width, strokeIndex)
+                invalidate()
+            }
+        }
+
+        fun onSelectionReceivePrimaryColor(newColor: JSONObject){
+            if (socket.socket.id() != newColor.getString("sender")) {
+                val color = toolManager.currentTool.toIntColor(newColor.getString("color"))
+                val strokeIndex = newColor.getInt("strokeIndex")
+                toolManager.selection.changeReceivedColor(newColor.getString("sender"), color, strokeIndex)
+                invalidate()
+            }
+        }
+
+        fun onPasteRequest(stroke: JSONObject){
+            if (socket.socket.id() != stroke.getString("sender")) {
+                val strokeIndex = stroke.getInt("strokeIndex")
+                toolManager.selection.onPasteRequest(stroke.getString("sender"), strokeIndex)
+                invalidate()
+            }
+        }
+
+        fun onDeleteRequest(stroke: JSONObject){
+            if (socket.socket.id() != stroke.getString("sender")) {
+                val strokeIndex = stroke.getInt("strokeIndex")
+                toolManager.selection.onDeleteRequest(stroke.getString("sender"),strokeIndex)
+                invalidate()
+            }
+        }
+
+        fun onMoveRequest(stroke: JSONObject){
+            if (socket.socket.id() != stroke.getString("sender")) {
+                var obj = stroke["pos"] as JSONObject
+                val pos = IVec2(obj.getDouble("x").toFloat(), obj.getDouble("y").toFloat())
+                toolManager.selection.onMoveRequest(stroke.getString("sender"), pos)
+                invalidate()
+            }
         }
 
         override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
@@ -149,6 +244,13 @@ class DrawingZoneFragment : Fragment() {
                 MotionEvent.ACTION_DOWN -> {
                     isDrawing = true
                     toolManager.currentTool.touchStart()
+                    if (toolManager.currentTool.nextTool != ToolbarFragment.MenuItem.SELECTION) {
+                        this.toolManager.changeTool(toolManager.currentTool.nextTool)
+                        resetPath()
+                        toolManager.currentTool.mx = event.x
+                        toolManager.currentTool.my = event.y
+                        toolManager.currentTool.touchStart()
+                    }
                     invalidate()
 
 
@@ -161,6 +263,8 @@ class DrawingZoneFragment : Fragment() {
                 MotionEvent.ACTION_UP -> {
                     isDrawing = false
                     toolManager.currentTool.touchUp()
+                    this.toolManager.changeTool(toolManager.currentTool.nextTool)
+                    resetPath()
                     invalidate()
 //                    mediaPlayerDrawing.stop()
                 }
@@ -169,12 +273,21 @@ class DrawingZoneFragment : Fragment() {
         }
 
         fun changeWeight(width: Float) {
-            if (this::toolManager.isInitialized) toolManager.currentTool.changeWeight(width)
+            if (this::toolManager.isInitialized) {
+                toolManager.currentTool.changeWeight(width)
+
+                if(toolManager.isCurrentToolSelection()) {
+                    toolManager.selection.changeSelectionWeight(width)
+                }
+            }
         }
 
         fun changeColor(color: Int) {
             if (this::toolManager.isInitialized) {
                 toolManager.currentTool.changeColor(color)
+                if(toolManager.isCurrentToolSelection()) {
+                    toolManager.selection.changeSelectionColor(color)
+                }
             }
         }
 
@@ -182,6 +295,17 @@ class DrawingZoneFragment : Fragment() {
             if (this::toolManager.isInitialized) {
                 this.toolManager.changeTool(tool)
                 resetPath()
+                toolManager.selection.sendPasteSelection()
+                toolManager.selection.resetSelection()
+                if (tool == ToolbarFragment.MenuItem.SELECTION) {
+                    toolManager.selection.isToolSelection = true
+                }
+            }
+        }
+
+        fun deleteSelection (delete: Boolean) {
+            if (this::toolManager.isInitialized && delete) {
+                toolManager.selection.deleteStroke()
             }
         }
 

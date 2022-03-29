@@ -7,20 +7,20 @@ import android.graphics.Paint
 import com.example.mobile.activity.drawing.DrawingCollaboration
 import com.example.mobile.Interface.IRectangleStroke
 import com.example.mobile.Interface.IVec2
+import com.example.mobile.activity.drawing.ToolbarFragment
 import org.json.JSONArray
 import org.json.JSONObject
 import java.util.*
 import kotlin.math.abs
 
-class Rectangle (context: Context, baseCanvas: Canvas, val socket : DrawingCollaboration) : Tool(
-    context,
-    baseCanvas,
-    socket,
-) {
+class Rectangle (context: Context, baseCanvas: Canvas, val socket : DrawingCollaboration, val selection: Selection) : Tool(context, baseCanvas, socket) {
+
     var top = 0F
     var right = 0F
     var bottom = 0F
     var left = 0F
+
+    override var nextTool: ToolbarFragment.MenuItem = ToolbarFragment.MenuItem.RECTANGLE
 
     override fun touchStart(){
         mStartX = mx
@@ -31,8 +31,48 @@ class Rectangle (context: Context, baseCanvas: Canvas, val socket : DrawingColla
 
 
     override fun touchUp(){
-        onDraw(baseCanvas)
-        this.sendRectangleStroke(left, top, right, bottom)
+        if (mStartX != mx || mStartY != my) {
+            onDraw(baseCanvas)
+            this.sendRectangleStroke(left, top, right, bottom)
+
+            //ajout a l'array list des strokes
+            val iRectangleStroke = IRectangleStroke(
+                getBoundingPoints(),
+                getPaintParameters().color,
+                Color.WHITE, //to change
+                getPaintParameters().strokeWidth,
+                false,
+                getRectWidthAndHeight().x,
+                getRectWidthAndHeight().y,
+                getTopLeftCorner()
+            )
+            selection.addStroke(iRectangleStroke)
+
+            //selectionner ce stroke
+            selection.selectStroke(iRectangleStroke)
+
+            //changer le tool a selection
+            selection.isToolSelection = false
+            selection.oldTool = ToolbarFragment.MenuItem.RECTANGLE
+            nextTool = ToolbarFragment.MenuItem.SELECTION
+        }
+    }
+
+    private fun getRectWidthAndHeight(): IVec2{
+        val point = IVec2(abs(left-right), abs(top-bottom))
+        return point
+    }
+
+    private fun getTopLeftCorner(): IVec2{
+        val point = IVec2(left, top)
+        return point
+    }
+
+    private fun getPaintParameters(): Paint {
+        val paint = Paint()
+        paint.color = this.paint.color
+        paint.strokeWidth = this.paint.strokeWidth
+        return paint
     }
 
     override fun onDraw(canvas: Canvas) {
@@ -48,20 +88,34 @@ class Rectangle (context: Context, baseCanvas: Canvas, val socket : DrawingColla
     override fun onStrokeReceived(stroke: JSONObject) {
         var boundingPoints = ArrayList<IVec2>()
         val boundingPointsData = stroke["boundingPoints"]  as JSONArray
+        for (i in 0 until boundingPointsData.length()) {
+            val obj = boundingPointsData[i] as JSONObject
+            boundingPoints.add( IVec2(obj.getDouble("x").toFloat(), obj.getDouble("y").toFloat()) )
+        }
         val topCornerData = stroke.get("topLeftCorner") as JSONObject
         var topLeftCorner = IVec2(topCornerData.getDouble("x").toFloat(), topCornerData.getDouble("y").toFloat())
         val iRectangleStroke = IRectangleStroke(boundingPoints,
             toIntColor(stroke.getString("primaryColor")),
             toIntColor(stroke.getString("secondaryColor")),
             stroke.getDouble("strokeWidth").toFloat(),
+            false,
             stroke.getDouble("width").toFloat(),
             stroke.getDouble("height").toFloat(),
             topLeftCorner)
         draw(iRectangleStroke)
+
+        selection.addStroke(iRectangleStroke)
     }
 
     private fun sendRectangleStroke(left : Float, top: Float, right: Float, bottom: Float){
         var bounding = JSONArray()
+        for(pts in this.getBoundingPoints()){
+            var arr = JSONObject()
+            arr.put("x",pts.x)
+            arr.put("y",pts.y)
+            bounding.put(arr)
+        }
+
         var topLeftCorner = JSONObject()
         topLeftCorner.put("x", left)
         topLeftCorner.put("y",top)
@@ -113,11 +167,11 @@ class Rectangle (context: Context, baseCanvas: Canvas, val socket : DrawingColla
     }
 
     private fun getBoundingPoints():ArrayList<IVec2>{
-//        val topLeftPoint = IVec2(1, 1)
-//        val bottomRightPoint = IVec2(this.rightestCoord, this.lowestCoord)
         val points = ArrayList<IVec2>()
-//        points.add(topLeftPoint)
-//        points.add(bottomRightPoint)
+        val topLeftPoint = IVec2(left, top)
+        val bottomRightPoint = IVec2(right, bottom)
+        points.add(topLeftPoint)
+        points.add(bottomRightPoint)
         return points
     }
 

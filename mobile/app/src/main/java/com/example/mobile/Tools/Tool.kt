@@ -3,9 +3,14 @@ package com.example.mobile.Tools
 import android.content.Context
 import android.graphics.*
 import androidx.core.content.res.ResourcesCompat
+import androidx.fragment.app.activityViewModels
+import com.example.mobile.Interface.IPencilStroke
 import com.example.mobile.activity.drawing.DrawingCollaboration
 import com.example.mobile.Interface.IVec2
+import com.example.mobile.Interface.Stroke
 import com.example.mobile.R
+import com.example.mobile.activity.drawing.ToolbarFragment
+import com.example.mobile.viewModel.ToolParameters
 import org.json.JSONObject
 import kotlin.collections.ArrayList
 
@@ -22,12 +27,13 @@ abstract class Tool(
     var my = 0f
     var path = Path()
     val TOUCH_TOLERANCE = 4f
-    protected val drawColor = ResourcesCompat.getColor(context.resources, R.color.black, null)
+    protected var drawColor = ResourcesCompat.getColor(context.resources, R.color.black, null)
     protected val backgroundColor = ResourcesCompat.getColor(context.resources, R.color.white, null)
     var points : ArrayList<IVec2> = ArrayList<IVec2>()
     var strokeColor : Int ? = R.color.black
     var fillColor : Int ? = R.color.white
     var isStrokeSelected : Boolean ? = true
+abstract var nextTool: ToolbarFragment.MenuItem
 
     protected val strokePaint = Paint().apply {
         color = drawColor
@@ -72,6 +78,7 @@ abstract class Tool(
     }
 
     abstract fun onStrokeReceived(stroke : JSONObject)
+
 
     abstract fun onDraw(canvas: Canvas)
 
