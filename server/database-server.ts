@@ -445,6 +445,10 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
       DB.collection("drawings")
         .find({ $and: [{ owner: username }, { likes: { $exists: true, $not: { $size: 0 } } }] }).toArray(function (error, result) {
           if (error) throw error;
+
+          // Sort result by descending order of number of likes
+          result.sort((a,b) => a.likes.length < b.likes.length ? 1 : a.likes.length > b.likes.length ? - 1 : 0);
+          
           response.json(result);
         })
     })
