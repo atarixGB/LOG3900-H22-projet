@@ -11,6 +11,7 @@ import com.example.mobile.viewModel.SharedViewModelToolBar
 
 class DrawingActivity : AppCompatActivity(), CreateDrawingPopUp.DialogListener, AlbumAdapter.AlbumAdapterListener {
     private lateinit var user: String
+    private lateinit var collabDrawingId: String
     private var isAlbumAlreadySelected: Boolean = false
     private lateinit var albumName: String
     private lateinit var albumID: String
@@ -29,11 +30,19 @@ class DrawingActivity : AppCompatActivity(), CreateDrawingPopUp.DialogListener, 
             albumID = intent.getStringExtra("albumID").toString()
             sharedViewModelCreateDrawingPopUp.setAlbum(albumName,albumID )
         }
+
+        collabDrawingId = intent.getStringExtra("drawingCollabId").toString()
+
+
         sharedViewModelToolBar.setUser(user)
 
-        //Open Popup Window
-        var dialog = CreateDrawingPopUp(user, isAlbumAlreadySelected)
-        dialog.show(supportFragmentManager, "customDialog")
+        if (collabDrawingId == "null") {
+            //Open Popup Window
+            var dialog = CreateDrawingPopUp(user, isAlbumAlreadySelected)
+            dialog.show(supportFragmentManager, "customDialog")
+        } else {
+            sharedViewModelToolBar.setCollabDrawingId(collabDrawingId)
+        }
     }
 
     override fun albumAdapterListener(albumName: String,albumID:String) {

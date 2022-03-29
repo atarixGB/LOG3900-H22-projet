@@ -20,14 +20,17 @@ import com.example.mobile.Interface.IDrawing
 import com.example.mobile.R
 import com.example.mobile.Retrofit.IMyService
 import com.example.mobile.Retrofit.RetrofitClient
+import com.example.mobile.activity.drawing.DrawingCollaboration
 import com.example.mobile.adapter.AlbumAdapter
 import com.example.mobile.adapter.DrawingAdapter
+import com.example.mobile.adapter.RoomAdapter
 import com.example.mobile.adapter.UserAdapter
 import com.example.mobile.popup.*
 import com.example.mobile.viewModel.SharedViewModelCreateDrawingPopUp
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import io.socket.emitter.Emitter
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -55,6 +58,7 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
     private lateinit var userNameAccepted: String
     private lateinit var dialogAcceptMembershipRequest: AcceptMembershipRequestsPopUp
     private lateinit var dialogEditAlbumAttributes: AlbumAttributeModificationPopUp
+    var socket = DrawingCollaboration()
 
     private val sharedViewModelCreateDrawingPopUp: SharedViewModelCreateDrawingPopUp by viewModels()
 
@@ -81,6 +85,10 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
 
         val retrofit = RetrofitClient.getInstance()
         iMyService = retrofit.create(IMyService::class.java)
+
+        socket.init()
+        socket.socket.on("joinSuccessfulwithID", onJoinCollab)
+        socket.socket.on("joinFailure", onJoinFailure)
 
         searchView = findViewById<SearchView>(R.id.drawingsSearchView)
         searchView.queryHint = "cherchez un dessin"
@@ -228,6 +236,27 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
                 popupMenu.show()
             }
         }
+
+//        socket.socket.on("joinSuccessfulwithID", onJoinCollab)
+
+
+    }
+
+    private var onJoinCollab = Emitter.Listener {
+//        val joinEvent = it[0] as JSONObject
+            val drawingId = it[0] as String
+//        var strokes = java.util.ArrayList<Stroke>()
+//        val jsonStrokes = joinEvent["strokes"]  as JSONArray
+//        for (i in 0 until jsonStrokes.length()) {
+//            val obj = jsonStrokes[i] as JSONObject
+//            //boundingPoints.add( IVec2(obj.getDouble("x").toFloat(), obj.getDouble("y").toFloat()) )
+//            strokes.add(obj as Stroke)
+//        }
+            editDrawing(drawingId)
+    }
+
+    private var onJoinFailure = Emitter.Listener {
+        Toast.makeText(this,"Nombres maximum de collaborateurs atteint", Toast.LENGTH_SHORT).show()
     }
 
 //    override fun popUpListener(albumName: String,albumDescription:String) {
@@ -284,6 +313,18 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
 
     override fun addLikeToDrawingAdapterListener(drawingId: String) {
         addLikeToDrawing(drawingId)
+    }
+
+    override fun emitJoinDrawingListener(drawingId: String) {
+        socket.socket.emit("joinCollab", drawingId)
+        socket.socket.on("joinSuccessfulwithID", onJoinCollab)
+    }
+
+    fun editDrawing(drawingId: String) {
+        val intent = Intent(this, DrawingActivity::class.java)
+        intent.putExtra("userName", user)
+        intent.putExtra("drawingCollabId", drawingId)
+        startActivity(intent)
     }
 
     private fun addLikeToDrawing(drawingId: String) {

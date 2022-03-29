@@ -37,6 +37,7 @@ ioCollab.on('connection', (socket) => {
           socket.join(collabDrawingId);
           ioCollab.in(collabDrawingId).emit('memberNbUpdate', value.nbMembers);
           socket.emit('joinSuccessful', infoOnActiveRooms.get(collabDrawingId));
+          socket.emit('joinSuccessfulwithID', collabDrawingId);
 
         } else if (infoOnActiveRooms.get(collabDrawingId).nbMembers < 4) {
           let value = infoOnActiveRooms.get(collabDrawingId);
@@ -46,6 +47,7 @@ ioCollab.on('connection', (socket) => {
           socket.join(collabDrawingId);
           ioCollab.in(collabDrawingId).emit('memberNbUpdate', value.nbMembers);
           socket.emit('joinSuccessful', infoOnActiveRooms.get(collabDrawingId));
+          socket.emit('joinSuccessfulwithID', collabDrawingId);
 
         } else {
           socket.emit('joinFailure');

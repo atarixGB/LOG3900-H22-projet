@@ -2,6 +2,7 @@ package com.example.mobile.adapter
 
 
 import android.content.Context
+import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -9,13 +10,17 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
+import androidx.core.content.ContextCompat.startActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mobile.Interface.IDrawing
 import com.example.mobile.Interface.IVec2
+import com.example.mobile.Interface.Stroke
 import com.example.mobile.R
 import com.example.mobile.Retrofit.IMyService
 import com.example.mobile.Retrofit.RetrofitClient
+import com.example.mobile.activity.chat.ChatPage
+import com.example.mobile.activity.drawing.DrawingActivity
 import com.example.mobile.activity.drawing.DrawingCollaboration
 import com.example.mobile.bitmapDecoder
 import com.example.mobile.popup.ChangeAlbumPopUp
@@ -58,7 +63,7 @@ class DrawingAdapter (val context: Context?, var drawings: ArrayList<IDrawing>, 
     override fun onBindViewHolder(holder: DrawingViewHolder, position: Int) {
         val currentDrawing = drawings[position]
 
-        socket.init()
+//        socket.init()
 
 
 
@@ -159,24 +164,26 @@ class DrawingAdapter (val context: Context?, var drawings: ArrayList<IDrawing>, 
             }
 
             modifDrawing.setOnClickListener {
-                socket.socket.emit("joinCollab", currentDrawing._id)
+//                socket.socket.emit("joinCollab", currentDrawing._id)
+                listener.emitJoinDrawingListener(currentDrawing._id!!)
             }
         }
 
-        socket.socket.on("joinSuccessful", onJoinCollab)
+//        socket.socket.on("joinSuccessfulwithID", onJoinCollab)
     }
 
-    private var onJoinCollab = Emitter.Listener {
-//        val joinEvent = it[0] as JSONObject
-//        val drawingId = joinEvent.getString("collabDrawingId")
-//        val strokes = joinEvent.getJSONArray("strokes")
-////        var strokes = java.util.ArrayList<IStroke>()
-//        val boundingPointsData = stroke["boundingPoints"]  as JSONArray
-//        for (i in 0 until boundingPointsData.length()) {
-//            val obj = boundingPointsData[i] as JSONObject
-//            boundingPoints.add( IVec2(obj.getDouble("x").toFloat(), obj.getDouble("y").toFloat()) )
-//        }
-    }
+//    private var onJoinCollab = Emitter.Listener {
+////        val joinEvent = it[0] as JSONObject
+//        val drawingId = it[0] as String
+////        var strokes = java.util.ArrayList<Stroke>()
+////        val jsonStrokes = joinEvent["strokes"]  as JSONArray
+////        for (i in 0 until jsonStrokes.length()) {
+////            val obj = jsonStrokes[i] as JSONObject
+////            //boundingPoints.add( IVec2(obj.getDouble("x").toFloat(), obj.getDouble("y").toFloat()) )
+////            strokes.add(obj as Stroke)
+////        }
+//        listener.editDrawingListener(drawingId)
+//    }
 
     fun addDrawing (drawing: IDrawing) {
         drawings.add(drawing)
@@ -207,6 +214,7 @@ class DrawingAdapter (val context: Context?, var drawings: ArrayList<IDrawing>, 
     public interface DrawingAdapterListener {
         fun drawingAdapterListener(drawingName: String)
         fun addLikeToDrawingAdapterListener(drawingId: String)
+        fun emitJoinDrawingListener(drawingId: String)
     }
 
 

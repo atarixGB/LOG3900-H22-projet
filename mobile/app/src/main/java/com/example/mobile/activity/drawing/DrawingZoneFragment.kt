@@ -12,6 +12,7 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import com.example.mobile.Interface.IDrawing
 import com.example.mobile.Interface.IVec2
 import com.example.mobile.R
 import com.example.mobile.Tools.ToolManager
@@ -19,6 +20,8 @@ import io.socket.emitter.Emitter
 import org.json.JSONObject
 import com.example.mobile.Retrofit.IMyService
 import com.example.mobile.Retrofit.RetrofitClient
+import com.example.mobile.adapter.DrawingAdapter
+import com.example.mobile.bitmapDecoder
 import com.example.mobile.convertBitmapToByteArray
 import com.example.mobile.viewModel.ToolModel
 import com.example.mobile.viewModel.ToolParameters
@@ -78,6 +81,11 @@ class DrawingZoneFragment : Fragment() {
 
         sharedViewModelToolBar.drawingId.observe(viewLifecycleOwner, Observer { drawingId ->
             mDrawingView.setDrawingId(drawingId)
+        })
+
+        sharedViewModelToolBar.collabDrawingId.observe(viewLifecycleOwner, Observer { collabDrawingId ->
+            mDrawingView.setDrawingId(collabDrawingId)
+            mDrawingView.displayDrawingCollab(collabDrawingId)
         })
 
         toolModel.onClick.observe(viewLifecycleOwner, Observer { onClick ->
@@ -347,6 +355,28 @@ class DrawingZoneFragment : Fragment() {
                     }
                 })
             }
+        }
+
+        fun displayDrawingCollab(drawingId: String) {
+            val retrofit = RetrofitClient.getInstance()
+            val myService = retrofit.create(IMyService::class.java)
+
+            var call: Call<IDrawing> = myService.getDrawingData(drawingId)
+            call.enqueue(object: retrofit2.Callback<IDrawing> {
+
+                override fun onResponse(call: Call<IDrawing>, response: Response<IDrawing>) {
+                    val currentDrawing = response.body()
+                    if (currentDrawing != null) {
+                        mBitmap = bitmapDecoder(currentDrawing!!.data)
+                        mCanvas!!.drawBitmap(mBitmap!!, 0F, 0F, null)
+//                        toolManager = ToolManager(context, mCanvas!!, socket)
+                    }
+                }
+
+                override fun onFailure(call: Call<IDrawing>, t: Throwable) {
+                    Log.d("Albums", "onFailure" +t.message )
+                }
+            })
         }
 
         fun changeStroke(stroke: Boolean) {
