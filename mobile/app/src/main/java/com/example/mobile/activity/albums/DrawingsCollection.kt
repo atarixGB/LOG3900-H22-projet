@@ -106,7 +106,7 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
         drawings = java.util.ArrayList()
         searchArrayList = ArrayList()
 
-        drawingAdapter = DrawingAdapter(this, drawings, user)
+        drawingAdapter = DrawingAdapter(this, drawings, user, albumID)
 
         //Recycler View of rooms
         rvOutputDrawings.adapter = drawingAdapter

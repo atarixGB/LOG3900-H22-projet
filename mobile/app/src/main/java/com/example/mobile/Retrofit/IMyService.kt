@@ -162,7 +162,7 @@ interface IMyService {
     @POST("removeDrawing")
     @FormUrlEncoded
     fun removeDrawing(@Field("drawingID") drawingID:String,
-                 @Field("albumName")albumName:String) : Observable<String>
+                 @Field("albumID")albumID:String) : Observable<String>
 
     @POST("drawingUpdate")
     @FormUrlEncoded

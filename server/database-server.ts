@@ -631,17 +631,17 @@ app.post(
       var post_data = request.body;
       
       
-      var albumName = post_data.albumName;
+      var albumId = post_data.albumID;
       var drawingID = post_data.drawingID;
 
       DB.collection("albums")
-        .find({ name: albumName })
+        .find({ _id: mongoose.Types.ObjectId(albumId) })
         .count(function (err, number) {
           if (number == 0) {
             response.json(404);
             console.log("album does not exist");
           } else {
-            DB.collection("albums").findOneAndUpdate({name: albumName }, { "$pull": { drawingIDs: drawingID } },
+            DB.collection("albums").findOneAndUpdate({_id: mongoose.Types.ObjectId(albumId) }, { "$pull": { drawingIDs: drawingID } },
               function (error, result) {
                 response.json(201);
                 console.log("album updated");

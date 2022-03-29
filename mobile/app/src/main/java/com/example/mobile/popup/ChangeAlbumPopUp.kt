@@ -32,7 +32,7 @@ import retrofit2.Call
 import retrofit2.Response
 import java.util.ArrayList
 
-class ChangeAlbumPopUp(val drawingID:String,val oldAlbumName:String,val user:String, val position: Int):DialogFragment() {
+class ChangeAlbumPopUp(val drawingID:String,val user:String, val position: Int, val oldAlbumID: String):DialogFragment() {
     private lateinit var listener: ChangeAlbumPopUp.DialogListener
     private lateinit var iMyService: IMyService
     internal var compositeDisposable = CompositeDisposable()
@@ -43,6 +43,7 @@ class ChangeAlbumPopUp(val drawingID:String,val oldAlbumName:String,val user:Str
     private lateinit var publicRB: RadioButton
     private lateinit var radioGroup: RadioGroup
     private var albumName: String = ""
+    private lateinit var newAlbumID: String
     private val sharedViewModelCreateDrawingPopUp: SharedViewModelCreateDrawingPopUp by activityViewModels()
 
     override fun onCreateView(
@@ -54,6 +55,10 @@ class ChangeAlbumPopUp(val drawingID:String,val oldAlbumName:String,val user:Str
 
         val retrofit = RetrofitClient.getInstance()
         iMyService = retrofit.create(IMyService::class.java)
+
+        sharedViewModelCreateDrawingPopUp.albumID.observe(viewLifecycleOwner) {
+            newAlbumID = it
+        }
 
         dialog?.setCanceledOnTouchOutside(false)
 
@@ -96,13 +101,13 @@ class ChangeAlbumPopUp(val drawingID:String,val oldAlbumName:String,val user:Str
         rootView.submitBtn.setOnClickListener {
 
             //step 1 : we add the drawing to the destination album
-            addDrawingToAlbum(albumName,drawingID)
+            addDrawingToAlbum(newAlbumID,drawingID)
             //step 2: we change the variable album name in the drawing element
-            changeAlbumOfDrawing(albumName,drawingID)
+//            changeAlbumOfDrawing(newAlbumID,drawingID)
             //step 3 : we remove the drawing from the drawing IDs in the oldAlbum
-            removeDrawingFromAlbum(drawingID,oldAlbumName)
+            removeDrawingFromAlbum(drawingID,oldAlbumID)
 
-            Toast.makeText(context, "le dessin a été transféré de ${oldAlbumName} à l'album $albumName", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "le dessin a été transféré vers l'album $albumName", Toast.LENGTH_SHORT).show()
 
             //we send out the new album
             listener.changeAlbumPopUpListener(albumName, position)
@@ -122,16 +127,16 @@ class ChangeAlbumPopUp(val drawingID:String,val oldAlbumName:String,val user:Str
             })
     }
 
-    private fun addDrawingToAlbum(albumName: String, drawingId: String) {
-        compositeDisposable.add(iMyService.addDrawingToAlbum(albumName, drawingId)
+    private fun addDrawingToAlbum(albumID: String, drawingId: String) {
+        compositeDisposable.add(iMyService.addDrawingToAlbum(albumID, drawingId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
             })
     }
 
-    private fun removeDrawingFromAlbum(drawingId: String, albumName:String){
-        compositeDisposable.add(iMyService.removeDrawing(drawingId, albumName)
+    private fun removeDrawingFromAlbum(drawingId: String, albumID:String){
+        compositeDisposable.add(iMyService.removeDrawing(drawingId, albumID)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
