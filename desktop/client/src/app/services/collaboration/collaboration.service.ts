@@ -3,9 +3,7 @@ import { DrawingService } from '@app/services/editor/drawing/drawing.service';
 import * as io from 'socket.io-client';
 import { Observable, Subject } from 'rxjs';
 import { COLLAB_URL } from '@app/constants/api-urls';
-import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-import { CouldntJoinDialogComponent } from '@app/components/editor/couldnt-join-dialog/couldnt-join-dialog.component';
 import { ProfileService } from '../profile/profile.service';
 import { MemberJoinedDialogComponent } from '@app/components/editor/member-joined-dialog/member-joined-dialog.component';
 import { MemberLeftDialogComponent } from '@app/components/editor/member-left-dialog/member-left-dialog.component';
@@ -42,7 +40,7 @@ export class CollaborationService {
     pasteOnNewMemberJoin: Subject<any>;
     pasteOnNewMemberJoin$: Observable<any>;
 
-    constructor(public dialog: MatDialog, public drawingService: DrawingService, private router: Router, private route: ActivatedRoute, private profileService: ProfileService) { 
+    constructor(public dialog: MatDialog, public drawingService: DrawingService, private profileService: ProfileService) { 
         this.nbMembersInCollab = 0;
 
         this.newStroke = new Subject();
@@ -88,13 +86,6 @@ export class CollaborationService {
 
         this.socket.on('joinSuccessful', (collabData: any) => {
             this.newCollabData.next(collabData);
-        });
-
-        this.socket.on('joinFailure', () => {
-            this.router.navigate(['../my-albums'], { relativeTo: this.route });
-            this.dialog.open(CouldntJoinDialogComponent, {
-                width: "50%"
-            });
         });
 
         this.socket.on('memberNbUpdate', (nbMembersRemaining: any) => {
