@@ -6,6 +6,7 @@ import { LoginService } from '@app/services/login/login.service';
 import { ALBUM_URL, CREATE_DRAWING_URL, JOIN_ALBUM_URL, DECLINE_MEMBERSHIP_REQUEST_URL, ACCEPT_MEMBERSHIP_REQUEST_URL, UPDATE_ALBUM_PARAMETERS_URL, ADD_DRAWING_TO_ALBUM_URL, GET_DRAWING_URL, SAVE_DRAWING_URL, LIKE_DRAWING_URL, GET_USER_FAVORITE_DRAWINGS_URL, GET_USER_TOP_X_DRAWINGS_URL } from '@app/constants/api-urls';
 import { PUBLIC_ALBUM } from '@app/constants/constants';
 import { DrawingService } from '../editor/drawing/drawing.service';
+import { formatDate } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
@@ -17,8 +18,8 @@ export class AlbumGalleryService {
   currentAlbum: IAlbum;
   currentDrawing: IDrawing;
 
-  selectedAlbumId: string | void;
-  selectedAlbumName: string | void;
+  selectedAlbumId: string;
+  selectedAlbumName: string;
 
   drawings: IDrawing[];
 
@@ -34,6 +35,7 @@ export class AlbumGalleryService {
       _id: null,
       name: "",
       owner: this.loginService.username,
+      creationDate: ""
     }
 
     this.favoriteDrawingsData = [];
@@ -41,9 +43,9 @@ export class AlbumGalleryService {
   }
 
   createDrawing(drawingName: string): void {
-    this.currentDrawing.name = drawingName;
     this.currentDrawing._id = null;
-
+    this.currentDrawing.name = drawingName;
+    this.currentDrawing.creationDate = formatDate(new Date(), 'hh:mm:ss a', 'en-US');
     console.log(this.currentDrawing)
 
     this.httpClient.post(CREATE_DRAWING_URL, this.currentDrawing).subscribe(

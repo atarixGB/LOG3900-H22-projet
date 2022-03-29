@@ -4,5 +4,6 @@ export interface IDrawing {
   owner: string,
   data?: string | undefined,
   members?: string[],
-  likes?: string[];
+  likes?: string[],
+  creationDate: any,
 }
