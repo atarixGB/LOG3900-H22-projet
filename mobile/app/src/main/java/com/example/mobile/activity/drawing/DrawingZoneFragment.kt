@@ -37,7 +37,6 @@ class DrawingZoneFragment : Fragment() {
     private val toolModel: ToolModel by activityViewModels()
     var socket = DrawingCollaboration()
     private val sharedViewModelToolBar: SharedViewModelToolBar by activityViewModels()
-    private lateinit var mediaPlayerDraw: MediaPlayer
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -219,13 +218,10 @@ class DrawingZoneFragment : Fragment() {
         override fun onDraw(canvas: Canvas) {
             super.onDraw(canvas)
             canvas.drawBitmap(mBitmap!!, 0f, 0f, mPaint)
-            var mediaPlayerDrawing: MediaPlayer = MediaPlayer.create(context,R.raw.draw)
+            //var mediaPlayerDrawing: MediaPlayer = MediaPlayer.create(context,R.raw.draw)
 
             if (isDrawing) {
                 toolManager.currentTool.onDraw(canvas)
-                mediaPlayerDrawing.start()
-
-
             }
         }
 

@@ -69,8 +69,8 @@ class  Ellipse(context: Context, baseCanvas: Canvas, val socket : DrawingCollabo
 
     private fun getPaintParameters(): Paint {
         val paint = Paint()
-        paint.color = this.paint.color
-        paint.strokeWidth = this.paint.strokeWidth
+        paint.color = this.strokePaint.color
+        paint.strokeWidth = this.strokePaint.strokeWidth
         return paint
     }
 
@@ -139,8 +139,8 @@ class  Ellipse(context: Context, baseCanvas: Canvas, val socket : DrawingCollabo
 
     private fun draw(stroke: IEllipseStroke) {
         val upcomingPaintStroke = Paint().apply {
-            color = stroke.primaryColor
-            strokeWidth = stroke.strokeWidth
+            color = stroke.currentStrokeColor
+            strokeWidth = stroke.currentStrokeWidth
             isAntiAlias = true
             isDither = true
             style = Paint.Style.STROKE
@@ -150,7 +150,7 @@ class  Ellipse(context: Context, baseCanvas: Canvas, val socket : DrawingCollabo
 
         val upcomingPaintFill = Paint().apply {
             color = stroke.secondaryColor
-            strokeWidth = stroke.strokeWidth
+            strokeWidth = stroke.currentStrokeWidth
             isAntiAlias = true
             isDither = true
             style = Paint.Style.FILL
@@ -173,9 +173,6 @@ class  Ellipse(context: Context, baseCanvas: Canvas, val socket : DrawingCollabo
 
     }
 
-<<<<<<< HEAD
-
-=======
     private fun getBoundingPoints():ArrayList<IVec2>{
         val points = ArrayList<IVec2>()
         val topLeftPoint = IVec2(left, top)
@@ -184,6 +181,5 @@ class  Ellipse(context: Context, baseCanvas: Canvas, val socket : DrawingCollabo
         points.add(bottomRightPoint)
         return points
     }
->>>>>>> mobile/feature/selection
 
 }

@@ -70,8 +70,8 @@ class Rectangle (context: Context, baseCanvas: Canvas, val socket : DrawingColla
 
     private fun getPaintParameters(): Paint {
         val paint = Paint()
-        paint.color = this.paint.color
-        paint.strokeWidth = this.paint.strokeWidth
+        paint.color = this.strokePaint.color
+        paint.strokeWidth = this.strokePaint.strokeWidth
         return paint
     }
 
@@ -135,8 +135,8 @@ class Rectangle (context: Context, baseCanvas: Canvas, val socket : DrawingColla
 
     private fun draw(stroke: IRectangleStroke) {
         val upcomingPaintStroke = Paint().apply {
-            color = stroke.primaryColor
-            strokeWidth = stroke.strokeWidth
+            color = stroke.currentStrokeColor
+            strokeWidth = stroke.currentStrokeWidth
             isAntiAlias = true
             isDither = true
             style = Paint.Style.STROKE

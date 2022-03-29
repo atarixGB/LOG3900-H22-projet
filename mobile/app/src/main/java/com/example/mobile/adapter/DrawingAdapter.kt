@@ -167,15 +167,15 @@ class DrawingAdapter (val context: Context?, var drawings: ArrayList<IDrawing>, 
     }
 
     private var onJoinCollab = Emitter.Listener {
-        val joinEvent = it[0] as JSONObject
-        val drawingId = joinEvent.getString("collabDrawingId")
-        val strokes = joinEvent.getJSONArray("strokes")
-//        var strokes = java.util.ArrayList<IStroke>()
-        val boundingPointsData = stroke["boundingPoints"]  as JSONArray
-        for (i in 0 until boundingPointsData.length()) {
-            val obj = boundingPointsData[i] as JSONObject
-            boundingPoints.add( IVec2(obj.getDouble("x").toFloat(), obj.getDouble("y").toFloat()) )
-        }
+//        val joinEvent = it[0] as JSONObject
+//        val drawingId = joinEvent.getString("collabDrawingId")
+//        val strokes = joinEvent.getJSONArray("strokes")
+////        var strokes = java.util.ArrayList<IStroke>()
+//        val boundingPointsData = stroke["boundingPoints"]  as JSONArray
+//        for (i in 0 until boundingPointsData.length()) {
+//            val obj = boundingPointsData[i] as JSONObject
+//            boundingPoints.add( IVec2(obj.getDouble("x").toFloat(), obj.getDouble("y").toFloat()) )
+//        }
     }
 
     fun addDrawing (drawing: IDrawing) {

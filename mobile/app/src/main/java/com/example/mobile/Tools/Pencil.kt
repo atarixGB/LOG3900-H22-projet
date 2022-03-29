@@ -53,9 +53,9 @@ class Pencil(context: Context, baseCanvas: Canvas, val socket : DrawingCollabora
             path!!.lineTo(mStartX, mStartY)
             points.add(IVec2(mStartX, mStartY))
             this.sendPencilStroke()
-            paint.strokeJoin = Paint.Join.ROUND // default: MITER
-            paint.strokeCap = Paint.Cap.ROUND
-            baseCanvas!!.drawPath(path!!, paint!!)
+            strokePaint.strokeJoin = Paint.Join.ROUND // default: MITER
+            strokePaint.strokeCap = Paint.Cap.ROUND
+            baseCanvas!!.drawPath(path!!, strokePaint!!)
             path!!.reset()
 
             //ajout a l'array list des strokes
@@ -86,8 +86,8 @@ class Pencil(context: Context, baseCanvas: Canvas, val socket : DrawingCollabora
 
     private fun getPaintParameters(): Paint {
         val paint = Paint()
-        paint.color = this.paint.color
-        paint.strokeWidth = this.paint.strokeWidth
+        paint.color = this.strokePaint.color
+        paint.strokeWidth = this.strokePaint.strokeWidth
         return paint
     }
 
