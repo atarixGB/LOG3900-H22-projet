@@ -76,7 +76,7 @@ class DrawingAdapter (val context: Context?, var drawings: ArrayList<IDrawing>, 
                 listener.drawingAdapterListener(drawingName.text.toString())
             }
 
-            if (albumID == "" && user!= currentDrawing.owner) {
+            if (albumID == "" || user!= currentDrawing.owner) {
                 drawingViewOptions.isVisible = false
             }
 
