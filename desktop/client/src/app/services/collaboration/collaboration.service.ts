@@ -85,8 +85,7 @@ export class CollaborationService {
         });
 
         this.socket.on('readyToJoin', (room: any) => {
-            setTimeout(() => {this.socket.emit('joinCollab', room);}, 1000);
-            
+            setTimeout(() => {this.socket.emit('joinCollab', room);}, 200);
         });
 
         this.socket.on('joinSuccessful', (collabData: any) => {

@@ -296,7 +296,6 @@ export class AlbumGalleryService {
     album.drawingIDs.forEach(id => {
       this.httpClient.get(`${GET_DRAWING_URL}/${id}`).subscribe(
         (result: IDrawing) => {
-          console.log(result);
           this.drawings.push(result);
         },
         (error) => {

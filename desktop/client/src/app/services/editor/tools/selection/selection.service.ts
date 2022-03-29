@@ -177,10 +177,6 @@ export class SelectionService extends Tool {
         sender: '',
         pos: { x: this.selectionCnv.offsetLeft, y: this.selectionCnv.offsetTop },
       });
-      this.collaborationService.updateCollabInfo({
-        collabDrawingId: '',
-        strokes: this.strokes,
-      });
     } else if(this.isResizing) {
       this.isResizing = false;
       const currentDimensions = {x: this.selectionCnv.width, y: this.selectionCnv.height};
@@ -191,10 +187,6 @@ export class SelectionService extends Tool {
         newPos: { x: this.selectionCnv.offsetLeft, y: this.selectionCnv.offsetTop },
         newDimensions: currentDimensions,
         scale: scale,
-      });
-      this.collaborationService.updateCollabInfo({
-        collabDrawingId: '',
-        strokes: this.strokes,
       });
     }
   }
