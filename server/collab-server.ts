@@ -29,7 +29,11 @@ ioCollab.on('connection', (socket) => {
         const userJoining = data.username;
         console.log("Prepping for join " , room);
         if (infoOnActiveRooms.has(room)) {
-          socket.broadcast.to(room).emit('prepForNewMember', userJoining);
+          //socket.broadcast.to(room).emit('prepForNewMember', userJoining);     
+          infoOnActiveRooms.get(room).members.forEach(id => {
+            setTimeout(() => {ioCollab.to(id).emit('prepForNewMember', userJoining);}, 100);
+                  
+          });
         } 
         socket.emit('readyToJoin', room);
       })
@@ -41,10 +45,12 @@ ioCollab.on('connection', (socket) => {
         let value = {
           nbMembers: 1,
           strokes: [],
+          members: [socket.id],
         };
         if (infoOnActiveRooms.has(room)) {
           value = infoOnActiveRooms.get(room);
           value.nbMembers = value.nbMembers + 1;
+          value.members.push(socket.id);
         }
         infoOnActiveRooms.set(room, value);
 
@@ -71,6 +77,8 @@ ioCollab.on('connection', (socket) => {
       })
 
       socket.on('updateCollabInfo', (collabData) => {
+        console.log('updateCollabInfo');
+        
         let value = infoOnActiveRooms.get(collabData.collabDrawingId);
         value.strokes = collabData.strokes;
         infoOnActiveRooms.set(collabData.collabDrawingId, value);
@@ -78,56 +86,75 @@ ioCollab.on('connection', (socket) => {
 
       // DRAWING EVENTS
       socket.on('broadcastStroke', (data) => {
+        console.log('broadcastStroke');
         const room = data.room;
         const stroke = data.data
         socket.broadcast.to(room).emit('receiveStroke', stroke);
       })
 
       socket.on('broadcastSelection', (data) => {
+        console.log('broadcastSelection');
         const room = data.room;
         const selection = data.data
         socket.broadcast.to(room).emit('receiveSelection', selection);
+         
       })
   
       socket.on('broadcastSelectionPos', (data) => {
+        console.log('broadcastSelectionPos');
         const room = data.room;
         const pos = data.data
         socket.broadcast.to(room).emit('receiveSelectionPos', pos);
+         
       })
   
       socket.on('broadcastSelectionSize', (data) => {
+        console.log('broadcastSelectionSize');
         const room = data.room;
         const size = data.data
         socket.broadcast.to(room).emit('receiveSelectionSize', size);
+         
       })
   
       socket.on('broadcastPasteRequest', (data) => {
+        console.log('broadcastPasteRequest');
         const room = data.room;
         const pasteReq = data.data
         socket.broadcast.to(room).emit('receivePasteRequest', pasteReq);
+         
+
+        socket.emit('fetchStrokes');
       })
   
       socket.on('broadcastDeleteRequest', (data) => {
+        console.log('broadcastDeleteRequest');
         const room = data.room;
         const delReq = data.data
         socket.broadcast.to(room).emit('receiveDeleteRequest', delReq);
+         
       })
   
       socket.on('broadcastNewStrokeWidth', (data) => {
+        console.log('broadcastNewStrokeWidth');
         const room = data.room;
         const width = data.data
         socket.broadcast.to(room).emit('receiveStrokeWidth', width);
+         
       })
 
       socket.on('broadcastNewPrimaryColor', (data) => {
+        console.log('broadcastNewPrimaryColor');
         const room = data.room;
         const primeColor = data.data
         socket.broadcast.to(room).emit('receiveNewPrimaryColor', primeColor);
+         
       })
 
       socket.on('broadcastNewSecondaryColor', (data) => {
+        console.log('broadcastNewSecondaryColor');
         const room = data.room;
         const secondColor = data.data
         socket.broadcast.to(room).emit('receiveNewSecondaryColor', secondColor);
+         
       })
 })

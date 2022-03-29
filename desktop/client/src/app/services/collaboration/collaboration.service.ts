@@ -39,6 +39,8 @@ export class CollaborationService {
     newCollabData$: Observable<any>;
     pasteOnNewMemberJoin: Subject<any>;
     pasteOnNewMemberJoin$: Observable<any>;
+    fetchRequest: Subject<any>;
+    fetchRequest$: Observable<any>;
 
     constructor(public dialog: MatDialog, public drawingService: DrawingService, private profileService: ProfileService) { 
         this.nbMembersInCollab = 0;
@@ -66,6 +68,8 @@ export class CollaborationService {
         this.newCollabData$ = this.newCollabData.asObservable();
         this.pasteOnNewMemberJoin = new Subject();
         this.pasteOnNewMemberJoin$ = this.pasteOnNewMemberJoin.asObservable();
+        this.fetchRequest = new Subject();
+        this.fetchRequest$ = this.fetchRequest.asObservable();
     }
 
     enterCollaboration(): void {
@@ -81,7 +85,8 @@ export class CollaborationService {
         });
 
         this.socket.on('readyToJoin', (room: any) => {
-            this.socket.emit('joinCollab', room);
+            setTimeout(() => {this.socket.emit('joinCollab', room);}, 1000);
+            
         });
 
         this.socket.on('joinSuccessful', (collabData: any) => {
@@ -90,6 +95,8 @@ export class CollaborationService {
 
         this.socket.on('memberNbUpdate', (nbMembersRemaining: any) => {
             this.nbMembersInCollab = nbMembersRemaining;
+            console.log(nbMembersRemaining);
+            
         });
 
         this.socket.on('memberLeft', (memberUsername: any) => {
@@ -97,6 +104,10 @@ export class CollaborationService {
                 width: "50%"
             });
             dialogRef.componentInstance.username = memberUsername;
+        });
+
+        this.socket.on('fetchStrokes', () => {
+            this.fetchRequest.next();
         });
 
         // -------------------Editor receiving events

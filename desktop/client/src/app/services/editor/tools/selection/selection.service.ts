@@ -64,7 +64,20 @@ export class SelectionService extends Tool {
     this.collaborationService.pasteOnNewMemberJoin$.subscribe(() => {
       if (this.isActiveSelection) {
         this.pasteSelectionOnBaseCnv();
+        console.log('pasting for new member');
+        
       }
+    });
+
+    this.collaborationService.fetchRequest$.subscribe(() => {
+      this.broadcastCurrentStrokes();
+    });
+  }
+
+  broadcastCurrentStrokes(): void {
+    this.collaborationService.updateCollabInfo({
+      collabDrawingId: '',
+      strokes: this.strokes,
     });
   }
 
@@ -86,10 +99,7 @@ export class SelectionService extends Tool {
       sender: '',
       strokeIndex: this.selectedIndex
     });
-    this.collaborationService.updateCollabInfo({
-      collabDrawingId: '',
-      strokes: this.strokes,
-    });
+     
     this.isActiveSelection = false;
   }
 
@@ -121,10 +131,7 @@ export class SelectionService extends Tool {
       sender: '',
       strokeIndex: this.selectedIndex,
     });
-    this.collaborationService.updateCollabInfo({
-      collabDrawingId: '',
-      strokes: this.strokes,
-    });
+     
   }
 
   getPositionFromMouse(event: MouseEvent): Vec2 {
@@ -220,10 +227,7 @@ export class SelectionService extends Tool {
       strokeIndex: this.selectedIndex,
       value: newWidth,
     });
-    this.collaborationService.updateCollabInfo({
-      collabDrawingId: '',
-      strokes: this.strokes,
-    });
+     
   }
 
   updateSelectionPrimaryColor(newPrimary: string): void {
@@ -235,10 +239,7 @@ export class SelectionService extends Tool {
       strokeIndex: this.selectedIndex,
       color: newPrimary,
     });
-    this.collaborationService.updateCollabInfo({
-      collabDrawingId: '',
-      strokes: this.strokes,
-    });
+     
   }
 
   updateSelectionSecondaryColor(newSecondary: string): void {
@@ -250,13 +251,15 @@ export class SelectionService extends Tool {
       strokeIndex: this.selectedIndex,
       color: newSecondary,
     });
-    this.collaborationService.updateCollabInfo({
-      collabDrawingId: '',
-      strokes: this.strokes,
-    });
+     
   }
 
   pasteSelectionOnBaseCnv(): void {
+    this.collaborationService.broadcastPasteRequest({
+      sender: '',
+      strokeIndex: this.selectedIndex,
+    });
+
     const selectionTopLeftCorner = { x: this.selectionCnv.offsetLeft, y: this.selectionCnv.offsetTop }
     const selectionSize = { x: this.selectionCnv.width, y: this.selectionCnv.height }
     this.selectedStroke.prepForBaseCanvas(selectionTopLeftCorner, selectionSize);
@@ -265,14 +268,6 @@ export class SelectionService extends Tool {
     this.deleteSelection(this.selectionCnv);
     this.hideSelectionCps();
     this.isActiveSelection = false;
-    this.collaborationService.broadcastPasteRequest({
-      sender: '',
-      strokeIndex: this.selectedIndex,
-    });
-    this.collaborationService.updateCollabInfo({
-      collabDrawingId: '',
-      strokes: this.strokes,
-    });
   }
 
   deleteSelection(selection: HTMLCanvasElement): void {
