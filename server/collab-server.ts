@@ -29,11 +29,9 @@ ioCollab.on('connection', (socket) => {
         const userJoining = data.username;
         console.log("Prepping for join " , room);
         if (infoOnActiveRooms.has(room)) {
-          //socket.broadcast.to(room).emit('prepForNewMember', userJoining);     
-          infoOnActiveRooms.get(room).members.forEach(id => {
-            setTimeout(() => {ioCollab.to(id).emit('prepForNewMember', userJoining);}, 100);
-                  
-          });
+          socket.broadcast.to(room).emit('prepForNewMember', userJoining);   
+          const randomRoomMember = infoOnActiveRooms.get(room).members[0]; 
+          ioCollab.to(randomRoomMember).emit('fetchStrokes'); 
         } 
         socket.emit('readyToJoin', room);
       })

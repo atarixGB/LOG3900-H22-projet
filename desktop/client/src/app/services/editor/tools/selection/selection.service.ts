@@ -61,14 +61,6 @@ export class SelectionService extends Tool {
       this.loadCurrentSessionData(newCollabData.strokes);
     });
 
-    this.collaborationService.pasteOnNewMemberJoin$.subscribe(() => {
-      if (this.isActiveSelection) {
-        this.pasteSelectionOnBaseCnv();
-        console.log('pasting for new member');
-        
-      }
-    });
-
     this.collaborationService.fetchRequest$.subscribe(() => {
       this.broadcastCurrentStrokes();
     });
@@ -255,11 +247,11 @@ export class SelectionService extends Tool {
   }
 
   pasteSelectionOnBaseCnv(): void {
-    this.collaborationService.broadcastPasteRequest({
-      sender: '',
-      strokeIndex: this.selectedIndex,
-    });
+    this.pasteBase();  
+    this.sendPaste();
+  }
 
+  pasteBase(): void {
     const selectionTopLeftCorner = { x: this.selectionCnv.offsetLeft, y: this.selectionCnv.offsetTop }
     const selectionSize = { x: this.selectionCnv.width, y: this.selectionCnv.height }
     this.selectedStroke.prepForBaseCanvas(selectionTopLeftCorner, selectionSize);
@@ -268,6 +260,13 @@ export class SelectionService extends Tool {
     this.deleteSelection(this.selectionCnv);
     this.hideSelectionCps();
     this.isActiveSelection = false;
+  }
+
+  sendPaste(): void {
+    this.collaborationService.broadcastPasteRequest({
+      sender: '',
+      strokeIndex: this.selectedIndex,
+    });
   }
 
   deleteSelection(selection: HTMLCanvasElement): void {
