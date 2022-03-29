@@ -22,7 +22,7 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_profile.*
 
 
-class DrawingNameModificationPopUp (val oldDrawingName: String) : DialogFragment(){
+class DrawingNameModificationPopUp (val drawingID:String, val oldDrawingName: String, val position: Int) : DialogFragment(){
     private lateinit var listener: DialogListener
     private lateinit var submitButton: Button
     private lateinit var cancelButton: Button
@@ -51,13 +51,13 @@ class DrawingNameModificationPopUp (val oldDrawingName: String) : DialogFragment
         }
 
         submitButton.setOnClickListener{
-
             var modifiedName= drawingName.text.toString()
 
-            listener.popUpListener(modifiedName)
 
-            updateDrawing(oldDrawingName,modifiedName)
 
+            updateDrawing(drawingID,modifiedName)
+
+            listener.popUpListener(modifiedName, position)
             dismiss()
         }
 
@@ -76,11 +76,11 @@ class DrawingNameModificationPopUp (val oldDrawingName: String) : DialogFragment
         }
     }
     public interface DialogListener {
-        fun popUpListener(drawingName: String)
+        fun popUpListener(drawingName: String, position: Int)
     }
 
-    private fun updateDrawing(oldDrawingName: String, newDrawingName:String) {
-        compositeDisposable.add(iMyService.updateDrawing(oldDrawingName,newDrawingName)
+    private fun updateDrawing(drawingID: String, newDrawingName:String) {
+        compositeDisposable.add(iMyService.updateDrawing(drawingID,newDrawingName)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {

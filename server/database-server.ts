@@ -472,28 +472,15 @@ app.post(
   //update drawing name
   app.post("/drawingUpdate", (request, response, next) => {
     var post_data = request.body;
-    var oldDrawingName = post_data.oldDrawingName;
+    var drawingID= post_data.drawingID
     var newDrawingName = post_data.newDrawingName;
+    console.log(newDrawingName);
     
-  
-    //check if an Drawing already has the new name
-    DB.collection("drawings")
-      .find({ name: newDrawingName })
-      .count(function (err, number) {
-        if (number != 0 && oldDrawingName != newDrawingName) {
-          response.json(false);
-          console.log("Drawing name already used");
-        } else {
-          // Update drawing data
-          DB.collection("drawings").updateOne({ name: oldDrawingName }, {
-            $set: {
-              "name": newDrawingName,
-            },
-          }).then(result => {
-            response.json(200);
-          });
-        }
-      });
+
+    DB.collection("drawings").findOneAndUpdate({ _id: mongoose.Types.ObjectId(drawingID) }, { $set: { "name": newDrawingName } }, { returnDocument: 'after' }, (err, res) => {
+      response.json(201)
+      console.log(drawingID, "is now named ", newDrawingName);
+    })
   });
 
   //change the album containing the drawing in the drawing interface
@@ -528,7 +515,7 @@ app.post(
       DB.collection("albums").insertOne(request.body, (err, res) => {
         request.body._id = res.insertedId.toHexString();
         console.log(`Album "${request.body.name}" created successfully with ID: ${request.body._id}!`);
-        response.json(201);
+        response.json(request.body._id);
       });
     })
 
@@ -557,8 +544,9 @@ app.post(
     });
 
     //get album drawings
-    app.get("/albums/Drawings/:albumName", (request, response, next) => { // SUGGESTION: /albums/drawings/:albumId
-      DB.collection("albums").findOne({ name: request.params.albumName }, function (err, res) {
+    app.get("/albums/Drawings/:albumID", (request, response, next) => { // SUGGESTION: /albums/drawings/:albumId
+      console.log(request.params.albumID)
+      DB.collection("albums").findOne({ _id: mongoose.Types.ObjectId(request.params.albumID) }, function (err, res) {
         response.json(res.drawingIDs);
         // console.log(res.drawingIDs);
       })
@@ -566,13 +554,13 @@ app.post(
 
 
 
-    //add drawing to an album //IMPORTANT DE CHANGER VERS ALBUM ID CA FAIT DES INCOHERANCES
-    app.put("/albums/addDrawing/:albumName", (request, response, next) => {
-      let albumName = request.params.albumName;
+    //add drawing to an album
+    app.put("/albums/addDrawing/:albumId", (request, response, next) => {
+      let albumId = request.params.albumId;
       let drawingID = request.body.drawing;
-      DB.collection("albums").findOneAndUpdate({ name:albumName }, { $push: { drawingIDs: drawingID } }, { returnDocument: 'after' }, (err, res) => {
+      DB.collection("albums").findOneAndUpdate({ _id: mongoose.Types.ObjectId(albumId) }, { $push: { drawingIDs: drawingID } }, { returnDocument: 'after' }, (err, res) => {
         response.json(201)
-        console.log(drawingID, "is added to ", albumName);
+        console.log(drawingID, "is added to ", albumId);
       })
     });
 
@@ -657,17 +645,17 @@ app.post(
       var post_data = request.body;
       
       
-      var albumName = post_data.albumName;
+      var albumId = post_data.albumID;
       var drawingID = post_data.drawingID;
 
       DB.collection("albums")
-        .find({ name: albumName })
+        .find({ _id: mongoose.Types.ObjectId(albumId) })
         .count(function (err, number) {
           if (number == 0) {
             response.json(404);
             console.log("album does not exist");
           } else {
-            DB.collection("albums").findOneAndUpdate({name: albumName }, { "$pull": { drawingIDs: drawingID } },
+            DB.collection("albums").findOneAndUpdate({_id: mongoose.Types.ObjectId(albumId) }, { "$pull": { drawingIDs: drawingID } },
               function (error, result) {
                 response.json(201);
                 console.log("album updated");

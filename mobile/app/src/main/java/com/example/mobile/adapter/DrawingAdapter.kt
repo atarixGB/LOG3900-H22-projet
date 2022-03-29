@@ -21,10 +21,11 @@ import com.example.mobile.popup.DrawingNameModificationPopUp
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import kotlinx.android.synthetic.main.item_album.view.*
 import kotlinx.android.synthetic.main.item_drawing.view.*
 
 
-class DrawingAdapter (val context: Context?, var drawings: ArrayList<IDrawing>, val user: String) : RecyclerView.Adapter<DrawingAdapter.DrawingViewHolder>(),DrawingNameModificationPopUp.DialogListener,ChangeAlbumPopUp.DialogListener {
+class DrawingAdapter (val context: Context?, var drawings: ArrayList<IDrawing>, val user: String, val albumID: String) : RecyclerView.Adapter<DrawingAdapter.DrawingViewHolder>(), ChangeAlbumPopUp.DialogListener {
 
     private var listener: DrawingAdapterListener = context as DrawingAdapterListener
     private lateinit var dialogEditDrawingName: DrawingNameModificationPopUp
@@ -75,33 +76,38 @@ class DrawingAdapter (val context: Context?, var drawings: ArrayList<IDrawing>, 
                 listener.drawingAdapterListener(drawingName.text.toString())
             }
 
+            if (albumID == "" || user!= currentDrawing.owner) {
+                drawingViewOptions.isVisible = false
+            }
+
             drawingViewOptions.setOnClickListener {
                 //getAlbumParameters(albumName) //pour avoir les parametres d'album a jour
                 val popupMenu = PopupMenu(
                     context,
                     drawingViewOptions
                 )
+
                 popupMenu.setOnMenuItemClickListener { menuItem ->
                     //get id of the item clicked and handle clicks
                     when (menuItem.itemId) {
                         R.id.menu_editDrawingParameters -> {
                             //ouvrir pop up modification nom album
-                            dialogEditDrawingName= DrawingNameModificationPopUp(currentDrawing.name)
+                            dialogEditDrawingName= DrawingNameModificationPopUp(currentDrawing._id!!,currentDrawing.name, position)
                             dialogEditDrawingName.show((context as AppCompatActivity).supportFragmentManager,"customDialog")
-                            currentDrawing.name=newDrawingName
+//                            currentDrawing.name=newDrawingName
+//                            drawingName.text = newDrawingName
                             true
                         }
                         R.id.menu_changeAlbum -> {
-                            dialogChangeAlbumName= ChangeAlbumPopUp(currentDrawing._id!!,currentDrawing.albumName,user)
+                            dialogChangeAlbumName= ChangeAlbumPopUp(currentDrawing._id!!, user, position, albumID)
                             dialogChangeAlbumName.show((context as AppCompatActivity).supportFragmentManager,"customDialog")
 
                             true
                         }
                         R.id.menu_deleteDrawing -> {
-                            removeDrawingFromAlbum(currentDrawing._id!!,currentDrawing.albumName)
+                            removeDrawingFromAlbum(currentDrawing._id!!,albumID)
                             deleteDrawing(currentDrawing._id!!)
-                            removeDrawing(currentDrawing)
-                            containerImg.isVisible=false
+                            deleteDrawings(position)
                             true
                         }
                         else -> false
@@ -147,6 +153,15 @@ class DrawingAdapter (val context: Context?, var drawings: ArrayList<IDrawing>, 
 
     fun addDrawing (drawing: IDrawing) {
         drawings.add(drawing)
+    }
+
+    fun changeDrawingName(newDrawingName: String, position: Int) {
+        drawings[position].name = newDrawingName
+    }
+
+    fun deleteDrawings(position: Int) {
+        drawings.removeAt(position)
+        notifyDataSetChanged()
     }
 
     fun removeDrawing(drawing:IDrawing){
@@ -202,11 +217,11 @@ class DrawingAdapter (val context: Context?, var drawings: ArrayList<IDrawing>, 
 
 
 
-    override fun popUpListener(drawingName: String) {
-        this.newDrawingName=drawingName
-    }
+//    override fun popUpListener(drawingName: String) {
+//        this.newDrawingName=drawingName
+//    }
 
-    override fun changeAlbumPopUpListener(albumName: String) {
+    override fun changeAlbumPopUpListener(albumName: String, position: Int) {
         this.newAlbum=albumName
     }
 }
