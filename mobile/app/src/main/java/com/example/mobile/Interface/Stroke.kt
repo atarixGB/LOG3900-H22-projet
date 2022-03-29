@@ -22,4 +22,5 @@ abstract class Stroke(open var boundingPoints: ArrayList<IVec2>,
     }
 
     abstract fun updateMove(pos: IVec2)
+    abstract fun rescale(scale: IVec2)
 }

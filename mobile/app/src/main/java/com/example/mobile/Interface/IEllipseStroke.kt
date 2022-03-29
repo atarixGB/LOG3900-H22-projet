@@ -43,6 +43,10 @@ data class IEllipseStroke (
     override fun updateMove(pos: IVec2) {
         center = IVec2(center.x + pos.x, center.y +pos.y)
     }
+
+    override fun rescale(scale: IVec2) {
+        TODO("Not yet implemented")
+    }
 //
 //    override fun moveStroke(newPosition: IVec2) {
 //        TODO("Not yet implemented")

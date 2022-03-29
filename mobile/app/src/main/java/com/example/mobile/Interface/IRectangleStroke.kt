@@ -10,8 +10,8 @@ data class IRectangleStroke(
     val secondaryColor : Int,
     override var currentStrokeWidth: Float,
     override var isSelected: Boolean,
-    val width: Float,
-    val height: Float,
+    var width: Float,
+    var height: Float,
     var topLeftCorner: IVec2):Stroke(boundingPoints,currentStrokeColor,currentStrokeWidth, isSelected,
     ToolbarFragment.MenuItem.RECTANGLE) {
 
@@ -43,5 +43,11 @@ data class IRectangleStroke(
 
     override fun updateMove(pos: IVec2) {
         topLeftCorner = IVec2(pos.x, pos.y)
+    }
+
+    override fun rescale(scale: IVec2) {
+        width *= scale.x
+        height *= scale.y
+        boundingPoints[1] = IVec2(boundingPoints[1].x * scale.x, boundingPoints[1].y * scale.y)
     }
 }
