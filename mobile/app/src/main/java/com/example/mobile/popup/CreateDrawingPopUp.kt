@@ -1,37 +1,56 @@
 package com.example.mobile.popup
 
+import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.content.Intent.getIntent
+import android.content.pm.PackageManager
+import android.location.Geocoder
+import android.location.Location
 import android.media.MediaPlayer
+import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.*
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.NonNull
+import androidx.core.app.ActivityCompat
+import androidx.core.app.ActivityCompat.requestPermissions
 import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.mobile.activity.Dashboard
-import com.example.mobile.activity.albums.DrawingsCollection
 import com.example.mobile.Interface.IAlbum
 import com.example.mobile.R
 import com.example.mobile.Retrofit.IMyService
 import com.example.mobile.Retrofit.RetrofitClient
-import com.example.mobile.viewModel.SharedViewModelCreateDrawingPopUp
+import com.example.mobile.activity.Dashboard
+import com.example.mobile.activity.albums.DrawingsCollection
 import com.example.mobile.adapter.AlbumAdapter
+import com.example.mobile.viewModel.SharedViewModelCreateDrawingPopUp
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import kotlinx.android.synthetic.main.activity_create_drawing_pop_up.*
 import kotlinx.android.synthetic.main.activity_create_drawing_pop_up.view.*
 import kotlinx.android.synthetic.main.activity_create_room_pop_up.view.cancelBtn
 import kotlinx.android.synthetic.main.activity_create_room_pop_up.view.submitBtn
 import retrofit2.Call
 import retrofit2.Response
-import java.util.ArrayList
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.util.*
+
 
 class CreateDrawingPopUp(val user: String, val isAlbumAlreadySelected: Boolean) : DialogFragment() {
 
@@ -41,15 +60,19 @@ class CreateDrawingPopUp(val user: String, val isAlbumAlreadySelected: Boolean) 
     private lateinit var radioGroup: RadioGroup
     private lateinit var publicRB: RadioButton
     private lateinit var rvOutputAlbums: RecyclerView
+    private lateinit var localisationText: TextView
+    private lateinit var timeText: TextView
     private lateinit var albumAdapter: AlbumAdapter
     private lateinit var albums : ArrayList<IAlbum>
     private lateinit var iMyService: IMyService
+    private lateinit var fusedLocationProvidedClient : FusedLocationProviderClient
     private var albumName: String = ""
     private var albumID: String = ""
     private var drawingId: String = ""
     internal var compositeDisposable = CompositeDisposable()
     private lateinit var listener: DialogListener
     private val sharedViewModelCreateDrawingPopUp: SharedViewModelCreateDrawingPopUp by activityViewModels()
+    private val REQUEST_PERMISSIONS_REQUEST_CODE = 34
 
 
     override fun onCreateView(
@@ -63,6 +86,13 @@ class CreateDrawingPopUp(val user: String, val isAlbumAlreadySelected: Boolean) 
         iMyService = retrofit.create(IMyService::class.java)
 
         dialog?.setCanceledOnTouchOutside(false)
+        localisationText = rootView.city
+        timeText = rootView.timestamp
+
+        fusedLocationProvidedClient = LocationServices.getFusedLocationProviderClient(activity)
+        activityResultLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+        getTime()
+
 
 
         sharedViewModelCreateDrawingPopUp.albumName.observe(viewLifecycleOwner) {
@@ -182,8 +212,62 @@ class CreateDrawingPopUp(val user: String, val isAlbumAlreadySelected: Boolean) 
 
     }
 
-    private fun createDrawing(albumID: String, drawingName: String, owner: String, data:String, members:ArrayList<String>, likes:ArrayList<String>) {
-        compositeDisposable.add(iMyService.createDrawing(drawingName, owner, data, members, likes,albumName)
+
+    private fun getTime() {
+        val current = LocalDateTime.now()
+        val formatter = DateTimeFormatter.ofPattern("HH:mm:ss")
+        val formatted = current.format(formatter)
+        timeText.text = formatted
+    }
+
+    @SuppressLint("MissingPermission")
+    private val activityResultLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.RequestPermission()){ isGranted ->
+            // Handle Permission granted/rejected
+            if (isGranted) {
+                val task = fusedLocationProvidedClient.lastLocation.addOnSuccessListener { location : Location? ->
+                    if(location!= null) {
+                        val geocoder = Geocoder(context)
+                        val list =
+                            geocoder.getFromLocation(location.latitude, location.longitude, 1)
+                        localisationText.text =
+                            list[0].locality.toString() + ", " + list[0].countryName.toString()
+                    }
+                }
+            } else {
+                localisationText.text = "Géolocalisation non disponible"
+            }
+        }
+
+
+
+
+//    private fun fetchLocation() {
+//        val task = fusedLocationProvidedClient.lastLocation
+//        if(ActivityCompat.checkSelfPermission(requireActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+//            && ActivityCompat.checkSelfPermission(requireActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//                //permission is not granted
+//            requestPermissions(permissionsList, REQUEST_CODE);
+//            requestPermissions(
+//                requireActivity(),
+//                arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
+//                101
+//            )
+//        }
+//
+//        task.addOnSuccessListener {
+//            if(it != null){
+//                val geocoder = Geocoder(context)
+//                val list = geocoder.getFromLocation(it.latitude, it.longitude, 1)
+//                localisationText.text = list[0].locality.toString() + ", " +  list[0].countryName.toString()
+//            }
+//        }
+//    }
+
+
+    private fun createDrawing(albumName: String, drawingName: String, owner: String, data:String, members:ArrayList<String>, likes:ArrayList<String>) {
+        compositeDisposable.add(iMyService.createDrawing(drawingName, owner, data, members, likes)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { result ->
