@@ -139,7 +139,8 @@ class DrawingZoneFragment : Fragment() {
         private var mBitmap: Bitmap? = null
         private var mCanvas: Canvas? = null
         private var isDrawing = false
-        private lateinit var drawingId: String
+        private var drawingId: String = ""
+        private var currentDrawingBitmap: Bitmap? = null
         internal var compositeDisposable = CompositeDisposable()
 
         fun onStrokeReceive(stroke: JSONObject){
@@ -220,7 +221,7 @@ class DrawingZoneFragment : Fragment() {
                 strokeWidth = 1f
             }
             mCanvas!!.drawRect(0f,0f, w.toFloat(), h.toFloat(),borderPaint )
-            toolManager = ToolManager(context, mCanvas!!, this.socket)
+            toolManager = ToolManager(context, mCanvas!!, this.socket, drawingId)
         }
 
         override fun onDraw(canvas: Canvas) {
@@ -242,8 +243,6 @@ class DrawingZoneFragment : Fragment() {
             toolManager.currentTool.mx = event.x
             toolManager.currentTool.my = event.y
 
-
-
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
                     isDrawing = true
@@ -255,12 +254,18 @@ class DrawingZoneFragment : Fragment() {
                         toolManager.currentTool.my = event.y
                         toolManager.currentTool.touchStart()
                     }
+                    if (currentDrawingBitmap != null) {
+                        mCanvas!!.drawBitmap(currentDrawingBitmap!!, 0F, 0F, null)
+                    }
                     invalidate()
 
 
                 }
                 MotionEvent.ACTION_MOVE -> {
                     toolManager.currentTool.touchMove()
+                    if (currentDrawingBitmap != null) {
+                        mCanvas!!.drawBitmap(currentDrawingBitmap!!, 0F, 0F, null)
+                    }
                     invalidate()
 //                    mediaPlayerDrawing.stop()
                 }
@@ -269,6 +274,9 @@ class DrawingZoneFragment : Fragment() {
                     toolManager.currentTool.touchUp()
                     this.toolManager.changeTool(toolManager.currentTool.nextTool)
                     resetPath()
+                    if (currentDrawingBitmap != null) {
+                        mCanvas!!.drawBitmap(currentDrawingBitmap!!, 0F, 0F, null)
+                    }
                     invalidate()
 //                    mediaPlayerDrawing.stop()
                 }
@@ -284,6 +292,9 @@ class DrawingZoneFragment : Fragment() {
                     toolManager.selection.changeSelectionWeight(width)
                 }
             }
+            if (currentDrawingBitmap != null) {
+                mCanvas!!.drawBitmap(currentDrawingBitmap!!, 0F, 0F, null)
+            }
         }
 
         fun changeColor(color: Int) {
@@ -292,6 +303,9 @@ class DrawingZoneFragment : Fragment() {
                 if(toolManager.isCurrentToolSelection()) {
                     toolManager.selection.changeSelectionColor(color)
                 }
+            }
+            if (currentDrawingBitmap != null) {
+                mCanvas!!.drawBitmap(currentDrawingBitmap!!, 0F, 0F, null)
             }
         }
 
@@ -305,11 +319,17 @@ class DrawingZoneFragment : Fragment() {
                     toolManager.selection.isToolSelection = true
                 }
             }
+            if (currentDrawingBitmap != null) {
+                mCanvas!!.drawBitmap(currentDrawingBitmap!!, 0F, 0F, null)
+            }
         }
 
         fun deleteSelection (delete: Boolean) {
             if (this::toolManager.isInitialized && delete) {
                 toolManager.selection.deleteStroke()
+            }
+            if (currentDrawingBitmap != null) {
+                mCanvas!!.drawBitmap(currentDrawingBitmap!!, 0F, 0F, null)
             }
         }
 
@@ -362,19 +382,18 @@ class DrawingZoneFragment : Fragment() {
             val myService = retrofit.create(IMyService::class.java)
 
             var call: Call<IDrawing> = myService.getDrawingData(drawingId)
-            call.enqueue(object: retrofit2.Callback<IDrawing> {
+            call.enqueue(object : retrofit2.Callback<IDrawing> {
 
                 override fun onResponse(call: Call<IDrawing>, response: Response<IDrawing>) {
-                    val currentDrawing = response.body()
-                    if (currentDrawing != null) {
-                        mBitmap = bitmapDecoder(currentDrawing!!.data)
-                        mCanvas!!.drawBitmap(mBitmap!!, 0F, 0F, null)
-//                        toolManager = ToolManager(context, mCanvas!!, socket)
+                    if (response.body() != null) {
+                        currentDrawingBitmap = bitmapDecoder(response.body()!!.data)
+                        //mBitmap = bitmapDecoder(currentDrawing!!.data)
+                        mCanvas!!.drawBitmap(currentDrawingBitmap!!, 0F, 0F, null)
                     }
                 }
 
                 override fun onFailure(call: Call<IDrawing>, t: Throwable) {
-                    Log.d("Albums", "onFailure" +t.message )
+                    Log.d("Albums", "onFailure" + t.message)
                 }
             })
         }

@@ -14,7 +14,7 @@ import org.json.JSONObject
 import java.util.ArrayList
 import kotlin.math.abs
 
-class  Ellipse(context: Context, baseCanvas: Canvas, val socket : DrawingCollaboration, val selection: Selection) : Tool(context, baseCanvas, socket) {
+class  Ellipse(context: Context, baseCanvas: Canvas, val socket : DrawingCollaboration, val selection: Selection, val drawingId: String) : Tool(context, baseCanvas, socket) {
     var top = 0F
     var right = 0F
     var bottom = 0F
@@ -134,6 +134,11 @@ class  Ellipse(context: Context, baseCanvas: Canvas, val socket : DrawingCollabo
         jo.put("radius", radius)
 
         jo.put("sender", socket.socket.id())
+
+        var data = JSONObject()
+        data.put("room", drawingId)
+        data.put("data", jo)
+
         socket.socket.emit("broadcastStroke", jo )
     }
 

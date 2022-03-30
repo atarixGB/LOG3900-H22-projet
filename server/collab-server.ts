@@ -76,49 +76,57 @@ ioCollab.on('connection', (socket) => {
       // DRAWING EVENTS
       socket.on('broadcastStroke', (data) => {
         const room = data.room;
-        const stroke = data.data
+        const stroke = data.data;
+        console.log("sending stroke", stroke);
         socket.broadcast.to(room).emit('receiveStroke', stroke);
       })
 
       socket.on('broadcastSelection', (data) => {
         const room = data.room;
         const selection = data.data
+        console.log("sending selection", selection);
         socket.broadcast.to(room).emit('receiveSelection', selection);
       })
   
       socket.on('broadcastSelectionPos', (data) => {
         const room = data.room;
         const pos = data.data
+        console.log("sending selection pos", pos);
         socket.broadcast.to(room).emit('receiveSelectionPos', pos);
       })
   
       socket.on('broadcastSelectionSize', (data) => {
         const room = data.room;
         const size = data.data
+        console.log("sending selection size", size);
         socket.broadcast.to(room).emit('receiveSelectionSize', size);
       })
   
       socket.on('broadcastPasteRequest', (data) => {
         const room = data.room;
         const pasteReq = data.data
+        console.log("paste request", pasteReq);
         socket.broadcast.to(room).emit('receivePasteRequest', pasteReq);
       })
   
       socket.on('broadcastDeleteRequest', (data) => {
         const room = data.room;
         const delReq = data.data
+        console.log("delete request", delReq);
         socket.broadcast.to(room).emit('receiveDeleteRequest', delReq);
       })
   
       socket.on('broadcastNewStrokeWidth', (data) => {
         const room = data.room;
         const width = data.data
+        console.log("new width", width);
         socket.broadcast.to(room).emit('receiveStrokeWidth', width);
       })
 
       socket.on('broadcastNewPrimaryColor', (data) => {
         const room = data.room;
         const primeColor = data.data
+        console.log("new color", primeColor);
         socket.broadcast.to(room).emit('receiveNewPrimaryColor', primeColor);
       })
 

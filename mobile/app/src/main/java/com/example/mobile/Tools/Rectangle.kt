@@ -13,7 +13,7 @@ import org.json.JSONObject
 import java.util.*
 import kotlin.math.abs
 
-class Rectangle (context: Context, baseCanvas: Canvas, val socket : DrawingCollaboration, val selection: Selection) : Tool(context, baseCanvas, socket) {
+class Rectangle (context: Context, baseCanvas: Canvas, val socket : DrawingCollaboration, val selection: Selection, val drawingId: String) : Tool(context, baseCanvas, socket) {
 
     var top = 0F
     var right = 0F
@@ -130,7 +130,12 @@ class Rectangle (context: Context, baseCanvas: Canvas, val socket : DrawingColla
         jo.put("width", abs(left-right))
         jo.put("height", abs(top-bottom))
         jo.put("sender", socket.socket.id())
-        socket.socket.emit("broadcastStroke", jo )
+
+        var data = JSONObject()
+        data.put("room", drawingId)
+        data.put("data", jo)
+
+        socket.socket.emit("broadcastStroke", data )
     }
 
     private fun draw(stroke: IRectangleStroke) {

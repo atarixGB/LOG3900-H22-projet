@@ -14,9 +14,11 @@ class ToolManager {
     lateinit var ellipse: Ellipse
     lateinit var selection:Selection
     private var socket: DrawingCollaboration
+    lateinit var drawingId: String
 
-    constructor(context: Context, baseCanvas : Canvas, socket : DrawingCollaboration){
+    constructor(context: Context, baseCanvas : Canvas, socket : DrawingCollaboration, drawingId: String){
         this.socket = socket
+        this.drawingId = drawingId
         this.baseCanvas = baseCanvas
         this.context = context
         initialiseTools()
@@ -24,10 +26,10 @@ class ToolManager {
     }
 
     private fun initialiseTools(){
-        this.selection= Selection(context,baseCanvas,socket)
-        this.pencil = Pencil(context,baseCanvas,socket, selection )
-        this.rectangle = Rectangle(context, baseCanvas, socket, selection)
-        this.ellipse = Ellipse(context, baseCanvas, socket, selection)
+        this.selection= Selection(context,baseCanvas,socket, drawingId)
+        this.pencil = Pencil(context,baseCanvas,socket, selection, drawingId )
+        this.rectangle = Rectangle(context, baseCanvas, socket, selection, drawingId)
+        this.ellipse = Ellipse(context, baseCanvas, socket, selection, drawingId)
     }
 
 

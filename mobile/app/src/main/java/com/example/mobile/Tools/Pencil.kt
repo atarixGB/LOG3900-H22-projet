@@ -11,7 +11,7 @@ import org.json.JSONObject
 import java.util.*
 import kotlin.math.abs
 
-class Pencil(context: Context, baseCanvas: Canvas, val socket : DrawingCollaboration, val selection: Selection) : Tool(context, baseCanvas, socket){
+class Pencil(context: Context, baseCanvas: Canvas, val socket : DrawingCollaboration, val selection: Selection, val drawingId: String) : Tool(context, baseCanvas, socket){
     var leftestCoord: Float = 0F;
     var rightestCoord: Float = 0F;
     var lowestCoord: Float = 0F;
@@ -172,7 +172,11 @@ class Pencil(context: Context, baseCanvas: Canvas, val socket : DrawingCollabora
         jo.put("strokeWidth", this.strokePaint.strokeWidth)
         jo.put("points", pointsStr)
         jo.put("sender", socket.socket.id())
-        socket.socket.emit("broadcastStroke", jo )
+
+        var data = JSONObject()
+        data.put("room", drawingId)
+        data.put("data", jo)
+        socket.socket.emit("broadcastStroke", data )
     }
 
     private fun getBoundingPoints():ArrayList<IVec2>{

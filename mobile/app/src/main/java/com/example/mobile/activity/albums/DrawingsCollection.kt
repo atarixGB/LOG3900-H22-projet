@@ -317,7 +317,6 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
 
     override fun emitJoinDrawingListener(drawingId: String) {
         socket.socket.emit("joinCollab", drawingId)
-        socket.socket.on("joinSuccessfulwithID", onJoinCollab)
     }
 
     fun editDrawing(drawingId: String) {
