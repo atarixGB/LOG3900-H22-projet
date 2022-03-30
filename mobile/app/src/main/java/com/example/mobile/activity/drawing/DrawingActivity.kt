@@ -13,6 +13,7 @@ class DrawingActivity : AppCompatActivity(), CreateDrawingPopUp.DialogListener, 
     private lateinit var user: String
     private var isAlbumAlreadySelected: Boolean = false
     private lateinit var albumName: String
+    private lateinit var albumID: String
     private lateinit var drawingName: String
     private val sharedViewModelToolBar: SharedViewModelToolBar by viewModels()
     private val sharedViewModelCreateDrawingPopUp: SharedViewModelCreateDrawingPopUp by viewModels()
@@ -25,7 +26,8 @@ class DrawingActivity : AppCompatActivity(), CreateDrawingPopUp.DialogListener, 
         isAlbumAlreadySelected = intent.getBooleanExtra("albumAlreadySelected", false)
         if (isAlbumAlreadySelected) {
             albumName = intent.getStringExtra("albumName").toString()
-            sharedViewModelCreateDrawingPopUp.setAlbum(albumName)
+            albumID = intent.getStringExtra("albumID").toString()
+            sharedViewModelCreateDrawingPopUp.setAlbum(albumName,albumID )
         }
         sharedViewModelToolBar.setUser(user)
 
@@ -34,9 +36,9 @@ class DrawingActivity : AppCompatActivity(), CreateDrawingPopUp.DialogListener, 
         dialog.show(supportFragmentManager, "customDialog")
     }
 
-    override fun albumAdapterListener(albumName: String) {
+    override fun albumAdapterListener(albumName: String,albumID:String) {
         this.albumName = albumName
-        sharedViewModelCreateDrawingPopUp.setAlbum(albumName)
+        sharedViewModelCreateDrawingPopUp.setAlbum(albumName,albumID)
     }
 
     override fun popUpListener(albumName: String, drawingName: String, drawingId: String) {
