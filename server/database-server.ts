@@ -462,7 +462,7 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
         });
     });
 
-    //delete drawing with specific id
+    //delete drawing with specific id from collection
     app.delete("/drawing/delete/:id", (request, response, next) => {
       let drawingId = request.params.id;
       DB.collection("drawings").findOneAndDelete({ _id: mongoose.Types.ObjectId(drawingId) }, (err, res) => {
@@ -492,20 +492,6 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
       })
     })
 
-    //change the album containing the drawing in the drawing interface
-    app.post("/changeAlbum", (request, response, next) => {
-      var post_data = request.body;
-      var newAlbumName = post_data.newAlbumName;
-      var drawingID = post_data.drawingID
-      console.log(newAlbumName);
-
-      DB.collection("drawings").findOneAndUpdate({ _id: mongoose.Types.ObjectId(drawingID) }, { $set: { "albumName": newAlbumName } }, { returnDocument: 'after' }, (err, res) => {
-        response.json(201)
-        console.log(drawingID, "is now contained in ", newAlbumName);
-      })
-
-    });
-
     //==========================================================================================================
     // Album Management
     //==========================================================================================================
@@ -522,7 +508,7 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
       DB.collection("albums").insertOne(request.body, (err, res) => {
         request.body._id = res.insertedId.toHexString();
         console.log(`Album "${request.body.name}" created successfully with ID: ${request.body._id}!`);
-        response.json(request.body._id);
+        response.json(request.body._id); // Return album ID 
       });
     })
 
@@ -541,14 +527,14 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
     });
 
     //get user albums
-    app.get("/albums/:username", (request, response, next) => {
+    app.get("/albums/:username", (request, response, next) => { // TO CHANGE WITH USER ID
       DB.collection("albums").find({ owner: request.params.username }).toArray((err, res) => {
         response.json(res);
         ;
       })
     });
 
-    //get album drawings
+    //get album drawings CHANGE
     app.get("/albums/Drawings/:albumID", (request, response, next) => { // SUGGESTION: /albums/drawings/:albumId
       console.log(request.params.albumID)
       DB.collection("albums").findOne({ _id: mongoose.Types.ObjectId(request.params.albumID) }, function (err, res) {
@@ -556,7 +542,7 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
       })
     });
 
-    //add drawing to an album
+    //add drawing to an album CHANGE
     app.put("/albums/addDrawing/:albumId", (request, response, next) => {
       let albumId = request.params.albumId;
       let drawingID = request.body.drawing;
