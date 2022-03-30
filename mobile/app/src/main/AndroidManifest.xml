@@ -16,6 +16,9 @@
         android:theme="@style/Theme.Mobile"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".activity.profile.TopDrawingDisplay"
+            android:exported="false" />
+        <activity
             android:name=".activity.albums.DisplayAllDrawings"
             android:exported="false" />
         <activity

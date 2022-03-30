@@ -79,6 +79,12 @@ class Profile : AppCompatActivity() {
             startActivity(intent)
         }
 
+        showMostLiked.setOnClickListener(){
+            val intent = Intent(this, TopDrawingDisplay::class.java)
+            startActivity(intent)
+        }
+
+
         modify_label.setOnClickListener(){
             val intent = Intent(this, Profile_modification::class.java)
             //to send the old username, we need it in the modification page
