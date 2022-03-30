@@ -3,8 +3,10 @@
 <mat-dialog-content>
   <div>
     <ul>
-      <li *ngFor="let member of this.albumGalleryService.currentAlbum.members">
-        {{member}}
+      <li *ngFor="let member of this.albumGalleryService.currentAlbum.members" >
+        <span id="username" (click)="getUserProfileInfos(member)">
+          {{member}}
+        </span>
       </li>
     </ul>
   </div>

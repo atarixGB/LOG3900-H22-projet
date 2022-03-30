@@ -21,8 +21,4 @@ export class FileMenuComponent {
         this.exportService.imagePrevisualization();
         this.exportService.initializeExportParams();
     }
-
-    handleSaveDrawing(): void {
-        this.albumGalleryService.saveDrawing();
-    }
 }

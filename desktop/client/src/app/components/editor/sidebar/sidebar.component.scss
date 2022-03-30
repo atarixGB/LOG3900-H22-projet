@@ -12,10 +12,6 @@ mat-sidenav-container {
     cursor: pointer;
 }
 
-#returnBtn:hover {
-    color: rgb(115, 115, 115);
-}
-
 .config-container {
     display: inline-block;
     margin: 12px;
@@ -43,3 +39,16 @@ p {
     text-align: center;
 }
 
+#returnDiv {
+    color: black;
+    margin-bottom: 20px;
+}
+
+#returnDiv:hover {
+    cursor: pointer;
+    color: rgb(72, 72, 72);
+} 
+
+span:hover {
+    text-decoration: underline;
+}

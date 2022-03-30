@@ -3,9 +3,10 @@ import { Injectable } from '@angular/core';
 import { IAlbum } from '@app/interfaces-enums/IAlbum'
 import { IDrawing } from '@app/interfaces-enums/IDrawing'
 import { LoginService } from '@app/services/login/login.service';
-import { ALBUM_URL, PUBLIC_DRAWINGS_URL, CREATE_DRAWING_URL, JOIN_ALBUM_URL, DECLINE_MEMBERSHIP_REQUEST_URL, ACCEPT_MEMBERSHIP_REQUEST_URL, UPDATE_ALBUM_PARAMETERS_URL, ADD_DRAWING_TO_ALBUM_URL, GET_DRAWING_URL, SAVE_DRAWING_URL } from '@app/constants/api-urls';
+import { ALBUM_URL, CREATE_DRAWING_URL, JOIN_ALBUM_URL, DECLINE_MEMBERSHIP_REQUEST_URL, ACCEPT_MEMBERSHIP_REQUEST_URL, UPDATE_ALBUM_PARAMETERS_URL, ADD_DRAWING_TO_ALBUM_URL, GET_DRAWING_URL, SAVE_DRAWING_URL, LIKE_DRAWING_URL, GET_USER_FAVORITE_DRAWINGS_URL, GET_USER_TOP_X_DRAWINGS_URL } from '@app/constants/api-urls';
 import { PUBLIC_ALBUM } from '@app/constants/constants';
 import { DrawingService } from '../editor/drawing/drawing.service';
+import { CollaborationService } from '../collaboration/collaboration.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,26 +14,35 @@ import { DrawingService } from '../editor/drawing/drawing.service';
 export class AlbumGalleryService {
   publicAlbums: IAlbum[];
   myAlbums: IAlbum[];
+
   currentAlbum: IAlbum;
+  currentDrawing: IDrawing;
+
   selectedAlbumId: string | void;
   selectedAlbumName: string | void;
 
-  currentDrawing: IDrawing;
-  drawings: any;
+  drawings: IDrawing[];
+  favoriteDrawingsData: IDrawing[];
+  topDrawingsData: IDrawing[];
 
-  constructor(private httpClient: HttpClient, private loginService: LoginService, private drawingService: DrawingService) {
+  constructor(private httpClient: HttpClient, private loginService: LoginService, private drawingService: DrawingService, private collaborationService: CollaborationService) {
     this.publicAlbums = [];
     this.myAlbums = [];
     this.drawings = [];
 
     this.currentDrawing = {
+      _id: null,
       name: "",
       owner: this.loginService.username,
     }
+
+    this.favoriteDrawingsData = [];
+    this.topDrawingsData = [];
   }
 
   createDrawing(drawingName: string): void {
     this.currentDrawing.name = drawingName;
+    this.currentDrawing._id = null;
 
     console.log(this.currentDrawing)
 
@@ -41,6 +51,9 @@ export class AlbumGalleryService {
         console.log("Résultat du serveur:", result);
         this.currentDrawing._id = result;
         this.addDrawingToAlbum(this.currentDrawing, this.selectedAlbumName); // Should be ID not name but we did it with the name
+        this.drawingService.setCurrentDrawingBlanc();
+        this.collaborationService.joinCollab(this.currentDrawing._id);
+        this.saveDrawing();
       },
       (error) => {
         console.log(`Impossible de créer le dessin ${drawingName} dans la base de données.\nErreur: ${error}`);
@@ -77,15 +90,30 @@ export class AlbumGalleryService {
         const drawingData = { data: this.drawingService.canvas.toDataURL() };
 
         this.httpClient.put(`${SAVE_DRAWING_URL}/${this.currentDrawing._id}`, drawingData).subscribe(
-          (result) => {console.log("Résultat du serveur:", result)},
-          (error) => {console.log(`Impossible d'enregistrer le dessin en image de type png sur la base de données.\nErreur:`, error);});
+          (result) => { console.log("Résultat du serveur:", result) },
+          (error) => { console.log(`Impossible d'enregistrer le dessin en image de type png sur la base de données.\nErreur:`, error); });
 
       },
       (error) => {
         console.log(`Impossible d'enregistrer les attributs du dessin sur la base de données.\nErreur:`, error);
       }
     )
- }
+  }
+
+  likeDrawing(drawing: IDrawing): void {
+    const url = `${LIKE_DRAWING_URL}/${drawing._id}`;
+    const data = {
+      user: this.loginService.username
+    }
+    this.httpClient.put(url, data).subscribe(
+      (result) => {
+        console.log("Résultat du serveur:", result)
+      },
+      (error) => {
+        console.log(`Impossible d'aimer le dessin "${drawing.name}".\nErreur: ${error}`);
+      }
+    )
+  }
 
   createAlbum(name: string, description: string): void {
     const newAlbum: IAlbum = {
@@ -111,7 +139,7 @@ export class AlbumGalleryService {
   addUserToPublicAlbum(username: string): void {
     const body = {
       userToAdd: username,
-      currentUser: "SYSTEM",
+      currentUser: PUBLIC_ALBUM.owner,
       albumName: PUBLIC_ALBUM.name,
     }
 
@@ -255,12 +283,14 @@ export class AlbumGalleryService {
     console.log(url);
     this.httpClient.get<IAlbum[]>(url).subscribe(
       (albums: IAlbum[]) => {
+
         for (let i = 0; i < albums.length; i++) {
-          if (albums[i].name != "album public") {
+          if (albums[i].name != "album public" && !albums[i].members.includes(this.loginService.username)) {
             this.publicAlbums.push(albums[i]);
             console.log(albums[i]);
           }
         }
+
       },
       (error: any) => {
         console.log(`Impossible de retrouver les albums dans la base de données.\nErreur: ${error}`);
@@ -273,9 +303,8 @@ export class AlbumGalleryService {
 
     this.drawings = [];
     album.drawingIDs.forEach(id => {
-      this.httpClient.get(GET_DRAWING_URL + id).subscribe(
-        (result) => {
-          console.log(result);
+      this.httpClient.get(`${GET_DRAWING_URL}/${id}`).subscribe(
+        (result: IDrawing) => {
           this.drawings.push(result);
         },
         (error) => {
@@ -288,12 +317,69 @@ export class AlbumGalleryService {
   }
 
   fetchAllPublicDrawings(): void {
-    const url = PUBLIC_DRAWINGS_URL;
-    console.log(url);
     console.log("Fetching all public drawings from server...");
     // this.httpClient.get(url).subscribe(
     //   (result) => {},
     //   (error) => {}
     // )
+  }
+
+  // All drawings that current user liked
+  fetchFavoriteDrawings(username: string): void {
+    const url = `${GET_USER_FAVORITE_DRAWINGS_URL}/${username}`;
+    let fetchedDrawing: IDrawing[] = [];
+
+    this.httpClient.get(url).subscribe(
+      (drawings: IDrawing[]) => {
+        console.log(drawings);
+
+        for (const drawing of drawings) {
+          fetchedDrawing.push(drawing);
+        }
+
+        fetchedDrawing.forEach(drawing => {
+          this.httpClient.get(`${GET_DRAWING_URL}/${drawing._id}`).subscribe(
+            (result: IDrawing) => {
+              this.favoriteDrawingsData.push(result);
+            },
+            (error) => {
+              console.log(`Impossible de charger le dessin avec le ID ${drawing._id} de la base de données`, error);
+            })
+        })
+
+      },
+      (error) => {
+        console.log("Impossible de charger les dessins de la base de données", error);
+      }
+    )
+  }
+
+  // All current user's drawings that has at least one like
+  fetchTopDrawings(username: string): void {
+    const url = `${GET_USER_TOP_X_DRAWINGS_URL}/${username}`;
+    let fetchedDrawing: IDrawing[] = [];
+    this.httpClient.get(url).subscribe(
+      (drawings: IDrawing[]) => {
+        console.log(drawings);
+
+        for (const drawing of drawings) {
+          fetchedDrawing.push(drawing);
+        }
+
+        fetchedDrawing.forEach(drawing => {
+          this.httpClient.get(`${GET_DRAWING_URL}/${drawing._id}`).subscribe(
+            (result: IDrawing) => {
+              this.topDrawingsData.push(result);
+            },
+            (error) => {
+              console.log(`Impossible de charger le dessin avec le ID ${drawing._id} de la base de données`, error);
+            })
+        })
+
+      },
+      (error) => {
+        console.log("Impossible de charger les dessins de la base de données", error);
+      }
+    )
   }
 }
