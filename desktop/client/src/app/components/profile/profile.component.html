@@ -11,7 +11,7 @@
 
     <div fxLayout="row" fxLayoutAlign="center center">
       <!-- Settings -->
-      <div fxLayout="row" fxLayoutAlign="center center" fxFlex="20%" routerLink="/profileSettings" *ngIf="this.isCurrentUserProfile">
+      <div fxLayout="row" fxLayoutAlign="center center" fxFlex="20%" routerLink="/profileSettings" *ngIf="this.profileService.isCurrentUserProfile">
         <div fxLayoutAlign="center center" id="settingsBtnDiv">
           <mat-icon id="pencil">create</mat-icon>
           <span id="modifierProfil">Modifier profil</span>

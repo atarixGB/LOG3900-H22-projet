@@ -16,6 +16,8 @@ export class ProfileService {
     favoritesImg: string;
     mostLikedImg: string;
 
+    isCurrentUserProfile: boolean;
+
     constructor(private httpClient: HttpClient) {
         this.username = 'r';
         this.currentBadge = BADGES.BEGINNER;
