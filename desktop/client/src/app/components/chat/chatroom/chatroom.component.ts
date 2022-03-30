@@ -9,6 +9,9 @@ import { LoginService } from '@app/services/login/login.service';
 import { ChatroomUsersDialogComponent } from './chatroom-users-dialog/chatroom-users-dialog.component';
 import { DeleteRoomDialogComponent } from './delete-room-dialog/delete-room-dialog.component';
 import { LeaveRoomDialogComponent } from './leave-room-dialog/leave-room-dialog.component';
+import { ProfileService } from '@app/services/profile/profile.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { PUBLIC_CHATROOM } from '@app/constants/constants';
 
 @Component({
     selector: 'app-chatroom',
@@ -18,14 +21,23 @@ import { LeaveRoomDialogComponent } from './leave-room-dialog/leave-room-dialog.
 export class ChatroomComponent implements AfterViewInit {
     userName: string;
     message: string;
+    timestamp: any;
     messageList: IMessage[];
     userList: string[];
     socket: any;
 
     currentRoom: IChatroom;
     isCurrentChatroomMine: boolean;
+    isPublicChatroom: boolean;
 
-    constructor(public chatService: ChatService, public loginService: LoginService, public dialog: MatDialog, private soundEffectsService: SoundEffectsService) {
+    constructor(
+      public chatService: ChatService,
+      public loginService: LoginService,
+      public profileService: ProfileService,
+      public dialog: MatDialog,
+      private soundEffectsService: SoundEffectsService,
+      private router: Router,
+      private route: ActivatedRoute) {
         this.userName = '';
         this.message = '';
         this.messageList = [];
@@ -33,7 +45,7 @@ export class ChatroomComponent implements AfterViewInit {
         this.socket = this.chatService.socket;
         this.currentRoom = this.chatService.currentRoom;
         this.isCurrentChatroomMine = this.chatService.currentRoom.identifier == loginService.username;
-        console.log(`current room mine? ${this.isCurrentChatroomMine}`);
+        this.isPublicChatroom = this.currentRoom.roomName == 'default-public-room';
 
     }
 
@@ -61,6 +73,8 @@ export class ChatroomComponent implements AfterViewInit {
     }
 
     onNewMessage(): void {
+      this.timestamp = formatDate(new Date(), 'hh:mm:ss a', 'en-US');
+
         this.socket.on('message', (data: any) => {
 
             if (data) {
@@ -72,7 +86,7 @@ export class ChatroomComponent implements AfterViewInit {
                 if (data.room == this.chatService.currentRoom.roomName) {
                   this.messageList.push({
                       message: data.message,
-                      userName: data.userName + ' - ' + formatDate(new Date(), 'hh:mm:ss a', 'en-US'),
+                      userName: data.userName,
                       mine: isMine,
                   });
                 }
@@ -123,5 +137,12 @@ export class ChatroomComponent implements AfterViewInit {
       this.dialog.open(DeleteRoomDialogComponent, {
         data: this.chatService.currentRoom
       });
+    }
+
+    getUserProfileInfos(username: string): void {
+      if (username != PUBLIC_CHATROOM.owner) {
+        console.log("Get info of", username);
+        this.router.navigate([`../profile/${username}`], { relativeTo: this.route });
+      }
     }
 }

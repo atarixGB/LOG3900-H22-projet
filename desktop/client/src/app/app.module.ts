@@ -69,6 +69,8 @@ import { AlbumSettingsDialogComponent } from './components/album-gallery/drawing
 import { JoinRequestDialogComponent } from './components/album-gallery/public-albums/join-request-dialog/join-request-dialog.component';
 import { MemberJoinedDialogComponent } from './components/editor/member-joined-dialog/member-joined-dialog.component';
 import { MemberLeftDialogComponent } from './components/editor/member-left-dialog/member-left-dialog.component';
+import { FavoriteDrawingsComponent } from './components/profile/favorite-drawings/favorite-drawings.component';
+import { TopDrawingsComponent } from './components/profile/top-drawings/top-drawings.component';
 
 @NgModule({
     declarations: [
@@ -117,6 +119,8 @@ import { MemberLeftDialogComponent } from './components/editor/member-left-dialo
         JoinRequestDialogComponent,
         MemberJoinedDialogComponent,
         MemberLeftDialogComponent,
+        FavoriteDrawingsComponent,
+        TopDrawingsComponent,
     ],
     imports: [
         BrowserModule,

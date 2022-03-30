@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as sounds from '@app/constants/sounds';
+import { SONGS } from '@app/constants/songs'
 
 @Injectable({
   providedIn: 'root'
@@ -7,11 +8,22 @@ import * as sounds from '@app/constants/sounds';
 export class SoundEffectsService {
   soundEffectAudio: any;
   drawAudio: any;
+  songAudio: any;
+
+  isSoundEnabled: boolean;
+  songChoice: number;
 
   constructor() {
     this.soundEffectAudio = new Audio();
+
     this.drawAudio = new Audio(sounds.DRAW);
     this.drawAudio.loop = true;
+
+    this.songAudio = new Audio();
+    this.songAudio.loop = true;
+
+    this.isSoundEnabled = true;
+    this.songChoice = 0;
   }
 
   // Sounds 1: Signup and login
@@ -61,7 +73,20 @@ export class SoundEffectsService {
   }
 
   loadAndPlay(audio: any): void {
-    audio.load();
-    audio.play();
+    if (this.isSoundEnabled) {
+      audio.load();
+      audio.play();
+    }
+  }
+
+  // Music
+  startMusic(): void {
+    if (this.songChoice == 0) {
+      this.songAudio.pause();
+    } else {
+      this.songAudio.src = SONGS[this.songChoice];
+      this.songAudio.load();
+      this.songAudio.play();
+    }
   }
 }
