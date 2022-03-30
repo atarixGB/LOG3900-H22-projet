@@ -688,7 +688,7 @@ app.post(
       var newUsername = post_data.newUsername;
       var avatar = post_data.newAvatar;
       var description = post_data.newDescription;
-      var newEmail = post_data.newEmail;
+      
 
 
       //check if a user already has the new name
@@ -704,8 +704,7 @@ app.post(
               $set : {
                 "identifier" : newUsername,
                 "avatar" : avatar,
-                "description" : description,
-                "email": newEmail
+                "description" : description
               },
             }).then(result => {
               response.json(200);
