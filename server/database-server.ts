@@ -179,6 +179,20 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
       );
     });
 
+    //get all users
+    app.get("/getAllUsers", (request, response, next) => {
+      var post_data = request.body;
+
+      DB.collection("users")
+        .find({}).limit(50).toArray(function (err, result) {
+          if (err) {
+            response.status(400).send("Error fetching rooms");
+          } else {
+            response.json(result)
+          }
+        });
+    });
+
 //==========================================================================================================
 // ROOM management
 //==========================================================================================================
@@ -368,6 +382,20 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
         });
     });
 
+    //get all user drawings in DB
+    app.get("/getAllUserDrawings/:user", (request, response, next) => {
+      var user = request.params.user.replaceAll(/"/g, '');;
+      console.log(user);
+      DB.collection("drawings")
+        .find({owner: user}).limit(50).toArray(function (err, result) {
+          if (err) {
+            response.status(400).send("Error fetching drawings");
+          } else {
+            response.json(result)
+          }
+        });
+    });
+
     //Save drawing data
     app.post("/drawing/save/:drawingId", (request, response, next) => {
       let drawingId = request.params.drawingId;
@@ -470,18 +498,18 @@ app.post(
   });
 
   //change the album containing the drawing in the drawing interface
-  app.post("/changeAlbum", (request, response, next) => {
-    var post_data = request.body;
-    var newAlbumName = post_data.newAlbumName;
-    var drawingID= post_data.drawingID
-    console.log(newAlbumName);
+  // app.post("/changeAlbum", (request, response, next) => {
+  //   var post_data = request.body;
+  //   var newAlbumName = post_data.newAlbumName;
+  //   var drawingID= post_data.drawingID
+  //   console.log(newAlbumName);
     
-    DB.collection("drawings").findOneAndUpdate({ _id: mongoose.Types.ObjectId(drawingID) }, { $set: { "albumName": newAlbumName } }, { returnDocument: 'after' }, (err, res) => {
-      response.json(201)
-      console.log(drawingID, "is now contained in ", newAlbumName);
-    })
+  //   DB.collection("drawings").findOneAndUpdate({ _id: mongoose.Types.ObjectId(drawingID) }, { $set: { "albumName": newAlbumName } }, { returnDocument: 'after' }, (err, res) => {
+  //     response.json(201)
+  //     console.log(drawingID, "is now contained in ", newAlbumName);
+  //   })
 
-  });
+  // });
   
 
 //==========================================================================================================
@@ -521,7 +549,7 @@ app.post(
         });
     });
 
-    //get user albums
+    //get user albums // to Switch for userID
     app.get("/albums/:username", (request, response, next) => {
       DB.collection("albums").find({ owner: request.params.username }).toArray((err, res) => {
         response.json(res);
@@ -561,7 +589,18 @@ app.post(
       })
     });
 
-    //send request to an album
+    //add drawing to a story
+    app.put("/drawings/addDrawingToStory/:drawingId", (request, response, next) => {
+      let drawingId = request.params.drawingId.replaceAll(/"/g, '');
+
+      DB.collection("drawings").findOneAndUpdate({ _id: mongoose.Types.ObjectId(drawingId) }, { $set: { isStory: true } }, { returnDocument: 'after' }, (err, res) => {
+        response.json(201)
+        console.log(drawingId, "is a story");
+      })
+    });
+
+
+    //send request to an album // Switch for ID 
     app.put("/albums/sendRequest/:albumName", (request, response, next) => {
       let albumName = request.params.albumName;
       let usertoAdd = request.body.identifier;

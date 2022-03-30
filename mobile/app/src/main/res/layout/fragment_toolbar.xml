@@ -31,10 +31,32 @@
         android:id="@+id/saveDrawingBtn"
         android:layout_width="100sp"
         android:layout_height="100sp"
+        android:layout_marginBottom="25dp"
         android:background="@drawable/ic_baseline_save_alt_24"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/addToStoryBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/addToStoryBtn"
+        android:layout_width="100sp"
+        android:layout_height="100sp"
+        android:layout_marginBottom="25dp"
+        android:background="@drawable/addtostory"
+        app:layout_constraintBottom_toBottomOf="@id/addToStoryText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/addToStoryText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ajouter a ta story"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/addToStoryBtn"
+        app:layout_constraintStart_toStartOf="@+id/addToStoryBtn" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
