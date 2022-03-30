@@ -28,3 +28,7 @@ export const JOIN_ROOM_URL = `${DATABASE_URL}/joinRoom`;
 export const ALL_ROOMS_URL = `${DATABASE_URL}/getAllRooms`;
 export const LEAVE_ROOM_URL = `${DATABASE_URL}/quitRoom`
 export const DELETE_ROOM_URL = `${DATABASE_URL}/deleteRoom`;
+
+export const CREATE_COLLAB_URL = `${DATABASE_URL}/createCollab`;
+
+

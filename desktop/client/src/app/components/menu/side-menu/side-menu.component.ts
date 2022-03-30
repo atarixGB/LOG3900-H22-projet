@@ -16,8 +16,10 @@ export class SideMenuComponent implements OnInit {
   ngOnInit(): void {}
 
   onMyProfileBtn(): void {
-    console.log("Current profil", this.loginService.username)
-    console.log("Current route", this.router.url)
+    console.log("Current profil from login", this.loginService.username);
+    console.log("Current route", this.router.url);
+    this.profileService.isCurrentUserProfile = true;
+    this.profileService.getUserProfileInfos(this.loginService.username);
     this.router.navigate([`../profile/${this.loginService.username}`]);
   }
 }

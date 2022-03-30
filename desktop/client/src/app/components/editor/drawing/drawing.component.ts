@@ -40,7 +40,6 @@ export class DrawingComponent implements AfterViewInit {
 
     ngAfterViewInit(): void {
         this.initialiseParameters();
-        this.whiteBackgroundCanvas();
     }
 
     mouseCoord(event: MouseEvent): Vec2 {
@@ -129,12 +128,5 @@ export class DrawingComponent implements AfterViewInit {
         if (!element.className.includes('box')) {
             this.toolManagerService.onMouseMove(event, this.mouseCoord(event));
         }
-    }
-
-    private whiteBackgroundCanvas(): void {
-        this.baseCtx.beginPath();
-        this.baseCtx.fillStyle = '#FFFFFF';
-        this.baseCtx.fillRect(0, 0, this.canvasSize.x, this.canvasSize.y);
-        this.baseCtx.closePath();
     }
 }

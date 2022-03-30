@@ -7,6 +7,7 @@ import { ALBUM_URL, CREATE_DRAWING_URL, JOIN_ALBUM_URL, DECLINE_MEMBERSHIP_REQUE
 import { PUBLIC_ALBUM } from '@app/constants/constants';
 import { DrawingService } from '../editor/drawing/drawing.service';
 import { formatDate } from '@angular/common';
+import { CollaborationService } from '../collaboration/collaboration.service';
 
 @Injectable({
   providedIn: 'root'
@@ -22,11 +23,10 @@ export class AlbumGalleryService {
   selectedAlbumName: string;
 
   drawings: IDrawing[];
-
   favoriteDrawingsData: IDrawing[];
   topDrawingsData: IDrawing[];
 
-  constructor(private httpClient: HttpClient, private loginService: LoginService, private drawingService: DrawingService) {
+  constructor(private httpClient: HttpClient, private loginService: LoginService, private drawingService: DrawingService, private collaborationService: CollaborationService) {
     this.publicAlbums = [];
     this.myAlbums = [];
     this.drawings = [];
@@ -53,6 +53,9 @@ export class AlbumGalleryService {
         console.log("Résultat du serveur:", result);
         this.currentDrawing._id = result;
         this.addDrawingToAlbum(this.currentDrawing, this.selectedAlbumName); // Should be ID not name but we did it with the name
+        this.drawingService.setCurrentDrawingBlanc();
+        this.collaborationService.joinCollab(this.currentDrawing._id);
+        this.saveDrawing();
       },
       (error) => {
         console.log(`Impossible de créer le dessin ${drawingName} dans la base de données.\nErreur: ${error}`);
@@ -304,7 +307,6 @@ export class AlbumGalleryService {
     album.drawingIDs.forEach(id => {
       this.httpClient.get(`${GET_DRAWING_URL}/${id}`).subscribe(
         (result: IDrawing) => {
-          console.log(result);
           this.drawings.push(result);
         },
         (error) => {

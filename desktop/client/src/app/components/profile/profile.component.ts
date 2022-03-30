@@ -9,11 +9,10 @@ import { ProfileService } from '@app/services/profile/profile.service';
   styleUrls: ['./profile.component.scss'],
 })
 export class ProfileComponent implements AfterViewInit {
-  isCurrentUserProfile: boolean;
 
   constructor(public profileService: ProfileService, public loginService: LoginService, private route: ActivatedRoute) {
-    this.isCurrentUserProfile = loginService.username == this.route.snapshot.paramMap.get('username');
-    console.log("is displayed profile mine?",this.isCurrentUserProfile);
+    this.profileService.isCurrentUserProfile = loginService.username == this.route.snapshot.paramMap.get('username');
+    console.log("is displayed profile mine?",this.profileService.isCurrentUserProfile);
   }
 
   ngAfterViewInit(): void {
