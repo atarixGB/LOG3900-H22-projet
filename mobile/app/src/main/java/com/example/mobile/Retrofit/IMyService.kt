@@ -109,7 +109,7 @@ interface IMyService {
                       @Field("data")data:String,
                       @Field("members")members:ArrayList<String>,
                       @Field("likes")likes:ArrayList<String>,
-                      @Field("isStory")isStory: Boolean): Observable<String>
+                      @Field("isStory")isStory: Boolean): Observable<Any>
 
     @PUT("albums/addDrawing/{albumId}")
     @FormUrlEncoded
@@ -163,7 +163,6 @@ interface IMyService {
     fun addLikeToDrawing(@Path("drawingId") drawingId: String,
                          @Field("user")user:String): Observable<String>
 
-<<<<<<< HEAD
     @DELETE("/drawing/delete/{id}")
     fun deleteDrawing(@Path("id")drawingID:String): Observable<String>
 
@@ -185,8 +184,7 @@ interface IMyService {
         @Field("newAlbumName") newAlbumName: String,
         @Field("drawingID") drawingID: String,
     ): Observable<String>
-=======
+
     @PUT("drawings/addDrawingToStory/{drawingId}")
     fun addDrawingToStory(@Path("drawingId") drawingId: String): Observable<String>
->>>>>>> mobile/feature/stories
 }
