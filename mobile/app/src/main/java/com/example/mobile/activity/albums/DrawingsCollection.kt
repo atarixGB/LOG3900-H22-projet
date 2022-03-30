@@ -90,6 +90,8 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
         socket.socket.on("joinSuccessfulwithID", onJoinCollab)
         socket.socket.on("joinFailure", onJoinFailure)
 
+        socket.socket.on("receiveStroke", onReceiveStroke)
+
         searchView = findViewById<SearchView>(R.id.drawingsSearchView)
         searchView.queryHint = "cherchez un dessin"
 
@@ -257,6 +259,10 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
 
     private var onJoinFailure = Emitter.Listener {
         Toast.makeText(this,"Nombres maximum de collaborateurs atteint", Toast.LENGTH_SHORT).show()
+    }
+
+    private var onReceiveStroke = Emitter.Listener {
+        Toast.makeText(this,"hereee", Toast.LENGTH_SHORT).show()
     }
 
 //    override fun popUpListener(albumName: String,albumDescription:String) {

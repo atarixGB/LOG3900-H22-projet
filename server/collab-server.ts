@@ -80,6 +80,7 @@ ioCollab.on('connection', (socket) => {
         console.log("rooomm", room);
         console.log("sending stroke", stroke);
         socket.broadcast.to(room).emit('receiveStroke', stroke);
+        console.log(infoOnActiveRooms);
       })
 
       socket.on('broadcastSelection', (data) => {
