@@ -77,6 +77,7 @@ ioCollab.on('connection', (socket) => {
       socket.on('broadcastStroke', (data) => {
         const room = data.room;
         const stroke = data.data;
+        console.log("rooomm", room);
         console.log("sending stroke", stroke);
         socket.broadcast.to(room).emit('receiveStroke', stroke);
       })
