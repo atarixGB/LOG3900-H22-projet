@@ -15,11 +15,15 @@ export class SidebarComponent {
     constructor(public toolManagerService: ToolManagerService, public selectionService: SelectionService, public collaborationService: CollaborationService, public albumGalleryService: AlbumGalleryService) {}
 
     saveAndLeave(): void {
-        if (this.selectionService.isActiveSelection) {
-            this.selectionService.pasteSelectionOnBaseCnv();
-        }
         if (this.collaborationService.nbMembersInCollab == 1) {
+            if (this.selectionService.isActiveSelection) {
+                this.selectionService.pasteBase();
+            }
             this.albumGalleryService.saveDrawing();
+        } else {
+            if (this.selectionService.isActiveSelection) {
+                this.selectionService.pasteSelectionOnBaseCnv();
+            }
         }
         this.collaborationService.leaveCollab();
     }    
