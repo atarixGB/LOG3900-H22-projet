@@ -54,6 +54,7 @@ class CreateRoomPopUp : DialogFragment() {
 
             //Toast.makeText(context, "$roomName created!" , Toast.LENGTH_LONG).show()
             dismiss()
+            mediaPlayerMagic.release()
         }
 
         return rootView

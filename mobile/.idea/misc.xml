@@ -28,15 +28,18 @@
         <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/drawable/ic_baseline_directions_run_24.xml" value="0.1505" />
         <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/drawable/ic_baseline_edit_24.xml" value="0.228" />
         <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/drawable/ic_baseline_edit_note_24.xml" value="0.228" />
+        <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/drawable/ic_baseline_library_music_24.xml" value="0.3725" />
         <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/drawable/ic_baseline_more_vert_24.xml" value="0.228" />
+        <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/drawable/ic_baseline_person_24.xml" value="0.3725" />
+        <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/drawable/spinner_bg.xml" value="0.3725" />
         <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/drawable/toolbar_btn.xml" value="0.1" />
         <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/activity_albums.xml" value="0.14635416666666667" />
         <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/activity_create_drawing_pop_up.xml" value="0.3015625" />
         <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/activity_create_room_pop_up.xml" value="0.15911458333333334" />
         <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/activity_drawings_collection.xml" value="0.1859375" />
         <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/activity_main.xml" value="0.2971014492753623" />
-        <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/activity_profile.xml" value="0.25" />
-        <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/activity_profile_modification.xml" value="0.1" />
+        <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/activity_profile.xml" value="0.15924092409240925" />
+        <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/activity_profile_modification.xml" value="0.17507002801120447" />
         <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/activity_registration.xml" value="0.3370064279155188" />
         <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/change_album_pop_up.xml" value="0.13802083333333334" />
         <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/fragment_album_attribute_modification_pop_up.xml" value="0.1859375" />

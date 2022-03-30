@@ -43,7 +43,6 @@ interface IMyService {
         @Field("oldUsername") oldUsername: String,
         @Field("newUsername") newUsername: String,
         @Field("newAvatar") newAvatar: String,
-        @Field("newEmail") newEmail:String,
         @Field("newDescription") newDescription:String,
     ): Observable<String>
 

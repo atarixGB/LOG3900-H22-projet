@@ -51,8 +51,8 @@
 
         <com.mikhaellopez.circularimageview.CircularImageView
             android:id="@+id/userAvatarModif"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
             android:src="@drawable/monster1"/>
 
 
@@ -60,7 +60,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_below="@+id/header_menu"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="45dp"
             android:background="@color/purple_500" />
 
     </LinearLayout>
@@ -142,8 +142,8 @@
                 android:textStyle="bold" />
 
             <EditText
-                android:layout_width="600dp"
                 android:id="@+id/edt_description"
+                android:layout_width="600dp"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_gravity="end"
@@ -232,8 +232,87 @@
 
     <View
         android:layout_width="match_parent"
+        android:id="@+id/seperationToSound"
         android:layout_height="1.5dp"
         android:background="@color/purple_500"
         android:layout_marginTop="5dp"
         android:layout_below="@id/bloc_profil"/>
+
+    <LinearLayout
+        android:id="@+id/sound_bloc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:orientation="horizontal"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:layout_below="@+id/seperationToSound">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_baseline_library_music_24" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="10dp"
+            android:text="Sons"
+            android:textColor="@android:color/background_dark"
+            android:textSize="18dp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginLeft="350dp"
+            android:layout_marginTop="70dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="10dp"
+                android:text="Effets sonores"
+                android:textColor="@android:color/background_dark"
+                android:textSize="18dp"
+                android:textStyle="bold" />
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/soundControl"
+                android:layout_marginLeft="15dp"
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:background="@drawable/spinner_bg"
+                android:spinnerMode="dropdown"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginLeft="200dp"
+            android:layout_marginTop="70dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="10dp"
+                android:text="Musique"
+                android:textColor="@android:color/background_dark"
+                android:textSize="18dp"
+                android:textStyle="bold" />
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/musicPicker"
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:background="@drawable/spinner_bg"
+                android:spinnerMode="dropdown"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
 </RelativeLayout>

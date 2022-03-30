@@ -10,6 +10,8 @@ import android.util.DisplayMetrics
 import com.mikhaellopez.circularimageview.CircularImageView
 import java.io.ByteArrayOutputStream
 
+var SOUND_EFFECT=true
+
 fun convertToByteArray(imageView: CircularImageView): ByteArray {
     val bitmap = (imageView.drawable as BitmapDrawable).bitmap
     val stream = ByteArrayOutputStream()
