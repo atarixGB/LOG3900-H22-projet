@@ -38,6 +38,8 @@ export class AlbumGalleryService {
       creationDate: ""
     }
 
+    console.log("LOGIN USERNAME:", loginService.username)
+
     this.favoriteDrawingsData = [];
     this.topDrawingsData = [];
   }
@@ -52,7 +54,7 @@ export class AlbumGalleryService {
       (result) => {
         console.log("Résultat du serveur:", result);
         this.currentDrawing._id = result;
-        this.addDrawingToAlbum(this.currentDrawing, this.selectedAlbumId); // Should be ID not name but we did it with the name
+        this.addDrawingToAlbum(this.currentDrawing, this.selectedAlbumId);
         this.drawingService.setCurrentDrawingBlanc();
         this.collaborationService.joinCollab(this.currentDrawing._id);
         this.saveDrawing();

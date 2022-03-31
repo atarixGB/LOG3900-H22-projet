@@ -430,7 +430,7 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
     //get image from DB
     app.get('/drawings/:drawingId', function (req, res) {
       DB.collection("drawings")
-        .findOne({ _id: mongoose.Types.ObjectId(req.params.drawingId.replaceAll(/"/g, '')) }, function (err, result) {
+        .findOne({ _id: mongoose.Types.ObjectId(req.params.drawingId.replace(/"/g, '')) }, function (err, result) {
           if (err) {
             console.log("error getting");
           } else {
