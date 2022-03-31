@@ -12,7 +12,7 @@
       <!-- Stories -->
       <div fxLayout="row" fxLayoutAlign="center center">
          <div fxLayout="row" fxLayoutAlign="center center" id="storiesDiv" fxFlex="80%">
-            <div *ngFor="let user of this.users" class="circleDiv">
+            <div *ngFor="let user of this.users" class="circleDiv" (click)="displayStoriesDialog()">
                <img src="data:image/png;base64,{{user.avatar}}">
             </div>
          </div>

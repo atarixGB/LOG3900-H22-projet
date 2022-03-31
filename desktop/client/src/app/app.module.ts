@@ -12,6 +12,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
+import { MatProgressBarModule } from '@angular/material/progress-bar'
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
@@ -71,6 +72,7 @@ import { MemberJoinedDialogComponent } from './components/editor/member-joined-d
 import { MemberLeftDialogComponent } from './components/editor/member-left-dialog/member-left-dialog.component';
 import { FavoriteDrawingsComponent } from './components/profile/favorite-drawings/favorite-drawings.component';
 import { TopDrawingsComponent } from './components/profile/top-drawings/top-drawings.component';
+import { StoryComponent } from './components/story/story.component';
 
 @NgModule({
     declarations: [
@@ -121,6 +123,7 @@ import { TopDrawingsComponent } from './components/profile/top-drawings/top-draw
         MemberLeftDialogComponent,
         FavoriteDrawingsComponent,
         TopDrawingsComponent,
+        StoryComponent,
     ],
     imports: [
         BrowserModule,
@@ -132,6 +135,7 @@ import { TopDrawingsComponent } from './components/profile/top-drawings/top-draw
         MatListModule,
         MatGridListModule,
         MatTooltipModule,
+        MatProgressBarModule,
         FormsModule,
         MatFormFieldModule,
         ReactiveFormsModule,
