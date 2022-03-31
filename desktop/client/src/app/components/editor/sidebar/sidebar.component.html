@@ -1,6 +1,9 @@
 <mat-sidenav-container>
     <mat-sidenav-content>
-        <mat-icon id="returnBtn" routerLink="/menu">keyboard_arrow_left</mat-icon>
+          <div id="returnDiv" fxLayout="row" fxLayoutAlign="start center" routerLink="/menu" (click)="this.saveAndLeave()">
+            <mat-icon id="returnBtn">keyboard_arrow_left</mat-icon>
+            <span>Sauvegarder et quitter</span>
+          </div>
         <app-tools-list></app-tools-list>
         <hr />
         <app-file-menu></app-file-menu>

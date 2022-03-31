@@ -9,15 +9,29 @@ import { SelectionService } from './selection.service';
 })
 export class CollabSelectionService {
   selectionCnvs: Map<string, HTMLCanvasElement>;
+  selectionIndexes: Map<string, number>;
   containerDiv: HTMLElement;
   zIndex: number;
   borderColor: string;
 
   constructor(private drawingService: DrawingService, private selectionService: SelectionService,  private collaborationService: CollaborationService) {
     this.selectionCnvs = new Map<string, HTMLCanvasElement>();
+    this.selectionIndexes = new Map<string, number>();
     this.zIndex = 0;
     this.borderColor = 'lightblue';
     this.setSubscriptions();
+    this.collaborationService.pasteOnNewMemberJoin$.subscribe(() => {
+      this.pasteAll();
+    });
+  }
+
+  pasteAll(): void {
+    if (this.selectionService.isActiveSelection) {
+      this.selectionService.pasteBase();
+    }
+    this.selectionIndexes.forEach((value: number, key: string) => {
+      this.pasteSelected(key, value);
+    });
   }
   
   addSelectedStroke(selected: any): void {
@@ -74,6 +88,7 @@ export class CollabSelectionService {
     this.selectionService.redrawAllStrokesExceptSelected();
     this.selectionService.deleteSelection(cnv);
     this.selectionCnvs.delete(sender);
+    this.selectionIndexes.delete(sender);
   }
 
   private removeSelected(sender: string, strokeIndex: number): void {
@@ -81,6 +96,7 @@ export class CollabSelectionService {
     let cnv = this.selectionCnvs.get(sender) as HTMLCanvasElement;
     this.selectionService.deleteSelection(cnv);
     this.selectionCnvs.delete(sender);
+    this.selectionIndexes.delete(sender);
     this.selectionService.strokes.splice(strokeIndex, 1);
     this.selectionService.strokesSelected.splice(this.selectionService.strokesSelected.indexOf(stroke), 1);
     if (strokeIndex < this.selectionService.selectedIndex) {
@@ -92,6 +108,7 @@ export class CollabSelectionService {
     let stroke = this.selectionService.strokes[strokeIndex];
     let selectionCnv = this.selectionService.createSelectionCanvas(this.containerDiv, stroke, ((++this.zIndex) % 4) + 5, this.borderColor, 'collabSelectionCnv');
     this.selectionCnvs.set(sender, selectionCnv);
+    this.selectionIndexes.set(sender, strokeIndex);
     const pos = {x: stroke.boundingPoints[0].x, y: stroke.boundingPoints[0].y }
     this.selectionService.positionSelectionCanvas(pos, selectionCnv);
     this.selectionService.pasteStrokeOnSelectionCnv(stroke, selectionCnv.getContext('2d') as CanvasRenderingContext2D);

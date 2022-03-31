@@ -38,6 +38,19 @@
     word-wrap: break-word;
 }
 
+.username-link {
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.username-link:hover {
+  color: #A8D08C;
+}
+
+.timestamp {
+  font-size: small;
+}
+
 input {
   margin: 2px;
 }
@@ -56,4 +69,10 @@ input {
 #disconnectDiv:hover {
     cursor: pointer;
     background-color: rgba(187, 81, 236, 0.13);
+}
+
+
+mat-icon {
+  transform: scale(0.75);
+  cursor: pointer;
 }

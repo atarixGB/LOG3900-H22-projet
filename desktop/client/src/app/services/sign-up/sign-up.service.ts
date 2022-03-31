@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SIGN_UP_URL } from '@app/constants/api-urls';
 import { SoundEffectsService } from '../sound-effects/sound-effects.service';
+import { IUser } from '@app/interfaces-enums/IUser'
 import { AlbumGalleryService } from '../album-gallery/album-gallery.service';
 
 @Injectable({
@@ -31,7 +32,7 @@ export class SignUpService {
 
     signUp(): void {
         // POST resquest to create a new user in the database
-        const userInfos = {
+        const userInfos: IUser = {
             identifier: this.identifier,
             password: this.password,
             avatar: this.avatarSrc,
