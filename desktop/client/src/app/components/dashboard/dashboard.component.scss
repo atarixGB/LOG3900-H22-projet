@@ -1,3 +1,49 @@
 :host {
    height: 100%;
 } 
+
+#storiesDiv {
+   overflow-x: auto;
+   border: solid 1px;
+   border-radius: 20px;
+   padding: 10px;
+   margin-top: 20px;
+   background-color: #A8D08C;
+}
+
+#title {
+   margin-bottom:5px;
+}
+
+.circleDiv {
+   border: solid 1px purple;
+   border-radius: 50%;
+   margin-left: 5px;
+   margin-right: 5px;
+   height: 150px;
+   width: 150px;
+   overflow: hidden;
+   background-color: white;
+   cursor: pointer;
+}
+
+.lineDiv {
+   border: solid 1px;
+   border-color: rgb(112, 112, 112);
+}
+
+img {
+   height: 150px;
+   width: 150px;
+}
+
+mat-icon {
+   scale: 5;
+   color: #A8D08C;
+   text-shadow: 1px 1px 1px rgba(159, 159, 159);
+}
+
+mat-icon:hover {
+   cursor: pointer;
+   color: #bfe7a3;
+}

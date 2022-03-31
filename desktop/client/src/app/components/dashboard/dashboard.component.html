@@ -1,4 +1,51 @@
-<div fxLayout="column" fxLayoutAlign="space-evenly center"  fxFlex="auto">
-   <button mat-raised-button color="primary" (click)="this.displayCreateNewDrawingDialog()">Créer une session</button>
-   <button mat-raised-button color="primary" routerLink="/my-albums">Joindre une session</button>
+<!-- <div fxLayout="row" fxLayoutAlign="center stretch" fx="auto">
+   <div fxFlex="15%"></div>
+   <div fxLayout="column" fxLayoutAlign="start stretch" fxFlex="auto">
+      <div fxflex="20%">ah</div>
+      <div fxLayout="row" fxLayoutAlign="center center" fxFlex="50%">
+         <div fxLayout="row" fxLayoutAlign="center center" id="storiesDiv" fxFlex="80%">
+            <div *ngFor="let user of this.users" class="circleDiv">
+               <img src="data:image/png;base64,{{user.avatar}}">
+            </div>
+         </div>
+      </div>
+      <button mat-raised-button color="primary" (click)="this.displayCreateNewDrawingDialog()">Créer une session</button>
+   </div>
+</div> -->
+
+<div fxLayout="row" fxLayoutAlign="center stretch" fxFlex="100">
+   <!-- Dashboard page -->
+   <div fxLayout="column" fxLayoutAlign="start stretch" fxFlex="auto">
+      <div fxFlex="5%"></div>
+      <!-- Title -->
+      <div fxLayout="row" fxLayoutAlign="center center">
+         <div class="lineDiv" fxFlex="32.5%"></div>
+         <h1 fxLayoutAlign="center center" id="title" fxFlex="20%">Dessins du jour</h1>
+         <div class="lineDiv" fxFlex="32.5%"></div>
+      </div>
+
+      <!-- Stories -->
+      <div fxLayout="row" fxLayoutAlign="center center">
+         <div fxLayout="row" fxLayoutAlign="center center" id="storiesDiv" fxFlex="80%">
+            <div *ngFor="let user of this.users" class="circleDiv">
+               <img src="data:image/png;base64,{{user.avatar}}">
+            </div>
+         </div>
+      </div>
+      <div fxFlex="5%"></div>
+
+      <!-- Title -->
+      <div fxLayout="row" fxLayoutAlign="center center">
+         <div class="lineDiv" fxFlex="30%"></div>
+         <h1 fxLayoutAlign="center center" id="title" fxFlex="25%">Commencer un dessin</h1>
+         <div class="lineDiv" fxFlex="30%"></div>
+      </div>
+
+      <!-- Create drawing button -->
+      <div fxLayout="row" fxLayoutAlign="center center" fxFlex="15%">
+         <mat-icon (click)="this.displayCreateNewDrawingDialog()">add_photo_alternate</mat-icon>
+      </div>
+   </div>
 </div>
+ 
+
