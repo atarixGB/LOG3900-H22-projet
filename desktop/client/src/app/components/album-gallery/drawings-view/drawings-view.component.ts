@@ -83,4 +83,19 @@ export class DrawingsViewComponent {
     this.drawingService.setCurrentDrawing(drawing);
     this.collaborationService.joinCollab(drawing._id);
   }
+
+  openChangeNameDialog(drawing: IDrawing): void {
+    console.log("Change name...");
+
+  }
+
+  openChangeAlbumDialog(drawing: IDrawing): void {
+    console.log("Change album...");
+
+  }
+
+  openDeleteConfirmationDialog(drawing: IDrawing): void {
+    console.log("Delete drawing...");
+
+  }
 }
