@@ -13,17 +13,16 @@ import com.example.mobile.Retrofit.IMyService
 import com.example.mobile.Retrofit.RetrofitClient
 import com.example.mobile.adapter.SimpleDrawingAdapter
 import io.reactivex.disposables.CompositeDisposable
-
 import retrofit2.Call
 import retrofit2.Response
 
-class TopDrawingDisplay : AppCompatActivity(),SimpleDrawingAdapter.SimpleDrawingAdapterListener {
+class FavoriteDrawingDisplay : AppCompatActivity(),SimpleDrawingAdapter.SimpleDrawingAdapterListener {
     private lateinit var drawingName: String
     private lateinit var drawings: ArrayList<IDrawing>
     private lateinit var leaveTopBtn: ImageButton
     private lateinit var user: String
-    private lateinit var simpleDrawingAdapter: SimpleDrawingAdapter
-    private lateinit var rvOutputTopDrawings: RecyclerView
+    private lateinit var favoriteDrawingAdapter: SimpleDrawingAdapter
+    private lateinit var rvOutputFavoriteDrawings: RecyclerView
     private lateinit var iMyService: IMyService
     internal var compositeDisposable = CompositeDisposable()
 
@@ -31,14 +30,24 @@ class TopDrawingDisplay : AppCompatActivity(),SimpleDrawingAdapter.SimpleDrawing
         compositeDisposable.clear()
         super.onStop()
     }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_top_dessin)
+        setContentView(R.layout.activity_favorite_drawing_display)
+
         user = intent.getStringExtra("userName").toString()
         drawings = java.util.ArrayList()
-        rvOutputTopDrawings = findViewById(R.id.rvOutputTopDrawings)
-        leaveTopBtn = findViewById(R.id.leaveTopBtn)
+        rvOutputFavoriteDrawings = findViewById(R.id.rvOutputFavoriteDrawings)
+        leaveTopBtn = findViewById(R.id.leaveFavoriteBtn)
+
+        favoriteDrawingAdapter = SimpleDrawingAdapter(this, drawings)
+
+        //Recycler View of rooms
+        rvOutputFavoriteDrawings.adapter = favoriteDrawingAdapter
+        rvOutputFavoriteDrawings.layoutManager = GridLayoutManager(this, 3)
+
+        val retrofit = RetrofitClient.getInstance()
+        iMyService = retrofit.create(IMyService::class.java)
+
 
         leaveTopBtn.setOnClickListener {
             val intent = Intent(this, Profile::class.java)
@@ -46,40 +55,27 @@ class TopDrawingDisplay : AppCompatActivity(),SimpleDrawingAdapter.SimpleDrawing
             startActivity(intent)
         }
 
-        simpleDrawingAdapter = SimpleDrawingAdapter(this, drawings)
-
-        //Recycler View of rooms
-        rvOutputTopDrawings.adapter = simpleDrawingAdapter
-        rvOutputTopDrawings.layoutManager = GridLayoutManager(this, 3)
-
-        val retrofit = RetrofitClient.getInstance()
-        iMyService = retrofit.create(IMyService::class.java)
-
-        getTopDrawings(user)
+        getFavoriteDrawings(user)
     }
 
     override fun SimpledrawingAdapterListener(drawingName: String) {
         this.drawingName=drawingName
     }
 
-    private fun getTopDrawings(user: String) {
-        var call: Call<List<IDrawing>> = iMyService.getTopDrawings(user)
+    private fun getFavoriteDrawings(user: String) {
+        var call: Call<List<IDrawing>> = iMyService.getFavoriteDrawings(user)
         call.enqueue(object: retrofit2.Callback<List<IDrawing>> {
 
             override fun onResponse(call: Call<List<IDrawing>>, response: Response<List<IDrawing>>) {
                 for(drawing in response.body()!!){
-                    simpleDrawingAdapter.addDrawing(drawing!!)
-                    simpleDrawingAdapter.notifyItemInserted((rvOutputTopDrawings.adapter as SimpleDrawingAdapter).itemCount)
+                    favoriteDrawingAdapter.addDrawing(drawing!!)
+                    favoriteDrawingAdapter.notifyItemInserted((rvOutputFavoriteDrawings.adapter as SimpleDrawingAdapter).itemCount)
                 }
-
-
             }
 
             override fun onFailure(call: Call<List<IDrawing>>, t: Throwable) {
-                Log.d("Top dessins", "onFailure" +t.message )
+                Log.d("favoris", "onFailure" +t.message )
             }
         })
     }
-
-
 }

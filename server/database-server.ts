@@ -452,7 +452,9 @@ app.post(
     let username = request.params.username;
     DB.collection("drawings").find({ likes: { $all: [username] } }).toArray(function (error, result) {
       if (error) throw error;
+      
       response.json(result);
+      console.log(result)
     })
   })
 

@@ -85,6 +85,12 @@ class Profile : AppCompatActivity() {
             startActivity(intent)
         }
 
+        showFavorites.setOnClickListener(){
+            val intent = Intent(this, FavoriteDrawingDisplay::class.java)
+            intent.putExtra("userName",user)
+            startActivity(intent)
+        }
+
 
         modify_label.setOnClickListener(){
             val intent = Intent(this, Profile_modification::class.java)

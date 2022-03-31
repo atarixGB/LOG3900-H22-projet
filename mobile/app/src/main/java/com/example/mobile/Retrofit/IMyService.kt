@@ -155,10 +155,10 @@ interface IMyService {
                          @Field("user")user:String): Observable<String>
 
     @GET("/drawings/favorite/{username}")
-    fun getFavoriteDrawings(@Path("username")username:String):Call<IDrawing>
+    fun getFavoriteDrawings(@Path("username")username:String):Call<List<IDrawing>>
 
     @GET("/drawings/top/{username}")
-    fun getTopDrawings(@Path("username")username:String):Call<IDrawing>
+    fun getTopDrawings(@Path("username")username:String):Call<List<IDrawing>>
 
 
 }

@@ -4,19 +4,18 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mobile.Interface.IDrawing
 import com.example.mobile.R
 import com.example.mobile.bitmapDecoder
 import kotlinx.android.synthetic.main.item_top_drawing.view.*
 
-class TopDrawingAdapter(val context: Context?, var drawings:ArrayList<IDrawing>) : RecyclerView.Adapter<TopDrawingAdapter.TopDrawingViewHolder> (){
+class SimpleDrawingAdapter(val context: Context?, var drawings:ArrayList<IDrawing>) : RecyclerView.Adapter<SimpleDrawingAdapter.SimpleDrawingViewHolder> (){
 
-    private var listener: TopDrawingAdapterListener = context as TopDrawingAdapterListener
+    private var listener: SimpleDrawingAdapterListener = context as SimpleDrawingAdapterListener
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TopDrawingViewHolder {
-        return TopDrawingViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SimpleDrawingViewHolder {
+        return SimpleDrawingViewHolder(
             LayoutInflater.from(parent.context).inflate(
                 R.layout.item_top_drawing,
                 parent,
@@ -25,7 +24,7 @@ class TopDrawingAdapter(val context: Context?, var drawings:ArrayList<IDrawing>)
         )
     }
 
-    override fun onBindViewHolder(holder: TopDrawingViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: SimpleDrawingViewHolder, position: Int) {
         val currentDrawing = drawings[position]
 
         holder.itemView.apply {
@@ -36,11 +35,11 @@ class TopDrawingAdapter(val context: Context?, var drawings:ArrayList<IDrawing>)
             var incrementNbrOfLikes = 0
 
 
-//            imgDrawing.setImageBitmap(bitmapDecoder(currentDrawing.data))
-            imgTopDrawing.setImageResource(R.drawable.monster1)
+            imgTopDrawing.setImageBitmap(bitmapDecoder(currentDrawing.data))
+//            imgTopDrawing.setImageResource(R.drawable.monster1)
 
             imgTopDrawing.setOnClickListener {
-                listener.TopdrawingAdapterListener(topDrawingName.text.toString())
+                listener.SimpledrawingAdapterListener(topDrawingName.text.toString())
             }
 
         }
@@ -60,9 +59,9 @@ class TopDrawingAdapter(val context: Context?, var drawings:ArrayList<IDrawing>)
     override fun getItemCount(): Int {
         return drawings.size
     }
-    public interface TopDrawingAdapterListener {
-        fun TopdrawingAdapterListener(drawingName: String)
+    public interface SimpleDrawingAdapterListener {
+        fun SimpledrawingAdapterListener(drawingName: String)
 
     }
-    class TopDrawingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+    class SimpleDrawingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 }
