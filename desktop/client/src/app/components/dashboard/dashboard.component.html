@@ -1,22 +1,7 @@
-<!-- <div fxLayout="row" fxLayoutAlign="center stretch" fx="auto">
-   <div fxFlex="15%"></div>
-   <div fxLayout="column" fxLayoutAlign="start stretch" fxFlex="auto">
-      <div fxflex="20%">ah</div>
-      <div fxLayout="row" fxLayoutAlign="center center" fxFlex="50%">
-         <div fxLayout="row" fxLayoutAlign="center center" id="storiesDiv" fxFlex="80%">
-            <div *ngFor="let user of this.users" class="circleDiv">
-               <img src="data:image/png;base64,{{user.avatar}}">
-            </div>
-         </div>
-      </div>
-      <button mat-raised-button color="primary" (click)="this.displayCreateNewDrawingDialog()">Créer une session</button>
-   </div>
-</div> -->
-
-<div fxLayout="row" fxLayoutAlign="center stretch" fxFlex="100">
+<div class="bubbles" id="base" fxLayout="row" fxLayoutAlign="center stretch" fxFlex="100">
    <!-- Dashboard page -->
-   <div fxLayout="column" fxLayoutAlign="start stretch" fxFlex="auto">
-      <div fxFlex="5%"></div>
+   <div id="dashboardPage" fxLayout="column" fxLayoutAlign="start stretch" fxFlex="auto">
+      <div fxFlex="15%"></div>
       <!-- Title -->
       <div fxLayout="row" fxLayoutAlign="center center">
          <div class="lineDiv" fxFlex="32.5%"></div>
@@ -46,6 +31,10 @@
          <mat-icon (click)="this.displayCreateNewDrawingDialog()">add_photo_alternate</mat-icon>
       </div>
    </div>
+
+   <!-- BUBBLES ANIMATION -->
+   <div *ngFor="let i of [].constructor(50);" class="bubble"></div>
 </div>
  
+
 
