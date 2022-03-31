@@ -183,6 +183,24 @@ export class AlbumGalleryService {
 
   }
 
+  changeAlbum(drawing: IDrawing, newAlbumId: string): void {
+    this.addDrawingToAlbum(drawing, newAlbumId);
+
+    const body = {
+      albumID: this.currentAlbum._id,
+      drawingID: drawing._id,
+    }
+
+    this.httpClient.post(REMOVE_DRAWING_FROM_ALBUM_URL, body).subscribe(
+      (result) => {
+        console.log("Résultat du serveur:", result)
+      },
+      (error) => {
+        console.log(`Impossible de retirer le dessin "${drawing.name}" de l'album "${this.currentAlbum.name}".\nErreur: ${error}`);
+      }
+    )
+  }
+
   addUserToPublicAlbum(username: string): void {
     const body = {
       userToAdd: username,
@@ -311,11 +329,15 @@ export class AlbumGalleryService {
   }
 
   fetchMyAlbumsFromDatabase(): void {
+    this.myAlbums = [];
+    console.log("FETCHING MY ALBUMS")
     this.httpClient.get<IAlbum[]>(ALBUM_URL).subscribe(
       (albums: IAlbum[]) => {
+        console.log("ALBUMS",albums)
         for (let i = 0; i < albums.length; i++) {
           if (albums[i].members.includes(this.loginService.username)) {
             this.myAlbums.push(albums[i]);
+            console.log(this.myAlbums[i])
           }
         }
       },

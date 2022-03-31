@@ -1,1 +1,38 @@
-<p>change-album-dialog works!</p>
+<h2 mat-dialog-title>Changer d'album</h2>
+
+<mat-dialog-content class="mat-typography">
+
+
+  <p>
+    Pour changer le dessin <span class="bold">{{ this.data.name }}</span> d'album, sélectionne le nouvel album ici :
+  </p>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Accessibilité</mat-label>
+    <mat-select (valueChange)="this.changeAccess($event)" value="0">
+      <mat-option value="0">Public</mat-option>
+      <mat-option value="1" *ngIf="this.albumGalleryService.myAlbums.length != 0">Privé</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <div class="albums-container-view" *ngIf="this.isPrivate">
+    <mat-grid-list cols="3">
+      <mat-grid-tile *ngFor="let album of this.albumGalleryService.myAlbums" (click)="onAlbumClick(album)">
+        <button mat-icon-button disableRipple="true" matTooltip="{{album.name}}">
+          <div>
+            <mat-icon>folder</mat-icon>
+            {{album.name}}
+          </div>
+        </button>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </div>
+
+  <p>Le dessin sera transféré dans l'album <span class="bol">{{ this.newAlbumName }}</span></p>
+
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close>Annuler</button>
+  <button mat-button [mat-dialog-close]="true" cdkFocusInitial (click)="changeAlbum()">Transférer</button>
+</mat-dialog-actions>
