@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { IAlbum } from '@app/interfaces-enums/IAlbum'
 import { IDrawing } from '@app/interfaces-enums/IDrawing'
 import { LoginService } from '@app/services/login/login.service';
-import { ALBUM_URL, CREATE_DRAWING_URL, JOIN_ALBUM_URL, DECLINE_MEMBERSHIP_REQUEST_URL, ACCEPT_MEMBERSHIP_REQUEST_URL, UPDATE_ALBUM_PARAMETERS_URL, ADD_DRAWING_TO_ALBUM_URL, GET_DRAWING_URL, SAVE_DRAWING_URL, LIKE_DRAWING_URL, GET_USER_FAVORITE_DRAWINGS_URL, GET_USER_TOP_X_DRAWINGS_URL } from '@app/constants/api-urls';
+import { ALBUM_URL, CREATE_DRAWING_URL, JOIN_ALBUM_URL, DECLINE_MEMBERSHIP_REQUEST_URL, ACCEPT_MEMBERSHIP_REQUEST_URL, UPDATE_ALBUM_PARAMETERS_URL, ADD_DRAWING_TO_ALBUM_URL, GET_DRAWING_URL, SAVE_DRAWING_URL, LIKE_DRAWING_URL, GET_USER_FAVORITE_DRAWINGS_URL, GET_USER_TOP_X_DRAWINGS_URL, CHANGE_DRAWING_NAME_URL, DELETE_DRAWING_URL, REMOVE_DRAWING_FROM_ALBUM_URL } from '@app/constants/api-urls';
 import { PUBLIC_ALBUM } from '@app/constants/constants';
 import { DrawingService } from '../editor/drawing/drawing.service';
 import { formatDate } from '@angular/common';
@@ -15,21 +15,20 @@ import { CollaborationService } from '../collaboration/collaboration.service';
 export class AlbumGalleryService {
   publicAlbums: IAlbum[];
   myAlbums: IAlbum[];
-
   currentAlbum: IAlbum;
-  currentDrawing: IDrawing;
 
   selectedAlbumId: string;
   selectedAlbumName: string;
 
-  drawings: IDrawing[];
+  currentDrawing: IDrawing;
+  fetchedDrawings: IDrawing[];
   favoriteDrawingsData: IDrawing[];
   topDrawingsData: IDrawing[];
 
   constructor(private httpClient: HttpClient, private loginService: LoginService, private drawingService: DrawingService, private collaborationService: CollaborationService) {
     this.publicAlbums = [];
     this.myAlbums = [];
-    this.drawings = [];
+    this.fetchedDrawings = [];
 
     this.currentDrawing = {
       _id: null,
@@ -114,6 +113,51 @@ export class AlbumGalleryService {
       },
       (error) => {
         console.log(`Impossible d'aimer le dessin "${drawing.name}".\nErreur: ${error}`);
+      }
+    )
+  }
+
+  changeDrawingName(drawing: IDrawing, newDrawingName: string): void {
+    const url = `${CHANGE_DRAWING_NAME_URL}`;
+    const body = {
+      drawingID: drawing._id,
+      newDrawingName:  newDrawingName,
+    }
+    this.httpClient.post(url, body).subscribe(
+      (result) => {
+        console.log("Résultat du serveur:", result)
+      },
+      (error) => {
+        console.log(`Impossible de changer le nom du dessin "${drawing.name}" à "${newDrawingName}".\nErreur: ${error}`);
+      }
+    )
+  }
+
+  deleteDrawing(drawing: IDrawing): void {
+    const url = `${DELETE_DRAWING_URL}/${drawing._id}`;
+
+    const body = {
+      albumID: this.currentAlbum._id,
+      drawingID: drawing._id,
+    }
+
+    this.httpClient.delete(url).subscribe(
+      (result) => {
+        console.log("Résultat du serveur:", result)
+
+
+        this.httpClient.post(REMOVE_DRAWING_FROM_ALBUM_URL, body).subscribe(
+          (result) => {
+            console.log("Résultat du serveur:", result)
+          },
+          (error) => {
+            console.log(`Impossible de retirer le dessin "${drawing.name}" de l'album "${this.currentAlbum.name}".\nErreur: ${error}`);
+          }
+        )
+
+      },
+      (error) => {
+        console.log(`Impossible de supprimer le dessin "${drawing.name}".\nErreur: ${error}`);
       }
     )
   }
@@ -304,11 +348,11 @@ export class AlbumGalleryService {
   fetchDrawingsFromSelectedAlbum(album: IAlbum): void {
     console.log("Fetching drawings from album: " + album.name);
 
-    this.drawings = [];
+    this.fetchedDrawings = [];
     album.drawingIDs.forEach(id => {
       this.httpClient.get(`${GET_DRAWING_URL}/${id}`).subscribe(
         (result: IDrawing) => {
-          this.drawings.push(result);
+          this.fetchedDrawings.push(result);
         },
         (error) => {
           console.log(`Erreur en allant chercher un dessin.\nErreur: ${error}`);
@@ -316,7 +360,7 @@ export class AlbumGalleryService {
       );
     });
 
-    console.log(this.drawings);
+    console.log(this.fetchedDrawings);
   }
 
   fetchAllPublicDrawings(): void {

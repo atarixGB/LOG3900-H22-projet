@@ -6,12 +6,15 @@ const cors = require("cors");
 const crypto = require("crypto");
 const mongoose = require("mongoose");
 const socket = require('socket.io');
-
 const multer = require('multer')
 const path = require('path');
-
-// Include the node file module
 var fs = require('fs');
+
+//constants
+const DATABASE_URL =
+  "mongodb+srv://equipe203:Log3900-H22@polygramcluster.arebt.mongodb.net/PolyGramDB?retryWrites=true&w=majority";
+const SERVER_PORT = 3001;
+const UPLOAD_DIR = './uploads/'
 
 const storage = multer.diskStorage({
   destination: './uploads/',
@@ -24,11 +27,6 @@ const storage = multer.diskStorage({
     });
   }
 });
-
-//constants
-const DATABASE_URL =
-  "mongodb+srv://equipe203:Log3900-H22@polygramcluster.arebt.mongodb.net/PolyGramDB?retryWrites=true&w=majority";
-const SERVER_PORT = 3001;
 
 //express service
 var app = express();
@@ -447,7 +445,7 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
                 data: img,
                 members: result.members,
                 likes: result.likes,
-                albumName: result.albumName
+                albumName: result.albumName,
               };
               res.json(returnedJson)
               console.log("GotDrawing");
@@ -465,8 +463,17 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
     //delete drawing with specific id from collection
     app.delete("/drawing/delete/:id", (request, response, next) => {
       let drawingId = request.params.id;
+      console.log("DRAWING ID", drawingId)
+      // Remove drawing from collection 'drawings'
       DB.collection("drawings").findOneAndDelete({ _id: mongoose.Types.ObjectId(drawingId) }, (err, res) => {
-        console.log(`Drawing with id ${request.params.id} has been deleted successfully!`);
+
+        // Remove drawing from the upload directory in the server
+        fs.unlink("./uploads/" + drawingId + ".png", function (err, res) {
+          if (err) throw err;
+          console.log(` Drawing with ID ${drawingId} has been deleted from server`);
+        });
+
+        console.log(`Drawing with id ${drawingId} has been deleted from database`);
         response.json(201)
       });
     });

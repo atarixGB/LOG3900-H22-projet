@@ -66,7 +66,7 @@
     <div fxFlex="65%" id="drawingRow" fxLayout="row" fxLayoutAlign="center stretch">
       <div id="drawingsDiv" fxFlex="85%">
         <div fxLayout="row wrap" fxLayoutGap="16px grid">
-          <div fxFlex="25%" fxFlex.xs="90%" fxFlex.sm="33%" *ngFor="let drawing of this.albumGalleryService.drawings">
+          <div fxFlex="25%" fxFlex.xs="90%" fxFlex.sm="33%" *ngFor="let drawing of this.albumGalleryService.fetchedDrawings">
             <mat-card class="mat-elevation-z4">
 
               <mat-card-header>
