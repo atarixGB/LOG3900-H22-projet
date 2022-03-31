@@ -81,6 +81,7 @@ class Profile : AppCompatActivity() {
 
         showMostLiked.setOnClickListener(){
             val intent = Intent(this, TopDrawingDisplay::class.java)
+            intent.putExtra("userName",user)
             startActivity(intent)
         }
 

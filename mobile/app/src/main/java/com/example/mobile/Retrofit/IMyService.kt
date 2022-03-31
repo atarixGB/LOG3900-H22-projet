@@ -153,4 +153,12 @@ interface IMyService {
     @FormUrlEncoded
     fun addLikeToDrawing(@Path("drawingId") drawingId: String,
                          @Field("user")user:String): Observable<String>
+
+    @GET("/drawings/favorite/{username}")
+    fun getFavoriteDrawings(@Path("username")username:String):Call<IDrawing>
+
+    @GET("/drawings/top/{username}")
+    fun getTopDrawings(@Path("username")username:String):Call<IDrawing>
+
+
 }

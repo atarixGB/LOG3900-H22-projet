@@ -462,7 +462,10 @@ app.post(
     DB.collection("drawings")
       .find({ $and: [{ owner: username }, { likes: { $exists: true, $not: { $size: 0 } } }] }).toArray(function (error, result) {
         if (error) throw error;
+
+        result.sort((a,b)=> a.likes.length < b.likes.length ? 1: a.likes.length > b.likes.length ? -1 : 0);
         response.json(result);
+        console.log(result)
       })
   })
 
@@ -708,8 +711,6 @@ app.post(
       var newUsername = post_data.newUsername;
       var avatar = post_data.newAvatar;
       var description = post_data.newDescription;
-      
-
 
       //check if a user already has the new name
       DB.collection("users")
@@ -733,104 +734,42 @@ app.post(
         });
     });
 
-    app.get("/profile/:username", (request, response, next) => {
+    // app.get("/profile/:username", (request, response, next) => {
 
-      var identifier = request.params.username;
-      console.log(identifier.toString());
-      var db = client.db("PolyGramDB");
+    //   var identifier = request.params.username;
+    //   console.log(identifier.toString());
+    //   var db = client.db("PolyGramDB");
 
-      //check if identifier exists
-      db.collection("users").findOne(
-        { identifier: identifier },
-        function (error, result) {
-          if (err) {
-            console.log("error getting");
-            response.status(400).send("Error fetching users");
-          } else {
-            response.json(result);
-            console.log("Got user data for profile load: ", identifier);
-          }
-        }
-      );
-    });
+    //   //check if identifier exists
+    //   db.collection("users").findOne(
+    //     { identifier: identifier },
+    //     function (error, result) {
+    //       if (err) {
+    //         console.log("error getting");
+    //         response.status(400).send("Error fetching users");
+    //       } else {
+    //         response.json(result);
+    //         console.log("Got user data for profile load: ", identifier);
+    //       }
+    //     }
+    //   );
+    // }); MISE EN COMMENTAIRE PARCE QUE LA REQUETE EXISTE DEJA CI-HAUT
 
-     //Updating a users data
-     app.post("/profileUpdate", (request, response, next) => { 
-      var post_data = request.body;
-      var oldUsername = post_data.oldUsername;
-      var newUsername = post_data.newUsername;
-      var avatar = post_data.newAvatar;
-      var newEmail = post_data.newEmail;
-      var description = post_data.newDescription;
+    //get userid when we send username 
+    app.get("/getUserID/:username", (request, response, next) => {
 
-      var db = client.db("PolyGramDB");
-
-      //check if a user already has the new name
-      db.collection("users")
-        .find({ identifier: newUsername })
-        .count(function (err, number) {
-          if (number != 0 && oldUsername != newUsername) {
-            response.json(403);
-            console.log("identifier already exists");
-          } else {
-            // Update user data
-            db.collection("users").updateOne({ identifier: oldUsername }, {
-              $set : {
-                "identifier" : newUsername,
-                "avatar" : avatar,
-                "description" : description,
-                "email": newEmail,
-              },
-            }).then(result => {
-              response.json(200);
-              console.log(result)
-            });
-          }
-        });
-    });
-        app.post("/deleteRoom", (request, response, next) => {
-          var post_data = request.body;
+      let username = request.params.username;
     
-          var roomName = post_data.roomName;
-    
-          var db = client.db("PolyGramDB");
-
-          db.collection("rooms")
-          .find({ roomName: roomName })
-          .count(function (err, number) {
-            if (number == 0) {
-              response.json(404);
-              console.log("room does not exists");
-            } else {
-              db.collection("rooms").deleteOne({ roomName: roomName },
-                function (error, result) {
-                    response.json(201);
-                    console.log("room deleted");
-                }
-              );
-              }
-            });
-        });
-
-        app.get("/getRoomParameters", (request, response, next) => {
-
-          var post_data = request.query;
-          var roomName = post_data.roomName;  
-    
-          var db = client.db("PolyGramDB");
-
-          db.collection("rooms")
-            .findOne({ roomName: roomName }, function (err, result) {
+          DB.collection("users")
+            .findOne({ identifier: username }, function (err, result) {
               if (err) {
                 console.log("error getting");
-                response.status(400).send("Error fetching rooms");
+                response.status(400).send("Error fetching id");
               } else {
-                response.json(result)
-                console.log("Getting One Room");
+                response.json(result._id);
               }
-            });
-        });
-
+          });
+    });
 
     // Start web server
     const server = app.listen(SERVER_PORT, () => {

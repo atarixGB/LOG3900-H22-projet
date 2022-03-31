@@ -7,7 +7,7 @@
     tools:context=".activity.profile.TopDrawingDisplay">
 
     <ImageButton
-        android:id="@+id/leaveAlbumBtn"
+        android:id="@+id/leaveTopBtn"
         android:layout_width="70dp"
         android:layout_height="65dp"
         android:background="@color/white"
@@ -17,7 +17,7 @@
         app:tint="@color/purple_700" />
 
     <TextView
-        android:id="@+id/albumName"
+        android:id="@+id/topDessin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Top dessins"
@@ -37,6 +37,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/albumName" />
+        app:layout_constraintTop_toBottomOf="@+id/topDessin" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

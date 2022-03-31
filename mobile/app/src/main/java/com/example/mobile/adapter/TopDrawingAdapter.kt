@@ -9,14 +9,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.mobile.Interface.IDrawing
 import com.example.mobile.R
 import com.example.mobile.bitmapDecoder
-import kotlinx.android.synthetic.main.item_drawing.view.*
+import kotlinx.android.synthetic.main.item_top_drawing.view.*
 
 class TopDrawingAdapter(val context: Context?, var drawings:ArrayList<IDrawing>) : RecyclerView.Adapter<TopDrawingAdapter.TopDrawingViewHolder> (){
 
-    private var listener: TopDrawingAdapter.TopDrawingAdapterListener = context as TopDrawingAdapter.TopDrawingAdapterListener
+    private var listener: TopDrawingAdapterListener = context as TopDrawingAdapterListener
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TopDrawingAdapter.TopDrawingViewHolder {
-        return TopDrawingAdapter.TopDrawingViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TopDrawingViewHolder {
+        return TopDrawingViewHolder(
             LayoutInflater.from(parent.context).inflate(
                 R.layout.item_top_drawing,
                 parent,
@@ -25,23 +25,22 @@ class TopDrawingAdapter(val context: Context?, var drawings:ArrayList<IDrawing>)
         )
     }
 
-    override fun onBindViewHolder(holder: TopDrawingAdapter.TopDrawingViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: TopDrawingViewHolder, position: Int) {
         val currentDrawing = drawings[position]
 
-
-
         holder.itemView.apply {
-            drawingName.text = currentDrawing.name
-            owner.text = currentDrawing.owner
+            topDrawingName.text = currentDrawing.name
+            ownerTop.text = currentDrawing.owner
 
             var likes = arrayListOf<String>()
             var incrementNbrOfLikes = 0
 
 
-            imgDrawing.setImageBitmap(bitmapDecoder(currentDrawing.data))
+//            imgDrawing.setImageBitmap(bitmapDecoder(currentDrawing.data))
+            imgTopDrawing.setImageResource(R.drawable.monster1)
 
-            imgDrawing.setOnClickListener {
-                listener.TopdrawingAdapterListener(drawingName.text.toString())
+            imgTopDrawing.setOnClickListener {
+                listener.TopdrawingAdapterListener(topDrawingName.text.toString())
             }
 
         }

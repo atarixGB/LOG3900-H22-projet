@@ -98,6 +98,8 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
         rvOutputDrawings.adapter = drawingAdapter
         rvOutputDrawings.layoutManager = GridLayoutManager(this, 3)
 
+
+
         albumNameTextView.text = albumName
 
         getAllAlbumDrawings(albumName)

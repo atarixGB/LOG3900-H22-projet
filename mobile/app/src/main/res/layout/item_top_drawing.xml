@@ -9,7 +9,7 @@
     android:background="@drawable/toolbar_btn">
 
     <TextView
-        android:id="@+id/drawingName"
+        android:id="@+id/topDrawingName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="drawing name"
@@ -19,22 +19,22 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/imgDrawing"
+        android:id="@+id/imgTopDrawing"
         android:layout_width="wrap_content"
         android:layout_height="500dp"
         android:src="@drawable/ic_baseline_image_24"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/drawingName" />
+        app:layout_constraintTop_toBottomOf="@+id/topDrawingName" />
 
     <TextView
-        android:id="@+id/owner"
+        android:id="@+id/ownerTop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="owner name"
         android:textColor="@color/black"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imgDrawing" />
+        app:layout_constraintTop_toBottomOf="@+id/imgTopDrawing" />
 
     <TextView
         android:id="@+id/nbrOfLikes"
@@ -45,7 +45,7 @@
         android:textSize="30sp"
         android:layout_marginRight="10dp"
         app:layout_constraintEnd_toStartOf="@+id/likeBtn"
-        app:layout_constraintTop_toBottomOf="@+id/imgDrawing" />
+        app:layout_constraintTop_toBottomOf="@+id/imgTopDrawing" />
 
     <ImageView
         android:id="@+id/likeBtn"
@@ -53,6 +53,6 @@
         android:layout_height="45dp"
         android:background="@drawable/like"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imgDrawing" />
+        app:layout_constraintTop_toBottomOf="@+id/imgTopDrawing" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
