@@ -25,7 +25,7 @@ export class DashboardComponent {
       avatar: avatars[0],
       email: 'a',
     }
-    for(let i = 0; i < 3; i++) {
+    for(let i = 0; i < 5; i++) {
       this.users.push(templateUser);
     }
   }

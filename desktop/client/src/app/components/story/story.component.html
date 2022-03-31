@@ -2,7 +2,7 @@
    <div id="fullColumn" fxLayout="column" fxLayoutAlign="start stretch" >
       <!-- Progress bars -->
       <div fxFlex="1%" fxLayout="row" fxLayoutAlign="center start" >
-         <mat-progress-bar *ngFor="let i of this.stories;" mode="determinate" value="40"></mat-progress-bar>
+         <mat-progress-bar *ngFor="let bar of this.progressBars;" mode="determinate" [value]="bar.progress"></mat-progress-bar>
       </div>
 
       <!-- User -->
@@ -21,7 +21,7 @@
             </div>
          </div>
          <div id="storyDiv" fxLayout="column" fxLayoutAlign="center stretch" >
-            <img id="storyImg" src="data:image/png;base64,{{this.currentStory.data}}">
+            <img id="storyImg" src="data:image/png;base64,{{this.stories[this.currentStoryIndex].data}}">
          </div>
          <div class="nextPreviousDiv" fxLayout="row" fxLayoutAlign="center stretch" (click)="this.changeStory(1)">
             <div fxLayout="column" fxLayoutAlign="center center" >
