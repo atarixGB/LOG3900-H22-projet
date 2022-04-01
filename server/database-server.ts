@@ -771,7 +771,7 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
       
     })
 
-    // Get the total number of drawings created by userId 
+    // Get the total number of drawings created by username 
     app.get("/profile/stats/drawings/:username", (request, response) => {
       const username = request.params.username;
 
@@ -784,19 +784,23 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
 
     })
 
-    // Get the total number of drawings liked by userId 
+    // Get the total number of likes by username 
     app.get("/profile/stats/drawings/likes/:username", (request, response) => {
       const username = request.params.username;
 
       DB.collection("drawings").find({ likes: { $all: [username] } }).toArray((error, result) => {
         if (error) throw error;
-        console.log(result)
-        const totalNbrOfLikedDrawings = result.length;
-        response.json(totalNbrOfLikedDrawings);
+        
+        let likesCount = 0;
+        for (const drawing of result) {
+          likesCount += drawing.likes.length;
+        }
+
+        response.json(likesCount);
       })
     })
 
-    // Get the total number of private albums created by userId 
+    // Get the total number of private albums created by username 
     app.get("/profile/stats/albums/:username", (request, response) => {
       const username = request.params.username;
 

@@ -22,6 +22,9 @@ export const REMOVE_DRAWING_FROM_ALBUM_URL = `${DATABASE_URL}/removeDrawing`
 
 export const PROFILE_UPDATE_URL = `${DATABASE_URL}/profileUpdate`;
 export const PROFILE_URL = `${DATABASE_URL}/profile`;
+export const STATS_TOTAL_DRAWINGS_CREATED_URL = `${DATABASE_URL}/profile/stats/drawings`
+export const STATS_TOTAL_LIKES_URL = `${DATABASE_URL}/profile/stats/drawings/likes`
+export const STATS_TOTAL_ALBUMS_CREATED_URL = `${DATABASE_URL}/profile/stats/albums`
 
 export const SIGN_UP_URL = `${DATABASE_URL}/register`;
 export const LOGIN_URL = `${DATABASE_URL}/login`;

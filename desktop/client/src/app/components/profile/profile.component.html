@@ -66,24 +66,28 @@
         <div fxLayout="column" fxLayoutAlign="center center" fxFlex="56%">
           <span class="sectionTitle">Statistiques:</span>
           <div fxLayout="row" fxLayoutAlign="start start">
-            <span>Nombre de collaborations : </span>
-            <span>69</span>
+            <span>Nombre de collaborations :&nbsp;</span>
+            <span class="bold">À déterminer</span>
           </div>
           <div fxLayout="row" fxLayoutAlign="start start">
-            <span>Nombre de dessins créés : </span>
-            <span>420</span>
+            <span>Nombre de dessins créés :&nbsp;</span>
+            <span class="bold">{{this.profileService.totalNbrDrawings}}</span>
           </div>
           <div fxLayout="row" fxLayoutAlign="start start">
-            <span>Nombre d'albums privés : </span>
-            <span>69420</span>
+            <span>Nombre total de mentions "J'aime" :&nbsp;</span>
+            <span class="bold">{{this.profileService.totalNbrLikes}}</span>
           </div>
           <div fxLayout="row" fxLayoutAlign="start start">
-            <span>Temps moyen des séances de collaboration : </span>
-            <span>Couple hours</span>
+            <span>Nombre d'albums privés :&nbsp;</span>
+            <span class="bold">{{this.profileService.totalNbrAlbums}}</span>
           </div>
           <div fxLayout="row" fxLayoutAlign="start start">
-            <span>Temps total de collaboration : </span>
-            <span>Un billion de temps</span>
+            <span>Temps moyen des séances de collaboration :&nbsp;</span>
+            <span class="bold">À déterminer</span>
+          </div>
+          <div fxLayout="row" fxLayoutAlign="start start">
+            <span>Temps total de collaboration :&nbsp;</span>
+            <span class="bold">À déterminer</span>
           </div>
         </div>
 
