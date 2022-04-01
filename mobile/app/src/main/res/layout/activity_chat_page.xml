@@ -66,6 +66,7 @@
         android:background="@drawable/message_input_box"
         android:hint="Ecris un message bro!!"
         android:padding="8dp"
+        android:singleLine="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btnSend"
         app:layout_constraintHorizontal_bias="0.214"
