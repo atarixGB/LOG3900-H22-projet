@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { avatars } from '@app/interfaces-enums/avatar-list';
+import { Component } from '@angular/core';
 import { IDrawing } from '@app/interfaces-enums/IDrawing';
 import { IUser } from '@app/interfaces-enums/IUser';
 import { IProgressBar } from '@app/interfaces-enums/IProgress-bar';
 import { interval, Observable, Subscription } from 'rxjs';
+import { MatDialogRef } from '@angular/material/dialog';
+import { StoryService } from '@app/services/story/story.service';
 
 const DURATION = 5;
 const INTERVAL_MS = 100;
@@ -13,7 +14,7 @@ const INTERVAL_MS = 100;
   templateUrl: './story.component.html',
   styleUrls: ['./story.component.scss']
 })
-export class StoryComponent implements OnInit {
+export class StoryComponent {
   user: IUser;
   stories: IDrawing[];
   progressBars: IProgressBar[];
@@ -22,58 +23,38 @@ export class StoryComponent implements OnInit {
   sub: Subscription;
   timer$: Observable<number>
 
-  constructor() {
-    this.stories = [];
+  constructor(private dialogRef: MatDialogRef<StoryComponent>, public storyService: StoryService) {
     this.progressBars = [];
+    this.user = this.storyService.selectedUser;
+    this.stories = this.storyService.userStories.get(this.user) as IDrawing[];
+    for (let i = 0; i < this.stories.length; i++) {
+      this.progressBars.push({progress: 0});
+    }
     this.currentStoryIndex = 0;
     this.timer$ = interval(INTERVAL_MS);
-    this.loadFakeDataForTests();
     this.startTimer();
   }
 
-  // Dont forget to delete this
-  loadFakeDataForTests(): void {
-    this.user = {
-      identifier: 'Alexander Da Great',
-      password: 'a',
-      avatar: avatars[0],
-      email: 'a',
-    };
-
-    for (let i = 0; i < 3; i++) {
-      const drawing = {
-        name: 'Drawing',
-        owner: 'a',
-        data: avatars[i],
-      }
-      this.stories.push(drawing);
-      this.progressBars.push({progress: 0});
-    }
-  }
-
-  ngOnInit(): void {
-  }
-
   changeStory(increment: number): void {
+    
     this.sub.unsubscribe();
     this.progressBars.forEach(bar => {
       bar.progress = 0;
     });
 
-    if (this.currentStoryIndex != 0 && this.currentStoryIndex != this.stories.length - 1 ||
+    if(this.stories.length == 1 || this.currentStoryIndex == this.stories.length - 1 && increment > 0) {
+      this.dialogRef.close();
+    } else if (this.currentStoryIndex != 0 && this.currentStoryIndex != this.stories.length - 1 ||
         this.currentStoryIndex == 0 && increment > 0 ||
         this.currentStoryIndex == this.stories.length - 1 && increment < 0) {
       this.currentStoryIndex = this.currentStoryIndex + increment;
       this.startTimer(); 
-    } else if (this.currentStoryIndex == this.stories.length - 1 && increment > 0) {
-      // close dialog
     }
   }
 
   startTimer() {
     this.sub = this.timer$.subscribe((intervalNb) => {
-      let sec = (intervalNb + 1) / 10; // 10 because triggered every tenths of a second
-      
+      let sec = (intervalNb + 1) / 10; // because triggered every tenths of a second
       this.progressBars[this.currentStoryIndex].progress =  sec * 100 / DURATION;
       if (sec === DURATION) {
         this.sub.unsubscribe();

@@ -34,6 +34,7 @@ export class AlbumGalleryService {
       _id: null,
       name: "",
       owner: this.loginService.username,
+      isStory: false
     }
 
     this.favoriteDrawingsData = [];
@@ -43,6 +44,7 @@ export class AlbumGalleryService {
   createDrawing(drawingName: string): void {
     this.currentDrawing.name = drawingName;
     this.currentDrawing._id = null;
+    this.currentDrawing.isStory = false;
 
     console.log(this.currentDrawing)
 

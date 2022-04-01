@@ -11,12 +11,12 @@
 
       <!-- Stories -->
       <div fxLayout="column" fxLayoutAlign="center center" >
-         <div *ngIf="this.users.length != 0" fxLayout="row" fxLayoutAlign="center center" id="storiesDiv">
-            <div *ngFor="let user of this.users" class="circleDiv" (click)="displayStoriesDialog()">
+         <div *ngIf="this.storyService.users.length != 0" fxLayout="row" fxLayoutAlign="center center" id="storiesDiv">
+            <div *ngFor="let user of this.storyService.users" class="circleDiv" (click)="displayStoriesDialog(user)">
                <img src="data:image/png;base64,{{user.avatar}}">
             </div>
          </div>
-         <h1 *ngIf="this.users.length == 0" id="noStories">Aucun dessin du jour</h1>
+         <h1 *ngIf="this.storyService.users.length == 0" id="noStories">Aucun dessin du jour</h1>
       </div>
       <div fxFlex="5%"></div>
 
