@@ -48,6 +48,6 @@ data class IRectangleStroke(
     override fun rescale(scale: IVec2) {
         width *= scale.x
         height *= scale.y
-        boundingPoints[1] = IVec2(boundingPoints[1].x * scale.x, boundingPoints[1].y * scale.y)
+//        boundingPoints[1] = IVec2(boundingPoints[1].x * scale.x, boundingPoints[1].y * scale.y)
     }
 }

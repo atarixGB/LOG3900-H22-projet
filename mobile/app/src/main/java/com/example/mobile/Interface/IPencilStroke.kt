@@ -76,7 +76,7 @@ data class IPencilStroke (
             points[i].x = points[i].x * scale.x
             points[i].y = points[i].y * scale.y
         }
-        boundingPoints[1] = IVec2(boundingPoints[1].x * scale.x, boundingPoints[1].y * scale.y)
+//        boundingPoints[1] = IVec2(boundingPoints[1].x * scale.x, boundingPoints[1].y * scale.y)
     }
 
 //    override fun moveStroke(newPosition: IVec2) {
