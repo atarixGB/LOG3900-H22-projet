@@ -98,7 +98,6 @@ class ChatPage : AppCompatActivity(), UserAdapter.UserAdapterListener {
                     messageData.put("time", formatted)
                     messageData.put("room", roomName)
                     socket.emit("message", messageData)
-//                    mediaPlayerSendSuccess.start()
                 }
             }
         }
@@ -123,7 +122,6 @@ class ChatPage : AppCompatActivity(), UserAdapter.UserAdapterListener {
                     msgAdapter.notifyItemInserted((rvOutputMsgs.adapter as MessageAdapter).itemCount)
                     rvOutputMsgs.scrollToPosition((rvOutputMsgs.adapter as MessageAdapter).itemCount-1)
                     messageText.text.clear()
-                    //mediaPlayerReceiveSuccess.start()
                 }
             }
         }
@@ -140,7 +138,10 @@ class ChatPage : AppCompatActivity(), UserAdapter.UserAdapterListener {
                     msgAdapter.notifyItemInserted((rvOutputMsgs.adapter as MessageAdapter).itemCount)
                     rvOutputMsgs.scrollToPosition((rvOutputMsgs.adapter as MessageAdapter).itemCount-1)
                     messageText.text.clear()
-                    mediaPlayerHello.start()
+                    if(SOUND_EFFECT){
+                        mediaPlayerHello.start()
+                    }
+
                 }
             }
         }

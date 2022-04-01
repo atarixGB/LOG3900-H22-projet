@@ -1,6 +1,7 @@
 package com.example.mobile.adapter
 
 import android.content.Context
+import android.content.Intent
 import android.media.MediaPlayer
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mobile.Interface.IMessage
 import com.example.mobile.R
+import com.example.mobile.SOUND_EFFECT
+import com.example.mobile.activity.profile.visitingProfile
 import java.util.*
 
 class MessageAdapter(val context : Context, val msgs: ArrayList<IMessage>, val owner : String) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -21,7 +24,10 @@ class MessageAdapter(val context : Context, val msgs: ArrayList<IMessage>, val o
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         if (viewType == 1) {
-            mediaPlayerReceiveSuccess.start()
+            if(SOUND_EFFECT){
+                mediaPlayerReceiveSuccess.start()
+            }
+
             return ReceiveMessageViewHolder(
                 LayoutInflater.from(parent.context).inflate(
                     R.layout.receivemessage,
@@ -30,7 +36,10 @@ class MessageAdapter(val context : Context, val msgs: ArrayList<IMessage>, val o
                 )
             )
         } else if (viewType == 2) {
-            mediaPlayerSendSuccess.start()
+            if(SOUND_EFFECT){
+                mediaPlayerSendSuccess.start()
+            }
+
             return SentMessageViewHolder(
                 LayoutInflater.from(parent.context).inflate(
                     R.layout.sentmessage,
@@ -60,10 +69,17 @@ class MessageAdapter(val context : Context, val msgs: ArrayList<IMessage>, val o
             val viewHolder = holder as ReceiveMessageViewHolder
             holder.receiveMessage.text = currentMsg.msgText
             holder.receiveUser.text = currentMsg.user + " - " + currentMsg.time
+            holder.receiveUser.setOnClickListener{
+                val intent = Intent(context, visitingProfile::class.java)
+                intent.putExtra("visitingUser",holder.receiveUser.text)
+                context.startActivity(intent)
+            }
         } else {
             val viewHolder = holder as UserJoinedViewHolder
             holder.userJoined.text = currentMsg.msgText
         }
+
+
     }
 
     override fun getItemViewType(position: Int): Int {

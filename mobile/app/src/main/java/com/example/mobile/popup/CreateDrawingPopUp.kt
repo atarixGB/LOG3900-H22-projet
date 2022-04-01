@@ -21,6 +21,7 @@ import com.example.mobile.Interface.IAlbum
 import com.example.mobile.R
 import com.example.mobile.Retrofit.IMyService
 import com.example.mobile.Retrofit.RetrofitClient
+import com.example.mobile.SOUND_EFFECT
 import com.example.mobile.viewModel.SharedViewModelCreateDrawingPopUp
 import com.example.mobile.adapter.AlbumAdapter
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -134,7 +135,10 @@ class CreateDrawingPopUp(val user: String, val isAlbumAlreadySelected: Boolean) 
                         Toast.LENGTH_LONG
                     )
                         .show()
-                    mediaPlayerMagic.start()
+                    if(SOUND_EFFECT){
+                        mediaPlayerMagic.start()
+                    }
+
                     listener.popUpListener(albumName, drawingName.text.toString(), drawingId)
                     dismiss()
                 } else if (rb.text.toString().equals("privé")) {
@@ -147,7 +151,9 @@ class CreateDrawingPopUp(val user: String, val isAlbumAlreadySelected: Boolean) 
                                 Toast.LENGTH_LONG
                             )
                                 .show()
-                            mediaPlayerMagic.start()
+                            if(SOUND_EFFECT){
+                                mediaPlayerMagic.start()
+                            }
                             listener.popUpListener(albumName, drawingName.text.toString(), drawingId)
                             dismiss()
                         } else {
@@ -161,7 +167,9 @@ class CreateDrawingPopUp(val user: String, val isAlbumAlreadySelected: Boolean) 
 //                    addDrawingToAlbum("Album public", drawingName.text.toString())
                     Toast.makeText(context, "ajout du dessin a l'album public", Toast.LENGTH_LONG)
                         .show()
-                    mediaPlayerMagic.start()
+                    if(SOUND_EFFECT){
+                        mediaPlayerMagic.start()
+                    }
                     listener.popUpListener(albumName, drawingName.text.toString(), drawingId)
                     dismiss()
                 }
@@ -169,7 +177,10 @@ class CreateDrawingPopUp(val user: String, val isAlbumAlreadySelected: Boolean) 
                 // s'il n'a pas selectionner de drawing name, rend visible le champ d'erreur
                 drawingNameEmptyError.isVisible = true
                 drawingName.animation=AnimationUtils.loadAnimation(context,R.anim.shake_animation)
-                mediaPlayerFail.start()
+                if(SOUND_EFFECT){
+                    mediaPlayerFail.start()
+                }
+
             }
         }
 

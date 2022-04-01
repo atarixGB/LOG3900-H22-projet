@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.mobile.R
 import com.example.mobile.activity.profile.Profile
 import com.example.mobile.activity.profile.TopDrawingDisplay
+import com.example.mobile.activity.profile.visitingProfile
 import kotlinx.android.synthetic.main.item_user.view.*
 import java.util.ArrayList
 
@@ -40,7 +41,7 @@ class UserAdapter (val context : Context, var users: ArrayList<String>, var requ
             }*/
 
             item_user_name.setOnClickListener{
-                val intent = Intent(context, Profile::class.java)
+                val intent = Intent(context, visitingProfile::class.java)
                 intent.putExtra("visitingUser",currentUser)
                 context.startActivity(intent)
             }

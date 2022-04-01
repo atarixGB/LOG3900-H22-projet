@@ -54,7 +54,6 @@ class CreateAlbumPopUp : DialogFragment() {
                     mediaPlayerMagic.start()
                 }
 
-
                 dismiss()
             }
             else if(albumName.text.toString().isNullOrBlank() || albumName.text.toString().isEmpty()){
@@ -64,7 +63,6 @@ class CreateAlbumPopUp : DialogFragment() {
                     mediaPlayerFail.start()
                 }
 
-
             }
             else {
                 Toast.makeText(context,"Album public est un nom reservé", Toast.LENGTH_SHORT).show()
@@ -72,11 +70,7 @@ class CreateAlbumPopUp : DialogFragment() {
                 if(SOUND_EFFECT){
                     mediaPlayerFail.start()
                 }
-
             }
-            mediaPlayerMagic.release()
-            mediaPlayerFail.release()
-
         }
 
         return rootView

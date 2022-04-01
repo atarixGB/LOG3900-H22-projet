@@ -1,46 +1,39 @@
 package com.example.mobile.activity.profile
 
-import android.app.ActivityOptions
 import android.content.Intent
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isVisible
 import com.example.mobile.Interface.IDrawing
 import com.example.mobile.Interface.User
 import com.example.mobile.R
 import com.example.mobile.Retrofit.IMyService
 import com.example.mobile.Retrofit.RetrofitClient
-import com.example.mobile.SocketHandler
-import com.example.mobile.activity.MainActivity
-import com.example.mobile.adapter.SimpleDrawingAdapter
 import com.example.mobile.bitmapDecoder
 import com.example.mobile.viewModel.SharedViewModelToolBar
 import com.mikhaellopez.circularimageview.CircularImageView
 import io.reactivex.disposables.CompositeDisposable
-import io.socket.client.Socket
-import kotlinx.android.synthetic.main.activity_profile.*
+import kotlinx.android.synthetic.main.activity_visiting_profile.*
 import retrofit2.Call
 import retrofit2.Response
 
+class visitingProfile : AppCompatActivity() {
 
-class Profile : AppCompatActivity() {
     private lateinit var leave: ImageButton
     private lateinit var modifyProfile: TextView
     private lateinit var avatar: CircularImageView
     private lateinit var user: String
-    private lateinit var visitingUser: String
     private var totalNbLikes:Int = 0
 
     //    private lateinit var email: String
     private lateinit var usernameDisplayed: TextView
     private lateinit var iMyService: IMyService
     internal var compositeDisposable = CompositeDisposable()
-//    var userList = mutableListOf<User>()
+
     private val sharedViewModel: SharedViewModelToolBar by viewModels()
 
 
@@ -51,16 +44,14 @@ class Profile : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_profile)
+        setContentView(R.layout.activity_visiting_profile)
         leave = findViewById(R.id.leave)
         usernameDisplayed= findViewById(R.id.username)
         avatar = findViewById(R.id.userAvatar)
-        modifyProfile=findViewById(R.id.modify_label)
-        user = intent.getStringExtra("userName").toString()
 
-        sharedViewModel.setUser(user)
+        user = intent.getStringExtra("visitingUser").toString()
 
-
+        sharedViewModel.setVisitorUser(user)
         //username and email sent from registration or login page displayed
         usernameDisplayed.setText(user)
 
@@ -71,10 +62,8 @@ class Profile : AppCompatActivity() {
         //changing the avatar with what was stored in the db
         getUserFromDB(user)
 
-        leave.setOnClickListener() {
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-        }
+        //display badge
+        getNbLikes(user)
 
         showMostLiked.setOnClickListener(){
             val intent = Intent(this, TopDrawingDisplay::class.java)
@@ -89,18 +78,6 @@ class Profile : AppCompatActivity() {
         }
 
 
-        modify_label.setOnClickListener(){
-            val intent = Intent(this, Profile_modification::class.java)
-            //to send the old username, we need it in the modification page
-            intent.putExtra("userName",user)
-            intent.putExtra("email",user_email.text.toString())
-            intent.putExtra("description",description_field.text.toString())
-            var bundle:Bundle = ActivityOptions.makeSceneTransitionAnimation(this).toBundle()
-            startActivity(intent,bundle)
-        }
-
-        getNbLikes(user)
-
     }
 
     private fun getUserFromDB(user:String) {
@@ -108,7 +85,7 @@ class Profile : AppCompatActivity() {
 
         call.enqueue(object: retrofit2.Callback<User> {
             override fun onResponse(call: Call<User>, response: Response<User>) {
-                Toast.makeText(this@Profile, "Bienvenu!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@visitingProfile, "Bienvenu sur le profil de $user!", Toast.LENGTH_SHORT).show()
                 userAvatar.setImageBitmap(bitmapDecoder(response.body()?.avatar))
 //                username.setText(response.body()?.username)
                 user_email.setText(response.body()?.email)
@@ -117,7 +94,7 @@ class Profile : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<User>, t: Throwable) {
-                Toast.makeText(this@Profile, "erreur", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@visitingProfile, "erreur", Toast.LENGTH_SHORT).show()
             }
         })
 
@@ -154,7 +131,4 @@ class Profile : AppCompatActivity() {
             badge.setImageResource(R.drawable.artiste)
         }
     }
-
-
-
 }
