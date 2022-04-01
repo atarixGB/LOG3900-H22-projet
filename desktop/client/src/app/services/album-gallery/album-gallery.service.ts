@@ -44,6 +44,7 @@ export class AlbumGalleryService {
   createDrawing(drawingName: string): void {
     this.currentDrawing.name = drawingName;
     this.currentDrawing._id = null;
+    this.currentDrawing.owner = this.loginService.username;
     this.currentDrawing.isStory = false;
 
     console.log(this.currentDrawing)
