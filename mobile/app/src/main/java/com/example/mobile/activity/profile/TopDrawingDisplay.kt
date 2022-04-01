@@ -11,6 +11,7 @@ import com.example.mobile.Interface.IDrawing
 import com.example.mobile.R
 import com.example.mobile.Retrofit.IMyService
 import com.example.mobile.Retrofit.RetrofitClient
+import com.example.mobile.adapter.DrawingAdapter
 import com.example.mobile.adapter.SimpleDrawingAdapter
 import io.reactivex.disposables.CompositeDisposable
 
@@ -46,7 +47,7 @@ class TopDrawingDisplay : AppCompatActivity(),SimpleDrawingAdapter.SimpleDrawing
             startActivity(intent)
         }
 
-        simpleDrawingAdapter = SimpleDrawingAdapter(this, drawings)
+        simpleDrawingAdapter = SimpleDrawingAdapter(this, drawings,user)
 
         //Recycler View of rooms
         rvOutputTopDrawings.adapter = simpleDrawingAdapter
@@ -68,15 +69,29 @@ class TopDrawingDisplay : AppCompatActivity(),SimpleDrawingAdapter.SimpleDrawing
 
             override fun onResponse(call: Call<List<IDrawing>>, response: Response<List<IDrawing>>) {
                 for(drawing in response.body()!!){
-                    simpleDrawingAdapter.addDrawing(drawing!!)
-                    simpleDrawingAdapter.notifyItemInserted((rvOutputTopDrawings.adapter as SimpleDrawingAdapter).itemCount)
+                    displayDrawing(drawing._id!!)
                 }
-
-
             }
 
             override fun onFailure(call: Call<List<IDrawing>>, t: Throwable) {
                 Log.d("Top dessins", "onFailure" +t.message )
+            }
+        })
+    }
+
+    private fun displayDrawing(drawingId: String) {
+        var call: Call<IDrawing> = iMyService.getDrawingData(drawingId)
+        call.enqueue(object: retrofit2.Callback<IDrawing> {
+
+            override fun onResponse(call: Call<IDrawing>, response: Response<IDrawing>) {
+                val drawing = response.body()
+
+                simpleDrawingAdapter.addDrawing(drawing!!)
+                simpleDrawingAdapter.notifyItemInserted((rvOutputTopDrawings.adapter as SimpleDrawingAdapter).itemCount)
+            }
+
+            override fun onFailure(call: Call<IDrawing>, t: Throwable) {
+                Log.d("top dessins", "onFailure" +t.message )
             }
         })
     }

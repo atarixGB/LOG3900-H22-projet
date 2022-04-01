@@ -39,7 +39,7 @@ class FavoriteDrawingDisplay : AppCompatActivity(),SimpleDrawingAdapter.SimpleDr
         rvOutputFavoriteDrawings = findViewById(R.id.rvOutputFavoriteDrawings)
         leaveTopBtn = findViewById(R.id.leaveFavoriteBtn)
 
-        favoriteDrawingAdapter = SimpleDrawingAdapter(this, drawings)
+        favoriteDrawingAdapter = SimpleDrawingAdapter(this, drawings,user)
 
         //Recycler View of rooms
         rvOutputFavoriteDrawings.adapter = favoriteDrawingAdapter
@@ -68,12 +68,28 @@ class FavoriteDrawingDisplay : AppCompatActivity(),SimpleDrawingAdapter.SimpleDr
 
             override fun onResponse(call: Call<List<IDrawing>>, response: Response<List<IDrawing>>) {
                 for(drawing in response.body()!!){
-                    favoriteDrawingAdapter.addDrawing(drawing!!)
-                    favoriteDrawingAdapter.notifyItemInserted((rvOutputFavoriteDrawings.adapter as SimpleDrawingAdapter).itemCount)
+                    displayDrawing(drawing._id!!)
                 }
             }
 
             override fun onFailure(call: Call<List<IDrawing>>, t: Throwable) {
+                Log.d("favoris", "onFailure" +t.message )
+            }
+        })
+    }
+
+    private fun displayDrawing(drawingId: String) {
+        var call: Call<IDrawing> = iMyService.getDrawingData(drawingId)
+        call.enqueue(object: retrofit2.Callback<IDrawing> {
+
+            override fun onResponse(call: Call<IDrawing>, response: Response<IDrawing>) {
+                val drawing = response.body()
+
+                favoriteDrawingAdapter.addDrawing(drawing!!)
+                favoriteDrawingAdapter.notifyItemInserted((rvOutputFavoriteDrawings.adapter as SimpleDrawingAdapter).itemCount)
+            }
+
+            override fun onFailure(call: Call<IDrawing>, t: Throwable) {
                 Log.d("favoris", "onFailure" +t.message )
             }
         })

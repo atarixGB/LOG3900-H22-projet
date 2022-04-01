@@ -8,9 +8,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.mobile.Interface.IDrawing
 import com.example.mobile.R
 import com.example.mobile.bitmapDecoder
+import kotlinx.android.synthetic.main.item_drawing.view.*
 import kotlinx.android.synthetic.main.item_top_drawing.view.*
+import kotlinx.android.synthetic.main.item_top_drawing.view.likeBtn
+import kotlinx.android.synthetic.main.item_top_drawing.view.nbrOfLikes
 
-class SimpleDrawingAdapter(val context: Context?, var drawings:ArrayList<IDrawing>) : RecyclerView.Adapter<SimpleDrawingAdapter.SimpleDrawingViewHolder> (){
+class SimpleDrawingAdapter(val context: Context?, var drawings:ArrayList<IDrawing>,val user:String) : RecyclerView.Adapter<SimpleDrawingAdapter.SimpleDrawingViewHolder> (){
 
     private var listener: SimpleDrawingAdapterListener = context as SimpleDrawingAdapterListener
 
@@ -34,6 +37,15 @@ class SimpleDrawingAdapter(val context: Context?, var drawings:ArrayList<IDrawin
             var likes = arrayListOf<String>()
             var incrementNbrOfLikes = 0
 
+            if (currentDrawing.likes != null) {
+                incrementNbrOfLikes = currentDrawing.likes.size
+                likes = currentDrawing.likes
+                if (currentDrawing.likes.contains(user)) {
+                    likeBtn.setBackgroundResource(R.drawable.imageliked)
+                }
+            }
+
+            nbrOfLikes.text = incrementNbrOfLikes.toString()
 
             imgTopDrawing.setImageBitmap(bitmapDecoder(currentDrawing.data))
 //            imgTopDrawing.setImageResource(R.drawable.monster1)
