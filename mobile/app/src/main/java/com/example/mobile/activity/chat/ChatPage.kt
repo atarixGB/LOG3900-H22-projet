@@ -4,6 +4,7 @@ import android.content.Intent
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.util.Log
+import android.view.KeyEvent
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
@@ -87,20 +88,7 @@ class ChatPage : AppCompatActivity(), UserAdapter.UserAdapterListener {
 
         var mediaPlayerHello:MediaPlayer = MediaPlayer.create(this,R.raw.hello)
         btnSend.setOnClickListener{
-            if(messageText.text.isNotEmpty()) {
-                if(!messageText.text.isNullOrBlank() ) {
-                    var messageData : JSONObject = JSONObject()
-                    messageData.put("userName", user)
-                    messageData.put("message", messageText.text.toString())
-                    val current = LocalDateTime.now()
-                    val formatter = DateTimeFormatter.ofPattern("HH:mm:ss")
-                    val formatted = current.format(formatter)
-                    messageData.put("time", formatted)
-                    messageData.put("room", roomName)
-                    socket.emit("message", messageData)
-//                    mediaPlayerSendSuccess.start()
-                }
-            }
+            sendTextMessage()
         }
 
 
@@ -225,6 +213,23 @@ class ChatPage : AppCompatActivity(), UserAdapter.UserAdapterListener {
         }
     }
 
+    private fun sendTextMessage() {
+        if (messageText.text.isNotEmpty()) {
+            if (!messageText.text.isNullOrBlank()) {
+                var messageData: JSONObject = JSONObject()
+                messageData.put("userName", user)
+                messageData.put("message", messageText.text.toString())
+                val current = LocalDateTime.now()
+                val formatter = DateTimeFormatter.ofPattern("HH:mm:ss")
+                val formatted = current.format(formatter)
+                messageData.put("time", formatted)
+                messageData.put("room", roomName)
+                socket.emit("message", messageData)
+    //                    mediaPlayerSendSuccess.start()
+            }
+        }
+    }
+
     fun leaveChat(){
         val intent = Intent(this, ChatRooms::class.java)
         intent.putExtra("userName", user)
@@ -290,6 +295,16 @@ class ChatPage : AppCompatActivity(), UserAdapter.UserAdapterListener {
 
     override fun userAdapterListener(userName: String) {
         TODO("Not yet implemented")
+    }
+
+    override fun onKeyUp(keyCode: Int, event: KeyEvent): Boolean {
+        return when (keyCode) {
+            KeyEvent.KEYCODE_ENTER -> {
+                sendTextMessage()
+                true
+            }
+            else -> super.onKeyUp(keyCode, event)
+        }
     }
 
 }
