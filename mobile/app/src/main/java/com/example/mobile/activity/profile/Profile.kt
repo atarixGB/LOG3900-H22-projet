@@ -3,17 +3,20 @@ package com.example.mobile.activity.profile
 import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.example.mobile.Interface.IDrawing
 import com.example.mobile.Interface.User
 import com.example.mobile.R
 import com.example.mobile.Retrofit.IMyService
 import com.example.mobile.Retrofit.RetrofitClient
 import com.example.mobile.SocketHandler
 import com.example.mobile.activity.MainActivity
+import com.example.mobile.adapter.SimpleDrawingAdapter
 import com.example.mobile.bitmapDecoder
 import com.example.mobile.viewModel.SharedViewModelToolBar
 import com.mikhaellopez.circularimageview.CircularImageView
@@ -29,7 +32,9 @@ class Profile : AppCompatActivity() {
     private lateinit var modifyProfile: TextView
     private lateinit var avatar: CircularImageView
     private lateinit var user: String
-//    private lateinit var email: String
+    private var totalNbLikes:Int = 0
+
+    //    private lateinit var email: String
     private lateinit var usernameDisplayed: TextView
     private lateinit var socket: Socket
     private lateinit var iMyService: IMyService
@@ -102,6 +107,8 @@ class Profile : AppCompatActivity() {
             startActivity(intent,bundle)
         }
 
+        getNbLikes(user)
+
     }
 
     private fun getUserFromDB(user:String) {
@@ -123,5 +130,39 @@ class Profile : AppCompatActivity() {
         })
 
     }
+
+    private fun getNbLikes(user: String) {
+        var call: Call<List<IDrawing>> = iMyService.getTopDrawings(user)
+        call.enqueue(object: retrofit2.Callback<List<IDrawing>> {
+
+            override fun onResponse(call: Call<List<IDrawing>>, response: Response<List<IDrawing>>) {
+                for(drawing in response.body()!!){
+                    totalNbLikes += drawing.likes?.size!!
+                    displayBadges(totalNbLikes)
+                }
+            }
+
+            override fun onFailure(call: Call<List<IDrawing>>, t: Throwable) {
+                Log.d("Top dessins", "onFailure" +t.message )
+            }
+        })
+    }
+
+    private fun displayBadges(totalNbLikes:Int){
+        if (totalNbLikes in 0..5){
+            badge.setImageResource(R.drawable.debutant)
+        }
+        else if(totalNbLikes in 5..25){
+            badge.setImageResource(R.drawable.intermediaire)
+        }
+        else if (totalNbLikes in 25..50){
+            badge.setImageResource(R.drawable.expert)
+        }
+        else if(totalNbLikes > 50){
+            badge.setImageResource(R.drawable.artiste)
+        }
+    }
+
+
 
 }

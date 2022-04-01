@@ -97,6 +97,7 @@
         <ImageView
             android:layout_width="130dp"
             android:layout_height="130dp"
+            android:id="@+id/badge"
             android:src="@drawable/debutant"
             android:layout_marginLeft="200dp"
             />
