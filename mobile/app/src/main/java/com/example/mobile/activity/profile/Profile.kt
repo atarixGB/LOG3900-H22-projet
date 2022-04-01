@@ -9,6 +9,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import com.example.mobile.Interface.IDrawing
 import com.example.mobile.Interface.User
 import com.example.mobile.R
@@ -32,6 +33,7 @@ class Profile : AppCompatActivity() {
     private lateinit var modifyProfile: TextView
     private lateinit var avatar: CircularImageView
     private lateinit var user: String
+    private lateinit var visitingUser: String
     private var totalNbLikes:Int = 0
 
     //    private lateinit var email: String
@@ -42,9 +44,6 @@ class Profile : AppCompatActivity() {
     var userList = mutableListOf<User>()
     private val sharedViewModel: SharedViewModelToolBar by viewModels()
 
-
-    //todo(NH): for the statistic portion we will use fragments i think its better to transmit the information
-    //todo (suite): or we can use a viewModel to do the calculations and call them on this page
 
     override fun onStop() {
         compositeDisposable.clear()
@@ -59,9 +58,12 @@ class Profile : AppCompatActivity() {
         avatar = findViewById(R.id.userAvatar)
         modifyProfile=findViewById(R.id.modify_label)
         user = intent.getStringExtra("userName").toString()
+        visitingUser=intent.getStringExtra("visitingUser").toString()
         sharedViewModel.setUser(user)
 
-
+        if(visitingUser!=user){
+            modify_label.isVisible=false
+        }
         //username and email sent from registration or login page displayed
         usernameDisplayed.setText(user)
 
