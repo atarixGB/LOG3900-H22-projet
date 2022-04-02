@@ -12,10 +12,10 @@ app.use(express.static('public'));
 console.log('Server is running');
 
 /*
-  key: collabRoom (drawingId)
-  value:  {
-            nbMembers
-            strokes
+  key: roomName (drawingId)
+  roomData:  {
+            members -> array of socket.Ids
+            strokes -> array of strokes
           }
 */// vvvvvvvvvvvvvv
 let infoOnActiveRooms = new Map();
@@ -23,118 +23,142 @@ let infoOnActiveRooms = new Map();
 ioCollab.on('connection', (socket) => {
 
       // COLLAB ROOM EVENTS
-      socket.on('joinCollab', (collabDrawingId) => {
-        console.log("Trying to join drawing: " , collabDrawingId);
+      // This event is to make sure the other collaborator's selections are pasted before a new member joins
+      socket.on('prepForJoin', (data) => {
+        const roomName = data.room; // Note: The room name is the drawingID
+        const userJoining = data.username;
+        console.log("Prepping for join " , roomName);
 
-        // Updating collabRoom info
-        if (!infoOnActiveRooms.has(collabDrawingId)) {
-           const value = {
-            nbMembers: 1,
-            strokes: [],
-          }
-          infoOnActiveRooms.set(collabDrawingId, value);
-          // Joining
-          socket.join(collabDrawingId);
-          ioCollab.in(collabDrawingId).emit('memberNbUpdate', value.nbMembers);
-          socket.emit('joinSuccessful', infoOnActiveRooms.get(collabDrawingId));
-          socket.emit('joinSuccessfulwithID', collabDrawingId);
+        if (infoOnActiveRooms.has(roomName)) {
+          socket.broadcast.to(roomName).emit('prepForNewMember', userJoining);   
+          const randomRoomMember = infoOnActiveRooms.get(roomName).members[0]; 
+          ioCollab.to(randomRoomMember).emit('fetchStrokes'); 
+        } 
 
-        } else if (infoOnActiveRooms.get(collabDrawingId).nbMembers < 4) {
-          let value = infoOnActiveRooms.get(collabDrawingId);
-          value.nbMembers = value.nbMembers + 1;
-          infoOnActiveRooms.set(collabDrawingId, value);
-          // Joining
-          socket.join(collabDrawingId);
-          ioCollab.in(collabDrawingId).emit('memberNbUpdate', value.nbMembers);
-          socket.emit('joinSuccessful', infoOnActiveRooms.get(collabDrawingId));
-          socket.emit('joinSuccessfulwithID', collabDrawingId);
-
-        } else {
-          socket.emit('joinFailure');
-        }
+        socket.emit('readyToJoin', roomName);
       })
 
-      socket.on('leaveCollab', (collabDrawingId) => {
-        console.log("Trying to leave drawing: " , collabDrawingId);
+      socket.on('joinCollab', (roomName) => {
+        console.log("Joining drawing: " , roomName);
 
-        // Updating collabRoom info
-        let value = infoOnActiveRooms.get(collabDrawingId);
-        value.nbMembers = value.nbMembers - 1;
-        value.nbMembers == 0 ? infoOnActiveRooms.delete(collabDrawingId) : infoOnActiveRooms.set(collabDrawingId, value);
+        // Updating collabRoom info by either creating initial room data or adding the member to the room
+        let roomData = {
+          members: [socket.id],
+          strokes: [],
+        };
+        if (infoOnActiveRooms.has(roomName)) {
+          roomData = infoOnActiveRooms.get(roomName);
+          roomData.members.push(socket.id);
+        }
+        infoOnActiveRooms.set(roomName, roomData);
+
+        // Joining
+        socket.join(roomName);
+        ioCollab.in(roomName).emit('memberNbUpdate', roomData.members.length);
+        socket.emit('joinSuccessful', infoOnActiveRooms.get(roomName));
+
+        // Utile pour voir l'état des rooms
+        console.log(infoOnActiveRooms); 
+      })
+
+      socket.on('leaveCollab', (data) => {
+        const roomName = data.room; // Note: The room name is the drawingID
+        const userLeaving = data.username;
+        console.log("Leaving drawing: " , roomName);
+
+        // Updating collabRoom info by removing room member
+        let roomData = infoOnActiveRooms.get(roomName);
+        roomData.members.splice(roomData.members.indexOf(socket.id), 1);
+        ioCollab.in(roomName).emit('memberNbUpdate', roomData.members.length);
+        roomData.members.length == 0 ? infoOnActiveRooms.delete(roomName) : infoOnActiveRooms.set(roomName, roomData);
 
         // Leaving
-        ioCollab.in(collabDrawingId).emit('memberNbUpdate', value.nbMembers);
-        socket.leave(collabDrawingId);
+        socket.leave(roomName);
+        socket.broadcast.to(roomName).emit('memberLeft', userLeaving);
+
+        // Utile pour voir l'état des rooms
+        console.log(infoOnActiveRooms); 
       })
 
       socket.on('updateCollabInfo', (collabData) => {
-        let value = infoOnActiveRooms.get(collabData.collabDrawingId);
-        value.strokes = collabData.strokes;
-        infoOnActiveRooms.set(collabData.collabDrawingId, value);
+        console.log('updateCollabInfo');
+        
+        let roomData = infoOnActiveRooms.get(collabData.collabDrawingId);
+        roomData.strokes = collabData.strokes;
+        infoOnActiveRooms.set(collabData.collabDrawingId, roomData);
       })
 
       // DRAWING EVENTS
       socket.on('broadcastStroke', (data) => {
-        const room = data.room;
-        const stroke = data.data;
-        console.log("rooomm", room);
-        console.log("sending stroke", stroke);
-        socket.broadcast.to(room).emit('receiveStroke', stroke);
-        console.log(infoOnActiveRooms);
+        console.log('broadcastStroke');
+        const roomName = data.room;
+        const stroke = data.data
+        socket.broadcast.to(roomName).emit('receiveStroke', stroke);
       })
 
       socket.on('broadcastSelection', (data) => {
-        const room = data.room;
+        console.log('broadcastSelection');
+        const roomName = data.room;
         const selection = data.data
-        console.log("sending selection", selection);
-        socket.broadcast.to(room).emit('receiveSelection', selection);
+        socket.broadcast.to(roomName).emit('receiveSelection', selection);
+         
       })
   
       socket.on('broadcastSelectionPos', (data) => {
-        const room = data.room;
+        console.log('broadcastSelectionPos');
+        const roomName = data.room;
         const pos = data.data
-        console.log("sending selection pos", pos);
-        socket.broadcast.to(room).emit('receiveSelectionPos', pos);
+        socket.broadcast.to(roomName).emit('receiveSelectionPos', pos);
+         
       })
   
       socket.on('broadcastSelectionSize', (data) => {
-        const room = data.room;
+        console.log('broadcastSelectionSize');
+        const roomName = data.room;
         const size = data.data
-        console.log("sending selection size", size);
-        socket.broadcast.to(room).emit('receiveSelectionSize', size);
+        socket.broadcast.to(roomName).emit('receiveSelectionSize', size);
+         
       })
   
       socket.on('broadcastPasteRequest', (data) => {
-        const room = data.room;
+        console.log('broadcastPasteRequest');
+        const roomName = data.room;
         const pasteReq = data.data
-        console.log("paste request", pasteReq);
-        socket.broadcast.to(room).emit('receivePasteRequest', pasteReq);
+        socket.broadcast.to(roomName).emit('receivePasteRequest', pasteReq);
+         
+
+        socket.emit('fetchStrokes');
       })
   
       socket.on('broadcastDeleteRequest', (data) => {
-        const room = data.room;
+        console.log('broadcastDeleteRequest');
+        const roomName = data.room;
         const delReq = data.data
-        console.log("delete request", delReq);
-        socket.broadcast.to(room).emit('receiveDeleteRequest', delReq);
+        socket.broadcast.to(roomName).emit('receiveDeleteRequest', delReq);
+         
       })
   
       socket.on('broadcastNewStrokeWidth', (data) => {
-        const room = data.room;
+        console.log('broadcastNewStrokeWidth');
+        const roomName = data.room;
         const width = data.data
-        console.log("new width", width);
-        socket.broadcast.to(room).emit('receiveStrokeWidth', width);
+        socket.broadcast.to(roomName).emit('receiveStrokeWidth', width);
+         
       })
 
       socket.on('broadcastNewPrimaryColor', (data) => {
-        const room = data.room;
+        console.log('broadcastNewPrimaryColor');
+        const roomName = data.room;
         const primeColor = data.data
-        console.log("new color", primeColor);
-        socket.broadcast.to(room).emit('receiveNewPrimaryColor', primeColor);
+        socket.broadcast.to(roomName).emit('receiveNewPrimaryColor', primeColor);
+         
       })
 
       socket.on('broadcastNewSecondaryColor', (data) => {
-        const room = data.room;
+        console.log('broadcastNewSecondaryColor');
+        const roomName = data.room;
         const secondColor = data.data
-        socket.broadcast.to(room).emit('receiveNewSecondaryColor', secondColor);
+        socket.broadcast.to(roomName).emit('receiveNewSecondaryColor', secondColor);
+         
       })
 })

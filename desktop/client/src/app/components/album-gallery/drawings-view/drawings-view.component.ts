@@ -20,7 +20,14 @@ export class DrawingsViewComponent {
   isCurrentAlbumMine: boolean;
   isPublicAlbum: boolean;
 
-  constructor(public albumGalleryService: AlbumGalleryService, public loginService: LoginService, public dialog: MatDialog, private router: Router, private route: ActivatedRoute, public collaborationService: CollaborationService, private drawingService: DrawingService) {
+  constructor(
+    public albumGalleryService: AlbumGalleryService, 
+    public loginService: LoginService, 
+    public dialog: MatDialog, 
+    private router: Router, 
+    private route: ActivatedRoute, 
+    public collaborationService: CollaborationService, 
+    private drawingService: DrawingService) {
     this.isCurrentAlbumMine = this.loginService.username == albumGalleryService.currentAlbum.owner;
     this.isPublicAlbum = albumGalleryService.currentAlbum.name == PUBLIC_ALBUM.name;
   }
@@ -64,7 +71,11 @@ export class DrawingsViewComponent {
 
   onShareBtn(drawing: IDrawing): void {
     console.log(`Partage du dessin ${drawing.name} sur Dropbox ou OneDrive...`);
+  }
 
+  getUserProfileInfos(username: string): void {
+    console.log("Get info of", username);
+    this.router.navigate([`../profile/${username}`], { relativeTo: this.route });
   }
 
   enterCollab(drawing: IDrawing): void {

@@ -3,7 +3,9 @@
 <mat-dialog-content class="mat-typography">
   <ul>
     <li *ngFor="let user of this.data.usersList">
-      {{user}}
+      <span id="username" (click)="getUserProfileInfos(user)">
+        {{user}}
+      </span>
     </li>
   </ul>
 </mat-dialog-content>

@@ -67,7 +67,10 @@ import { ChatroomUsersDialogComponent } from './components/chat/chatroom/chatroo
 import { MembersListDialogComponent } from './components/album-gallery/drawings-view/members-list-dialog/members-list-dialog.component';
 import { AlbumSettingsDialogComponent } from './components/album-gallery/drawings-view/album-settings-dialog/album-settings-dialog.component';
 import { JoinRequestDialogComponent } from './components/album-gallery/public-albums/join-request-dialog/join-request-dialog.component';
-import { CouldntJoinDialogComponent } from './components/editor/couldnt-join-dialog/couldnt-join-dialog.component';
+import { MemberJoinedDialogComponent } from './components/editor/member-joined-dialog/member-joined-dialog.component';
+import { MemberLeftDialogComponent } from './components/editor/member-left-dialog/member-left-dialog.component';
+import { FavoriteDrawingsComponent } from './components/profile/favorite-drawings/favorite-drawings.component';
+import { TopDrawingsComponent } from './components/profile/top-drawings/top-drawings.component';
 
 @NgModule({
     declarations: [
@@ -114,7 +117,10 @@ import { CouldntJoinDialogComponent } from './components/editor/couldnt-join-dia
         MembersListDialogComponent,
         AlbumSettingsDialogComponent,
         JoinRequestDialogComponent,
-        CouldntJoinDialogComponent,
+        MemberJoinedDialogComponent,
+        MemberLeftDialogComponent,
+        FavoriteDrawingsComponent,
+        TopDrawingsComponent,
     ],
     imports: [
         BrowserModule,

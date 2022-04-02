@@ -14,6 +14,15 @@
   color: #A8D08C;
 }
 
+#username {
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#username:hover {
+  color:#A8D08C;
+}
+
 mat-icon {
   color: rgb(52, 52, 52);
 }
@@ -51,6 +60,10 @@ mat-icon {
   color: #A8D08C;
 }
 
+img:hover {
+  cursor: pointer;
+}
+
 #drawingsDiv {
   border: solid 2px;
   border-radius: 5px;
@@ -75,20 +88,5 @@ mat-icon {
 .bold {
   font-weight: bold;
 }
-
-::-webkit-scrollbar {
-  width: 12px;
-  height: 12px;
-  }
-
-  ::-webkit-scrollbar-track {
-  border: 1px solid #A8D08C;
-  border-radius: 10px;
-  }
-
-  ::-webkit-scrollbar-thumb {
-  background: #A8D08C;
-  border-radius: 10px;
-  }
 
 

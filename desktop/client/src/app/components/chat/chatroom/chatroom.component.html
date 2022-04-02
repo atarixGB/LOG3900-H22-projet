@@ -8,7 +8,7 @@
 
   <div class="center">
     <h1> Conversation "{{this.chatService.currentRoom.roomName}}" </h1>
-    <h3>créée par {{this.chatService.currentRoom.identifier}}</h3>
+    <h3>créée par <span class="username-link" (click)="this.getUserProfileInfos(this.chatService.currentRoom.identifier)">{{this.chatService.currentRoom.identifier}}</span></h3>
   </div>
 
   <!-- Encadré du chat -->
@@ -20,8 +20,8 @@
         <button mat-button matIcon [matMenuTriggerFor]="menu" #menuTrigger><mat-icon>more_vert</mat-icon></button>
         <mat-menu #menu="matMenu">
           <button mat-menu-item (click)="viewUsers()">Voir la liste des membres présents</button>
-          <button mat-menu-item (click)="leaveChatroom()" *ngIf="!this.isCurrentChatroomMine">Quitter la conversation</button>
-          <button mat-menu-item (click)="deleteChatroom()" *ngIf="this.isCurrentChatroomMine">Supprimer la conversation</button>
+          <button mat-menu-item (click)="leaveChatroom()" *ngIf="!this.isCurrentChatroomMine && !this.isPublicChatroom">Quitter la conversation</button>
+          <button mat-menu-item (click)="deleteChatroom()" *ngIf="this.isCurrentChatroomMine && !this.isPublicChatroom">Supprimer la conversation</button>
         </mat-menu>
 
       </div>
@@ -42,7 +42,7 @@
                 <div fxFlex="47" fxLayout="column" fxLayoutAlign="center end">
 
                   <div class="username">
-                    {{message.userName}}
+                    <span class="username-link" (click)="this.getUserProfileInfos(message.userName)">{{message.userName}}</span> - <span class="timestamp">{{ this.timestamp }}</span>
                   </div>
                   <div class="message mine">
                     {{message.message}}
@@ -58,7 +58,7 @@
                 <div fxFlex="47" fxLayout="column" fxLayoutAlign="center start">
 
                   <div class="username">
-                    {{message.userName}}
+                    <span class="username-link" (click)="this.getUserProfileInfos(message.userName)">{{message.userName}}</span> - <span class="timestamp">{{ this.timestamp }}</span>
                   </div>
                   <div class="message yours">
                     {{message.message}}
