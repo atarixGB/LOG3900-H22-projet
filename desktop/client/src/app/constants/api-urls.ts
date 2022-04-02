@@ -1,6 +1,9 @@
-export const COLLAB_URL = `https://polygram-app.herokuapp.com/`;
-export const DATABASE_URL = `https://polygram-app.herokuapp.com`;
-export const CHAT_URL = `https://polygram-app.herokuapp.com/`;
+// export const COLLAB_URL = `https://polygram-app.herokuapp.com/`;
+// export const DATABASE_URL = `https://polygram-app.herokuapp.com`;
+// export const CHAT_URL = `https://polygram-app.herokuapp.com/`;
+export const COLLAB_URL = `http://localhost:3000`;
+export const DATABASE_URL = `http://localhost:3001`;
+export const CHAT_URL = `http://localhost:3002`;
 
 export const ALBUM_URL = `${DATABASE_URL}/albums`;
 export const JOIN_ALBUM_URL = `${DATABASE_URL}/albums/sendRequest`;
@@ -28,6 +31,8 @@ export const JOIN_ROOM_URL = `${DATABASE_URL}/joinRoom`;
 export const ALL_ROOMS_URL = `${DATABASE_URL}/getAllRooms`;
 export const LEAVE_ROOM_URL = `${DATABASE_URL}/quitRoom`
 export const DELETE_ROOM_URL = `${DATABASE_URL}/deleteRoom`;
+
+export const ADVANCED_SEARCH_URL = `${DATABASE_URL}/search`
 
 export const CREATE_COLLAB_URL = `${DATABASE_URL}/createCollab`;
 

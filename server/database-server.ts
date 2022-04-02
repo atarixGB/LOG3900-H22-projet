@@ -709,12 +709,20 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
       );
     });
 
-    // For Development Purpose Only: Delete all drawings from DB
-    app.delete("/delete", (request, response) => {
-      DB.collection("drawings").remove({}, (err, result) => {
-        if (err) console.log("CANNOT DELETE");
-        else response.json("DELETE OK")
+    //==========================================================================================================
+    // Advanced Search 
+    //==========================================================================================================
+
+    app.get("/search/:category/:attribute/:keyword", (request, response) => {
+      const category = request.params.category;
+      const attribute = request.params.attribute;
+      const keyword = request.params.keyword;
+
+      DB.collection(category).find({ [attribute]: { $regex: keyword } }).toArray((error, result) => {
+        if (error) throw error;
+        response.json(result);
       })
+
     })
 
     // Start web server

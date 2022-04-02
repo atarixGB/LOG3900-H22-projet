@@ -15,7 +15,7 @@
     <!-- Search bar -->
     <div fxFlex="10%" fxLayoutAlign="center">
       <mat-form-field appearance="outline" id="search-bar">
-        <mat-label>Écris un mot clé ici</mat-label>
+        <mat-label>Écris un mot clé...</mat-label>
         <input matInput id="search-input" [(ngModel)]="this.searchBarInput">
       </mat-form-field>
 
@@ -56,7 +56,7 @@
 
     </div>
 
-    <div class="warning" fxLayoutAlign="center start" *ngIf="!this.isValidInput && this.searchBarInput != undefined">Tu dois écrire un seul mot-clé!</div>
+    <div class="warning" fxLayoutAlign="center start" *ngIf="!this.isValidInput && this.searchBarInput != '' ">Tu dois écrire un seul mot-clé!</div>
 
     <div fxLayoutAlign="center">
       <button mat-raised-button color="primary" disableRipple="true" (click)="onSearchBtn()">

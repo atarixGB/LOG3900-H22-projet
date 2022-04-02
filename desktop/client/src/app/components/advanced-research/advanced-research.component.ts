@@ -13,6 +13,7 @@ export class AdvancedResearchComponent {
   isValidInput: boolean;
 
   constructor(public advancedResearchService: AdvancedResearchService) {
+    this.searchBarInput = "";
     this.category = "albums";
     this.attribute = "name";
     this.isValidInput = false;
@@ -21,7 +22,7 @@ export class AdvancedResearchComponent {
   @HostListener('document:keyup.enter', ['$event'])
   onSearchBtn(): void {
     if (this.isOneKeywordOnly(this.searchBarInput)) {
-      // TODO: requête pour recherche avancée
+      this.advancedResearchService.search(this.category, this.attribute, this.searchBarInput == "" ? null : this.searchBarInput)
     }
   }
 
@@ -31,6 +32,15 @@ export class AdvancedResearchComponent {
 
   changeCategory(value: string): void {
     this.category = value;
+
+    if (this.category == "albums") {
+      this.attribute = "name";
+    } else if (this.category == "drawings") {
+      this.attribute = "name"
+    } else if (this.category == "users") {
+      this.attribute = "identifier"
+    }
+
     this.advancedResearchService.isAlbum = value == "albums";
     this.advancedResearchService.isDrawing = value == "drawings";
     this.advancedResearchService.isUser = value == "users";
