@@ -52,7 +52,6 @@ import { AlbumGalleryComponent } from './components/album-gallery/my-albums/albu
 import { CreateAlbumDialogComponent } from './components/album-gallery/create-album-dialog/create-album-dialog.component';
 import { PublicAlbumsComponent } from './components/album-gallery/public-albums/public-albums.component';
 import { DrawingsViewComponent } from './components/album-gallery/drawings-view/drawings-view.component';
-import { PublicDrawingGalleryComponent } from './components/album-gallery/public-drawing-gallery/public-drawing-gallery.component';
 import { ColorConfigComponent } from './components/editor/sidebar/color-config/color-config.component';
 import { CreateRoomDialogComponent } from './components/chat/create-room-dialog/create-room-dialog.component';
 import { PublicChatroomsComponent } from './components/chat/public-chatrooms/public-chatrooms.component';
@@ -98,7 +97,6 @@ import { AdvancedResearchComponent } from './components/advanced-research/advanc
         ChatroomComponent,
         PublicAlbumsComponent,
         DrawingsViewComponent,
-        PublicDrawingGalleryComponent,
         AvatarSelectionModalComponent,
         AvatarImportModalComponent,
         ChatroomComponent,

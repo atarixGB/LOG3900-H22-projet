@@ -1,5 +1,10 @@
 import { Component, HostListener } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { IAlbum } from '@app/interfaces-enums/IAlbum';
+import { IDrawing } from '@app/interfaces-enums/IDrawing';
+import { IUser } from '@app/interfaces-enums/IUser';
 import { AdvancedResearchService } from '@app/services/advanced-research/advanced-research.service'
+import { JoinRequestDialogComponent } from '../album-gallery/public-albums/join-request-dialog/join-request-dialog.component';
 
 @Component({
   selector: 'app-advanced-research',
@@ -12,7 +17,7 @@ export class AdvancedResearchComponent {
   attribute: string;
   isValidInput: boolean;
 
-  constructor(public advancedResearchService: AdvancedResearchService) {
+  constructor(public advancedResearchService: AdvancedResearchService, public dialog: MatDialog) {
     this.searchBarInput = "";
     this.category = "albums";
     this.attribute = "name";
@@ -28,9 +33,11 @@ export class AdvancedResearchComponent {
 
   onCancelBtn(): void {
     this.searchBarInput = "";
+    this.advancedResearchService.result = [];
   }
 
   changeCategory(value: string): void {
+    this.advancedResearchService.result = [];
     this.category = value;
 
     if (this.category == "albums") {
@@ -48,6 +55,22 @@ export class AdvancedResearchComponent {
 
   changeAttribute(value: string): void {
     this.attribute = value;
+  }
+
+  onAlbumClick(album: IAlbum) : void {
+    if (album != null) {
+      this.dialog.open(JoinRequestDialogComponent, {
+        data: album,
+      });
+    }
+  }
+
+  onDrawingClick(drawing: IDrawing) : void {
+    console.log(drawing);
+  }
+
+  onUserClick(user: IUser) : void {
+    console.log(user);
   }
 
   private isOneKeywordOnly(input: string): boolean {

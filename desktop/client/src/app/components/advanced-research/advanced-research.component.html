@@ -52,8 +52,6 @@
           <mat-option value="description">Description</mat-option>
         </mat-select>
       </mat-form-field>
-
-
     </div>
 
     <div class="warning" fxLayoutAlign="center start" *ngIf="!this.isValidInput && this.searchBarInput != '' ">Tu dois écrire un seul mot-clé!</div>
@@ -71,11 +69,36 @@
     <div fxFlex="65%">
       <div id="result-row" fxLayout="row" fxLayoutAlign="center stretch">
         <div id="result-div" fxFlex="85%">
-          <mat-grid-list cols="4">
-            <mat-grid-tile *ngFor="let item of [1,3,4,5,6,7,8,9,10,11,12,13,14]">
-              <div>{{item}}</div>
+
+          <mat-grid-list cols="4" *ngIf="this.advancedResearchService.isAlbum" >
+            <mat-grid-tile *ngFor="let album of this.advancedResearchService.result">
+              <button mat-icon-button disableRipple="true" (click)="this.onAlbumClick(album)">
+                <div><mat-icon>folder</mat-icon></div>
+                <div class="label">
+                  {{album.name}}
+                </div>
+              </button>
             </mat-grid-tile>
           </mat-grid-list>
+
+          <mat-grid-list cols="4" *ngIf="this.advancedResearchService.isDrawing">
+            <mat-grid-tile *ngFor="let drawing of this.advancedResearchService.result">
+              <button mat-icon-button disableRipple="true" (click)="this.onDrawingClick(drawing)">
+                <mat-icon>image</mat-icon>
+                <div class="label">{{drawing.name}}</div>
+              </button>
+            </mat-grid-tile>
+          </mat-grid-list>
+
+          <mat-grid-list cols="4" *ngIf="this.advancedResearchService.isUser">
+            <mat-grid-tile *ngFor="let user of this.advancedResearchService.result">
+              <button mat-icon-button disableRipple="true" (click)="this.onUserClick(user)">
+                <mat-icon>person</mat-icon>
+                <div class="label">{{user.identifier}}</div>
+              </button>
+            </mat-grid-tile>
+          </mat-grid-list>
+
         </div>
       </div>
     </div>

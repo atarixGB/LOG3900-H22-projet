@@ -6,5 +6,4 @@ export interface IUser {
   avatar: any,
   email: string,
   description?: string,
-  favoriteDrawingsID?: string[];
 }
