@@ -1,0 +1,27 @@
+:host {
+  height: 100%;
+}
+
+button {
+  margin: 2px;
+  height: 4em;
+}
+
+mat-form-field {
+  margin: 2px;
+}
+
+#search-bar {
+  width: 40%;
+}
+
+#result-div {
+  border: solid 2px;
+  border-radius: 5px;
+  height: 100%;
+  overflow-y: auto;
+}
+
+#result-row {
+  height: 100%;
+}

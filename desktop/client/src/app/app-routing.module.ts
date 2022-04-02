@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AlbumGalleryComponent } from '@app/components/album-gallery/my-albums/album-gallery.component';
+import { AdvancedResearchComponent } from './components/advanced-research/advanced-research.component';
 import { DrawingsViewComponent } from './components/album-gallery/drawings-view/drawings-view.component';
 import { PublicAlbumsComponent } from './components/album-gallery/public-albums/public-albums.component';
 import { PublicDrawingGalleryComponent } from './components/album-gallery/public-drawing-gallery/public-drawing-gallery.component';
@@ -33,6 +34,7 @@ const routes: Routes = [
     { path: 'profileSettings', component: ProfileSettingsComponent },
     { path: 'favorite-drawings', component: FavoriteDrawingsComponent },
     { path: 'top-drawings', component: TopDrawingsComponent },
+    { path: 'advanced-search', component: AdvancedResearchComponent },
     { path: '**', redirectTo: '/menu' },
 ];
 
