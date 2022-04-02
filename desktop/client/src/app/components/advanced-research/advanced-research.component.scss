@@ -20,8 +20,14 @@ mat-form-field {
   border-radius: 5px;
   height: 100%;
   overflow-y: auto;
+  margin-top: 1em;
 }
 
 #result-row {
   height: 100%;
+}
+
+.warning {
+  color: red;
+  font-size: small;
 }
