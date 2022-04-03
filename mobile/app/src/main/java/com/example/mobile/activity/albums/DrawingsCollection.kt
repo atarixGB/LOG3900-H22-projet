@@ -20,10 +20,9 @@ import com.example.mobile.Interface.IDrawing
 import com.example.mobile.R
 import com.example.mobile.Retrofit.IMyService
 import com.example.mobile.Retrofit.RetrofitClient
-import com.example.mobile.activity.drawing.DrawingCollaboration
+import com.example.mobile.activity.drawing.DrawingSocket
 import com.example.mobile.adapter.AlbumAdapter
 import com.example.mobile.adapter.DrawingAdapter
-import com.example.mobile.adapter.RoomAdapter
 import com.example.mobile.adapter.UserAdapter
 import com.example.mobile.popup.*
 import com.example.mobile.viewModel.SharedViewModelCreateDrawingPopUp
@@ -58,7 +57,6 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
     private lateinit var userNameAccepted: String
     private lateinit var dialogAcceptMembershipRequest: AcceptMembershipRequestsPopUp
     private lateinit var dialogEditAlbumAttributes: AlbumAttributeModificationPopUp
-    var socket = DrawingCollaboration()
 
     private val sharedViewModelCreateDrawingPopUp: SharedViewModelCreateDrawingPopUp by viewModels()
 
@@ -86,11 +84,9 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
         val retrofit = RetrofitClient.getInstance()
         iMyService = retrofit.create(IMyService::class.java)
 
-        socket.init()
-        socket.socket.on("joinSuccessfulwithID", onJoinCollab)
-        socket.socket.on("joinFailure", onJoinFailure)
-
-        socket.socket.on("receiveStroke", onReceiveStroke)
+        DrawingSocket.socket.on("joinSuccessfulwithID", onJoinCollab)
+        DrawingSocket.socket.on("joinFailure", onJoinFailure)
+       // socket.socket.on("receiveStroke", onReceiveStroke)
 
         searchView = findViewById<SearchView>(R.id.drawingsSearchView)
         searchView.queryHint = "cherchez un dessin"
@@ -322,8 +318,12 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
     }
 
     override fun emitJoinDrawingListener(drawingId: String) {
-        socket.socket.emit("joinCollab", drawingId)
+        TODO("Not yet implemented")
     }
+
+//    override fun emitJoinDrawingListener(drawingId: String) {
+//        socket.socket.emit("joinCollab", drawingId)
+//    }
 
     fun editDrawing(drawingId: String) {
         val intent = Intent(this, DrawingActivity::class.java)

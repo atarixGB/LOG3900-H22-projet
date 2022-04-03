@@ -1,13 +1,19 @@
 package com.example.mobile.activity.drawing
 
+import android.app.AlertDialog
+import android.app.Dialog
+import android.content.DialogInterface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.fragment.app.DialogFragment
 import com.example.mobile.R
 import com.example.mobile.adapter.AlbumAdapter
 import com.example.mobile.popup.CreateDrawingPopUp
 import com.example.mobile.viewModel.SharedViewModelCreateDrawingPopUp
 import com.example.mobile.viewModel.SharedViewModelToolBar
+import io.socket.emitter.Emitter
+import org.json.JSONObject
 
 class DrawingActivity : AppCompatActivity(), CreateDrawingPopUp.DialogListener, AlbumAdapter.AlbumAdapterListener {
     private lateinit var user: String
@@ -25,24 +31,35 @@ class DrawingActivity : AppCompatActivity(), CreateDrawingPopUp.DialogListener, 
 
         user = intent.getStringExtra("userName").toString()
         isAlbumAlreadySelected = intent.getBooleanExtra("albumAlreadySelected", false)
+
+        //check album
         if (isAlbumAlreadySelected) {
             albumName = intent.getStringExtra("albumName").toString()
             albumID = intent.getStringExtra("albumID").toString()
             sharedViewModelCreateDrawingPopUp.setAlbum(albumName,albumID )
         }
 
+        //collaboration
         collabDrawingId = intent.getStringExtra("drawingCollabId").toString()
-
-
         sharedViewModelToolBar.setUser(user)
-
         if (collabDrawingId == "null") {
             //Open Popup Window
             var dialog = CreateDrawingPopUp(user, isAlbumAlreadySelected)
             dialog.show(supportFragmentManager, "customDialog")
         } else {
+            // drawing already exists
             sharedViewModelToolBar.setCollabDrawingId(collabDrawingId)
+            DrawingSocket.prepForJoin(collabDrawingId, user)
         }
+
+        DrawingSocket.socket.on("prepForNewMember", onPrepForNewMember)
+
+    }
+
+    private val onPrepForNewMember = Emitter.Listener {
+        val popup = StartGameDialogFragment()
+        popup.show(supportFragmentManager, "upcoming user")
+
     }
 
     override fun albumAdapterListener(albumName: String,albumID:String) {
@@ -57,5 +74,19 @@ class DrawingActivity : AppCompatActivity(), CreateDrawingPopUp.DialogListener, 
 
     override fun drawingIdPopUpListener(drawingId: String) {
         sharedViewModelToolBar.setDrawingId(drawingId)
+        DrawingSocket.prepForJoin(collabDrawingId, user)
+    }
+}
+
+class StartGameDialogFragment : DialogFragment() {
+
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        return activity?.let {
+            // Use the Builder class for convenient dialog construction
+            val builder = AlertDialog.Builder(it)
+            builder.setMessage("Un utilisateur rejoins la salle")
+            // Create the AlertDialog object and return it
+            builder.create()
+        } ?: throw IllegalStateException("Activity cannot be null")
     }
 }

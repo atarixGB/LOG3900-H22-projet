@@ -2,7 +2,6 @@ package com.example.mobile.activity.drawing
 
 import android.content.Context
 import android.graphics.*
-import android.media.MediaPlayer
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -20,7 +19,6 @@ import io.socket.emitter.Emitter
 import org.json.JSONObject
 import com.example.mobile.Retrofit.IMyService
 import com.example.mobile.Retrofit.RetrofitClient
-import com.example.mobile.adapter.DrawingAdapter
 import com.example.mobile.bitmapDecoder
 import com.example.mobile.convertBitmapToByteArray
 import com.example.mobile.viewModel.ToolModel
@@ -38,7 +36,6 @@ class DrawingZoneFragment : Fragment() {
     private lateinit var mDrawingView: DrawingView
     private val toolParameters: ToolParameters by activityViewModels()
     private val toolModel: ToolModel by activityViewModels()
-    var socket = DrawingCollaboration()
     private val sharedViewModelToolBar: SharedViewModelToolBar by activityViewModels()
 
     override fun onCreateView(
@@ -52,15 +49,15 @@ class DrawingZoneFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        mDrawingView = DrawingView(requireContext(),this.socket)
-        socket.init()
-        socket.socket.on("receiveStroke", onReceiveStroke)
-        socket.socket.on("receiveSelection", onReceiveSelection)
-        socket.socket.on("receiveStrokeWidth", onReceiveStrokeWidth)
-        socket.socket.on("receiveNewPrimaryColor", onReceiveNewPrimaryColor)
-        socket.socket.on("receivePasteRequest", onPasteRequest)
-        socket.socket.on("receiveDeleteRequest", onDeleteRequest)
-        socket.socket.on("receiveSelectionPos", onMoveRequest)
+        mDrawingView = DrawingView(requireContext(), DrawingSocket)
+        DrawingSocket.socket.on("receiveStroke", onReceiveStroke)
+        DrawingSocket.socket.on("receiveSelection", onReceiveSelection)
+        DrawingSocket.socket.on("receiveStrokeWidth", onReceiveStrokeWidth)
+        DrawingSocket.socket.on("receiveNewPrimaryColor", onReceiveNewPrimaryColor)
+        DrawingSocket.socket.on("receivePasteRequest", onPasteRequest)
+        DrawingSocket.socket.on("receiveDeleteRequest", onDeleteRequest)
+        DrawingSocket.socket.on("receiveSelectionPos", onMoveRequest)
+
 
         toolParameters.weight.observe(viewLifecycleOwner, Observer { weight ->
             mDrawingView.changeWeight(weight)
@@ -97,7 +94,7 @@ class DrawingZoneFragment : Fragment() {
 
     private var onReceiveStroke = Emitter.Listener {
         val drawEvent = it[0] as JSONObject
-        if(drawEvent.getString("sender") != this.socket.socket.id()){
+        if(drawEvent.getString("sender") != DrawingSocket.socket.id()){
             mDrawingView.onStrokeReceive(drawEvent)
         }
 
@@ -133,7 +130,7 @@ class DrawingZoneFragment : Fragment() {
         mDrawingView.onMoveRequest (drawEvent)
     }
 
-    class DrawingView (context: Context, val socket: DrawingCollaboration) : View(context){
+    class DrawingView (context: Context, val socket: DrawingSocket) : View(context){
         private lateinit var toolManager: ToolManager
         private var mPaint: Paint? = null
         private var mBitmap: Bitmap? = null
@@ -381,6 +378,7 @@ class DrawingZoneFragment : Fragment() {
             val retrofit = RetrofitClient.getInstance()
             val myService = retrofit.create(IMyService::class.java)
 
+            // fetch the drawing for the db
             var call: Call<IDrawing> = myService.getDrawingData(drawingId)
             call.enqueue(object : retrofit2.Callback<IDrawing> {
 

@@ -1,8 +1,10 @@
 package com.example.mobile.adapter
 
 
+import android.app.ActivityOptions
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -10,30 +12,22 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
-import androidx.core.content.ContextCompat.startActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mobile.Interface.IDrawing
-import com.example.mobile.Interface.IVec2
-import com.example.mobile.Interface.Stroke
 import com.example.mobile.R
 import com.example.mobile.Retrofit.IMyService
 import com.example.mobile.Retrofit.RetrofitClient
-import com.example.mobile.activity.chat.ChatPage
 import com.example.mobile.activity.drawing.DrawingActivity
-import com.example.mobile.activity.drawing.DrawingCollaboration
+import com.example.mobile.activity.drawing.DrawingSocket
 import com.example.mobile.bitmapDecoder
 import com.example.mobile.popup.ChangeAlbumPopUp
 import com.example.mobile.popup.DrawingNameModificationPopUp
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import io.socket.client.Socket
-import io.socket.emitter.Emitter
 import kotlinx.android.synthetic.main.item_album.view.*
 import kotlinx.android.synthetic.main.item_drawing.view.*
-import org.json.JSONArray
-import org.json.JSONObject
 
 
 class DrawingAdapter (val context: Context?, var drawings: ArrayList<IDrawing>, val user: String, val albumID: String) : RecyclerView.Adapter<DrawingAdapter.DrawingViewHolder>(), ChangeAlbumPopUp.DialogListener {
@@ -45,7 +39,6 @@ class DrawingAdapter (val context: Context?, var drawings: ArrayList<IDrawing>, 
     internal var compositeDisposable = CompositeDisposable()
     var newDrawingName:String ="new name"
     var newAlbum:String=""
-    var socket = DrawingCollaboration()
 //    private var alreadyLiked: Boolean = false
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DrawingViewHolder {
@@ -164,8 +157,10 @@ class DrawingAdapter (val context: Context?, var drawings: ArrayList<IDrawing>, 
             }
 
             modifDrawing.setOnClickListener {
-//                socket.socket.emit("joinCollab", currentDrawing._id)
-                listener.emitJoinDrawingListener(currentDrawing._id!!)
+                val intent = Intent(it.context, DrawingActivity::class.java)
+                intent.putExtra("userName", user)
+                intent.putExtra("drawingCollabId", currentDrawing._id!!)
+                it.context.startActivity(intent)
             }
         }
 

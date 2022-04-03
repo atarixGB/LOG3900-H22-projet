@@ -3,21 +3,17 @@ package com.example.mobile.Tools
 import android.content.Context
 import android.graphics.*
 import androidx.core.content.res.ResourcesCompat
-import androidx.fragment.app.activityViewModels
-import com.example.mobile.Interface.IPencilStroke
-import com.example.mobile.activity.drawing.DrawingCollaboration
+import com.example.mobile.activity.drawing.DrawingSocket
 import com.example.mobile.Interface.IVec2
-import com.example.mobile.Interface.Stroke
 import com.example.mobile.R
 import com.example.mobile.activity.drawing.ToolbarFragment
-import com.example.mobile.viewModel.ToolParameters
 import org.json.JSONObject
 import kotlin.collections.ArrayList
 
 abstract class Tool(
     context: Context,
     baseCanvas: Canvas,
-    socket: DrawingCollaboration,
+    socket: DrawingSocket,
 ) {
     var baseCanvas: Canvas = baseCanvas
     var context: Context = context

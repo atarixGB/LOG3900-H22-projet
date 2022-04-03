@@ -2,25 +2,16 @@ package com.example.mobile.Tools
 
 import android.content.Context
 import android.graphics.*
-import android.net.ipsec.ike.exceptions.InvalidMajorVersionException
 import androidx.core.content.res.ResourcesCompat
-import androidx.core.graphics.scale
-import androidx.core.graphics.set
-import androidx.fragment.app.activityViewModels
-import com.example.mobile.Interface.IPencilStroke
 import com.example.mobile.Interface.IVec2
 import com.example.mobile.Interface.Stroke
 import com.example.mobile.R
-import com.example.mobile.activity.drawing.DrawingCollaboration
+import com.example.mobile.activity.drawing.DrawingSocket
 import com.example.mobile.activity.drawing.ToolbarFragment
-import com.example.mobile.viewModel.ToolParameters
-import org.json.JSONArray
 import org.json.JSONObject
-import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.math.abs
 
-class  Selection(context: Context, baseCanvas: Canvas, val socket : DrawingCollaboration, val drawingId: String) : Tool(context, baseCanvas, socket) {
+class  Selection(context: Context, baseCanvas: Canvas, val socket : DrawingSocket, val drawingId: String) : Tool(context, baseCanvas, socket) {
     var strokes = ArrayList<Stroke>()
     var strokesSelected = ArrayList<Stroke>()
     var strokesSelectedBitmap: MutableMap<String, Bitmap> = mutableMapOf()

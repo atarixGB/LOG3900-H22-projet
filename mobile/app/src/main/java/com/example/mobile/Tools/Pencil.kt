@@ -4,14 +4,14 @@ import android.content.Context
 import android.graphics.*
 import com.example.mobile.Interface.IPencilStroke
 import com.example.mobile.Interface.IVec2
-import com.example.mobile.activity.drawing.DrawingCollaboration
+import com.example.mobile.activity.drawing.DrawingSocket
 import com.example.mobile.activity.drawing.ToolbarFragment
 import org.json.JSONArray
 import org.json.JSONObject
 import java.util.*
 import kotlin.math.abs
 
-class Pencil(context: Context, baseCanvas: Canvas, val socket : DrawingCollaboration, val selection: Selection, val drawingId: String) : Tool(context, baseCanvas, socket){
+class Pencil(context: Context, baseCanvas: Canvas, val socket : DrawingSocket, val selection: Selection, val drawingId: String) : Tool(context, baseCanvas, socket){
     var leftestCoord: Float = 0F;
     var rightestCoord: Float = 0F;
     var lowestCoord: Float = 0F;

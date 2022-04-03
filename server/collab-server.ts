@@ -25,6 +25,7 @@ ioCollab.on('connection', (socket) => {
       // COLLAB ROOM EVENTS
       // This event is to make sure the other collaborator's selections are pasted before a new member joins
       socket.on('prepForJoin', (data) => {
+        console.log(data)
         const roomName = data.room; // Note: The room name is the drawingID
         const userJoining = data.username;
         console.log("Prepping for join " , roomName);
