@@ -1,3 +1,10 @@
+/******** PROFILE ******/
+export const BADGE_COUNT = {
+  BEGINNER: 5,
+  INTERMIDIATE: 25,
+  EXPERT: 50
+}
+
 /******** ALBUMS *******/
 export const PUBLIC_ALBUM = {
   id: "623e5f7cbd233e887bcb6034",
