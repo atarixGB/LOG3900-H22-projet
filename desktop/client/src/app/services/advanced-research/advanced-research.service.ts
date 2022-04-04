@@ -24,7 +24,7 @@ export class AdvancedResearchService {
     this.result = [];
   }
 
-  search(category: string, attribute: string, keyword: string | null) : void {
+  search(category: string, attribute: string | null, keyword: string | null) : void {
     const url = `${ADVANCED_SEARCH_URL}/${category}/${attribute}/${keyword}`;
 
     this.result = [];

@@ -337,6 +337,15 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
           }
         });
     });
+
+    // get all users in the public chatroom (aka all signed up users)
+    app.get("/chat/users", (request, response) => {
+      DB.collection("users").aggregate( [ { $project : { identifier : 1 } } ] ).toArray((err, res) => {
+        if (err) throw err;
+        console.log(res.length)
+        response.json(res);
+      })
+    })
     //==========================================================================================================
     // Drawing Management
     //==========================================================================================================
