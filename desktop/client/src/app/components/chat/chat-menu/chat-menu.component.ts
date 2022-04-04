@@ -4,6 +4,7 @@ import { LoginService } from '@app/services/login/login.service';
 import { MatDialog } from '@angular/material/dialog';
 import { CreateRoomDialogComponent } from '@app/components/chat/create-room-dialog/create-room-dialog.component'
 import { IChatroom } from '@app/interfaces-enums/IChatroom';
+import { PUBLIC_CHATROOM } from '@app/constants/constants';
 
 @Component({
   selector: 'app-chat-menu',
@@ -36,8 +37,8 @@ export class ChatMenuComponent implements OnInit {
   onOpenDefaultPublicRoom(): void {
     this.chatService.username = this.loginService.username;
     this.chatService.currentRoom = {
-      identifier: "SYSTEM",
-      roomName: "default-public-room",
+      identifier: PUBLIC_CHATROOM.owner,
+      roomName: PUBLIC_CHATROOM.name,
       usersList: []
     }
     this.chatService.joinRoom(this.chatService.currentRoom.roomName);

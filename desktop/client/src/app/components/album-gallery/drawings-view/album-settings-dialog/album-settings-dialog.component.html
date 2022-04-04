@@ -17,12 +17,12 @@
   <div>
     L'album <span class="bold">{{ this.albumGalleryService.currentAlbum.name }}</span> sera renommé <span class="bold">{{ this.newAlbumName }}</span>.
     <br>
-    La description <span class="bold">{{ this.albumGalleryService.currentAlbum.description }}</span> sera changé pour <span class="bold">{{ this.newDescription }}</span>.
+    La description <span class="bold">{{ this.albumGalleryService.currentAlbum.description }}</span> sera changée pour <span class="bold">{{ this.newDescription }}</span>.
   </div>
 
 </mat-dialog-content>
 
 <mat-dialog-actions>
   <button mat-button mat-dialog-close>Annuler</button>
-  <button mat-button [mat-dialog-close]="true" cdkFocusInitial (click)="modifyAlbum()">Modifer</button>
+  <button mat-button [mat-dialog-close]="true" cdkFocusInitial (click)="modifyAlbum()">Modifier</button>
 </mat-dialog-actions>

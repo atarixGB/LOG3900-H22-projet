@@ -2,6 +2,7 @@ package com.example.mobile.activity.drawing
 
 import android.content.Context
 import android.graphics.*
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -33,10 +34,11 @@ import java.io.FileOutputStream
 
 class DrawingZoneFragment : Fragment() {
     private lateinit var mDrawingView: DrawingView
-    private val viewModel: ToolParameters by activityViewModels()
+    private val toolParameters: ToolParameters by activityViewModels()
     private val toolModel: ToolModel by activityViewModels()
     var socket = DrawingCollaboration()
     private val sharedViewModelToolBar: SharedViewModelToolBar by activityViewModels()
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -48,15 +50,20 @@ class DrawingZoneFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         mDrawingView = DrawingView(requireContext(),this.socket)
         socket.init()
         socket.socket.on("receiveStroke", onReceiveStroke)
-        viewModel.weight.observe(viewLifecycleOwner, Observer { weight ->
+        toolParameters.weight.observe(viewLifecycleOwner, Observer { weight ->
             mDrawingView.changeWeight(weight)
         })
-        viewModel.color.observe(viewLifecycleOwner, Observer { color ->
+        toolParameters.color.observe(viewLifecycleOwner, Observer { color ->
             mDrawingView.changeColor(color)
         })
+        toolParameters.isStroke.observe(viewLifecycleOwner, Observer { isStroke ->
+            mDrawingView.changeStroke(isStroke)
+        })
+
         toolModel.tool.observe(viewLifecycleOwner, Observer { tool ->
             mDrawingView.changeTool(tool)
         })
@@ -77,7 +84,10 @@ class DrawingZoneFragment : Fragment() {
     }
     private var onReceiveStroke = Emitter.Listener {
         val drawEvent = it[0] as JSONObject
-        mDrawingView.onStrokeReceive(drawEvent)
+        if(drawEvent.getString("sender") != this.socket.socket.id()){
+            mDrawingView.onStrokeReceive(drawEvent)
+        }
+
     }
 
     class DrawingView (context: Context, val socket: DrawingCollaboration) : View(context){
@@ -124,8 +134,13 @@ class DrawingZoneFragment : Fragment() {
         override fun onDraw(canvas: Canvas) {
             super.onDraw(canvas)
             canvas.drawBitmap(mBitmap!!, 0f, 0f, mPaint)
+
+
             if (isDrawing) {
                 toolManager.currentTool.onDraw(canvas)
+
+
+
             }
         }
 
@@ -138,20 +153,26 @@ class DrawingZoneFragment : Fragment() {
             toolManager.currentTool.mx = event.x
             toolManager.currentTool.my = event.y
 
+
+
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
                     isDrawing = true
                     toolManager.currentTool.touchStart()
                     invalidate()
+
+
                 }
                 MotionEvent.ACTION_MOVE -> {
                     toolManager.currentTool.touchMove()
                     invalidate()
+
                 }
                 MotionEvent.ACTION_UP -> {
                     isDrawing = false
                     toolManager.currentTool.touchUp()
                     invalidate()
+
                 }
             }
             return true
@@ -208,7 +229,6 @@ class DrawingZoneFragment : Fragment() {
                 mBitmap!!.compress(Bitmap.CompressFormat.PNG, 0, bos);
                 var bitmapdata: ByteArray = convertBitmapToByteArray(mBitmap!!)
 
-
                 var fos: FileOutputStream = FileOutputStream(file);
                 fos.write(bitmapdata);
                 fos.flush();
@@ -233,6 +253,12 @@ class DrawingZoneFragment : Fragment() {
                         Toast.makeText(context, "erreur", Toast.LENGTH_SHORT).show()
                     }
                 })
+            }
+        }
+
+        fun changeStroke(stroke: Boolean) {
+            if (this::toolManager.isInitialized) {
+                toolManager.currentTool.isStrokeSelected= stroke
             }
         }
     }

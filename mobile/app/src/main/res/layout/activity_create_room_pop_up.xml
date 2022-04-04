@@ -31,6 +31,15 @@
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+    <TextView
+        android:id="@+id/roomNameEmptyError"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/newRoomName"
+        android:layout_centerHorizontal="true"
+        android:text="Veuillez saisir un nom de canal"
+        android:textColor="@color/red"
+        android:textSize="15sp" />
 
 
     <Button

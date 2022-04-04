@@ -32,25 +32,26 @@
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
     <TextView
         android:id="@+id/drawingNameEmptyError"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Veuillez saisir un nom"
+        android:layout_below="@+id/drawingName"
         android:layout_centerHorizontal="true"
-        android:textSize="15sp"
+        android:text="Veuillez saisir un nom"
         android:textColor="@color/red"
-        android:layout_below="@+id/drawingName"/>
+        android:textSize="15sp" />
 
     <TextView
         android:id="@+id/accessibilityTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Accessibilité"
+        android:layout_below="@+id/drawingNameEmptyError"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="15dp"
-        android:textSize="26sp"
-        android:layout_below="@+id/drawingNameEmptyError"/>
+        android:text="Accessibilité"
+        android:textSize="26sp" />
 
     <RadioGroup
         android:id="@+id/accessibilityRadioGroup"
@@ -80,27 +81,60 @@
         android:id="@+id/rvOutputAlbums"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:layout_below="@id/accessibilityRadioGroup"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
         android:background="@drawable/message_input_box" />
 
     <TextView
         android:id="@+id/albumEmptyError"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Veuillez saisir un album privé"
+        android:layout_below="@+id/rvOutputAlbums"
         android:layout_centerHorizontal="true"
-        android:textSize="15sp"
+        android:text="Veuillez saisir un album privé"
         android:textColor="@color/red"
-        android:layout_below="@+id/rvOutputAlbums"/>
+        android:textSize="15sp" />
 
+    <TextView
+        android:id="@+id/lieu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/albumEmptyError"
+        android:layout_centerHorizontal="true"
+        android:text="Lieu de création: "
+        android:textSize="26sp" />
+    <TextView
+        android:id="@+id/city"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/lieu"
+        android:layout_centerHorizontal="true"
+        android:textSize="20sp"
+        android:text="" />
+
+    <TextView
+        android:id="@+id/heure_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/city"
+        android:layout_centerHorizontal="true"
+        android:text="Heure de création: "
+        android:textSize="26sp" />
+    <TextView
+        android:id="@+id/timestamp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/heure_text"
+        android:layout_centerHorizontal="true"
+        android:textSize="20sp"
+        android:text="" />
 
     <LinearLayout
         android:id="@+id/buttons"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/albumEmptyError"
+        android:layout_below="@+id/timestamp"
         android:orientation="horizontal"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="15dp">
@@ -127,6 +161,7 @@
 
 
     </LinearLayout>
+
 
 
 

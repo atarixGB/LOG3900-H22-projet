@@ -1,8 +1,15 @@
 /******** ALBUMS *******/
 export const PUBLIC_ALBUM = {
+  id: "623e5f7cbd233e887bcb6034",
   name: "album public",
-  id: "622f77abc04d88938c916084"
+  owner: "Poly-Gram"
 }
+
+export const PUBLIC_CHATROOM = {
+  name: "default-public-room",
+  owner: "Poly-Gram"
+}
+
 /***********************/
 export const CNV_WIDTH = 1200;
 export const CNV_HEIGTH = 1000;

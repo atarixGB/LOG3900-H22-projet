@@ -44,7 +44,7 @@ export class ProfileSettingsService {
                 this.soundEffectsService.playFailureSound();
             }
         } else {
-            this.router.navigate(['../profile'], { relativeTo: this.route });
+            this.router.navigate([`../profile/${this.profileService.username}`], { relativeTo: this.route });
         }
     }
 
@@ -72,7 +72,7 @@ export class ProfileSettingsService {
                 if (isSuccess) {
                     this.profileService.setUsername(this.newUsername);
                     this.soundEffectsService.playSuccessSound();
-                    this.router.navigate(['../profile'], { relativeTo: this.route });
+                    this.router.navigate([`../profile/${this.profileService.username}`], { relativeTo: this.route });
                 } else {
                     this.soundEffectsService.playFailureSound();
                     this.isExistingUsername = true;

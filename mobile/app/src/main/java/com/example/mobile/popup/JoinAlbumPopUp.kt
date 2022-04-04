@@ -1,6 +1,7 @@
 package com.example.mobile.popup
 
 import android.content.Context
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -57,6 +58,7 @@ class JoinAlbumPopUp(val albumName: String, val user: String) : DialogFragment()
 
     private fun sendRequestToJoinAlbum(albumName: String, userName: String, context: Context): Boolean {
         var requestSent: Boolean= false
+        var mediaPlayerRequest: MediaPlayer = MediaPlayer.create(context,R.raw.request)
         compositeDisposable.add(iMyService.sendRequestToJoinAlbum(albumName, userName)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -64,6 +66,7 @@ class JoinAlbumPopUp(val albumName: String, val user: String) : DialogFragment()
                 requestSent = result == "201"
                 if (result == "201") {
                     Toast.makeText(context, "demande envoyée", Toast.LENGTH_SHORT).show()
+                    mediaPlayerRequest.start()
                 } else {
                     Toast.makeText(context, "Vous avez deja soumis une demande", Toast.LENGTH_SHORT).show()
                 }

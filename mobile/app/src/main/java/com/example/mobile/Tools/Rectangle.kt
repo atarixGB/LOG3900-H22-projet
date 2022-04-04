@@ -12,7 +12,11 @@ import org.json.JSONObject
 import java.util.*
 import kotlin.math.abs
 
-class Rectangle (context: Context, baseCanvas: Canvas, val socket : DrawingCollaboration) : Tool(context, baseCanvas, socket) {
+class Rectangle (context: Context, baseCanvas: Canvas, val socket : DrawingCollaboration) : Tool(
+    context,
+    baseCanvas,
+    socket,
+) {
     var top = 0F
     var right = 0F
     var bottom = 0F
@@ -36,7 +40,9 @@ class Rectangle (context: Context, baseCanvas: Canvas, val socket : DrawingColla
         left = if (mStartX > mx) mx else mStartX
         bottom = if (mStartY > my) mStartY else my
         top = if (mStartY > my) my else mStartY
-        canvas!!.drawRect(left, top, right, bottom, paint!!)
+
+        canvas.drawRect(left, top, right, bottom, fillPaint);
+        canvas!!.drawRect(left, top, right, bottom, strokePaint!!)
     }
 
     override fun onStrokeReceived(stroke: JSONObject) {
@@ -46,7 +52,7 @@ class Rectangle (context: Context, baseCanvas: Canvas, val socket : DrawingColla
         var topLeftCorner = IVec2(topCornerData.getDouble("x").toFloat(), topCornerData.getDouble("y").toFloat())
         val iRectangleStroke = IRectangleStroke(boundingPoints,
             toIntColor(stroke.getString("primaryColor")),
-            Color.WHITE, //to change
+            toIntColor(stroke.getString("secondaryColor")),
             stroke.getDouble("strokeWidth").toFloat(),
             stroke.getDouble("width").toFloat(),
             stroke.getDouble("height").toFloat(),
@@ -63,9 +69,9 @@ class Rectangle (context: Context, baseCanvas: Canvas, val socket : DrawingColla
         var jo = JSONObject()
         jo.put("boundingPoints", bounding) //TODO
         jo.put("toolType", 1)
-        jo.put("primaryColor", toRBGColor(paint.color))
-        //TODO secondary color
-        jo.put("strokeWidth", this.paint.strokeWidth)
+        jo.put("primaryColor", toRBGColor(strokePaint.color))
+        jo.put("secondaryColor", toRGBAColor(fillPaint.color))
+        jo.put("strokeWidth", this.strokePaint.strokeWidth)
         jo.put("topLeftCorner", topLeftCorner)
         jo.put("width", abs(left-right))
         jo.put("height", abs(top-bottom))
@@ -74,21 +80,36 @@ class Rectangle (context: Context, baseCanvas: Canvas, val socket : DrawingColla
     }
 
     private fun draw(stroke: IRectangleStroke) {
-        val upcomingPaint = Paint().apply {
+        val upcomingPaintStroke = Paint().apply {
             color = stroke.primaryColor
             strokeWidth = stroke.strokeWidth
             isAntiAlias = true
-            // Dithering affects how colors with higher-precision than the device are down-sampled.
             isDither = true
-            style = Paint.Style.STROKE // default: FILL
-            strokeJoin = Paint.Join.MITER // default: MITER
+            style = Paint.Style.STROKE
+            strokeJoin = Paint.Join.MITER
             strokeCap = Paint.Cap.SQUARE
+        }
+
+        val upcomingPaintFill = Paint().apply {
+            color = stroke.secondaryColor
+            isAntiAlias = true
+            isDither = true
+            style = Paint.Style.FILL
+            strokeJoin = Paint.Join.MITER
+            strokeCap = Paint.Cap.SQUARE
+            strokeWidth = 1f
         }
         baseCanvas!!.drawRect(stroke.topLeftCorner.x,
             stroke.topLeftCorner.y,
             stroke.topLeftCorner.x + stroke.width,
             stroke.topLeftCorner.y + stroke.height,
-            upcomingPaint!!)
+            upcomingPaintFill!!)
+        baseCanvas!!.drawRect(stroke.topLeftCorner.x,
+            stroke.topLeftCorner.y,
+            stroke.topLeftCorner.x + stroke.width,
+            stroke.topLeftCorner.y + stroke.height,
+            upcomingPaintStroke!!)
+
     }
 
     private fun getBoundingPoints():ArrayList<IVec2>{

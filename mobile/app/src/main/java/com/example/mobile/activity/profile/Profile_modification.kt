@@ -1,6 +1,7 @@
 package com.example.mobile.activity.profile
 
 import android.app.Activity
+import android.app.ActivityOptions
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -9,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Base64
+import android.view.animation.AnimationUtils
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
@@ -121,16 +123,19 @@ class Profile_modification : AppCompatActivity(), SelectAvatarPopUp.DialogListen
         }
         backBtn.setOnClickListener(){
             val intent = Intent(this, Profile::class.java)
+            var bundle:Bundle = ActivityOptions.makeSceneTransitionAnimation(this).toBundle()
             intent.putExtra("userName",oldUsername)
             intent.putExtra("email",oldEmail)
             intent.putExtra("description",oldDescription)
-            startActivity(intent)
+            startActivity(intent,bundle)
         }
         modify_label.setOnClickListener(){
-            if(!username.text.toString().isNullOrBlank()&& !user_email.text.toString().isNullOrBlank() && !edt_description.text.toString().isNullOrBlank()){
+            if(!username.text.toString().isNullOrBlank()&& !user_email.text.toString().isNullOrBlank()){
                 updateProfile(oldUsername,username.text.toString(),userAvatarModif,user_email.text.toString(),edt_description.text.toString())
             }
-            else{
+            else if(username.text.toString().isNullOrBlank() || user_email.text.toString().isNullOrBlank()){
+                username.animation=AnimationUtils.loadAnimation(this,R.anim.shake_animation)
+                user_email.animation=AnimationUtils.loadAnimation(this,R.anim.shake_animation)
                 Toast.makeText(this, "Les champs sont vides réessayer!", Toast.LENGTH_SHORT).show()
             }
 
@@ -164,7 +169,8 @@ class Profile_modification : AppCompatActivity(), SelectAvatarPopUp.DialogListen
                     val intent = Intent(this, Profile::class.java)
                     intent.putExtra("userName",username.text.toString())
                     intent.putExtra("email",user_email.text.toString())
-                    startActivity(intent)
+                    var bundle:Bundle =ActivityOptions.makeSceneTransitionAnimation(this).toBundle()
+                    startActivity(intent,bundle)
                 }else{
                     Toast.makeText(this,"Nom d'utilisateur déjà existant", Toast.LENGTH_SHORT).show()
                 }
