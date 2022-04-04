@@ -1,9 +1,14 @@
 import { Component, HostListener } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute, Router } from '@angular/router';
 import { IAlbum } from '@app/interfaces-enums/IAlbum';
 import { IDrawing } from '@app/interfaces-enums/IDrawing';
 import { IUser } from '@app/interfaces-enums/IUser';
 import { AdvancedResearchService } from '@app/services/advanced-research/advanced-research.service'
+import { AlbumGalleryService } from '@app/services/album-gallery/album-gallery.service';
+import { CollaborationService } from '@app/services/collaboration/collaboration.service';
+import { DrawingService } from '@app/services/editor/drawing/drawing.service';
+import { ProfileService } from '@app/services/profile/profile.service';
 import { JoinRequestDialogComponent } from '../album-gallery/public-albums/join-request-dialog/join-request-dialog.component';
 
 @Component({
@@ -17,7 +22,15 @@ export class AdvancedResearchComponent {
   attribute: string;
   isValidInput: boolean;
 
-  constructor(public advancedResearchService: AdvancedResearchService, public dialog: MatDialog) {
+  constructor(
+    public advancedResearchService: AdvancedResearchService,
+    public profileService: ProfileService,
+    public albumGalleryService: AlbumGalleryService,
+    public drawingService: DrawingService,
+    public  collaborationService: CollaborationService,
+    private router: Router,
+    private route: ActivatedRoute,
+    public dialog: MatDialog) {
     this.searchBarInput = "";
     this.category = "albums";
     this.attribute = "name";
@@ -58,6 +71,7 @@ export class AdvancedResearchComponent {
   }
 
   onAlbumClick(album: IAlbum) : void {
+    // Request to join album
     if (album != null) {
       this.dialog.open(JoinRequestDialogComponent, {
         data: album,
@@ -66,11 +80,16 @@ export class AdvancedResearchComponent {
   }
 
   onDrawingClick(drawing: IDrawing) : void {
-    console.log(drawing);
+    // Join corresponding collab session
+    this.albumGalleryService.currentDrawing = drawing;
+    this.drawingService.setCurrentDrawing(drawing);
+    this.collaborationService.joinCollab(drawing._id);
   }
 
   onUserClick(user: IUser) : void {
-    console.log(user);
+    // Redirect to corresponding user profile page
+    this.profileService.getUserProfileInfos(user.identifier);
+    this.router.navigate([`../profile/${user.identifier}`], { relativeTo: this.route });
   }
 
   private isOneKeywordOnly(input: string): boolean {

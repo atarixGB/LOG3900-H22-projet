@@ -84,7 +84,7 @@
           <mat-grid-list cols="4" *ngIf="this.advancedResearchService.isDrawing">
             <mat-grid-tile *ngFor="let drawing of this.advancedResearchService.result">
               <button mat-icon-button disableRipple="true" (click)="this.onDrawingClick(drawing)">
-                <mat-icon>image</mat-icon>
+                <img id="drawing-preview" src="data:image/png;base64,{{ drawing.data }}">
                 <div class="label">{{drawing.name}}</div>
               </button>
             </mat-grid-tile>
@@ -93,7 +93,7 @@
           <mat-grid-list cols="4" *ngIf="this.advancedResearchService.isUser">
             <mat-grid-tile *ngFor="let user of this.advancedResearchService.result">
               <button mat-icon-button disableRipple="true" (click)="this.onUserClick(user)">
-                <mat-icon>person</mat-icon>
+                <img id="user-avatar" src="data:image/png;base64,{{user.avatar}}">
                 <div class="label">{{user.identifier}}</div>
               </button>
             </mat-grid-tile>

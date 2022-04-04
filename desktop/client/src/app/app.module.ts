@@ -70,7 +70,7 @@ import { MemberJoinedDialogComponent } from './components/editor/member-joined-d
 import { MemberLeftDialogComponent } from './components/editor/member-left-dialog/member-left-dialog.component';
 import { FavoriteDrawingsComponent } from './components/profile/favorite-drawings/favorite-drawings.component';
 import { TopDrawingsComponent } from './components/profile/top-drawings/top-drawings.component';
-import { AdvancedResearchComponent } from './components/advanced-research/advanced-research.component'
+import { AdvancedResearchComponent } from './components/advanced-research/advanced-research.component';
 
 @NgModule({
     declarations: [
@@ -120,7 +120,7 @@ import { AdvancedResearchComponent } from './components/advanced-research/advanc
         MemberLeftDialogComponent,
         FavoriteDrawingsComponent,
         TopDrawingsComponent,
-        AdvancedResearchComponent
+        AdvancedResearchComponent,
     ],
     imports: [
         BrowserModule,
