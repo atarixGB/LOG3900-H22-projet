@@ -383,6 +383,32 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
         });
     });
 
+        //get all user drawings in DB
+
+        app.get("/getAllUserDrawings/:user", (request, response, next) => {
+
+          var user = request.params.user.replaceAll(/"/g, '');;
+    
+          console.log(user);
+    
+          DB.collection("drawings")
+    
+            .find({owner: user}).limit(50).toArray(function (err, result) {
+    
+              if (err) {
+    
+                response.status(400).send("Error fetching drawings");
+    
+              } else {
+    
+                response.json(result)
+    
+              }
+    
+            });
+    
+        });
+
     //Save drawing data (desktop client)
     app.post("/drawing/save/:drawingId", (request, response, next) => {
       let drawingId = request.params.drawingId;

@@ -86,9 +86,11 @@ class Dashboard : AppCompatActivity(), StoryAdapter.StoryAdapterListener {
         call.enqueue(object : retrofit2.Callback<List<IUser>> {
 
             override fun onResponse(call: Call<List<IUser>>, response: Response<List<IUser>>) {
-                for (userElement in response.body()!!) {
-                    if (userElement.identifier != user && !userElement.avatar.isNullOrEmpty()) {
-                        getAllUserDrawings(userElement.identifier!!, userElement.avatar!!)
+                if (response.body() != null) {
+                    for (userElement in response.body()!!) {
+                        if (userElement.identifier != user && !userElement.avatar.isNullOrEmpty()) {
+                            getAllUserDrawings(userElement.identifier!!, userElement.avatar!!)
+                        }
                     }
                 }
             }
