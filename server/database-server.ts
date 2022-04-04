@@ -91,6 +91,9 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
       var email = post_data.email;
       var description = post_data.description;
 
+      var collaborationCount = post_data.collaborationCount;
+      var totalCollaborationTime = post_data.totalCollaborationTime;
+
       var insertJson = {
         identifier: identifier,
         password: password,
@@ -98,6 +101,8 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
         avatar: avatar,
         email: email,
         description: description,
+        collaborationCount: collaborationCount,
+        totalCollaborationTime: totalCollaborationTime,
       };
 
       //check if identifier exists
@@ -756,20 +761,56 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
     // Profile : Statistics
     //==========================================================================================================
 
-    // TODO: Get the total number of collabs that userId has participated in
-    app.get("/profile/stats/collabs/:userId", (request, response) => {
-      
+    // Get the total number of collabs that userId has participated in
+    app.get("/profile/stats/collabs/:username", (request, response) => {
+      const identifier = request.params.username;
+
+      DB.collection("users").findOne({ identifier: identifier }, function (error, user) {
+        if (error) throw error;
+        response.json(user.collaborationCount);
+      });
     })
 
-    // TODO: Get the average duration of userId in a collab session
-    app.get("/profile/stats/collabs/session/:userId", (request, response) => {
-      
+    // Get the average duration of userId in a collab session
+    app.get("/profile/stats/collabs/session/:username", (request, response) => {
+      const identifier = request.params.username;
+
+      DB.collection("users").findOne({ identifier: identifier }, function (error, user) {
+        if (error) throw error;
+        if (user.collaborationCount == 0) {
+          response.json('0j 0h 0m 0s');
+        } else {
+          const collabTimeMean = Math.round(user.totalCollaborationTime / user.collaborationCount);
+          response.json(stringifySeconds(collabTimeMean));
+        }
+      });
     })
 
-    // TODO: Get the total duration of userId in collab sessions
-    app.get("/profile/stats/collabs/total-duration/:userId", (request, response) => {
-      
+    // Get the total duration of userId in collab sessions
+    app.get("/profile/stats/collabs/total-duration/:username", (request, response) => {
+      const identifier = request.params.username;
+
+      DB.collection("users").findOne({ identifier: identifier }, function (error, user) {
+        if (error) throw error;
+        if (user.collaborationCount == 0) {
+          response.json('0j 0h 0m 0s');
+        } else {
+          response.json(stringifySeconds(user.totalCollaborationTime));
+        }
+      });
     })
+
+    //Update collab stats
+    app.put("/profile/stats/collabs/update/:username", (request, response, next) => {
+      const identifier = request.params.username;
+      const secondsSpentInCollab = request.body.secondsSpentInCollab;
+
+      DB.collection("users").findOneAndUpdate({ identifier: identifier }, 
+        { $inc: { collaborationCount: 1, totalCollaborationTime: secondsSpentInCollab } }, { returnDocument: 'after' }, (err, res) => {
+        response.json(201)
+        console.log(`Updated collab stats for ${identifier}`);
+      })
+    });
 
     // Get the total number of drawings created by username 
     app.get("/profile/stats/drawings/:username", (request, response) => {
@@ -834,4 +875,21 @@ let saveImageAsPNG = function (imageData, drawingId, filepath) {
   fs.writeFile(`${filepath}/${drawingId}.png`, dataBuffer, (error) => {
     if (error) throw error;
   });
+}
+
+let stringifySeconds = function (timeInSeconds) {
+  const secondsInMinute = 60;
+  const secondsInHour = secondsInMinute*60;
+  const secondsInDay = secondsInHour*24;
+
+  const days = Math.floor(timeInSeconds / secondsInDay);
+  timeInSeconds = timeInSeconds % secondsInDay;
+
+  const hours = Math.floor(timeInSeconds / secondsInHour);
+  timeInSeconds = timeInSeconds % secondsInHour;
+
+  const minutes = Math.floor(timeInSeconds / secondsInMinute);
+  timeInSeconds = timeInSeconds % secondsInMinute;
+
+  return days + 'j ' + hours + 'h ' + minutes + 'm ' + timeInSeconds + 's';
 }

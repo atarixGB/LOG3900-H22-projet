@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { PROFILE_URL, STATS_TOTAL_ALBUMS_CREATED_URL, STATS_TOTAL_DRAWINGS_CREATED_URL, STATS_TOTAL_LIKES_URL } from '@app/constants/api-urls'
+import { PROFILE_URL, STATS_AVERAGE_COLLAB_TIME_URL, STATS_COLLAB_COUNT_URL, STATS_TOTAL_ALBUMS_CREATED_URL, STATS_TOTAL_COLLAB_TIME_URL, STATS_TOTAL_DRAWINGS_CREATED_URL, STATS_TOTAL_LIKES_URL } from '@app/constants/api-urls'
 import { BADGES, FAVOURITE, MOST_LIKED, STATS } from '@app/constants/badges'
 import { BADGE_COUNT } from '@app/constants/constants'
 
@@ -12,6 +12,7 @@ export class ProfileService {
   avatarSrc: string;
   email: string;
   description: string;
+  
   currentBadge: string;
   statsImg: string;
   favoritesImg: string;
@@ -23,6 +24,9 @@ export class ProfileService {
   totalNbrDrawings: number;
   totalNbrLikes: number;
   totalNbrAlbums: number;
+  collabCount: number;
+  collabTime: string;
+  collabTimeAverage: string;
 
   constructor(private httpClient: HttpClient) {
     this.statsImg = STATS;
@@ -58,27 +62,48 @@ export class ProfileService {
       },
       (error) => {
         console.log(`Impossible d'obtenir le nombre de dessins créés par ${username}.\nErreur: ${error}`);
-      }
-      )
+      })
 
-      this.httpClient.get<number>(`${STATS_TOTAL_LIKES_URL}/${username}`).subscribe(
+    this.httpClient.get<number>(`${STATS_TOTAL_LIKES_URL}/${username}`).subscribe(
         (result: number) => {
         this.totalNbrLikes = result;
         this.setBadge();
       },
       (error) => {
         console.log(`Impossible d'obtenir le nombre total de mentions J'aime de ${username}.\nErreur: ${error}`)
-      }
-      )
+      })
 
-      this.httpClient.get<number>(`${STATS_TOTAL_ALBUMS_CREATED_URL}/${username}`).subscribe(
+    this.httpClient.get<number>(`${STATS_TOTAL_ALBUMS_CREATED_URL}/${username}`).subscribe(
         (result: number) => {
         this.totalNbrAlbums = result;
       },
       (error) => {
         console.log(`Impossible d'obtenir le nombre total d'albums privé créés par ${username}.\nErreur: ${error}`)
-      }
-    )
+      })
+
+    this.httpClient.get<number>(`${STATS_COLLAB_COUNT_URL}/${username}`).subscribe(
+        (result: number) => {
+        this.collabCount = result;
+      },
+      (error) => {
+        console.log(`Impossible d'obtenir le nombre total de collaboration de ${username}.\nErreur: ${error}`)
+      })
+
+    this.httpClient.get<string>(`${STATS_TOTAL_COLLAB_TIME_URL}/${username}`).subscribe(
+        (result: string) => {
+        this.collabTime = result;
+      },
+      (error) => {
+        console.log(`Impossible d'obtenir la durée totale de collaboration de ${username}.\nErreur: ${error}`)
+      })
+
+    this.httpClient.get<string>(`${STATS_AVERAGE_COLLAB_TIME_URL}/${username}`).subscribe(
+        (result: string) => {
+        this.collabTimeAverage = result;
+      },
+      (error) => {
+        console.log(`Impossible d'obtenir la durée moyenne en collaboration de ${username}.\nErreur: ${error}`)
+      })
   }
 
   setBadge(): void {

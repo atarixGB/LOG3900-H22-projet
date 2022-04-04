@@ -67,7 +67,7 @@
           <span class="sectionTitle">Statistiques:</span>
           <div fxLayout="row" fxLayoutAlign="start start">
             <span>Nombre de collaborations :&nbsp;</span>
-            <span class="bold">À déterminer</span>
+            <span class="bold">{{this.profileService.collabCount}}</span>
           </div>
           <div fxLayout="row" fxLayoutAlign="start start">
             <span>Nombre de dessins créés :&nbsp;</span>
@@ -83,11 +83,11 @@
           </div>
           <div fxLayout="row" fxLayoutAlign="start start">
             <span>Temps moyen des séances de collaboration :&nbsp;</span>
-            <span class="bold">À déterminer</span>
+            <span class="bold">{{this.profileService.collabTimeAverage}}</span>
           </div>
           <div fxLayout="row" fxLayoutAlign="start start">
             <span>Temps total de collaboration :&nbsp;</span>
-            <span class="bold">À déterminer</span>
+            <span class="bold">{{this.profileService.collabTime}}</span>
           </div>
         </div>
 
