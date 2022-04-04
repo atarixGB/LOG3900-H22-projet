@@ -177,10 +177,24 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
       );
     });
 
-    //==========================================================================================================
-    // ROOM management
-    //==========================================================================================================
+    //get all users
+    app.get("/getAllUsers", (request, response, next) => {
+      var post_data = request.body;
 
+      DB.collection("users")
+        .find({}).limit(50).toArray(function (err, result) {
+          if (err) {
+            response.status(400).send("Error fetching rooms");
+          } else {
+            response.json(result)
+          }
+        });
+    });
+
+//==========================================================================================================
+// ROOM management
+//==========================================================================================================
+      
     //Rooms
     app.post("/createRoom", (request, response, next) => {
       var post_data = request.body;
@@ -533,8 +547,8 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
         });
     });
 
-    //get user albums
-    app.get("/albums/:username", (request, response, next) => { // TO CHANGE WITH USER ID
+    //get user albums // to Switch for userID
+    app.get("/albums/:username", (request, response, next) => {
       DB.collection("albums").find({ owner: request.params.username }).toArray((err, res) => {
         response.json(res);
         ;
@@ -570,7 +584,18 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
       })
     });
 
-    //send request to an album
+    //add drawing to a story
+    app.put("/drawings/addDrawingToStory/:drawingId", (request, response, next) => {
+      let drawingId = request.params.drawingId.replaceAll(/"/g, '');
+
+      DB.collection("drawings").findOneAndUpdate({ _id: mongoose.Types.ObjectId(drawingId) }, { $set: { isStory: true } }, { returnDocument: 'after' }, (err, res) => {
+        response.json(201)
+        console.log(drawingId, "is a story");
+      })
+    });
+
+
+    //send request to an album // Switch for ID 
     app.put("/albums/sendRequest/:albumName", (request, response, next) => {
       let albumName = request.params.albumName;
       let usertoAdd = request.body.identifier;
@@ -680,9 +705,41 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
         });
     });
 
+    //update album attributes
+    app.post("/albumUpdate", (request, response, next) => {
+      var post_data = request.body;
+      var oldAlbumName = post_data.oldAlbumName;
+      var newAlbumName = post_data.newAlbumName;
+      var newDescription = post_data.newDescription;
+
+//==========================================================================================================
+// Profile modification
+//==========================================================================================================
+      //check if an album already has the new name
+      DB.collection("albums")
+        .find({ name: newAlbumName })
+        .count(function (err, number) {
+          if (number != 0 && oldAlbumName != newAlbumName) {
+            response.json(false);
+            console.log("album name already used");
+          } else {
+            // Update album data
+            DB.collection("albums").updateOne({ name: oldAlbumName }, {
+              $set: {
+                "name": newAlbumName,
+                "description": newDescription,
+              },
+            }).then(result => {
+              response.json(200);
+            });
+          }
+        });
+    });
+
     //==========================================================================================================
     // Profile modification
     //==========================================================================================================
+    
     //Getting a user's data 
     app.get("/profile/:username", (request, response, next) => {
       var identifier = request.params.username;
