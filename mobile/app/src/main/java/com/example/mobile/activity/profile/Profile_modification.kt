@@ -13,18 +13,17 @@ import android.util.Base64
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.*
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.get
+import com.example.mobile.*
 import com.example.mobile.Interface.User
-import com.example.mobile.R
 import com.example.mobile.Retrofit.IMyService
 import com.example.mobile.Retrofit.RetrofitClient
-import com.example.mobile.SOUND_EFFECT
-import com.example.mobile.bitmapDecoder
-import com.example.mobile.convertToByteArray
 import com.example.mobile.popup.SelectAvatarPopUp
+import com.example.mobile.viewModel.SharedViewModelToolBar
 import com.mikhaellopez.circularimageview.CircularImageView
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -52,6 +51,7 @@ class Profile_modification : AppCompatActivity(), SelectAvatarPopUp.DialogListen
     internal var compositeDisposable = CompositeDisposable()
 
     private val REQUEST_IMAGE_CAMERA = 142
+    private val sharedViewModel: SharedViewModelToolBar by viewModels()
 
     override fun onStop() {
         compositeDisposable.clear()
@@ -83,6 +83,7 @@ class Profile_modification : AppCompatActivity(), SelectAvatarPopUp.DialogListen
 
         //to get avatar from DB
         getUserFromDB(oldUsername)
+        sharedViewModel.setUser(oldUsername)
 
         //lancer la camera quand tu clic sur icone caméra
         cameraBtn.setOnClickListener {
@@ -129,6 +130,7 @@ class Profile_modification : AppCompatActivity(), SelectAvatarPopUp.DialogListen
         modify_label.setOnClickListener(){
             if(!username.text.toString().isNullOrBlank()){
                 updateProfile(oldUsername,username.text.toString(),userAvatarModif,edt_description.text.toString())
+                sharedViewModel.setUser(username.text.toString())
             }
             else if(username.text.toString().isNullOrBlank()){
                 username.animation=AnimationUtils.loadAnimation(this,R.anim.shake_animation)
@@ -183,6 +185,42 @@ class Profile_modification : AppCompatActivity(), SelectAvatarPopUp.DialogListen
             ) {
                 val item = musicSelector[position]
                 Toast.makeText(this@Profile_modification,"$item selected",Toast.LENGTH_SHORT).show()
+
+                if (item== "Désactivé"){
+                    DEACTIVATED=true
+                    LOFI1=false
+                    LOFI2=false
+                    KAHOOT=false
+                    MINECRAFT=false
+                }
+                else if (item=="Lofi 1"){
+                    LOFI1=true
+                    DEACTIVATED=false
+                    LOFI2=false
+                    KAHOOT=false
+                    MINECRAFT=false
+                }
+                else if(item=="Lofi 2"){
+                    LOFI2=true
+                    DEACTIVATED=false
+                    LOFI1=false
+                    KAHOOT=false
+                    MINECRAFT=false
+                }
+                else if(item=="Minecraft"){
+                    MINECRAFT=true
+                    DEACTIVATED=false
+                    LOFI1=false
+                    KAHOOT=false
+                    LOFI2=false
+                }
+                else if (item=="Kahoot"){
+                    KAHOOT=true
+                    DEACTIVATED=false
+                    LOFI1=false
+                    LOFI2=false
+                    MINECRAFT=false
+                }
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {}

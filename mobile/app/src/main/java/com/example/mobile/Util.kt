@@ -12,6 +12,13 @@ import java.io.ByteArrayOutputStream
 
 var SOUND_EFFECT=true
 
+
+var LOFI1 = false
+var LOFI2 =false
+var KAHOOT= false
+var MINECRAFT=false
+var DEACTIVATED=true
+
 fun convertToByteArray(imageView: CircularImageView): ByteArray {
     val bitmap = (imageView.drawable as BitmapDrawable).bitmap
     val stream = ByteArrayOutputStream()

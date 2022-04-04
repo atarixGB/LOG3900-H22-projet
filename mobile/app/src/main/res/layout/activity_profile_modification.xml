@@ -7,12 +7,24 @@
     android:screenOrientation="landscape"
     tools:context=".activity.profile.Profile_modification">
 
+    <fragment
+        android:id="@+id/toolbarNavigation"
+        android:name="com.example.mobile.ToolbarNavigationFragment"
+        android:layout_width="250dp"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <RelativeLayout
-        android:layout_width="match_parent"
+        android:id="@+id/header_menu"
+        android:layout_width="800dp"
         android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="110dp"
         android:padding="10dp"
-        android:id="@+id/header_menu">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/toolbarNavigation">
 
         <ImageView
             android:id="@+id/back_btn_modification"
@@ -70,6 +82,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="9dp"
+        android:layout_marginLeft="250dp"
         android:orientation="vertical">
 
         <LinearLayout
@@ -240,8 +253,9 @@
 
     <LinearLayout
         android:id="@+id/sound_bloc"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="250dp"
         android:layout_marginTop="30dp"
         android:orientation="horizontal"
         android:paddingLeft="15dp"
@@ -267,7 +281,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginLeft="350dp"
+            android:layout_marginLeft="180dp"
             android:layout_marginTop="70dp">
             <TextView
                 android:layout_width="wrap_content"
@@ -305,7 +319,7 @@
                 android:textStyle="bold" />
             <androidx.appcompat.widget.AppCompatSpinner
                 android:id="@+id/musicPicker"
-                android:layout_width="100dp"
+                android:layout_width="120dp"
                 android:layout_height="40dp"
                 android:background="@drawable/spinner_bg"
                 android:spinnerMode="dropdown"/>
