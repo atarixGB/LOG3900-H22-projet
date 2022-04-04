@@ -4,7 +4,6 @@ import { AlbumGalleryService } from '@app/services/album-gallery/album-gallery.s
 import { CollaborationService } from '@app/services/collaboration/collaboration.service';
 import { SelectionService } from '@app/services/editor/tools/selection/selection.service';
 import { ToolManagerService } from '@app/services/editor/tools/tool-manager.service';
-
 @Component({
     selector: 'app-sidebar',
     templateUrl: './sidebar.component.html',
@@ -26,6 +25,6 @@ export class SidebarComponent {
             }
         }
         this.collaborationService.leaveCollab();
-    }    
+    }
 }
 
