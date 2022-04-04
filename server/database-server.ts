@@ -6,12 +6,15 @@ const cors = require("cors");
 const crypto = require("crypto");
 const mongoose = require("mongoose");
 const socket = require('socket.io');
-
 const multer = require('multer')
 const path = require('path');
-
-// Include the node file module
 var fs = require('fs');
+
+//constants
+const DATABASE_URL =
+  "mongodb+srv://equipe203:Log3900-H22@polygramcluster.arebt.mongodb.net/PolyGramDB?retryWrites=true&w=majority";
+const SERVER_PORT = 3001;
+const UPLOAD_DIR = './uploads/'
 
 const storage = multer.diskStorage({
   destination: './uploads/',
@@ -24,11 +27,6 @@ const storage = multer.diskStorage({
     });
   }
 });
-
-//constants
-const DATABASE_URL =
-  "mongodb+srv://equipe203:Log3900-H22@polygramcluster.arebt.mongodb.net/PolyGramDB?retryWrites=true&w=majority";
-const SERVER_PORT = 3001;
 
 //express service
 var app = express();
@@ -351,9 +349,11 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
           }
         });
     });
+
     //==========================================================================================================
     // Drawing Management
     //==========================================================================================================
+    
     //create drawing
     app.post("/drawing/create", (request, response, next) => {
       DB.collection("drawings").insertOne(request.body, (err, res) => {
@@ -383,21 +383,7 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
         });
     });
 
-    //get all user drawings in DB
-    app.get("/getAllUserDrawings/:user", (request, response, next) => {
-      var user = request.params.user.replaceAll(/"/g, '');;
-      console.log(user);
-      DB.collection("drawings")
-        .find({owner: user}).limit(50).toArray(function (err, result) {
-          if (err) {
-            response.status(400).send("Error fetching drawings");
-          } else {
-            response.json(result)
-          }
-        });
-    });
-
-    //Save drawing data
+    //Save drawing data (desktop client)
     app.post("/drawing/save/:drawingId", (request, response, next) => {
       let drawingId = request.params.drawingId;
       let drawingName = request.body.name;
@@ -418,7 +404,7 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
       response.json("DataUrl sauvegardé")
     })
 
-    // Post files
+    // Post files (mobile client)
     app.post(
       "/upload/:drawingId",
       multer({
@@ -430,111 +416,125 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
         return res.status(200).end();
       });
 
-  //get image from DB
-   app.get('/drawings/:drawingId', function (req, res){
-    DB.collection("drawings")
-    .findOne({ _id: mongoose.Types.ObjectId(req.params.drawingId.replaceAll(/"/g, '')) }, function (err, result) {
-      if (err) {
-        console.log("error getting");
-      } else {
-        const file = result.data;
-        
-        if(fs.readFileSync(__dirname + "/uploads/" + file, {encoding: 'base64'})){
-          var img = fs.readFileSync(__dirname + "/uploads/" + file, {encoding: 'base64'});
-
-          var returnedJson = {
-            _id: result._id,
-            name: result.name,
-            owner: result.owner,
-            description: result.description,
-            data: img,
-            members: result.members,
-            likes: result.likes,
-            albumName:result.albumName
-          };
-          res.json(returnedJson)
-          console.log("GotDrawing");
-
-        }
-
-        else{
-          console.log(`File ${file} does not exist on server`);
-        }
-
-      }
-    });
-  });
-
-  //delete drawing with specific id
-  app.delete("/drawing/delete/:id", (request, response, next) => {
-    let drawingId = request.params.id;
-    DB.collection("drawings").findOneAndDelete({ _id: mongoose.Types.ObjectId(drawingId) }, (err, res) => {
-      console.log(`Drawing with id ${request.params.id} has been deleted successfully!`);
-      response.json(201)
-    });
-  });    
-
-    //delete all drawings pour faire le menage
-    // app.delete("/drawing/deleteAll", (request, response, next) => {
-    //   DB.collection("drawings").deleteMany({}, (err, res) => {
-    //     response.json(201)
-    //   });
-    // }); 
-
-  //update drawing name
-  app.post("/drawingUpdate", (request, response, next) => {
-    var post_data = request.body;
-    var drawingID= post_data.drawingID
-    var newDrawingName = post_data.newDrawingName;
-    console.log(newDrawingName);
-    
-
-    DB.collection("drawings").findOneAndUpdate({ _id: mongoose.Types.ObjectId(drawingID) }, { $set: { "name": newDrawingName } }, { returnDocument: 'after' }, (err, res) => {
-      response.json(201)
-      console.log(drawingID, "is now named ", newDrawingName);
+    //get all drawings that specified user liked
+    app.get("/drawings/favorite/:username", (request, response) => {
+      let username = request.params.username;
+      DB.collection("drawings").find({ likes: { $all: [username] } }).toArray(function (error, result) {
+        if (error) throw error;
+        response.json(result);
+      })
     })
-  });
 
-  //change the album containing the drawing in the drawing interface
-  // app.post("/changeAlbum", (request, response, next) => {
-  //   var post_data = request.body;
-  //   var newAlbumName = post_data.newAlbumName;
-  //   var drawingID= post_data.drawingID
-  //   console.log(newAlbumName);
-    
-  //   DB.collection("drawings").findOneAndUpdate({ _id: mongoose.Types.ObjectId(drawingID) }, { $set: { "albumName": newAlbumName } }, { returnDocument: 'after' }, (err, res) => {
-  //     response.json(201)
-  //     console.log(drawingID, "is now contained in ", newAlbumName);
-  //   })
+    //get all drawings of specified user that has at least one Like
+    app.get("/drawings/top/:username", (request, response) => {
+      let username = request.params.username;
+      DB.collection("drawings")
+        .find({ $and: [{ owner: username }, { likes: { $exists: true, $not: { $size: 0 } } }] }).toArray(function (error, result) {
+          if (error) throw error;
 
-  // });
-  
+          // Sort result by descending order of number of likes
+          result.sort((a, b) => a.likes.length < b.likes.length ? 1 : a.likes.length > b.likes.length ? - 1 : 0);
 
-//==========================================================================================================
-// Album Management
-//==========================================================================================================
+          response.json(result);
+        })
+    })
+
+    //get image from DB
+    app.get('/drawings/:drawingId', function (req, res) {
+      DB.collection("drawings")
+        .findOne({ _id: mongoose.Types.ObjectId(req.params.drawingId.replace(/"/g, '')) }, function (err, result) {
+          if (err) {
+            console.log("error getting");
+          } else {
+            const file = result.data;
+
+            if (fs.readFileSync(__dirname + "/uploads/" + file, { encoding: 'base64' })) {
+              var img = fs.readFileSync(__dirname + "/uploads/" + file, { encoding: 'base64' });
+
+              var returnedJson = {
+                _id: result._id,
+                name: result.name,
+                owner: result.owner,
+                description: result.description,
+                data: img,
+                members: result.members,
+                likes: result.likes,
+                albumName: result.albumName,
+              };
+              res.json(returnedJson)
+              console.log("GotDrawing");
+
+            }
+
+            else {
+              console.log(`File ${file} does not exist on server`);
+            }
+
+          }
+        });
+    });
+
+    //delete drawing with specific id from collection
+    app.delete("/drawing/delete/:id", (request, response, next) => {
+      let drawingId = request.params.id;
+      console.log("DRAWING ID", drawingId)
+      // Remove drawing from collection 'drawings'
+      DB.collection("drawings").findOneAndDelete({ _id: mongoose.Types.ObjectId(drawingId) }, (err, res) => {
+
+        // Remove drawing from the upload directory in the server
+        fs.unlink("./uploads/" + drawingId + ".png", function (err, res) {
+          if (err) throw err;
+          console.log(` Drawing with ID ${drawingId} has been deleted from server`);
+        });
+
+        console.log(`Drawing with id ${drawingId} has been deleted from database`);
+        response.json(201)
+      });
+    });
+
+    //update drawing name
+    app.post("/drawingUpdate", (request, response, next) => {
+      var post_data = request.body;
+      var drawingID = post_data.drawingID
+      var newDrawingName = post_data.newDrawingName;
+      console.log(newDrawingName);
+
+      DB.collection("drawings").findOneAndUpdate({ _id: mongoose.Types.ObjectId(drawingID) }, { $set: { "name": newDrawingName } }, { returnDocument: 'after' }, (err, res) => {
+        response.json(201)
+        console.log(drawingID, "is now named ", newDrawingName);
+      })
+    });
+
+    // For Development Purpose Only: Delete all drawings from DB
+    app.delete("/delete", (request, response) => {
+      DB.collection("drawings").remove({}, (err, result) => {
+        if (err) console.log("CANNOT DELETE");
+        else response.json("DELETE OK")
+      })
+    })
+
+    //==========================================================================================================
+    // Album Management
+    //==========================================================================================================
+
     //create new album
     app.post("/albums", (request, response, next) => {
       var post_data = request.body;
       var members = post_data.members
 
-      console.log("avanntt", request.body.members);
       if (typeof members === 'string' || members instanceof String) {
         request.body.members = [post_data.members];
-        console.log("apress", request.body.members);
       }
 
       DB.collection("albums").insertOne(request.body, (err, res) => {
         request.body._id = res.insertedId.toHexString();
         console.log(`Album "${request.body.name}" created successfully with ID: ${request.body._id}!`);
-        response.json(request.body._id);
+        response.json(request.body._id); // Return album ID 
       });
     })
 
     //get all available albums
     app.get("/albums", (request, response, next) => {
-      var post_data = request.body;
-
       DB.collection("albums")
         .find({}).limit(50).toArray(function (err, result) {
           if (err) {
@@ -555,16 +555,15 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
       })
     });
 
-    //get album drawings
+    //get album drawings CHANGE
     app.get("/albums/Drawings/:albumID", (request, response, next) => { // SUGGESTION: /albums/drawings/:albumId
       console.log(request.params.albumID)
       DB.collection("albums").findOne({ _id: mongoose.Types.ObjectId(request.params.albumID) }, function (err, res) {
         response.json(res.drawingIDs);
-        // console.log(res.drawingIDs);
       })
     });
 
-    //add drawing to an album
+    //add drawing to an album CHANGE
     app.put("/albums/addDrawing/:albumId", (request, response, next) => {
       let albumId = request.params.albumId;
       let drawingID = request.body.drawing;
@@ -664,8 +663,8 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
     //remove a drawing id from drawingIDs in album
     app.post("/removeDrawing", (request, response, next) => {
       var post_data = request.body;
-      
-      
+
+
       var albumId = post_data.albumID;
       var drawingID = post_data.drawingID;
 
@@ -676,7 +675,7 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
             response.json(404);
             console.log("album does not exist");
           } else {
-            DB.collection("albums").findOneAndUpdate({_id: mongoose.Types.ObjectId(albumId) }, { "$pull": { drawingIDs: drawingID } },
+            DB.collection("albums").findOneAndUpdate({ _id: mongoose.Types.ObjectId(albumId) }, { "$pull": { drawingIDs: drawingID } },
               function (error, result) {
                 response.json(201);
                 console.log("album updated");
@@ -738,7 +737,7 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
     });
 
     //==========================================================================================================
-    // Profile 
+    // Profile modification
     //==========================================================================================================
     
     //Getting a user's data 
@@ -808,14 +807,6 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
         }
       );
     });
-
-    // For Development Purpose Only: Delete all drawings from DB
-    app.delete("/delete", (request, response) => {
-      DB.collection("drawings").remove({}, (err, result) => {
-        if (err) console.log("CANNOT DELETE");
-        else response.json("DELETE OK")
-      })
-    })
 
     // Start web server
     const server = app.listen(SERVER_PORT, () => {
