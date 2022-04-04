@@ -73,6 +73,9 @@ import { MemberLeftDialogComponent } from './components/editor/member-left-dialo
 import { FavoriteDrawingsComponent } from './components/profile/favorite-drawings/favorite-drawings.component';
 import { TopDrawingsComponent } from './components/profile/top-drawings/top-drawings.component';
 import { StoryComponent } from './components/story/story.component';
+import { ChangeDrawingNameDialogComponent } from './components/album-gallery/drawings-view/change-drawing-name-dialog/change-drawing-name-dialog.component';
+import { ChangeAlbumDialogComponent } from './components/album-gallery/drawings-view/change-album-dialog/change-album-dialog.component';
+import { DeleteDrawingDialogComponent } from './components/album-gallery/drawings-view/delete-drawing-dialog/delete-drawing-dialog.component';
 
 @NgModule({
     declarations: [
@@ -124,6 +127,9 @@ import { StoryComponent } from './components/story/story.component';
         FavoriteDrawingsComponent,
         TopDrawingsComponent,
         StoryComponent,
+        ChangeDrawingNameDialogComponent,
+        ChangeAlbumDialogComponent,
+        DeleteDrawingDialogComponent,
     ],
     imports: [
         BrowserModule,

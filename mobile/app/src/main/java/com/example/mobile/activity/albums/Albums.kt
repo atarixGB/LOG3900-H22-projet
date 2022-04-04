@@ -15,6 +15,7 @@ import com.example.mobile.Retrofit.IMyService
 import com.example.mobile.Retrofit.RetrofitClient
 import com.example.mobile.adapter.AlbumAdapter
 import com.example.mobile.popup.CreateAlbumPopUp
+import com.example.mobile.popup.DrawingNameModificationPopUp
 import com.example.mobile.viewModel.SharedViewModelToolBar
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -33,6 +34,7 @@ class Albums : AppCompatActivity(), CreateAlbumPopUp.DialogListener , AlbumAdapt
     private lateinit var displayAllDrawingsBtn: Button
     private lateinit var iMyService: IMyService
     private lateinit var albumName: String
+    private lateinit var albumID:String
     private lateinit var publicGalleryBtn : Button
     private lateinit var albumDescription: String
     private lateinit var owner:String
@@ -73,6 +75,7 @@ class Albums : AppCompatActivity(), CreateAlbumPopUp.DialogListener , AlbumAdapt
             //open popup window
             var dialog= CreateAlbumPopUp()
             dialog.show(supportFragmentManager,"customDialog")
+
         }
 
         getAllAvailableAlbums()
@@ -105,7 +108,7 @@ class Albums : AppCompatActivity(), CreateAlbumPopUp.DialogListener , AlbumAdapt
 
             override fun onResponse(call: Call<List<IAlbum>>, response: Response<List<IAlbum>>) {
                 for (album in response.body()!!) {
-                    if (album._id != "623e00d4c46d4d7f5c3118a3") {
+                    if (album._id != "623e5f7cbd233e887bcb6034") {
                         if (album.members.contains(user)!!) {
                             albumAdapter.addAlbum(album)
                             albumAdapter.notifyItemInserted((rvOutputAlbums.adapter as AlbumAdapter).itemCount)
@@ -137,18 +140,18 @@ class Albums : AppCompatActivity(), CreateAlbumPopUp.DialogListener , AlbumAdapt
 //        membershipRequests.add("test request 1")
 //        membershipRequests.add("test request2")
 
-        val newAlbum = IAlbum(_id = null,this.albumName,this.owner,this.albumDescription,drawingIDs,usersList, membershipRequests)
-        albumAdapter.addAlbum(newAlbum)
-        albumAdapter.notifyItemInserted((rvOutputAlbums.adapter as AlbumAdapter).itemCount)
 
         createNewAlbum(this.albumName,this.owner,this.albumDescription,drawingIDs,usersList, membershipRequests)
+
     }
 
-    override fun albumAdapterListener(albumName: String) {
+    override fun albumAdapterListener(albumName: String,albumID:String) {
         this.albumName = albumName
+
         val intent = Intent(this, DrawingsCollection::class.java)
         intent.putExtra("albumName", albumName)
         intent.putExtra("userName", user)
+        intent.putExtra("albumID", albumID)
         startActivity(intent)
     }
 
@@ -162,12 +165,10 @@ class Albums : AppCompatActivity(), CreateAlbumPopUp.DialogListener , AlbumAdapt
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { result->
-                if(result == "201"){
-                    Toast.makeText(this,"Album crée avec succès", Toast.LENGTH_SHORT).show()
-
-                }else{
-                    Toast.makeText(this,"Échec de création", Toast.LENGTH_SHORT).show()
-                }
+                albumID= result as String
+                val newAlbum = IAlbum(albumID,this.albumName,this.owner,this.albumDescription,drawingIDs,usersList, membershipRequests)
+                albumAdapter.addAlbum(newAlbum)
+                albumAdapter.notifyItemInserted((rvOutputAlbums.adapter as AlbumAdapter).itemCount)
             })
     }
 }

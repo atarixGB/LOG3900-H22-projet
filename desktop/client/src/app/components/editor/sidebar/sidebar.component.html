@@ -1,5 +1,10 @@
 <mat-sidenav-container>
     <mat-sidenav-content>
+      <div>
+        <h2>
+          {{ this.albumGalleryService.currentDrawing.name }}
+        </h2>
+      </div>
           <div id="returnDiv" fxLayout="row" fxLayoutAlign="start center" routerLink="/menu" (click)="this.saveAndLeave()">
             <mat-icon id="returnBtn">keyboard_arrow_left</mat-icon>
             <span>Sauvegarder et quitter</span>

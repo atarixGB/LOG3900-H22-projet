@@ -24,3 +24,7 @@ npm-debug.log
 !tslint.json
 !tsconfig.json
 !package-lock.json
+
+
+# Répertoire des dessins créés
+uploads/

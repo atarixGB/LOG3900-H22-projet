@@ -8,6 +8,9 @@ import { CollaborationService } from '@app/services/collaboration/collaboration.
 import { DrawingService } from '@app/services/editor/drawing/drawing.service';
 import { LoginService } from '@app/services/login/login.service';
 import { AlbumSettingsDialogComponent } from './album-settings-dialog/album-settings-dialog.component';
+import { ChangeAlbumDialogComponent } from './change-album-dialog/change-album-dialog.component';
+import { ChangeDrawingNameDialogComponent } from './change-drawing-name-dialog/change-drawing-name-dialog.component';
+import { DeleteDrawingDialogComponent } from './delete-drawing-dialog/delete-drawing-dialog.component';
 import { MembersListDialogComponent } from './members-list-dialog/members-list-dialog.component';
 import { RequestsDialogComponent } from './requests-dialog/requests-dialog.component';
 
@@ -21,12 +24,12 @@ export class DrawingsViewComponent {
   isPublicAlbum: boolean;
 
   constructor(
-    public albumGalleryService: AlbumGalleryService, 
-    public loginService: LoginService, 
-    public dialog: MatDialog, 
-    private router: Router, 
-    private route: ActivatedRoute, 
-    public collaborationService: CollaborationService, 
+    public albumGalleryService: AlbumGalleryService,
+    public loginService: LoginService,
+    public dialog: MatDialog,
+    private router: Router,
+    private route: ActivatedRoute,
+    public collaborationService: CollaborationService,
     private drawingService: DrawingService) {
     this.isCurrentAlbumMine = this.loginService.username == albumGalleryService.currentAlbum.owner;
     this.isPublicAlbum = albumGalleryService.currentAlbum.name == PUBLIC_ALBUM.name;
@@ -82,5 +85,23 @@ export class DrawingsViewComponent {
     this.albumGalleryService.currentDrawing = drawing;
     this.drawingService.setCurrentDrawing(drawing);
     this.collaborationService.joinCollab(drawing._id);
+  }
+
+  openChangeNameDialog(drawing: IDrawing): void {
+    this.dialog.open(ChangeDrawingNameDialogComponent, {
+      data: drawing
+    });
+  }
+
+  openChangeAlbumDialog(drawing: IDrawing): void {
+    this.dialog.open(ChangeAlbumDialogComponent, {
+      data: drawing
+    });
+  }
+
+  openDeleteConfirmationDialog(drawing: IDrawing): void {
+    this.dialog.open(DeleteDrawingDialogComponent, {
+      data: drawing,
+    });
   }
 }

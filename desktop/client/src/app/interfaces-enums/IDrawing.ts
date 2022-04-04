@@ -6,4 +6,5 @@ export interface IDrawing {
   members?: string[],
   likes?: string[],
   isStory?: boolean;
+  creationDate: any,
 }

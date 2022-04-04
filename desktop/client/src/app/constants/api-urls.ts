@@ -16,6 +16,9 @@ export const GET_DRAWING_URL = `${DATABASE_URL}/drawings`;
 export const LIKE_DRAWING_URL = `${DATABASE_URL}/drawings/addLike`;
 export const GET_USER_FAVORITE_DRAWINGS_URL = `${DATABASE_URL}/drawings/favorite`
 export const GET_USER_TOP_X_DRAWINGS_URL = `${DATABASE_URL}/drawings/top`
+export const CHANGE_DRAWING_NAME_URL = `${DATABASE_URL}/drawingUpdate`
+export const DELETE_DRAWING_URL = `${DATABASE_URL}/drawing/delete`
+export const REMOVE_DRAWING_FROM_ALBUM_URL = `${DATABASE_URL}/removeDrawing`
 
 export const ADD_DRAWING_TO_STORY_URL = `${DATABASE_URL}/drawings/addDrawingToStory`;
 export const GET_ALL_USERS_URL = `${DATABASE_URL}/getAllUsers`
