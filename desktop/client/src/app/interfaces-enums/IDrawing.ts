@@ -5,5 +5,6 @@ export interface IDrawing {
   data?: string | undefined,
   members?: string[],
   likes?: string[],
+  isStory?: boolean;
   creationDate: any,
 }

@@ -158,7 +158,7 @@ class CreateDrawingPopUp(val user: String, val isAlbumAlreadySelected: Boolean) 
                     location = ""
                 }
                 if (isAlbumAlreadySelected) {
-                    createDrawing(albumName, drawingName.text.toString(), user, data, members, likes, location)
+                    createDrawing(albumName, drawingName.text.toString(), user, data, members, likes, false,location)
                     Toast.makeText(
                         context,
                         "ajout du dessin a $albumName",
@@ -171,7 +171,7 @@ class CreateDrawingPopUp(val user: String, val isAlbumAlreadySelected: Boolean) 
                 } else if (rb.text.toString().equals("privé")) {
                     //add drawing to private album
                         if (albumName.isNotEmpty()) {
-                            createDrawing(albumName, drawingName.text.toString(), user, data, members, likes, location)
+                            createDrawing(albumName, drawingName.text.toString(), user, data, members, likes, false,location)
                             Toast.makeText(
                                 context,
                                 "ajout du dessin a $albumName",
@@ -188,7 +188,7 @@ class CreateDrawingPopUp(val user: String, val isAlbumAlreadySelected: Boolean) 
                         }
                 } else {
                     //add drawing to public album
-                    createDrawing("album public", drawingName.text.toString(), user, data, members, likes, location)
+                    createDrawing("album public", drawingName.text.toString(), user, data, members, likes, false,location)
 //                    addDrawingToAlbum("Album public", drawingName.text.toString())
                     Toast.makeText(context, "ajout du dessin a l'album public", Toast.LENGTH_LONG)
                         .show()
@@ -262,18 +262,21 @@ class CreateDrawingPopUp(val user: String, val isAlbumAlreadySelected: Boolean) 
 //    }
 
 
-    private fun createDrawing(albumName: String, drawingName: String, owner: String, data:String, members:ArrayList<String>, likes:ArrayList<String>, location : String) {
+    private fun createDrawing(albumName: String, drawingName: String, owner: String, data:String, members:ArrayList<String>, likes:ArrayList<String>, isStory : Boolean,location:String) {
         var location = location
         if(location == "Géolocalisation non disponible"){
             location = ""
         }
-        compositeDisposable.add(iMyService.createDrawing(drawingName, owner, data, members, likes, location)
+        compositeDisposable.add(iMyService.createDrawing(drawingName, owner, data, members, likes, isStory,location)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { result ->
                 //result est drawingID
                 //this.drawingId = result
                 listener.drawingIdPopUpListener(result as String)
+                if (albumName == "album public") {
+                    albumID = "623e5f7cbd233e887bcb6034"
+                }
                 addDrawingToAlbum(albumID, result)
 //                if (result == "201") {
 ////                    Toast.makeText(context, "added", Toast.LENGTH_SHORT).show()

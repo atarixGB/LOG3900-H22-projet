@@ -12,6 +12,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
+import { MatProgressBarModule } from '@angular/material/progress-bar'
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
@@ -71,6 +72,7 @@ import { MemberJoinedDialogComponent } from './components/editor/member-joined-d
 import { MemberLeftDialogComponent } from './components/editor/member-left-dialog/member-left-dialog.component';
 import { FavoriteDrawingsComponent } from './components/profile/favorite-drawings/favorite-drawings.component';
 import { TopDrawingsComponent } from './components/profile/top-drawings/top-drawings.component';
+import { StoryComponent } from './components/story/story.component';
 import { ChangeDrawingNameDialogComponent } from './components/album-gallery/drawings-view/change-drawing-name-dialog/change-drawing-name-dialog.component';
 import { ChangeAlbumDialogComponent } from './components/album-gallery/drawings-view/change-album-dialog/change-album-dialog.component';
 import { DeleteDrawingDialogComponent } from './components/album-gallery/drawings-view/delete-drawing-dialog/delete-drawing-dialog.component';
@@ -124,6 +126,7 @@ import { DeleteDrawingDialogComponent } from './components/album-gallery/drawing
         MemberLeftDialogComponent,
         FavoriteDrawingsComponent,
         TopDrawingsComponent,
+        StoryComponent,
         ChangeDrawingNameDialogComponent,
         ChangeAlbumDialogComponent,
         DeleteDrawingDialogComponent,
@@ -138,6 +141,7 @@ import { DeleteDrawingDialogComponent } from './components/album-gallery/drawing
         MatListModule,
         MatGridListModule,
         MatTooltipModule,
+        MatProgressBarModule,
         FormsModule,
         MatFormFieldModule,
         ReactiveFormsModule,

@@ -20,6 +20,10 @@ export const CHANGE_DRAWING_NAME_URL = `${DATABASE_URL}/drawingUpdate`;
 export const DELETE_DRAWING_URL = `${DATABASE_URL}/drawing/delete`;
 export const REMOVE_DRAWING_FROM_ALBUM_URL = `${DATABASE_URL}/removeDrawing`;
 
+export const ADD_DRAWING_TO_STORY_URL = `${DATABASE_URL}/drawings/addDrawingToStory`;
+export const GET_ALL_USERS_URL = `${DATABASE_URL}/getAllUsers`
+export const GET_ALL_USER_DRAWINGS_URL = `${DATABASE_URL}/getAllUserDrawings`
+
 export const PROFILE_UPDATE_URL = `${DATABASE_URL}/profileUpdate`;
 export const PROFILE_URL = `${DATABASE_URL}/profile`;
 export const STATS_TOTAL_DRAWINGS_CREATED_URL = `${DATABASE_URL}/profile/stats/drawings`;
