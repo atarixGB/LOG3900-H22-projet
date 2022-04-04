@@ -1,5 +1,7 @@
 package com.example.mobile.activity.profile
 
+import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.ActivityOptions
 import android.content.Intent
@@ -7,6 +9,8 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
+import android.location.Geocoder
+import android.location.Location
 import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -16,6 +20,7 @@ import android.text.method.PasswordTransformationMethod
 import android.util.Base64
 import android.view.animation.AnimationUtils
 import android.widget.*
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -91,23 +96,24 @@ class Registration : AppCompatActivity(), SelectAvatarPopUp.DialogListener {
             builder.setMessage("Prends une belle photo! ")
             builder.setNegativeButton("Lance la caméra") { dialog, which ->
                 dialog.dismiss()
-                Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
-                    takePictureIntent.resolveActivity(packageManager).also {
-                        val permission = ContextCompat.checkSelfPermission(
-                            this,
-                            android.Manifest.permission.CAMERA
-                        )
-                        if (permission != PackageManager.PERMISSION_GRANTED) {
-                            ActivityCompat.requestPermissions(
-                                this,
-                                arrayOf(android.Manifest.permission.CAMERA),
-                                1
-                            )
-                        } else {
-                            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAMERA)
-                        }
-                    }
-                }
+                activityResultLauncher.launch(Manifest.permission.CAMERA)
+//                Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
+//                    takePictureIntent.resolveActivity(packageManager).also {
+//                        val permission = ContextCompat.checkSelfPermission(
+//                            this,
+//                            android.Manifest.permission.CAMERA
+//                        )
+//                        if (permission != PackageManager.PERMISSION_GRANTED) {
+//                            ActivityCompat.requestPermissions(
+//                                this,
+//                                arrayOf(android.Manifest.permission.CAMERA),
+//                                1
+//                            )
+//                        } else {
+//                            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAMERA)
+//                        }
+//                    }
+//                }
             }
 
             val dialog: AlertDialog = builder.create()
@@ -160,6 +166,21 @@ class Registration : AppCompatActivity(), SelectAvatarPopUp.DialogListener {
 
     }
 
+    @SuppressLint("MissingPermission")
+    private val activityResultLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.RequestPermission()){ isGranted ->
+            // Handle Permission granted/rejected
+            if (isGranted) {
+                Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
+                    takePictureIntent.resolveActivity(packageManager).also {
+                        startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAMERA)
+                    }
+                }
+            } else {
+                Toast.makeText(this, "Autorisation nécessaire pour utiliser la caméra", Toast.LENGTH_SHORT).show()
+            }
+        }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
