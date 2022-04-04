@@ -312,7 +312,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
-                    android:text="5000"
                     android:textColor="@color/brown"
                     android:textSize="18sp"
                     android:textStyle="bold" />
@@ -336,7 +335,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
-                    android:text="5000"
+
                     android:textColor="@color/brown"
                     android:textSize="18sp"
                     android:textStyle="bold" />

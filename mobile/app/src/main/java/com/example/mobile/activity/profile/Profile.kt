@@ -9,20 +9,16 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isVisible
 import com.example.mobile.Interface.IDrawing
 import com.example.mobile.Interface.User
 import com.example.mobile.R
 import com.example.mobile.Retrofit.IMyService
 import com.example.mobile.Retrofit.RetrofitClient
-import com.example.mobile.SocketHandler
 import com.example.mobile.activity.MainActivity
-import com.example.mobile.adapter.SimpleDrawingAdapter
 import com.example.mobile.bitmapDecoder
 import com.example.mobile.viewModel.SharedViewModelToolBar
 import com.mikhaellopez.circularimageview.CircularImageView
 import io.reactivex.disposables.CompositeDisposable
-import io.socket.client.Socket
 import kotlinx.android.synthetic.main.activity_profile.*
 import retrofit2.Call
 import retrofit2.Response
@@ -33,8 +29,9 @@ class Profile : AppCompatActivity() {
     private lateinit var modifyProfile: TextView
     private lateinit var avatar: CircularImageView
     private lateinit var user: String
-    private lateinit var visitingUser: String
     private var totalNbLikes:Int = 0
+    private var totalNbDrawingCreated:Double = 0.0
+    private var totalNbAlbumCreated :Double =0.0
 
     //    private lateinit var email: String
     private lateinit var usernameDisplayed: TextView
@@ -100,6 +97,8 @@ class Profile : AppCompatActivity() {
         }
 
         getNbLikes(user)
+        getNbDrawings(user)
+        getNbAlbumsCreated(user)
 
     }
 
@@ -138,6 +137,41 @@ class Profile : AppCompatActivity() {
                 Log.d("Top dessins", "onFailure" +t.message )
             }
         })
+    }
+
+    private fun getNbDrawings(user:String) {
+        var call: Call<Any> = iMyService.getNbTotalDrawings(user)
+
+        call.enqueue(object: retrofit2.Callback<Any> {
+            override fun onResponse(call: Call<Any>, response: Response<Any>) {
+
+                totalNbDrawingCreated= response.body() as Double
+                nbCreatedDrawings.setText(totalNbDrawingCreated.toInt().toString())
+            }
+
+            override fun onFailure(call: Call<Any>, t: Throwable) {
+                Toast.makeText(this@Profile, "erreur statistique introuvable", Toast.LENGTH_SHORT).show()
+            }
+        })
+
+    }
+
+    private fun getNbAlbumsCreated(user:String) {
+        var call: Call<Any> = iMyService.getNbAlbumsCreated(user)
+
+        call.enqueue(object: retrofit2.Callback<Any> {
+            override fun onResponse(call: Call<Any>, response: Response<Any>) {
+
+                totalNbAlbumCreated= response.body() as Double
+
+                nbPrivateAlbums.setText(totalNbAlbumCreated.toInt().toString())
+            }
+
+            override fun onFailure(call: Call<Any>, t: Throwable) {
+                Toast.makeText(this@Profile, "erreur statistique introuvable", Toast.LENGTH_SHORT).show()
+            }
+        })
+
     }
 
     private fun displayBadges(totalNbLikes:Int){

@@ -160,5 +160,10 @@ interface IMyService {
     @GET("/drawings/top/{username}")
     fun getTopDrawings(@Path("username")username:String):Call<List<IDrawing>>
 
+    @GET("/profile/stats/drawings/{username}")
+    fun getNbTotalDrawings(@Path("username")username:String):Call<Any>
+
+    @GET("/profile/stats/albums/{username}")
+    fun getNbAlbumsCreated(@Path("username")username:String):Call<Any>
 
 }

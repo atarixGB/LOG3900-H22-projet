@@ -736,26 +736,6 @@ app.post(
         });
     });
 
-    // app.get("/profile/:username", (request, response, next) => {
-
-    //   var identifier = request.params.username;
-    //   console.log(identifier.toString());
-    //   var db = client.db("PolyGramDB");
-
-    //   //check if identifier exists
-    //   db.collection("users").findOne(
-    //     { identifier: identifier },
-    //     function (error, result) {
-    //       if (err) {
-    //         console.log("error getting");
-    //         response.status(400).send("Error fetching users");
-    //       } else {
-    //         response.json(result);
-    //         console.log("Got user data for profile load: ", identifier);
-    //       }
-    //     }
-    //   );
-    // }); MISE EN COMMENTAIRE PARCE QUE LA REQUETE EXISTE DEJA CI-HAUT
 
     //get userid when we send username 
     app.get("/getUserID/:username", (request, response, next) => {
@@ -773,6 +753,69 @@ app.post(
           });
     });
 
+//==========================================================================================================
+// Profile : Statistics
+//==========================================================================================================
+
+    // TODO: Get the total number of collabs that userId has participated in
+    app.get("/profile/stats/collabs/:userId", (request, response) => {
+      
+    })
+
+    // TODO: Get the average duration of userId in a collab session
+    app.get("/profile/stats/collabs/session/:userId", (request, response) => {
+      
+    })
+
+    // TODO: Get the total duration of userId in collab sessions
+    app.get("/profile/stats/collabs/total-duration/:userId", (request, response) => {
+      
+    })
+
+    // Get the total number of drawings created by username 
+    app.get("/profile/stats/drawings/:username", (request, response) => {
+      const username = request.params.username;
+
+      DB.collection("drawings").find( { owner : username }).toArray((error, result) => {
+        if (error) throw error;
+        console.log(result);
+        const totalNbrOfDrawingsCreated = result.length;
+        response.json(totalNbrOfDrawingsCreated)
+      })
+
+    })
+
+    // Get the total number of likes by username 
+    app.get("/profile/stats/drawings/likes/:username", (request, response) => {
+      const username = request.params.username;
+
+      DB.collection("drawings").find({ likes: { $all: [username] } }).toArray((error, result) => {
+        if (error) throw error;
+        
+        let likesCount = 0;
+        for (const drawing of result) {
+          likesCount += drawing.likes.length;
+        }
+
+        response.json(likesCount);
+      })
+    })
+
+    // Get the total number of private albums created by username 
+    app.get("/profile/stats/albums/:username", (request, response) => {
+      const username = request.params.username;
+
+      DB.collection("albums").find({ owner : username}).toArray((error, result) => {
+        if (error) throw error;
+        console.log(result);        
+        const totalNbrOfAlbumsCreated = result.length;
+        response.json(totalNbrOfAlbumsCreated);
+      })
+    })
+
+
+
+//-----------------------------------
     // Start web server
     const server = app.listen(SERVER_PORT, () => {
       console.log(
@@ -781,6 +824,8 @@ app.post(
     });
   }
 });
+
+
 
 //==========================================================================================================
 // UTILITY FUNCTIONS
