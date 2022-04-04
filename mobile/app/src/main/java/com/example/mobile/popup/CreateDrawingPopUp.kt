@@ -274,6 +274,9 @@ class CreateDrawingPopUp(val user: String, val isAlbumAlreadySelected: Boolean) 
                 //result est drawingID
                 //this.drawingId = result
                 listener.drawingIdPopUpListener(result as String)
+                if (albumName == "album public") {
+                    albumID = "623e5f7cbd233e887bcb6034"
+                }
                 addDrawingToAlbum(albumID, result)
 //                if (result == "201") {
 ////                    Toast.makeText(context, "added", Toast.LENGTH_SHORT).show()
