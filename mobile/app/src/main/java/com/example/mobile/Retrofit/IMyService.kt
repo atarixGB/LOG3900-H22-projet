@@ -101,7 +101,8 @@ interface IMyService {
                       @Field("owner")ownerID:String,
                       @Field("data")data:String,
                       @Field("members")members:ArrayList<String>,
-                      @Field("likes")likes:ArrayList<String>): Observable<String>
+                      @Field("likes")likes:ArrayList<String>,
+                      @Field ("location") location : String): Observable<String>
 
     @PUT("albums/addDrawing/{albumId}")
     @FormUrlEncoded
