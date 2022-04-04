@@ -1,9 +1,6 @@
-// export const COLLAB_URL = `https://polygram-app.herokuapp.com/`;
-// export const DATABASE_URL = `https://polygram-app.herokuapp.com`;
-// export const CHAT_URL = `https://polygram-app.herokuapp.com/`;
-export const COLLAB_URL = `http://localhost:3000`;
+export const COLLAB_URL = `http://localhost:3002`;
 export const DATABASE_URL = `http://localhost:3001`;
-export const CHAT_URL = `http://localhost:3002`;
+export const CHAT_URL = `http://localhost:3000`;
 
 export const ALBUM_URL = `${DATABASE_URL}/albums`;
 export const JOIN_ALBUM_URL = `${DATABASE_URL}/albums/sendRequest`;
@@ -19,6 +16,9 @@ export const GET_DRAWING_URL = `${DATABASE_URL}/drawings`;
 export const LIKE_DRAWING_URL = `${DATABASE_URL}/drawings/addLike`;
 export const GET_USER_FAVORITE_DRAWINGS_URL = `${DATABASE_URL}/drawings/favorite`
 export const GET_USER_TOP_X_DRAWINGS_URL = `${DATABASE_URL}/drawings/top`
+export const CHANGE_DRAWING_NAME_URL = `${DATABASE_URL}/drawingUpdate`
+export const DELETE_DRAWING_URL = `${DATABASE_URL}/drawing/delete`
+export const REMOVE_DRAWING_FROM_ALBUM_URL = `${DATABASE_URL}/removeDrawing`
 
 export const PROFILE_UPDATE_URL = `${DATABASE_URL}/profileUpdate`;
 export const PROFILE_URL = `${DATABASE_URL}/profile`;

@@ -1,5 +1,5 @@
 export interface IChatroom {
-  _id?: string;
+  _id?: any;
   identifier: string; // Usernama
   roomName: string;
   usersList: string[];
