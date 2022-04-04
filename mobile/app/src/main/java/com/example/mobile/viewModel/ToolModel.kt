@@ -16,6 +16,9 @@ class ToolModel : ViewModel(){
     private val _onClick = MutableLiveData<Boolean>(false)
     var onClick: LiveData<Boolean> = _onClick
 
+    private val _onStory = MutableLiveData<Boolean>(false)
+    var onStory: LiveData<Boolean> = _onStory
+
     fun changeTool(newTool: ToolbarFragment.MenuItem){
         _tool.value = newTool
     }
@@ -26,6 +29,10 @@ class ToolModel : ViewModel(){
 
     fun onClick() {
         _onClick.value = true
+    }
+
+    fun onStory() {
+        _onStory.value = true
     }
 
 

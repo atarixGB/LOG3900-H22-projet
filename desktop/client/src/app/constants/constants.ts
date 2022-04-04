@@ -10,6 +10,8 @@ export const PUBLIC_CHATROOM = {
   owner: "Poly-Gram"
 }
 
+export const NAME_MAX_LENGTH = 40;
+
 /***********************/
 export const CNV_WIDTH = 1200;
 export const CNV_HEIGTH = 1000;

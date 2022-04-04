@@ -86,7 +86,7 @@ class DisplayPublicAlbums : AppCompatActivity(), AlbumAdapter.AlbumAdapterListen
 
     }
 
-    override fun albumAdapterListener(albumName: String) {
+    override fun albumAdapterListener(albumName: String,albumID:String) {
         this.albumName = albumName
         //Open Popup Window
         var dialog = JoinAlbumPopUp(albumName, user)

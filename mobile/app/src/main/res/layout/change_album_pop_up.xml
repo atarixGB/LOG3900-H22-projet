@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".popup.ChangeAlbumPopUp"
+    android:background="@color/white"
+    android:gravity="center">
+
+    <TextView
+        android:id="@+id/popupTitleChange"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:text="Changer d'album"
+        android:textSize="26sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <RadioGroup
+        android:id="@+id/albumChangeRadioGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/popupTitleChange">
+
+        <RadioButton
+            android:id="@+id/publicRB"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="public"
+            android:textSize="20sp"/>
+
+        <RadioButton
+            android:id="@+id/privateRB"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="privé"
+            android:textSize="20sp"/>
+
+    </RadioGroup>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvOutputAlbums"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/albumChangeRadioGroup"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/message_input_box" />
+
+
+    <LinearLayout
+        android:id="@+id/buttons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rvOutputAlbums"
+        android:orientation="horizontal"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp">
+
+        <Button
+            android:id="@+id/cancelBtn"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/submitBtn"
+            android:background="@color/black"
+            android:text="Annuler"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+
+        <Button
+            android:id="@+id/submitBtn"
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:background="@color/black"
+            android:text="Transférer"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+
+    </LinearLayout>
+
+
+</RelativeLayout>

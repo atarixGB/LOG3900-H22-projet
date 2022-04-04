@@ -25,7 +25,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.658"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/solo_start_btn" />
+        app:layout_constraintTop_toBottomOf="@+id/rvOutputStories" />
 
     <View
         android:id="@+id/view3"
@@ -34,10 +34,10 @@
         android:layout_marginStart="300dp"
         android:layout_marginEnd="10dp"
         android:background="#C4E0B2"
-        app:layout_constraintBottom_toBottomOf="@+id/solo_text"
-        app:layout_constraintEnd_toStartOf="@+id/solo_text"
+        app:layout_constraintBottom_toBottomOf="@+id/stories_text"
+        app:layout_constraintEnd_toStartOf="@+id/stories_text"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/solo_text" />
+        app:layout_constraintTop_toTopOf="@id/stories_text" />
 
     <View
         android:id="@+id/view5"
@@ -52,14 +52,14 @@
         app:layout_constraintTop_toTopOf="@+id/collab_text" />
 
     <TextView
-        android:id="@+id/solo_text"
+        android:id="@+id/stories_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="300dp"
         android:layout_marginTop="92dp"
-        android:text="Mode solo"
+        android:text="Dessins du Jour"
         android:textAppearance="@style/TextAppearance.AppCompat.Display2"
-        app:layout_constraintBottom_toTopOf="@+id/solo_start_btn"
+        app:layout_constraintBottom_toTopOf="@+id/rvOutputStories"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -83,29 +83,25 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="50dp"
         android:background="#c4e0b2"
-        app:layout_constraintBottom_toBottomOf="@+id/solo_text"
+        app:layout_constraintBottom_toBottomOf="@+id/stories_text"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/solo_text"
-        app:layout_constraintTop_toTopOf="@id/solo_text" />
+        app:layout_constraintStart_toEndOf="@+id/stories_text"
+        app:layout_constraintTop_toTopOf="@id/stories_text" />
 
-    <Button
-        android:id="@+id/solo_start_btn"
-        android:layout_width="350dp"
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvOutputStories"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:layout_marginStart="250dp"
-        android:background="@drawable/dashboard_button_box"
-        android:padding="20dp"
-        android:text="Créer un nouveau dessin"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:textColor="@color/black"
-        app:backgroundTint="#C8C0C0"
-        app:layout_constraintEnd_toStartOf="@+id/solo_continue_btn"
+        android:layout_marginStart="300dp"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/solo_text" />
+        app:layout_constraintTop_toBottomOf="@+id/stories_text" />
+
 
     <Button
-        android:id="@+id/solo_start_btn3"
+        android:id="@+id/session_start"
         android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="25dp"
@@ -134,21 +130,6 @@
         app:backgroundTint="#C8C0C0"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/collab_text" />
-
-    <Button
-        android:id="@+id/solo_continue_btn"
-        android:layout_width="350dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:layout_marginEnd="100dp"
-        android:background="@drawable/dashboard_button_box"
-        android:padding="20dp"
-        android:text="Continuer un dessin"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:textColor="@color/black"
-        app:backgroundTint="#C8C0C0"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/solo_text" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
