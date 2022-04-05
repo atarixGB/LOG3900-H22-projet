@@ -318,11 +318,14 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
     }
 
     override fun emitJoinDrawingListener(drawingId: String) {
-        TODO("Not yet implemented")
+//        val intent = Intent(this, DrawingActivity::class.java)
+//        intent.putExtra("userName", user)
+//        intent.putExtra("drawingCollabId", drawingId)
+//        startActivity(intent)
     }
 
 //    override fun emitJoinDrawingListener(drawingId: String) {
-//        socket.socket.emit("joinCollab", drawingId)
+//        DrawingSocket.socket.emit("joinCollab", drawingId)
 //    }
 
     fun editDrawing(drawingId: String) {

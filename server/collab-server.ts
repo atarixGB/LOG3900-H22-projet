@@ -57,6 +57,7 @@ ioCollab.on('connection', (socket) => {
         socket.join(roomName);
         ioCollab.in(roomName).emit('memberNbUpdate', roomData.members.length);
         socket.emit('joinSuccessful', infoOnActiveRooms.get(roomName));
+        socket.emit('joinSuccessfulwithID', roomName);
 
         // Utile pour voir l'état des rooms
         console.log(infoOnActiveRooms); 

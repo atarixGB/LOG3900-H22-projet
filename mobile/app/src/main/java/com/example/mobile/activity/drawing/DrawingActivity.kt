@@ -49,10 +49,10 @@ class DrawingActivity : AppCompatActivity(), CreateDrawingPopUp.DialogListener, 
         } else {
             // drawing already exists
             sharedViewModelToolBar.setCollabDrawingId(collabDrawingId)
-            DrawingSocket.prepForJoin(collabDrawingId, user)
+//            DrawingSocket.prepForJoin(collabDrawingId, user)
         }
 
-        DrawingSocket.socket.on("prepForNewMember", onPrepForNewMember)
+//        DrawingSocket.socket.on("prepForNewMember", onPrepForNewMember)
 
     }
 

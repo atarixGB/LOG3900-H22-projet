@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
+import androidx.core.content.ContextCompat.startActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mobile.Interface.IDrawing
@@ -26,6 +27,7 @@ import com.example.mobile.popup.DrawingNameModificationPopUp
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import io.socket.emitter.Emitter
 import kotlinx.android.synthetic.main.item_album.view.*
 import kotlinx.android.synthetic.main.item_drawing.view.*
 
@@ -59,7 +61,6 @@ class DrawingAdapter (val context: Context?, var drawings: ArrayList<IDrawing>, 
 //        socket.init()
 
 
-
         holder.itemView.apply {
             drawingName.text = currentDrawing.name
             owner.text = currentDrawing.owner
@@ -83,7 +84,7 @@ class DrawingAdapter (val context: Context?, var drawings: ArrayList<IDrawing>, 
                 listener.drawingAdapterListener(drawingName.text.toString())
             }
 
-            if (albumID == "" || user!= currentDrawing.owner) {
+            if (albumID == "" || user != currentDrawing.owner) {
                 drawingViewOptions.isVisible = false
             }
 
@@ -99,20 +100,31 @@ class DrawingAdapter (val context: Context?, var drawings: ArrayList<IDrawing>, 
                     when (menuItem.itemId) {
                         R.id.menu_editDrawingParameters -> {
                             //ouvrir pop up modification nom album
-                            dialogEditDrawingName= DrawingNameModificationPopUp(currentDrawing._id!!,currentDrawing.name, position)
-                            dialogEditDrawingName.show((context as AppCompatActivity).supportFragmentManager,"customDialog")
+                            dialogEditDrawingName = DrawingNameModificationPopUp(
+                                currentDrawing._id!!,
+                                currentDrawing.name,
+                                position
+                            )
+                            dialogEditDrawingName.show(
+                                (context as AppCompatActivity).supportFragmentManager,
+                                "customDialog"
+                            )
 //                            currentDrawing.name=newDrawingName
 //                            drawingName.text = newDrawingName
                             true
                         }
                         R.id.menu_changeAlbum -> {
-                            dialogChangeAlbumName= ChangeAlbumPopUp(currentDrawing._id!!, user, position, albumID)
-                            dialogChangeAlbumName.show((context as AppCompatActivity).supportFragmentManager,"customDialog")
+                            dialogChangeAlbumName =
+                                ChangeAlbumPopUp(currentDrawing._id!!, user, position, albumID)
+                            dialogChangeAlbumName.show(
+                                (context as AppCompatActivity).supportFragmentManager,
+                                "customDialog"
+                            )
 
                             true
                         }
                         R.id.menu_deleteDrawing -> {
-                            removeDrawingFromAlbum(currentDrawing._id!!,albumID)
+                            removeDrawingFromAlbum(currentDrawing._id!!, albumID)
                             deleteDrawing(currentDrawing._id!!)
                             deleteDrawings(position)
                             true
@@ -126,7 +138,7 @@ class DrawingAdapter (val context: Context?, var drawings: ArrayList<IDrawing>, 
                 if (user != currentDrawing.owner) {
                     popupMenu.menu.findItem(R.id.menu_editDrawingParameters).isVisible = false
                     popupMenu.menu.findItem(R.id.menu_changeAlbum).isVisible = false
-                    popupMenu.menu.findItem(R.id.menu_deleteDrawing).isVisible=false
+                    popupMenu.menu.findItem(R.id.menu_deleteDrawing).isVisible = false
                 }
 
                 //to show icons for menu
@@ -134,7 +146,8 @@ class DrawingAdapter (val context: Context?, var drawings: ArrayList<IDrawing>, 
                     val fieldMPopup = PopupMenu::class.java.getDeclaredField("mPopup")
                     fieldMPopup.isAccessible = true
                     val mPopup = fieldMPopup.get(popupMenu)
-                    mPopup.javaClass.getDeclaredMethod("setForceShowIcon", Boolean::class.java).invoke(mPopup, true)
+                    mPopup.javaClass.getDeclaredMethod("setForceShowIcon", Boolean::class.java)
+                        .invoke(mPopup, true)
                 } catch (e: Exception) {
                     Log.e("DrawingAdapter", "Error showing menu icons", e)
                 } finally {
@@ -145,7 +158,7 @@ class DrawingAdapter (val context: Context?, var drawings: ArrayList<IDrawing>, 
 
 
             likeBtn.setOnClickListener {
-                if (!likes.contains(user)){
+                if (!likes.contains(user)) {
                     listener.addLikeToDrawingAdapterListener(currentDrawing._id!!)
                     likes.add(user)
                     incrementNbrOfLikes++
@@ -156,16 +169,31 @@ class DrawingAdapter (val context: Context?, var drawings: ArrayList<IDrawing>, 
                 }
             }
 
+//            DrawingSocket.socket.on("joinSuccessful", Emitter.Listener {
+//                listener.emitJoinDrawingListener(currentDrawing._id!!)
+////                val intent = Intent(context, DrawingActivity::class.java)
+////                intent.putExtra("userName", user)
+////                intent.putExtra("drawingCollabId", currentDrawing._id!!)
+////                context.startActivity(intent)
+//            })
+
             modifDrawing.setOnClickListener {
-                val intent = Intent(it.context, DrawingActivity::class.java)
-                intent.putExtra("userName", user)
-                intent.putExtra("drawingCollabId", currentDrawing._id!!)
-                it.context.startActivity(intent)
+                DrawingSocket.prepForJoin(currentDrawing._id!!, user)
+                DrawingSocket.socket.emit("joinCollab", currentDrawing._id!!)
             }
         }
 
 //        socket.socket.on("joinSuccessfulwithID", onJoinCollab)
+//        DrawingSocket.socket.on("joinSuccessfulwithID", Emitter.Listener {
+////            listener.emitJoinDrawingListener(currentDrawing._id!!)
+//            val intent = Intent(context, DrawingActivity::class.java)
+//            intent.putExtra("userName", user)
+//            intent.putExtra("drawingCollabId", dr)
+//            context!!.startActivity(intent)
+//        })
     }
+
+
 
 //    private var onJoinCollab = Emitter.Listener {
 ////        val joinEvent = it[0] as JSONObject
