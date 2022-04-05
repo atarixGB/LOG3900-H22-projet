@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.ImageButton
+import androidx.activity.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mobile.Interface.IDrawing
@@ -12,6 +13,7 @@ import com.example.mobile.R
 import com.example.mobile.Retrofit.IMyService
 import com.example.mobile.Retrofit.RetrofitClient
 import com.example.mobile.adapter.SimpleDrawingAdapter
+import com.example.mobile.viewModel.SharedViewModelToolBar
 import io.reactivex.disposables.CompositeDisposable
 import retrofit2.Call
 import retrofit2.Response
@@ -25,6 +27,8 @@ class FavoriteDrawingDisplay : AppCompatActivity(),SimpleDrawingAdapter.SimpleDr
     private lateinit var rvOutputFavoriteDrawings: RecyclerView
     private lateinit var iMyService: IMyService
     internal var compositeDisposable = CompositeDisposable()
+    private val sharedViewModel: SharedViewModelToolBar by viewModels()
+
 
     override fun onStop() {
         compositeDisposable.clear()
@@ -39,6 +43,7 @@ class FavoriteDrawingDisplay : AppCompatActivity(),SimpleDrawingAdapter.SimpleDr
         rvOutputFavoriteDrawings = findViewById(R.id.rvOutputFavoriteDrawings)
         leaveTopBtn = findViewById(R.id.leaveFavoriteBtn)
 
+        sharedViewModel.setUser(user)
         favoriteDrawingAdapter = SimpleDrawingAdapter(this, drawings,user)
 
         //Recycler View of rooms

@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.ImageButton
+import androidx.activity.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mobile.Interface.IDrawing
@@ -13,6 +14,7 @@ import com.example.mobile.Retrofit.IMyService
 import com.example.mobile.Retrofit.RetrofitClient
 import com.example.mobile.adapter.DrawingAdapter
 import com.example.mobile.adapter.SimpleDrawingAdapter
+import com.example.mobile.viewModel.SharedViewModelToolBar
 import io.reactivex.disposables.CompositeDisposable
 
 import retrofit2.Call
@@ -27,6 +29,8 @@ class TopDrawingDisplay : AppCompatActivity(),SimpleDrawingAdapter.SimpleDrawing
     private lateinit var rvOutputTopDrawings: RecyclerView
     private lateinit var iMyService: IMyService
     internal var compositeDisposable = CompositeDisposable()
+    private val sharedViewModel: SharedViewModelToolBar by viewModels()
+
 
     override fun onStop() {
         compositeDisposable.clear()
@@ -40,6 +44,9 @@ class TopDrawingDisplay : AppCompatActivity(),SimpleDrawingAdapter.SimpleDrawing
         drawings = java.util.ArrayList()
         rvOutputTopDrawings = findViewById(R.id.rvOutputTopDrawings)
         leaveTopBtn = findViewById(R.id.leaveTopBtn)
+
+        sharedViewModel.setUser(user)
+
 
         leaveTopBtn.setOnClickListener {
             val intent = Intent(this, Profile::class.java)

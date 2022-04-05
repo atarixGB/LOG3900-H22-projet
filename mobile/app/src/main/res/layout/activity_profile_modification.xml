@@ -67,7 +67,7 @@
             android:layout_height="1dp"
             android:layout_below="@+id/header_menu"
             android:layout_marginLeft="166dp"
-            android:layout_marginTop="45dp"
+            android:layout_marginTop="38dp"
             android:background="@color/purple_500" />
 
     </LinearLayout>
@@ -218,9 +218,11 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/bloc_profil"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:layout_marginTop="300dp">
+        android:layout_marginLeft="650dp"
+        android:layout_marginTop="220dp"
+        android:orientation="vertical">
+
         <TextView
             android:id="@+id/modify_label"
             android:layout_width="180dp"
@@ -231,6 +233,20 @@
             android:gravity="center"
             android:paddingLeft="10dp"
             android:text="Sauvegarder"
+            android:textColor="@color/teal_700"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/discard_label"
+            android:layout_width="180dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="25dp"
+            android:background="@drawable/bg_btn"
+            android:drawableLeft="@drawable/ic_baseline_cancel"
+            android:gravity="center"
+            android:paddingLeft="10dp"
+            android:text="Annuler"
             android:textColor="@color/teal_700"
             android:textSize="20dp"
             android:textStyle="bold" />
@@ -277,7 +293,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginLeft="180dp"
+            android:layout_marginLeft="150dp"
             android:layout_marginTop="70dp">
             <TextView
                 android:layout_width="wrap_content"

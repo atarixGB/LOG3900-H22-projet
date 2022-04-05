@@ -129,7 +129,13 @@ class Profile_modification : AppCompatActivity(), SelectAvatarPopUp.DialogListen
                 username.animation=AnimationUtils.loadAnimation(this,R.anim.shake_animation)
                 Toast.makeText(this, "Les champs sont vides réessayer!", Toast.LENGTH_SHORT).show()
             }
-
+        }
+        discard_label.setOnClickListener{
+            val intent = Intent(this, Profile::class.java)
+            var bundle:Bundle = ActivityOptions.makeSceneTransitionAnimation(this).toBundle()
+            intent.putExtra("userName",oldUsername)
+            intent.putExtra("description",oldDescription)
+            startActivity(intent,bundle)
         }
 
         val soundActivator:MutableList<String> = ArrayList()
@@ -161,11 +167,11 @@ class Profile_modification : AppCompatActivity(), SelectAvatarPopUp.DialogListen
         }
 
         val musicSelector:MutableList<String> = ArrayList()
-        musicSelector.add("DEACTIVATED")
-        musicSelector.add("LOFI1")
-        musicSelector.add("LOFI2")
-        musicSelector.add("MINECRAFT")
-        musicSelector.add("KAHOOT")
+        musicSelector.add("Desactiver")
+        musicSelector.add("Lofi1")
+        musicSelector.add("Lofi2")
+        musicSelector.add("Minecraft")
+        musicSelector.add("Kahoot")
 
         val adapter2 = ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item,musicSelector)
         musicPicker.adapter = adapter2
@@ -180,11 +186,11 @@ class Profile_modification : AppCompatActivity(), SelectAvatarPopUp.DialogListen
                 Toast.makeText(this@Profile_modification,"$item selected",Toast.LENGTH_SHORT).show()
 
                 when(item){
-                    MUSIC.DEACTIVATED.name -> MUSIC_TRACK=0
-                    MUSIC.KAHOOT.name-> MUSIC_TRACK=1
-                    MUSIC.LOFI1.name-> MUSIC_TRACK=2
-                    MUSIC.LOFI2.name-> MUSIC_TRACK=3
-                    MUSIC.MINECRAFT.name-> MUSIC_TRACK=4
+                    MUSIC.Desactiver.name -> MUSIC_TRACK=0
+                    MUSIC.Kahoot.name-> MUSIC_TRACK=1
+                    MUSIC.Lofi1.name-> MUSIC_TRACK=2
+                    MUSIC.Lofi2.name-> MUSIC_TRACK=3
+                    MUSIC.Minecraft.name-> MUSIC_TRACK=4
                 }
             }
 

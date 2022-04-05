@@ -12,8 +12,8 @@ import java.io.ByteArrayOutputStream
 
 var SOUND_EFFECT=true
 
-enum class MUSIC(type:String){
-    LOFI1("lofi 1"), LOFI2("lofi 2"),KAHOOT("kahoot"),MINECRAFT("MINECRAFT"),DEACTIVATED("DEACTIVATED")
+enum class MUSIC{
+    Lofi1 , Lofi2,Kahoot,Minecraft,Desactiver
 }
 
 var MUSIC_TRACK = 0

@@ -7,6 +7,7 @@ import android.widget.ImageButton
 import android.widget.SearchView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.view.isVisible
@@ -23,6 +24,7 @@ import com.example.mobile.adapter.UserAdapter
 import com.example.mobile.popup.AcceptMembershipRequestsPopUp
 import com.example.mobile.popup.AlbumAttributeModificationPopUp
 import com.example.mobile.popup.UsersListPopUp
+import com.example.mobile.viewModel.SharedViewModelToolBar
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -53,7 +55,7 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
     private lateinit var dialogAcceptMembershipRequest: AcceptMembershipRequestsPopUp
     private lateinit var dialogEditAlbumAttributes: AlbumAttributeModificationPopUp
 
-
+    private val sharedViewModelToolBar: SharedViewModelToolBar by viewModels()
 
     private lateinit var iMyService: IMyService
     internal var compositeDisposable = CompositeDisposable()
@@ -82,6 +84,9 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
 
         user = intent.getStringExtra("userName").toString()
         albumName = intent.getStringExtra("albumName").toString()
+
+        sharedViewModelToolBar.setUser(user)
+
         getAlbumParameters(albumName)
 
         if(albumName=="album public"){

@@ -471,6 +471,16 @@ app.post(
       })
   })
 
+    //delete all drawings pour faire le menage
+    app.delete("/drawing/deleteAll", (request, response, next) => {
+      DB.collection("drawings").deleteMany({}, (err, res) => {
+        response.json(201)
+      });
+    }); 
+
+    
+
+
 //==========================================================================================================
 // Album Management
 //==========================================================================================================
