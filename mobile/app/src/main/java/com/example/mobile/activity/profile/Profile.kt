@@ -25,7 +25,7 @@ import retrofit2.Response
 
 
 class Profile : AppCompatActivity() {
-    private lateinit var leave: ImageButton
+
     private lateinit var modifyProfile: TextView
     private lateinit var avatar: CircularImageView
     private lateinit var user: String
@@ -33,11 +33,10 @@ class Profile : AppCompatActivity() {
     private var totalNbDrawingCreated:Double = 0.0
     private var totalNbAlbumCreated :Double =0.0
 
-    //    private lateinit var email: String
     private lateinit var usernameDisplayed: TextView
     private lateinit var iMyService: IMyService
     internal var compositeDisposable = CompositeDisposable()
-//    var userList = mutableListOf<User>()
+
     private val sharedViewModel: SharedViewModelToolBar by viewModels()
 
 
@@ -49,7 +48,7 @@ class Profile : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
-        leave = findViewById(R.id.leave)
+
         usernameDisplayed= findViewById(R.id.username)
         avatar = findViewById(R.id.userAvatar)
         modifyProfile=findViewById(R.id.modify_label)
@@ -68,10 +67,6 @@ class Profile : AppCompatActivity() {
         //changing the avatar with what was stored in the db
         getUserFromDB(user)
 
-        leave.setOnClickListener() {
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-        }
 
         showMostLiked.setOnClickListener(){
             val intent = Intent(this, TopDrawingDisplay::class.java)
@@ -145,8 +140,15 @@ class Profile : AppCompatActivity() {
         call.enqueue(object: retrofit2.Callback<Any> {
             override fun onResponse(call: Call<Any>, response: Response<Any>) {
 
-                totalNbDrawingCreated= response.body() as Double
-                nbCreatedDrawings.setText(totalNbDrawingCreated.toInt().toString())
+                if(response.body()!=null){
+                    totalNbDrawingCreated= response.body() as Double
+                    nbCreatedDrawings.setText(totalNbDrawingCreated.toInt().toString())
+                }
+                else{
+                    nbCreatedDrawings.setText("0")
+                }
+
+
             }
 
             override fun onFailure(call: Call<Any>, t: Throwable) {
@@ -162,9 +164,14 @@ class Profile : AppCompatActivity() {
         call.enqueue(object: retrofit2.Callback<Any> {
             override fun onResponse(call: Call<Any>, response: Response<Any>) {
 
-                totalNbAlbumCreated= response.body() as Double
+                if(response.body()!=null){
+                    totalNbAlbumCreated= response.body() as Double
 
-                nbPrivateAlbums.setText(totalNbAlbumCreated.toInt().toString())
+                    nbPrivateAlbums.setText(totalNbAlbumCreated.toInt().toString())
+                }
+               else {
+                    nbPrivateAlbums.setText("0")
+               }
             }
 
             override fun onFailure(call: Call<Any>, t: Throwable) {

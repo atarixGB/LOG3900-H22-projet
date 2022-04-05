@@ -37,7 +37,6 @@ import retrofit2.Response
 class Profile_modification : AppCompatActivity(), SelectAvatarPopUp.DialogListener {
     private lateinit var cameraBtn : ImageButton
     private lateinit var avatarBtn : ImageButton
-    private lateinit var backBtn : ImageView
     private lateinit var avatarPicker: CircularImageView
     private lateinit var newIdentifier: EditText
 
@@ -63,7 +62,7 @@ class Profile_modification : AppCompatActivity(), SelectAvatarPopUp.DialogListen
 
         avatarBtn=findViewById(R.id.edt_avatar)
         cameraBtn= findViewById(R.id.edt_camera)
-        backBtn=findViewById(R.id.back_btn_modification)
+
         avatarPicker = findViewById(R.id.userAvatarModif)
 
         newIdentifier=findViewById(R.id.username)
@@ -120,13 +119,7 @@ class Profile_modification : AppCompatActivity(), SelectAvatarPopUp.DialogListen
             var dialog = SelectAvatarPopUp()
             dialog.show(supportFragmentManager,"customDialog")
         }
-        backBtn.setOnClickListener(){
-            val intent = Intent(this, Profile::class.java)
-            var bundle:Bundle = ActivityOptions.makeSceneTransitionAnimation(this).toBundle()
-            intent.putExtra("userName",oldUsername)
-            intent.putExtra("description",oldDescription)
-            startActivity(intent,bundle)
-        }
+
         modify_label.setOnClickListener(){
             if(!username.text.toString().isNullOrBlank()){
                 updateProfile(oldUsername,username.text.toString(),userAvatarModif,edt_description.text.toString())
@@ -168,11 +161,11 @@ class Profile_modification : AppCompatActivity(), SelectAvatarPopUp.DialogListen
         }
 
         val musicSelector:MutableList<String> = ArrayList()
-        musicSelector.add("Désactivé")
-        musicSelector.add("Lofi 1")
-        musicSelector.add("Lofi 2")
-        musicSelector.add("Minecraft")
-        musicSelector.add("Kahoot")
+        musicSelector.add("DEACTIVATED")
+        musicSelector.add("LOFI1")
+        musicSelector.add("LOFI2")
+        musicSelector.add("MINECRAFT")
+        musicSelector.add("KAHOOT")
 
         val adapter2 = ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item,musicSelector)
         musicPicker.adapter = adapter2
@@ -186,48 +179,17 @@ class Profile_modification : AppCompatActivity(), SelectAvatarPopUp.DialogListen
                 val item = musicSelector[position]
                 Toast.makeText(this@Profile_modification,"$item selected",Toast.LENGTH_SHORT).show()
 
-                if (item== "Désactivé"){
-                    DEACTIVATED=true
-                    LOFI1=false
-                    LOFI2=false
-                    KAHOOT=false
-                    MINECRAFT=false
-                }
-                else if (item=="Lofi 1"){
-                    LOFI1=true
-                    DEACTIVATED=false
-                    LOFI2=false
-                    KAHOOT=false
-                    MINECRAFT=false
-                }
-                else if(item=="Lofi 2"){
-                    LOFI2=true
-                    DEACTIVATED=false
-                    LOFI1=false
-                    KAHOOT=false
-                    MINECRAFT=false
-                }
-                else if(item=="Minecraft"){
-                    MINECRAFT=true
-                    DEACTIVATED=false
-                    LOFI1=false
-                    KAHOOT=false
-                    LOFI2=false
-                }
-                else if (item=="Kahoot"){
-                    KAHOOT=true
-                    DEACTIVATED=false
-                    LOFI1=false
-                    LOFI2=false
-                    MINECRAFT=false
+                when(item){
+                    MUSIC.DEACTIVATED.name -> MUSIC_TRACK=0
+                    MUSIC.KAHOOT.name-> MUSIC_TRACK=1
+                    MUSIC.LOFI1.name-> MUSIC_TRACK=2
+                    MUSIC.LOFI2.name-> MUSIC_TRACK=3
+                    MUSIC.MINECRAFT.name-> MUSIC_TRACK=4
                 }
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {}
-
         }
-
-
 
     }
 

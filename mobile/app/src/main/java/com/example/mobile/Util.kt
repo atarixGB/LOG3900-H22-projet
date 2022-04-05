@@ -12,12 +12,12 @@ import java.io.ByteArrayOutputStream
 
 var SOUND_EFFECT=true
 
+enum class MUSIC(type:String){
+    LOFI1("lofi 1"), LOFI2("lofi 2"),KAHOOT("kahoot"),MINECRAFT("MINECRAFT"),DEACTIVATED("DEACTIVATED")
+}
 
-var LOFI1 = false
-var LOFI2 =false
-var KAHOOT= false
-var MINECRAFT=false
-var DEACTIVATED=true
+var MUSIC_TRACK = 0
+
 
 fun convertToByteArray(imageView: CircularImageView): ByteArray {
     val bitmap = (imageView.drawable as BitmapDrawable).bitmap

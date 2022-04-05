@@ -48,19 +48,19 @@ class ToolbarNavigationFragment: Fragment() {
         profile = rootView.findViewById(R.id.profile)
         logout = rootView.findViewById(R.id.logout)
 
-        if (DEACTIVATED){
+        if (MUSIC_TRACK==0){
             mediaPlayerSong= MediaPlayer.create(context,R.raw.silence)
         }
-        if(LOFI1){
+        if(MUSIC_TRACK==2){
             mediaPlayerSong= MediaPlayer.create(context,R.raw.lofi1)
         }
-        else if (LOFI2){
+        else if (MUSIC_TRACK==3){
             mediaPlayerSong= MediaPlayer.create(context,R.raw.lofi2)
         }
-        else if (KAHOOT){
+        else if (MUSIC_TRACK==1){
             mediaPlayerSong= MediaPlayer.create(context,R.raw.kahoot)
         }
-        else if (MINECRAFT){
+        else if (MUSIC_TRACK==4){
             mediaPlayerSong= MediaPlayer.create(context,R.raw.minecraft)
         }
 
