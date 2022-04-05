@@ -1,5 +1,6 @@
 package com.example.mobile.activity.chat
 
+import android.content.Context
 import android.content.Intent
 import android.media.MediaPlayer
 import android.os.Bundle
@@ -11,13 +12,16 @@ import androidx.appcompat.widget.PopupMenu
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.mobile.*
+import com.example.mobile.IRoom
 import com.example.mobile.Interface.IMessage
+import com.example.mobile.R
 import com.example.mobile.Retrofit.IMyService
 import com.example.mobile.Retrofit.RetrofitClient
+import com.example.mobile.SocketHandler
 import com.example.mobile.adapter.MessageAdapter
 import com.example.mobile.adapter.UserAdapter
 import com.example.mobile.popup.UsersListPopUp
+import com.google.gson.Gson
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -26,6 +30,9 @@ import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.BufferedReader
+import java.io.FileInputStream
+import java.io.InputStreamReader
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -47,11 +54,15 @@ class ChatPage : AppCompatActivity(), UserAdapter.UserAdapterListener {
     private lateinit var iMyService: IMyService
     internal var compositeDisposable = CompositeDisposable()
 
+    //to delete
+    private lateinit var readBtn : Button
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat_page)
 
+        baseContext.deleteFile("myfile")
         val retrofit = RetrofitClient.getInstance()
         iMyService = retrofit.create(IMyService::class.java)
 
@@ -79,6 +90,28 @@ class ChatPage : AppCompatActivity(), UserAdapter.UserAdapterListener {
         rvOutputMsgs.adapter = msgAdapter
         rvOutputMsgs.layoutManager = LinearLayoutManager(this)
 
+
+        //for test purpose
+        readBtn = findViewById(R.id.readBtn)
+
+        readBtn.setOnClickListener{
+            val fis: FileInputStream = baseContext.openFileInput("myfile.txt")
+            val isr = InputStreamReader(fis)
+            val bufferedReader = BufferedReader(isr)
+            val sb = StringBuilder()
+            var line: String?
+            while (bufferedReader.readLine().also { line = it } != null) {
+                sb.append(line)
+            }
+            val file = sb.toString()
+            val split = file.split("}")
+            var firstElement = split[0]
+//            val position = firstElement.length
+//            firstElement = firstElement.substring(0, position-2) + "}" + ('"')
+            val gson = Gson()
+            var testModel = gson.fromJson(file, IMessage::class.java)
+            Log.i("ChatPage", testModel.msgText)
+        }
 
         //Connect to the Server
         SocketHandler.setSocket()
@@ -111,6 +144,7 @@ class ChatPage : AppCompatActivity(), UserAdapter.UserAdapterListener {
                     msgAdapter.notifyItemInserted((rvOutputMsgs.adapter as MessageAdapter).itemCount)
                     rvOutputMsgs.scrollToPosition((rvOutputMsgs.adapter as MessageAdapter).itemCount-1)
                     messageText.text.clear()
+                    saveInFile(msg)
                     //mediaPlayerReceiveSuccess.start()
                 }
             }
@@ -123,7 +157,7 @@ class ChatPage : AppCompatActivity(), UserAdapter.UserAdapterListener {
                 val user = messageData.get("userName") as String
                 val room = messageData.get("room") as String
                 runOnUiThread{
-                   val msg = IMessage("$user has joined $room", user, null, room, true)
+                   val msg = IMessage("$user has joined $room", user, "", room, true)
                     msgAdapter.addMsg(msg)
                     msgAdapter.notifyItemInserted((rvOutputMsgs.adapter as MessageAdapter).itemCount)
                     rvOutputMsgs.scrollToPosition((rvOutputMsgs.adapter as MessageAdapter).itemCount-1)
@@ -140,7 +174,7 @@ class ChatPage : AppCompatActivity(), UserAdapter.UserAdapterListener {
                 val user = messageData.get("userName") as String
                 val room = messageData.get("room") as String
                 runOnUiThread{
-                    val msg = IMessage("$user has left $room", user, null, room, true)
+                    val msg = IMessage("$user has left $room", user, "", room, true)
                     msgAdapter.addMsg(msg)
                     msgAdapter.notifyItemInserted((rvOutputMsgs.adapter as MessageAdapter).itemCount)
                     rvOutputMsgs.scrollToPosition((rvOutputMsgs.adapter as MessageAdapter).itemCount-1)
@@ -210,6 +244,18 @@ class ChatPage : AppCompatActivity(), UserAdapter.UserAdapterListener {
             } finally {
                 popupMenu.show()
             }
+        }
+    }
+
+    private fun saveInFile(msg: IMessage) {
+        try{
+            var gson = Gson()
+            var jsonString = gson.toJson(msg)
+            baseContext.openFileOutput("myfile.txt", Context.MODE_APPEND).use {
+                it.write(jsonString.toByteArray())
+            }
+        }catch (e:Exception){
+            Log.d("ChatPage", "Erreur dans l'ecriture du fichier")
         }
     }
 
@@ -306,6 +352,5 @@ class ChatPage : AppCompatActivity(), UserAdapter.UserAdapterListener {
             else -> super.onKeyUp(keyCode, event)
         }
     }
-
 }
 
