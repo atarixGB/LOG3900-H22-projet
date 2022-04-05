@@ -1,0 +1,34 @@
+<div id="dialog" fxLayout="row" fxLayoutAlign="center stretch" >
+   <div id="fullColumn" fxLayout="column" fxLayoutAlign="start stretch" >
+      <!-- Progress bars -->
+      <div fxFlex="1%" fxLayout="row" fxLayoutAlign="center start" >
+         <mat-progress-bar *ngFor="let bar of this.progressBars;" mode="determinate" [value]="bar.progress"></mat-progress-bar>
+      </div>
+
+      <!-- User -->
+      <div fxFlex="24%" fxLayout="row" fxLayoutAlign="start center">
+         <div id="avatarDiv">
+            <img id="avatarImg" src="data:image/png;base64,{{this.user.avatar}}">
+         </div>
+         <span>{{this.user.identifier}}</span>
+      </div>
+
+      <!-- Story -->
+      <div fxFlex="70%" class="fullHeigth" fxLayout="row" fxLayoutAlign="center stretch" >
+         <div class="nextPreviousDiv" fxLayout="row" fxLayoutAlign="center stretch" (click)="this.changeStory(-1)">
+            <div fxLayout="column" fxLayoutAlign="center center" >
+               <mat-icon>arrow_left</mat-icon>
+            </div>
+         </div>
+         <div id="storyDiv" fxLayout="column" fxLayoutAlign="center stretch" >
+            <img id="storyImg" src="data:image/png;base64,{{this.stories[this.currentStoryIndex].data}}">
+         </div>
+         <div class="nextPreviousDiv" fxLayout="row" fxLayoutAlign="center stretch" (click)="this.changeStory(1)">
+            <div fxLayout="column" fxLayoutAlign="center center" >
+               <mat-icon>arrow_right</mat-icon>
+            </div>
+         </div>
+      </div>
+      <div fxFlex="5%"></div>
+   </div>
+</div>

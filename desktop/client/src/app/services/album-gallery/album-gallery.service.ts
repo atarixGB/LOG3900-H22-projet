@@ -34,6 +34,7 @@ export class AlbumGalleryService {
       _id: null,
       name: "",
       owner: this.loginService.username,
+      isStory: false,
       creationDate: ""
     }
 
@@ -45,6 +46,8 @@ export class AlbumGalleryService {
 
   createDrawing(drawingName: string): void {
     this.currentDrawing._id = null;
+    this.currentDrawing.owner = this.loginService.username;
+    this.currentDrawing.isStory = false;
     this.currentDrawing.name = drawingName;
     this.currentDrawing.creationDate = formatDate(new Date(), 'hh:mm:ss a', 'en-US');
     console.log(this.currentDrawing)

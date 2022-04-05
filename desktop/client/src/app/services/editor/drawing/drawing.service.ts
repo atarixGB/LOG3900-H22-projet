@@ -15,6 +15,8 @@ export class DrawingService {
 
     currentDrawing: HTMLImageElement; 
 
+    constructor() {}
+
     clearCanvas(context: CanvasRenderingContext2D): void {
         context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }

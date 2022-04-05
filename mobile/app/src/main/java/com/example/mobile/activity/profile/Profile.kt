@@ -8,7 +8,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import com.example.mobile.Interface.User
+import com.example.mobile.Interface.IUser
 import com.example.mobile.R
 import com.example.mobile.Retrofit.IMyService
 import com.example.mobile.Retrofit.RetrofitClient
@@ -34,7 +34,7 @@ class Profile : AppCompatActivity() {
     private lateinit var socket: Socket
     private lateinit var iMyService: IMyService
     internal var compositeDisposable = CompositeDisposable()
-    var userList = mutableListOf<User>()
+    var userList = mutableListOf<IUser>()
     private val sharedViewModel: SharedViewModelToolBar by viewModels()
 
 
@@ -92,10 +92,10 @@ class Profile : AppCompatActivity() {
     }
 
     private fun getUserFromDB(user:String) {
-        var call: Call<User> = iMyService.getUserFromDB(user)
+        var call: Call<IUser> = iMyService.getUserFromDB(user)
 
-        call.enqueue(object: retrofit2.Callback<User> {
-            override fun onResponse(call: Call<User>, response: Response<User>) {
+        call.enqueue(object: retrofit2.Callback<IUser> {
+            override fun onResponse(call: Call<IUser>, response: Response<IUser>) {
                 Toast.makeText(this@Profile, "Bienvenu!", Toast.LENGTH_SHORT).show()
                 userAvatar.setImageBitmap(bitmapDecoder(response.body()?.avatar))
 //                username.setText(response.body()?.username)
@@ -104,7 +104,7 @@ class Profile : AppCompatActivity() {
 
             }
 
-            override fun onFailure(call: Call<User>, t: Throwable) {
+            override fun onFailure(call: Call<IUser>, t: Throwable) {
                 Toast.makeText(this@Profile, "erreur", Toast.LENGTH_SHORT).show()
             }
         })

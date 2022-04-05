@@ -38,6 +38,8 @@ export class SignUpService {
             avatar: this.avatarSrc,
             email: this.email,
             description: "Accédez aux paramètres du profil pour ajouter une description!",
+            collaborationCount: 0,
+            totalCollaborationTime: 0
         };
 
         this.httpClient.post(SIGN_UP_URL, userInfos).subscribe(
