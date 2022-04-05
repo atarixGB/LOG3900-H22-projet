@@ -6,17 +6,20 @@ const cors = require("cors");
 const crypto = require("crypto");
 const mongoose = require("mongoose");
 const socket = require('socket.io');
-
 const multer = require('multer')
 const path = require('path');
-
-// Include the node file module
 var fs = require('fs');
 
+//constants
+const DATABASE_URL =
+  "mongodb+srv://equipe203:Log3900-H22@polygramcluster.arebt.mongodb.net/PolyGramDB?retryWrites=true&w=majority";
+const SERVER_PORT = 3001;
+const UPLOAD_DIR = 'uploads/'
+
 const storage = multer.diskStorage({
-  destination: './uploads/',
-  filename: function(req, file, cb) {
-    return crypto.pseudoRandomBytes(16, function(err, raw) {
+  destination: `./${UPLOAD_DIR}`,
+  filename: function (req, file, cb) {
+    return crypto.pseudoRandomBytes(16, function (err, raw) {
       if (err) {
         return cb(err);
       }
@@ -25,17 +28,12 @@ const storage = multer.diskStorage({
   }
 });
 
-//constants
-const DATABASE_URL =
-  "mongodb+srv://equipe203:Log3900-H22@polygramcluster.arebt.mongodb.net/PolyGramDB?retryWrites=true&w=majority";
-const SERVER_PORT = 3001;
-
 //express service
 var app = express();
-app.use(express.json({  limit: '100mb' }))
+app.use(express.json({ limit: '100mb' }))
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cors({origin:true,credentials: true}));
+app.use(cors({ origin: true, credentials: true }));
 
 //create mongoDB client
 var mongoClient = mongodb.MongoClient;
@@ -93,6 +91,9 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
       var email = post_data.email;
       var description = post_data.description;
 
+      var collaborationCount = post_data.collaborationCount;
+      var totalCollaborationTime = post_data.totalCollaborationTime;
+
       var insertJson = {
         identifier: identifier,
         password: password,
@@ -100,6 +101,8 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
         avatar: avatar,
         email: email,
         description: description,
+        collaborationCount: collaborationCount,
+        totalCollaborationTime: totalCollaborationTime,
       };
 
       //check if identifier exists
@@ -112,19 +115,19 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
           } else {
             //check if email is already used
             DB.collection("users")
-            .find({ email: email })
-            .count(function (err, number) {
-              if (number != 0) {
-                response.json(406);
-                console.log("email already used");
-              } else { 
-                //insert data
-                DB.collection("users").insertOne(insertJson, function (error, res) {
-                  response.json(201);
-                  console.log("Registration success");
-                });
-              }
-            });
+              .find({ email: email })
+              .count(function (err, number) {
+                if (number != 0) {
+                  response.json(406);
+                  console.log("email already used");
+                } else {
+                  //insert data
+                  DB.collection("users").insertOne(insertJson, function (error, res) {
+                    response.json(201);
+                    console.log("Registration success");
+                  });
+                }
+              });
           }
         });
     });
@@ -160,10 +163,10 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
                 }
               }
             );
-            }
-          });
-        }
-      );
+          }
+        });
+    }
+    );
 
     //Getting a user's data with email
     app.get("/login/:email", (request, response, next) => {
@@ -177,6 +180,20 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
           console.log("Got username after login: ", user.identifier);
         }
       );
+    });
+
+    //get all users
+    app.get("/getAllUsers", (request, response, next) => {
+      var post_data = request.body;
+
+      DB.collection("users")
+        .find({}).limit(50).toArray(function (err, result) {
+          if (err) {
+            response.status(400).send("Error fetching rooms");
+          } else {
+            response.json(result)
+          }
+        });
     });
 
 //==========================================================================================================
@@ -339,13 +356,16 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
           }
         });
     });
-//==========================================================================================================
-// Drawing Management
-//==========================================================================================================
+
+    //==========================================================================================================
+    // Drawing Management
+    //==========================================================================================================
+    
     //create drawing
-    app.post("/drawing/create", (request, response, next)=> {
+    app.post("/drawing/create", (request, response, next) => {
       DB.collection("drawings").insertOne(request.body, (err, res) => {
-        const drawingData = request.body; 
+        if (err) throw err;
+        const drawingData = request.body;
         drawingData._id = res.insertedId.toHexString();
         console.log(`Drawing "${drawingData.name}" created successfully with ID: ${drawingData._id}!`);
         response.json(drawingData._id); // Drawing ID is send back to client. We will use it to add the corresponding drawing to an album
@@ -370,32 +390,40 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
         });
     });
 
-    // //Save drawing data
-    // app.put("/drawing/:drawingId", (request, response, next) => {
+        //get all user drawings in DB
 
-    //   var drawingId = request.params.drawingId.replaceAll(/"/g, '');
-    //   var data =  request.body.data;
+        app.get("/getAllUserDrawings/:user", (request, response, next) => {
 
-    //   console.log(drawingId);
-    //   console.log(data);
-
-    //   DB.collection("drawings").findOneAndUpdate({ _id: mongoose.Types.ObjectId(drawingId) }, { $set: {"data": data}}, { returnDocument: 'after' }, (err, res) => {
-    //     response.json(200);
-    //     console.log(drawingId);
-    //     console.log(data);
-    //     console.log(res);
-    //   });
-    // });
+          var user = request.params.user.replaceAll(/"/g, '');;
     
-    // const upload = multer({dest: '/public/data/uploads/'});
-    //Save drawing data
+          console.log(user);
+    
+          DB.collection("drawings")
+    
+            .find({owner: user}).limit(50).toArray(function (err, result) {
+    
+              if (err) {
+    
+                response.status(400).send("Error fetching drawings");
+    
+              } else {
+    
+                response.json(result)
+    
+              }
+    
+            });
+    
+        });
+
+    //Save drawing data (desktop client)
     app.post("/drawing/save/:drawingId", (request, response, next) => {
       let drawingId = request.params.drawingId;
       let drawingName = request.body.name;
       let owner = request.body.owner;
       console.log(`DRAWING NAME:${drawingName}\nOWNER:${owner}`);
 
-      DB.collection("drawings").findOneAndUpdate({ _id: mongoose.Types.ObjectId(drawingId) }, { $set: {data: `${drawingId}.png`}}, { returnDocument: 'after' }, (err, res) => {
+      DB.collection("drawings").findOneAndUpdate({ _id: mongoose.Types.ObjectId(drawingId) }, { $set: { data: `${drawingId}.png` } }, { returnDocument: 'after' }, (err, res) => {
         response.json("Metadata sauvegardé")
       });
 
@@ -403,76 +431,144 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
 
     app.put("/drawing/save/:drawingId", (request, response) => {
       const imageData = request.body.data;
-      
-      saveImageAsPNG(imageData, request.params.drawingId, './uploads');
+
+      saveImageAsPNG(imageData, request.params.drawingId, `./${UPLOAD_DIR}`);
 
       response.json("DataUrl sauvegardé")
     })
 
-// Post files
-app.post(
-  "/upload/:drawingId",
-  multer({
-    storage: storage
-  }).single('upload'), function(req, res) {
-    res.redirect("/uploads/" + req.file.filename);
-    // console.log(req.file.filename);
-    DB.collection("drawings").findOneAndUpdate({ _id: mongoose.Types.ObjectId(req.params.drawingId.replaceAll(/"/g, '')) }, { $set: {"data": req.file.filename}}, { returnDocument: 'after' }, (err, res) => {
-      });// ici tu par chercher le drawingID en base et tu mets le data de cet element au filename 
-    return res.status(200).end(); 
-  });
+    // Post files (mobile client)
+    app.post(
+      "/upload/:drawingId",
+      multer({
+        storage: storage
+      }).single('upload'), function (req, res) {
+        res.redirect(`/${UPLOAD_DIR}` + req.file.filename);
+        DB.collection("drawings").findOneAndUpdate({ _id: mongoose.Types.ObjectId(req.params.drawingId.replaceAll(/"/g, '')) }, { $set: { "data": req.file.filename } }, { returnDocument: 'after' }, (err, res) => {
+        });// ici tu par chercher le drawingID en base et tu mets le data de cet element au filename 
+        return res.status(200).end();
+      });
 
-  //get image from DB
-   app.get('/drawings/:drawingId', function (req, res){
-    DB.collection("drawings")
-    .findOne({ _id: mongoose.Types.ObjectId(req.params.drawingId.replaceAll(/"/g, '')) }, function (err, result) {
-      if (err) {
-        console.log("error getting");
-      } else {
-        const file = result.data;
-        var img = fs.readFileSync(__dirname + "/uploads/" + file, {encoding: 'base64'});
-        //console.log("image", img)
-        //res.writeHead(200, {'Content-Type': 'image/png' });
-        // res.end(img, 'binary');
-        var returnedJson = {
-          _id: result._id,
-          name: result.name,
-          owner: result.owner,
-          description: result.description,
-          data: img,
-          members: result.members,
-          likes: result.likes
-        };
-        res.json(returnedJson)
-        console.log("GotDrawing");
-      }
+    //get all drawings that specified user liked
+    app.get("/drawings/favorite/:username", (request, response) => {
+      let username = request.params.username;
+      DB.collection("drawings").find({ likes: { $all: [username] } }).toArray(function (error, result) {
+        if (error) throw error;
+        response.json(result);
+      })
+    })
+
+    //get all drawings of specified user that has at least one Like
+    app.get("/drawings/top/:username", (request, response) => {
+      let username = request.params.username;
+      DB.collection("drawings")
+        .find({ $and: [{ owner: username }, { likes: { $exists: true, $not: { $size: 0 } } }] }).toArray(function (error, result) {
+          if (error) throw error;
+
+          // Sort result by descending order of number of likes
+          result.sort((a, b) => a.likes.length < b.likes.length ? 1 : a.likes.length > b.likes.length ? - 1 : 0);
+
+          response.json(result);
+        })
+    })
+
+    //get image from DB
+    app.get('/drawings/:drawingId', function (req, res) {
+      DB.collection("drawings")
+        .findOne({ _id: mongoose.Types.ObjectId(req.params.drawingId.replace(/"/g, '')) }, function (err, result) {
+          if (err) {
+            console.log("error getting");
+          } else {
+            const file = result.data;
+
+            if (fs.readFileSync(__dirname + `/${UPLOAD_DIR}` + file, { encoding: 'base64' })) {
+              var img = fs.readFileSync(__dirname + `/${UPLOAD_DIR}` + file, { encoding: 'base64' });
+
+              var returnedJson = {
+                _id: result._id,
+                name: result.name,
+                owner: result.owner,
+                description: result.description,
+                data: img,
+                members: result.members,
+                likes: result.likes,
+                albumName: result.albumName,
+              };
+              res.json(returnedJson)
+              console.log("GotDrawing");
+
+            }
+
+            else {
+              console.log(`File ${file} does not exist on server`);
+            }
+
+          }
+        });
     });
-  });
-//==========================================================================================================
-// Album Management
-//==========================================================================================================
+
+    //delete drawing with specific id from collection
+    app.delete("/drawing/delete/:id", (request, response, next) => {
+      let drawingId = request.params.id;
+      console.log("DRAWING ID", drawingId)
+      // Remove drawing from collection 'drawings'
+      DB.collection("drawings").findOneAndDelete({ _id: mongoose.Types.ObjectId(drawingId) }, (err, res) => {
+
+        // Remove drawing from the upload directory in the server
+        fs.unlink(`./${UPLOAD_DIR}` + drawingId + ".png", function (err, res) {
+          if (err) throw err;
+          console.log(` Drawing with ID ${drawingId} has been deleted from server`);
+        });
+
+        console.log(`Drawing with id ${drawingId} has been deleted from database`);
+        response.json(201)
+      });
+    });
+
+    //update drawing name
+    app.post("/drawingUpdate", (request, response, next) => {
+      var post_data = request.body;
+      var drawingID = post_data.drawingID
+      var newDrawingName = post_data.newDrawingName;
+      console.log(newDrawingName);
+
+      DB.collection("drawings").findOneAndUpdate({ _id: mongoose.Types.ObjectId(drawingID) }, { $set: { "name": newDrawingName } }, { returnDocument: 'after' }, (err, res) => {
+        response.json(201)
+        console.log(drawingID, "is now named ", newDrawingName);
+      })
+    });
+
+    // For Development Purpose Only: Delete all drawings from DB
+    app.delete("/delete/:field", (request, response) => {
+      let field = request.params.field;
+      DB.collection(field).remove({}, (err, result) => {
+        if (err) console.log(`CANNOT DELETE ${field}`);
+        else response.json(`DELETE ${field} COLLECTION OK`)
+      })
+    })
+
+    //==========================================================================================================
+    // Album Management
+    //==========================================================================================================
+
     //create new album
     app.post("/albums", (request, response, next) => {
       var post_data = request.body;
       var members = post_data.members
 
-      console.log("avanntt", request.body.members);
       if (typeof members === 'string' || members instanceof String) {
         request.body.members = [post_data.members];
-        console.log("apress", request.body.members);
       }
 
       DB.collection("albums").insertOne(request.body, (err, res) => {
         request.body._id = res.insertedId.toHexString();
         console.log(`Album "${request.body.name}" created successfully with ID: ${request.body._id}!`);
-        response.json(201);
+        response.json(request.body._id); // Return album ID 
       });
     })
 
     //get all available albums
     app.get("/albums", (request, response, next) => {
-      var post_data = request.body;
-
       DB.collection("albums")
         .find({}).limit(50).toArray(function (err, result) {
           if (err) {
@@ -485,7 +581,7 @@ app.post(
         });
     });
 
-    //get user albums
+    //get user albums // to Switch for userID
     app.get("/albums/:username", (request, response, next) => {
       DB.collection("albums").find({ owner: request.params.username }).toArray((err, res) => {
         response.json(res);
@@ -493,53 +589,61 @@ app.post(
       })
     });
 
-    //get album drawings
-    app.get("/albums/Drawings/:albumName", (request, response, next) => { // SUGGESTION: /albums/drawings/:albumId
-      DB.collection("albums").findOne({ name: request.params.albumName }, function (err, res) {
+    //get album drawings CHANGE
+    app.get("/albums/Drawings/:albumID", (request, response, next) => { // SUGGESTION: /albums/drawings/:albumId
+      console.log(request.params.albumID)
+      DB.collection("albums").findOne({ _id: mongoose.Types.ObjectId(request.params.albumID) }, function (err, res) {
         response.json(res.drawingIDs);
-        // console.log(res.drawingIDs);
       })
     });
 
-
-
-    //add drawing to an album
-    app.put("/albums/addDrawing/:albumName", (request, response, next) => {
-      let albumName = request.params.albumName;
+    //add drawing to an album CHANGE
+    app.put("/albums/addDrawing/:albumId", (request, response, next) => {
+      let albumId = request.params.albumId;
       let drawingID = request.body.drawing;
-      DB.collection("albums").findOneAndUpdate({ name:albumName }, { $push: { drawingIDs: drawingID } }, { returnDocument: 'after' }, (err, res) => {
+      DB.collection("albums").findOneAndUpdate({ _id: mongoose.Types.ObjectId(albumId) }, { $push: { drawingIDs: drawingID } }, { returnDocument: 'after' }, (err, res) => {
         response.json(201)
-        console.log(drawingID, "is added to ", albumName);
+        console.log(drawingID, "is added to ", albumId);
       })
     });
 
     //add one like to a drawing
     app.put("/drawings/addLike/:drawingId", (request, response, next) => {
-      let drawingId = request.params.drawingId.replaceAll(/"/g, '');
+      let drawingId = request.params.drawingId.replace(/"/g, '');
       let user = request.body.user
 
       DB.collection("drawings").findOneAndUpdate({ _id: mongoose.Types.ObjectId(drawingId) }, { $push: { likes: user } }, { returnDocument: 'after' }, (err, res) => {
         response.json(201)
-        console.log(drawingId, "is liked");
+        console.log(`Drawing with ID ${drawingId} is liked by ${user}`);
+      })
+    });
+
+    //add drawing to a story
+    app.put("/drawings/addDrawingToStory/:drawingId", (request, response, next) => {
+      let drawingId = request.params.drawingId.replaceAll(/"/g, '');
+
+      DB.collection("drawings").findOneAndUpdate({ _id: mongoose.Types.ObjectId(drawingId) }, { $set: { isStory: true } }, { returnDocument: 'after' }, (err, res) => {
+        response.json(201)
+        console.log(drawingId, "is a story");
       })
     });
 
 
-    //send request to an album
+    //send request to an album // Switch for ID 
     app.put("/albums/sendRequest/:albumName", (request, response, next) => {
       let albumName = request.params.albumName;
       let usertoAdd = request.body.identifier;
-      console.log("USER TO ADD",usertoAdd);
+      console.log("USER TO ADD", usertoAdd);
       DB.collection("albums").find({ name: albumName }).toArray(function (err, res) {
         console.log(res[0].membershipRequests);
         if (res[0].membershipRequests != undefined && res[0].membershipRequests.includes(usertoAdd)) {
           response.json(400);
         } else {
           DB.collection("albums").updateOne({ name: albumName }, { $push: { membershipRequests: usertoAdd } }, { returnDocument: 'after' }, (err, res) => {
-          response.json(201)
-          console.log(usertoAdd, "sent request to join ", albumName);
-        });
-      }
+            response.json(201)
+            console.log(usertoAdd, "sent request to join ", albumName);
+          });
+        }
       })
     });
 
@@ -547,17 +651,17 @@ app.post(
       const userToAdd = request.body.userToAdd;
       const currentUser = request.body.currentUser;
       const albumName = request.body.albumName;
-      DB.collection("albums").findOneAndUpdate({ name: albumName }, { $push: { members: userToAdd }, $pull: { membershipRequests: userToAdd} }, { returnDocument: 'after' }, (err, res) => {
+      DB.collection("albums").findOneAndUpdate({ name: albumName }, { $push: { members: userToAdd }, $pull: { membershipRequests: userToAdd } }, { returnDocument: 'after' }, (err, res) => {
         response.json(201)
         console.log(`${userToAdd} has been accepted in the album ${albumName} by ${currentUser}`);
+      });
     });
-  });
-    
+
     app.put("/albums/request/decline", (request, response, next) => {
       const userToDecline = request.body.userToDecline;
       const currentUser = request.body.currentUser;
       const albumName = request.body.albumName;
-      DB.collection("albums").findOneAndUpdate({ name: albumName }, { $pull: { membershipRequests: userToDecline} }, { returnDocument: 'after' }, (err, res) => {
+      DB.collection("albums").findOneAndUpdate({ name: albumName }, { $pull: { membershipRequests: userToDecline } }, { returnDocument: 'after' }, (err, res) => {
         response.json(201);
         console.log(`${userToDecline} has been refused in the album ${albumName} by ${currentUser}`);
       });
@@ -569,7 +673,7 @@ app.post(
       let albumId = request.params.id;
       let memberToRemove = request.body.memberToRemove;
       DB.collection("albums").findOneAndUpdate({ _id: mongoose.Types.ObjectId(albumId) }, { $pull: { members: memberToRemove } }, { returnDocument: 'after' }, (err, res) => {
-        
+
         let albumOwner = res.value.owner
         res.value.drawingIDs.forEach(element => {
           DB.collection("drawings").findOneAndUpdate({ _id: mongoose.Types.ObjectId(element.replaceAll(/"/g, '')), owner: memberToRemove }, { $set: { owner: albumOwner } }, { returnDocument: 'after' }, (err, res) => {
@@ -588,7 +692,32 @@ app.post(
         console.log(`Album with id ${request.params.id} has been deleted successfully!`);
         response.json(201)
       });
-    });    
+    });
+
+    //remove a drawing id from drawingIDs in album
+    app.post("/removeDrawing", (request, response, next) => {
+      var post_data = request.body;
+
+
+      var albumId = post_data.albumID;
+      var drawingID = post_data.drawingID;
+
+      DB.collection("albums")
+        .find({ _id: mongoose.Types.ObjectId(albumId) })
+        .count(function (err, number) {
+          if (number == 0) {
+            response.json(404);
+            console.log("album does not exist");
+          } else {
+            DB.collection("albums").findOneAndUpdate({ _id: mongoose.Types.ObjectId(albumId) }, { "$pull": { drawingIDs: drawingID } },
+              function (error, result) {
+                response.json(201);
+                console.log("album updated");
+              }
+            );
+          }
+        });
+    });
 
     //Getting album parameters
     app.get("/getAlbumParameters", (request, response, next) => {
@@ -616,59 +745,35 @@ app.post(
       var oldAlbumName = post_data.oldAlbumName;
       var newAlbumName = post_data.newAlbumName;
       var newDescription = post_data.newDescription;
-    
-      //check if an album already has the new name
-      DB.collection("albums")
-        .find({ name: newAlbumName })
-        .count(function (err, number) {
-          if (number != 0 && oldAlbumName != newAlbumName) {
-            response.json(false);
-            console.log("album name already used");
-          } else {
-            // Update album data
-            DB.collection("albums").updateOne({ name: oldAlbumName }, {
-              $set: {
-                "name": newAlbumName,
-                "description": newDescription,
-              },
-            }).then(result => {
-              response.json(200);
-            });
-          }
-        });
-    });
-
-    //update album attributes
-    app.post("/albumUpdate", (request, response, next) => {
-      var post_data = request.body;
-      var oldAlbumName = post_data.oldAlbumName;
-      var newAlbumName = post_data.newAlbumName;
-      var newDescription = post_data.newDescription;
-    
-      //check if an album already has the new name
-      DB.collection("albums")
-        .find({ name: newAlbumName })
-        .count(function (err, number) {
-          if (number != 0 && oldAlbumName != newAlbumName) {
-            response.json(false);
-            console.log("album name already used");
-          } else {
-            // Update album data
-            DB.collection("albums").updateOne({ name: oldAlbumName }, {
-              $set: {
-                "name": newAlbumName,
-                "description": newDescription,
-              },
-            }).then(result => {
-              response.json(200);
-            });
-          }
-        });
-    });
 
 //==========================================================================================================
 // Profile modification
 //==========================================================================================================
+      //check if an album already has the new name
+      DB.collection("albums")
+        .find({ name: newAlbumName })
+        .count(function (err, number) {
+          if (number != 0 && oldAlbumName != newAlbumName) {
+            response.json(false);
+            console.log("album name already used");
+          } else {
+            // Update album data
+            DB.collection("albums").updateOne({ name: oldAlbumName }, {
+              $set: {
+                "name": newAlbumName,
+                "description": newDescription,
+              },
+            }).then(result => {
+              response.json(200);
+            });
+          }
+        });
+    });
+
+    //==========================================================================================================
+    // Profile modification
+    //==========================================================================================================
+    
     //Getting a user's data 
     app.get("/profile/:username", (request, response, next) => {
       var identifier = request.params.username;
@@ -703,10 +808,10 @@ app.post(
           } else {
             // Update user data
             DB.collection("users").updateOne({ identifier: oldUsername }, {
-              $set : {
-                "identifier" : newUsername,
-                "avatar" : avatar,
-                "description" : description,
+              $set: {
+                "identifier": newUsername,
+                "avatar": avatar,
+                "description": description,
                 "email": newEmail
               },
             }).then(result => {
@@ -737,83 +842,102 @@ app.post(
       );
     });
 
-     //Updating a users data
-     app.post("/profileUpdate", (request, response, next) => { 
-      var post_data = request.body;
-      var oldUsername = post_data.oldUsername;
-      var newUsername = post_data.newUsername;
-      var avatar = post_data.newAvatar;
-      var newEmail = post_data.newEmail;
-      var description = post_data.newDescription;
+    //==========================================================================================================
+    // Profile : Statistics
+    //==========================================================================================================
 
-      var db = client.db("PolyGramDB");
+    // Get the total number of collabs that userId has participated in
+    app.get("/profile/stats/collabs/:username", (request, response) => {
+      const identifier = request.params.username;
 
-      //check if a user already has the new name
-      db.collection("users")
-        .find({ identifier: newUsername })
-        .count(function (err, number) {
-          if (number != 0 && oldUsername != newUsername) {
-            response.json(403);
-            console.log("identifier already exists");
-          } else {
-            // Update user data
-            db.collection("users").updateOne({ identifier: oldUsername }, {
-              $set : {
-                "identifier" : newUsername,
-                "avatar" : avatar,
-                "description" : description,
-                "email": newEmail,
-              },
-            }).then(result => {
-              response.json(200);
-              console.log(result)
-            });
-          }
-        });
+      DB.collection("users").findOne({ identifier: identifier }, function (error, user) {
+        if (error) throw error;
+        response.json(user.collaborationCount);
+      });
+    })
+
+    // Get the average duration of userId in a collab session
+    app.get("/profile/stats/collabs/session/:username", (request, response) => {
+      const identifier = request.params.username;
+
+      DB.collection("users").findOne({ identifier: identifier }, function (error, user) {
+        if (error) throw error;
+        if (user.collaborationCount == 0) {
+          response.json('0j 0h 0m 0s');
+        } else {
+          const collabTimeMean = Math.round(user.totalCollaborationTime / user.collaborationCount);
+          response.json(stringifySeconds(collabTimeMean));
+        }
+      });
+    })
+
+    // Get the total duration of userId in collab sessions
+    app.get("/profile/stats/collabs/total-duration/:username", (request, response) => {
+      const identifier = request.params.username;
+
+      DB.collection("users").findOne({ identifier: identifier }, function (error, user) {
+        if (error) throw error;
+        if (user.collaborationCount == 0) {
+          response.json('0j 0h 0m 0s');
+        } else {
+          response.json(stringifySeconds(user.totalCollaborationTime));
+        }
+      });
+    })
+
+    //Update collab stats
+    app.put("/profile/stats/collabs/update/:username", (request, response, next) => {
+      const identifier = request.params.username;
+      const secondsSpentInCollab = request.body.secondsSpentInCollab;
+
+      DB.collection("users").findOneAndUpdate({ identifier: identifier }, 
+        { $inc: { collaborationCount: 1, totalCollaborationTime: secondsSpentInCollab } }, { returnDocument: 'after' }, (err, res) => {
+        response.json(201)
+        console.log(`Updated collab stats for ${identifier}`);
+      })
     });
-        app.post("/deleteRoom", (request, response, next) => {
-          var post_data = request.body;
+
+    // Get the total number of drawings created by username 
+    app.get("/profile/stats/drawings/:username", (request, response) => {
+      const username = request.params.username;
+
+      DB.collection("drawings").find( { owner : username }).toArray((error, result) => {
+        if (error) throw error;
+        console.log(result);
+        const totalNbrOfDrawingsCreated = result.length;
+        response.json(totalNbrOfDrawingsCreated)
+      })
+
+    })
+
+    // Get the total number of likes by username 
+    app.get("/profile/stats/drawings/likes/:username", (request, response) => {
+      const username = request.params.username;
+
+      DB.collection("drawings").find({ likes: { $all: [username] } }).toArray((error, result) => {
+        if (error) throw error;
+        
+        let likesCount = 0;
+        for (const drawing of result) {
+          likesCount += drawing.likes.length;
+        }
+
+        response.json(likesCount);
+      })
+    })
+
+    // Get the total number of private albums created by username 
+    app.get("/profile/stats/albums/:username", (request, response) => {
+      const username = request.params.username;
+
+      DB.collection("albums").find({ owner : username}).toArray((error, result) => {
+        if (error) throw error;
+        console.log(result);        
+        const totalNbrOfAlbumsCreated = result.length;
+        response.json(totalNbrOfAlbumsCreated);
+      })
+    })
     
-          var roomName = post_data.roomName;
-    
-          var db = client.db("PolyGramDB");
-
-          db.collection("rooms")
-          .find({ roomName: roomName })
-          .count(function (err, number) {
-            if (number == 0) {
-              response.json(404);
-              console.log("room does not exists");
-            } else {
-              db.collection("rooms").deleteOne({ roomName: roomName },
-                function (error, result) {
-                    response.json(201);
-                    console.log("room deleted");
-                }
-              );
-              }
-            });
-        });
-
-        app.get("/getRoomParameters", (request, response, next) => {
-
-          var post_data = request.query;
-          var roomName = post_data.roomName;  
-    
-          var db = client.db("PolyGramDB");
-
-          db.collection("rooms")
-            .findOne({ roomName: roomName }, function (err, result) {
-              if (err) {
-                console.log("error getting");
-                response.status(400).send("Error fetching rooms");
-              } else {
-                response.json(result)
-                console.log("Getting One Room");
-              }
-            });
-        });
-
 
     // Start web server
     const server = app.listen(SERVER_PORT, () => {
@@ -828,12 +952,29 @@ app.post(
 // UTILITY FUNCTIONS
 //==========================================================================================================
 
-let saveImageAsPNG = function(imageData, drawingId, filepath) {
-  console.log("SAVE IMAGE AS PNG!!!")
+let saveImageAsPNG = function (imageData, drawingId, filepath) {
+  console.log("Image succesfully saved in the server as PNG")
   const metadata = imageData.replace(/^data:image\/\w+;base64,/, '');
   const dataBuffer = Buffer.from(metadata, "base64");
-  console.log("DATA BUFFER:", dataBuffer)
-  fs.writeFile(`${filepath}/${drawingId}.png` , dataBuffer, (error) => {
-      if (error) throw error;
+  console.log("Data buffer:", dataBuffer)
+  fs.writeFile(`${filepath}/${drawingId}.png`, dataBuffer, (error) => {
+    if (error) throw error;
   });
+}
+
+let stringifySeconds = function (timeInSeconds) {
+  const secondsInMinute = 60;
+  const secondsInHour = secondsInMinute*60;
+  const secondsInDay = secondsInHour*24;
+
+  const days = Math.floor(timeInSeconds / secondsInDay);
+  timeInSeconds = timeInSeconds % secondsInDay;
+
+  const hours = Math.floor(timeInSeconds / secondsInHour);
+  timeInSeconds = timeInSeconds % secondsInHour;
+
+  const minutes = Math.floor(timeInSeconds / secondsInMinute);
+  timeInSeconds = timeInSeconds % secondsInMinute;
+
+  return days + 'j ' + hours + 'h ' + minutes + 'm ' + timeInSeconds + 's';
 }

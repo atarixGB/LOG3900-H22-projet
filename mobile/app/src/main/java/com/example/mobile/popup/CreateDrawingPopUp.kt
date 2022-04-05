@@ -4,14 +4,10 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.content.Intent.getIntent
-import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.location.Location
 import android.media.MediaPlayer
-import android.net.Uri
 import android.os.Bundle
-import android.provider.Settings
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -19,12 +15,8 @@ import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.NonNull
-import androidx.core.app.ActivityCompat
-import androidx.core.app.ActivityCompat.requestPermissions
 import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -60,13 +52,14 @@ class CreateDrawingPopUp(val user: String, val isAlbumAlreadySelected: Boolean) 
     private lateinit var radioGroup: RadioGroup
     private lateinit var publicRB: RadioButton
     private lateinit var rvOutputAlbums: RecyclerView
-    private lateinit var localisationText: TextView
+    private lateinit var locationText: TextView
     private lateinit var timeText: TextView
     private lateinit var albumAdapter: AlbumAdapter
     private lateinit var albums : ArrayList<IAlbum>
     private lateinit var iMyService: IMyService
     private lateinit var fusedLocationProvidedClient : FusedLocationProviderClient
     private var albumName: String = ""
+    private var albumID: String = ""
     private var drawingId: String = ""
     internal var compositeDisposable = CompositeDisposable()
     private lateinit var listener: DialogListener
@@ -85,7 +78,7 @@ class CreateDrawingPopUp(val user: String, val isAlbumAlreadySelected: Boolean) 
         iMyService = retrofit.create(IMyService::class.java)
 
         dialog?.setCanceledOnTouchOutside(false)
-        localisationText = rootView.city
+        locationText = rootView.city
         timeText = rootView.timestamp
 
         fusedLocationProvidedClient = LocationServices.getFusedLocationProviderClient(activity)
@@ -93,9 +86,13 @@ class CreateDrawingPopUp(val user: String, val isAlbumAlreadySelected: Boolean) 
         getTime()
 
 
+
         sharedViewModelCreateDrawingPopUp.albumName.observe(viewLifecycleOwner) {
             albumName = it
             Toast.makeText(context, "$albumName choisi" , Toast.LENGTH_LONG).show()
+        }
+        sharedViewModelCreateDrawingPopUp.albumID.observe(viewLifecycleOwner) {
+            albumID = it
         }
 
         var mediaPlayerMagic: MediaPlayer = MediaPlayer.create(context,R.raw.magic)
@@ -148,7 +145,7 @@ class CreateDrawingPopUp(val user: String, val isAlbumAlreadySelected: Boolean) 
         }
 
         rootView.submitBtn.setOnClickListener {
-            val data: String = ""
+            val data: String = "79f1f79d655d1150b15224027fc3e697.png"
             val members = ArrayList<String>()
             val likes = ArrayList<String>()
 
@@ -156,8 +153,12 @@ class CreateDrawingPopUp(val user: String, val isAlbumAlreadySelected: Boolean) 
             if (drawingName.text.toString().isNotEmpty()) {
                 drawingNameEmptyError.isVisible = false
                 albumEmptyError.isVisible = false
+                var location = locationText.text.toString()
+                if(location == "Géolocalisation non disponible"){
+                    location = ""
+                }
                 if (isAlbumAlreadySelected) {
-                    createDrawing(albumName, drawingName.text.toString(), user, data, members, likes)
+                    createDrawing(albumName, drawingName.text.toString(), user, data, members, likes, false,location)
                     Toast.makeText(
                         context,
                         "ajout du dessin a $albumName",
@@ -170,7 +171,7 @@ class CreateDrawingPopUp(val user: String, val isAlbumAlreadySelected: Boolean) 
                 } else if (rb.text.toString().equals("privé")) {
                     //add drawing to private album
                         if (albumName.isNotEmpty()) {
-                            createDrawing(albumName, drawingName.text.toString(), user, data, members, likes)
+                            createDrawing(albumName, drawingName.text.toString(), user, data, members, likes, false,location)
                             Toast.makeText(
                                 context,
                                 "ajout du dessin a $albumName",
@@ -187,7 +188,7 @@ class CreateDrawingPopUp(val user: String, val isAlbumAlreadySelected: Boolean) 
                         }
                 } else {
                     //add drawing to public album
-                    createDrawing("album public", drawingName.text.toString(), user, data, members, likes)
+                    createDrawing("album public", drawingName.text.toString(), user, data, members, likes, false,location)
 //                    addDrawingToAlbum("Album public", drawingName.text.toString())
                     Toast.makeText(context, "ajout du dessin a l'album public", Toast.LENGTH_LONG)
                         .show()
@@ -226,12 +227,12 @@ class CreateDrawingPopUp(val user: String, val isAlbumAlreadySelected: Boolean) 
                         val geocoder = Geocoder(context)
                         val list =
                             geocoder.getFromLocation(location.latitude, location.longitude, 1)
-                        localisationText.text =
+                        locationText.text =
                             list[0].locality.toString() + ", " + list[0].countryName.toString()
                     }
                 }
             } else {
-                localisationText.text = "Géolocalisation non disponible"
+                locationText.text = "Géolocalisation non disponible"
             }
         }
 
@@ -261,15 +262,22 @@ class CreateDrawingPopUp(val user: String, val isAlbumAlreadySelected: Boolean) 
 //    }
 
 
-    private fun createDrawing(albumName: String, drawingName: String, owner: String, data:String, members:ArrayList<String>, likes:ArrayList<String>) {
-        compositeDisposable.add(iMyService.createDrawing(drawingName, owner, data, members, likes)
+    private fun createDrawing(albumName: String, drawingName: String, owner: String, data:String, members:ArrayList<String>, likes:ArrayList<String>, isStory : Boolean,location:String) {
+        var location = location
+        if(location == "Géolocalisation non disponible"){
+            location = ""
+        }
+        compositeDisposable.add(iMyService.createDrawing(drawingName, owner, data, members, likes, isStory,location)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { result ->
                 //result est drawingID
                 //this.drawingId = result
-                listener.drawingIdPopUpListener(result)
-                addDrawingToAlbum(albumName, result)
+                listener.drawingIdPopUpListener(result as String)
+                if (albumName == "album public") {
+                    albumID = "623e5f7cbd233e887bcb6034"
+                }
+                addDrawingToAlbum(albumID, result)
 //                if (result == "201") {
 ////                    Toast.makeText(context, "added", Toast.LENGTH_SHORT).show()
 //                } else {
@@ -278,8 +286,8 @@ class CreateDrawingPopUp(val user: String, val isAlbumAlreadySelected: Boolean) 
             })
     }
 
-    private fun addDrawingToAlbum(albumName: String, drawingId: String) {
-        compositeDisposable.add(iMyService.addDrawingToAlbum(albumName, drawingId)
+    private fun addDrawingToAlbum(albumID: String, drawingId: String) {
+        compositeDisposable.add(iMyService.addDrawingToAlbum(albumID, drawingId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { result ->
@@ -297,7 +305,7 @@ class CreateDrawingPopUp(val user: String, val isAlbumAlreadySelected: Boolean) 
 
             override fun onResponse(call: Call<List<IAlbum>>, response: Response<List<IAlbum>>) {
                 for (album in response.body()!!) {
-                    if (album._id != "622f77abc04d88938c916084"){
+                    if (album._id != "623e5f7cbd233e887bcb6034"){
                         if (album.members.contains(user)) {
                             albumAdapter.addAlbum(album)
                             albumAdapter.notifyItemInserted((rvOutputAlbums.adapter as AlbumAdapter).itemCount)

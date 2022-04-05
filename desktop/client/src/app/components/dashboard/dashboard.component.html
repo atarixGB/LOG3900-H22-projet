@@ -1,4 +1,41 @@
-<div fxLayout="column" fxLayoutAlign="space-evenly center"  fxFlex="auto">
-   <button mat-raised-button color="primary" routerLink="/editor">Créer une session</button>
-   <button mat-raised-button color="primary" routerLink="/my-albums">Joindre une session</button>
+<div class="bubbles" id="base" fxLayout="row" fxLayoutAlign="center stretch" fxFlex="100">
+   <!-- Dashboard page -->
+   <div id="dashboardPage" fxLayout="column" fxLayoutAlign="start stretch" fxFlex="auto">
+      <div fxFlex="15%"></div>
+      <!-- Title -->
+      <div fxLayout="row" fxLayoutAlign="center center">
+         <div class="lineDiv" fxFlex="32.5%"></div>
+         <h1 fxLayoutAlign="center center" id="title" fxFlex="20%">Dessins du jour</h1>
+         <div class="lineDiv" fxFlex="32.5%"></div>
+      </div>
+
+      <!-- Stories -->
+      <div fxLayout="column" fxLayoutAlign="center center" >
+         <div *ngIf="this.storyService.users.length != 0" fxLayout="row" fxLayoutAlign="center center" id="storiesDiv">
+            <div *ngFor="let user of this.storyService.users" class="circleDiv" (click)="displayStoriesDialog(user)">
+               <img src="data:image/png;base64,{{user.avatar}}">
+            </div>
+         </div>
+         <h1 *ngIf="this.storyService.users.length == 0" id="noStories">Aucun dessin du jour</h1>
+      </div>
+      <div fxFlex="5%"></div>
+
+      <!-- Title -->
+      <div fxLayout="row" fxLayoutAlign="center center">
+         <div class="lineDiv" fxFlex="30%"></div>
+         <h1 fxLayoutAlign="center center" id="title" fxFlex="25%">Commencer un dessin</h1>
+         <div class="lineDiv" fxFlex="30%"></div>
+      </div>
+
+      <!-- Create drawing button -->
+      <div fxLayout="row" fxLayoutAlign="center center" fxFlex="15%">
+         <mat-icon (click)="this.displayCreateNewDrawingDialog()">add_photo_alternate</mat-icon>
+      </div>
+   </div>
+
+   <!-- BUBBLES ANIMATION -->
+   <div *ngFor="let i of [].constructor(50);" class="bubble"></div>
 </div>
+ 
+
+

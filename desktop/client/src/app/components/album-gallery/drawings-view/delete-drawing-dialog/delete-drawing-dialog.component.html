@@ -1,0 +1,15 @@
+<h2 mat-dialog-title>Supprimer un dessin</h2>
+
+<mat-dialog-content class="mat-typography">
+
+
+  <div>
+    Es-tu certain.e de vouloir supprimer le dessin <span class="bold">{{ this.data.name }}</span> ?.
+  </div>
+
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close>Annuler</button>
+  <button mat-button [mat-dialog-close]="true" cdkFocusInitial (click)="deleteDrawing()">Supprimer</button>
+</mat-dialog-actions>

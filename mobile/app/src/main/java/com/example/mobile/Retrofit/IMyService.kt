@@ -1,6 +1,7 @@
 package com.example.mobile.Retrofit
 
-import com.example.mobile.Interface.User
+import androidx.room.Room
+import com.example.mobile.Interface.IUser
 import com.example.mobile.IRoom
 import com.example.mobile.Interface.IAlbum
 import com.example.mobile.Interface.IDrawing
@@ -35,7 +36,10 @@ interface IMyService {
     fun getUsernameFromDB(@Path("email")email:String):Call<Any>
 
     @GET("/profile/{identifier}")
-    fun getUserFromDB(@Path("identifier") username: String): Call<User>
+    fun getUserFromDB(@Path("identifier") username: String): Call<IUser>
+
+    @GET("getAllUsers")
+    fun getAllUsers():Call<List<IUser>>
 
     @POST("profileUpdate")
     @FormUrlEncoded
@@ -79,12 +83,15 @@ interface IMyService {
     @GET("albums/{identifier}")
     fun getUserAlbums(@Path("identifier") username: String):Call<List<IAlbum>>
 
-    @GET("albums/Drawings/{albumName}")
-    fun getAllAlbumDrawings(@Path("albumName") albumName: String):Call<List<String>>
+    @GET("albums/Drawings/{albumID}")
+    fun getAllAlbumDrawings(@Path("albumID") albumID: String):Call<List<String>>
 
-    //get tous les dessins des albums dont userName est membre
-    @GET("/albums/getAllDrawings/{userName}")
-    fun getAllUserDrawings(@Path("userName") userName: String):Call<List<IAlbum>>
+    @GET("getAllUserDrawings/{user}")
+    fun getAllUserDrawings(@Path("user") user: String):Call<List<IDrawing>>
+
+//    //get tous les dessins des albums dont userName est membre
+//    @GET("/albums/getAllDrawings/{userName}")
+//    fun getAllUserDrawings(@Path("userName") userName: String):Call<List<IAlbum>>
 
     @POST("albums")
     @FormUrlEncoded
@@ -93,7 +100,7 @@ interface IMyService {
                        @Field("description")description: String,
                        @Field("drawingIDs")drawingIDs:ArrayList<String>,
                        @Field("members")usersList:ArrayList<String>,
-                       @Field("membershipRequests")membershipRequests:ArrayList<String>): Observable<String>
+                       @Field("membershipRequests")membershipRequests:ArrayList<String>): Observable<Any>
 
     @POST("drawing/create")
     @FormUrlEncoded
@@ -101,7 +108,9 @@ interface IMyService {
                       @Field("owner")ownerID:String,
                       @Field("data")data:String,
                       @Field("members")members:ArrayList<String>,
-                      @Field("likes")likes:ArrayList<String>): Observable<String>
+                      @Field("likes")likes:ArrayList<String>,
+                      @Field("isStory")isStory: Boolean,
+                      @Field("location")location: String): Observable<Any>
 
     @PUT("albums/addDrawing/{albumId}")
     @FormUrlEncoded
@@ -136,9 +145,9 @@ interface IMyService {
     @POST("albumUpdate")
     @FormUrlEncoded
     fun updateAlbum(
-        @Field("oldAlbumName") oldUsername: String,
-        @Field("newAlbumName") newUsername: String,
-        @Field("newDescription") newAvatar: String,
+        @Field("oldAlbumName") oldAlbumName: String,
+        @Field("newAlbumName") newAlbumname: String,
+        @Field("newDescription") newDescription: String,
     ): Observable<String>
 
     @Multipart
@@ -154,4 +163,29 @@ interface IMyService {
     @FormUrlEncoded
     fun addLikeToDrawing(@Path("drawingId") drawingId: String,
                          @Field("user")user:String): Observable<String>
+
+    @DELETE("/drawing/delete/{id}")
+    fun deleteDrawing(@Path("id")drawingID:String): Observable<String>
+
+    @POST("removeDrawing")
+    @FormUrlEncoded
+    fun removeDrawing(@Field("drawingID") drawingID:String,
+                 @Field("albumID")albumID:String) : Observable<String>
+
+    @POST("drawingUpdate")
+    @FormUrlEncoded
+    fun updateDrawing(
+        @Field("drawingID") oldDrawingname: String,
+        @Field("newDrawingName") newDrawingname: String,
+    ): Observable<String>
+
+    @POST("changeAlbum")
+    @FormUrlEncoded
+    fun changeAlbumOfDrawing(
+        @Field("newAlbumName") newAlbumName: String,
+        @Field("drawingID") drawingID: String,
+    ): Observable<String>
+
+    @PUT("drawings/addDrawingToStory/{drawingId}")
+    fun addDrawingToStory(@Path("drawingId") drawingId: String): Observable<String>
 }

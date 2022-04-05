@@ -19,5 +19,4 @@ export class JoinRoomDialogComponent implements OnInit {
     this.chatService.addRoomToMyList(this.data);
     this.router.navigate(['../chatmenu'], { relativeTo: this.route });
   }
-
 }

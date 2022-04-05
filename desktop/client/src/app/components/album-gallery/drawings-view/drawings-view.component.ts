@@ -2,9 +2,15 @@ import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PUBLIC_ALBUM } from '@app/constants/constants';
+import { IDrawing } from '@app/interfaces-enums/IDrawing';
 import { AlbumGalleryService } from '@app/services/album-gallery/album-gallery.service';
+import { CollaborationService } from '@app/services/collaboration/collaboration.service';
+import { DrawingService } from '@app/services/editor/drawing/drawing.service';
 import { LoginService } from '@app/services/login/login.service';
 import { AlbumSettingsDialogComponent } from './album-settings-dialog/album-settings-dialog.component';
+import { ChangeAlbumDialogComponent } from './change-album-dialog/change-album-dialog.component';
+import { ChangeDrawingNameDialogComponent } from './change-drawing-name-dialog/change-drawing-name-dialog.component';
+import { DeleteDrawingDialogComponent } from './delete-drawing-dialog/delete-drawing-dialog.component';
 import { MembersListDialogComponent } from './members-list-dialog/members-list-dialog.component';
 import { RequestsDialogComponent } from './requests-dialog/requests-dialog.component';
 
@@ -17,7 +23,14 @@ export class DrawingsViewComponent {
   isCurrentAlbumMine: boolean;
   isPublicAlbum: boolean;
 
-  constructor(public albumGalleryService: AlbumGalleryService, public loginService: LoginService, public dialog: MatDialog, private router: Router, private route: ActivatedRoute) {
+  constructor(
+    public albumGalleryService: AlbumGalleryService,
+    public loginService: LoginService,
+    public dialog: MatDialog,
+    private router: Router,
+    private route: ActivatedRoute,
+    public collaborationService: CollaborationService,
+    private drawingService: DrawingService) {
     this.isCurrentAlbumMine = this.loginService.username == albumGalleryService.currentAlbum.owner;
     this.isPublicAlbum = albumGalleryService.currentAlbum.name == PUBLIC_ALBUM.name;
   }
@@ -52,5 +65,43 @@ export class DrawingsViewComponent {
     console.log(`Deleted album id : ${this.albumGalleryService.currentAlbum._id}`);
     this.albumGalleryService.deleteAlbum(this.albumGalleryService.currentAlbum._id);
     this.router.navigate(['../my-albums'], { relativeTo: this.route });
+  }
+
+  onLikeBtn(drawing: IDrawing): void {
+    console.log(`Le dessin ${drawing.name} a été aimé par ${this.loginService.username}.`);
+    this.albumGalleryService.likeDrawing(drawing);
+  }
+
+  onShareBtn(drawing: IDrawing): void {
+    console.log(`Partage du dessin ${drawing.name} sur Dropbox ou OneDrive...`);
+  }
+
+  getUserProfileInfos(username: string): void {
+    console.log("Get info of", username);
+    this.router.navigate([`../profile/${username}`], { relativeTo: this.route });
+  }
+
+  enterCollab(drawing: IDrawing): void {
+    this.albumGalleryService.currentDrawing = drawing;
+    this.drawingService.setCurrentDrawing(drawing);
+    this.collaborationService.joinCollab(drawing._id);
+  }
+
+  openChangeNameDialog(drawing: IDrawing): void {
+    this.dialog.open(ChangeDrawingNameDialogComponent, {
+      data: drawing
+    });
+  }
+
+  openChangeAlbumDialog(drawing: IDrawing): void {
+    this.dialog.open(ChangeAlbumDialogComponent, {
+      data: drawing
+    });
+  }
+
+  openDeleteConfirmationDialog(drawing: IDrawing): void {
+    this.dialog.open(DeleteDrawingDialogComponent, {
+      data: drawing,
+    });
   }
 }
