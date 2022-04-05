@@ -166,7 +166,7 @@ class CreateDrawingPopUp(val user: String, val isAlbumAlreadySelected: Boolean) 
                     )
                         .show()
                     mediaPlayerMagic.start()
-                    listener.popUpListener(albumName, drawingName.text.toString(), drawingId)
+                    listener.popUpListener(albumName, drawingName.text.toString(), drawingId,location)
                     dismiss()
                 } else if (rb.text.toString().equals("privé")) {
                     //add drawing to private album
@@ -179,7 +179,7 @@ class CreateDrawingPopUp(val user: String, val isAlbumAlreadySelected: Boolean) 
                             )
                                 .show()
                             mediaPlayerMagic.start()
-                            listener.popUpListener(albumName, drawingName.text.toString(), drawingId)
+                            listener.popUpListener(albumName, drawingName.text.toString(), drawingId, location)
                             dismiss()
                         } else {
                             // s'il n'a pas choisi un album sors une erreur
@@ -193,7 +193,7 @@ class CreateDrawingPopUp(val user: String, val isAlbumAlreadySelected: Boolean) 
                     Toast.makeText(context, "ajout du dessin a l'album public", Toast.LENGTH_LONG)
                         .show()
                     mediaPlayerMagic.start()
-                    listener.popUpListener(albumName, drawingName.text.toString(), drawingId)
+                    listener.popUpListener(albumName, drawingName.text.toString(), drawingId, location)
                     dismiss()
                 }
             } else {
@@ -334,7 +334,7 @@ class CreateDrawingPopUp(val user: String, val isAlbumAlreadySelected: Boolean) 
 
 
     public interface DialogListener {
-        fun popUpListener(albumName: String, drawingName: String, drawingId: String)
+        fun popUpListener(albumName: String, drawingName: String, drawingId: String, location : String)
         fun drawingIdPopUpListener(drawingId: String)
     }
 

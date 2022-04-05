@@ -2,6 +2,7 @@ package com.example.mobile.activity.drawing
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.TextView
 import androidx.activity.viewModels
 import com.example.mobile.R
 import com.example.mobile.adapter.AlbumAdapter
@@ -15,6 +16,7 @@ class DrawingActivity : AppCompatActivity(), CreateDrawingPopUp.DialogListener, 
     private lateinit var albumName: String
     private lateinit var albumID: String
     private lateinit var drawingName: String
+    private lateinit var location: TextView
     private val sharedViewModelToolBar: SharedViewModelToolBar by viewModels()
     private val sharedViewModelCreateDrawingPopUp: SharedViewModelCreateDrawingPopUp by viewModels()
 
@@ -30,6 +32,7 @@ class DrawingActivity : AppCompatActivity(), CreateDrawingPopUp.DialogListener, 
             sharedViewModelCreateDrawingPopUp.setAlbum(albumName,albumID )
         }
         sharedViewModelToolBar.setUser(user)
+        location = findViewById(R.id.locationText)
 
         //Open Popup Window
         var dialog = CreateDrawingPopUp(user, isAlbumAlreadySelected)
@@ -41,9 +44,10 @@ class DrawingActivity : AppCompatActivity(), CreateDrawingPopUp.DialogListener, 
         sharedViewModelCreateDrawingPopUp.setAlbum(albumName,albumID)
     }
 
-    override fun popUpListener(albumName: String, drawingName: String, drawingId: String) {
+    override fun popUpListener(albumName: String, drawingName: String, drawingId: String, location: String) {
         this.albumName = albumName
         this.drawingName = drawingName
+        this.location.text = location
     }
 
     override fun drawingIdPopUpListener(drawingId: String) {
