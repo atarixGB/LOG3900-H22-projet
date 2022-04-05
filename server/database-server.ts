@@ -14,10 +14,10 @@ var fs = require('fs');
 const DATABASE_URL =
   "mongodb+srv://equipe203:Log3900-H22@polygramcluster.arebt.mongodb.net/PolyGramDB?retryWrites=true&w=majority";
 const SERVER_PORT = 3001;
-const UPLOAD_DIR = './uploads/'
+const UPLOAD_DIR = 'uploads/'
 
 const storage = multer.diskStorage({
-  destination: './uploads/',
+  destination: `./${UPLOAD_DIR}`,
   filename: function (req, file, cb) {
     return crypto.pseudoRandomBytes(16, function (err, raw) {
       if (err) {
@@ -91,6 +91,9 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
       var email = post_data.email;
       var description = post_data.description;
 
+      var collaborationCount = post_data.collaborationCount;
+      var totalCollaborationTime = post_data.totalCollaborationTime;
+
       var insertJson = {
         identifier: identifier,
         password: password,
@@ -98,6 +101,8 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
         avatar: avatar,
         email: email,
         description: description,
+        collaborationCount: collaborationCount,
+        totalCollaborationTime: totalCollaborationTime,
       };
 
       //check if identifier exists
@@ -383,6 +388,32 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
         });
     });
 
+        //get all user drawings in DB
+
+        app.get("/getAllUserDrawings/:user", (request, response, next) => {
+
+          var user = request.params.user.replaceAll(/"/g, '');;
+    
+          console.log(user);
+    
+          DB.collection("drawings")
+    
+            .find({owner: user}).limit(50).toArray(function (err, result) {
+    
+              if (err) {
+    
+                response.status(400).send("Error fetching drawings");
+    
+              } else {
+    
+                response.json(result)
+    
+              }
+    
+            });
+    
+        });
+
     //Save drawing data (desktop client)
     app.post("/drawing/save/:drawingId", (request, response, next) => {
       let drawingId = request.params.drawingId;
@@ -399,7 +430,7 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
     app.put("/drawing/save/:drawingId", (request, response) => {
       const imageData = request.body.data;
 
-      saveImageAsPNG(imageData, request.params.drawingId, './uploads');
+      saveImageAsPNG(imageData, request.params.drawingId, `./${UPLOAD_DIR}`);
 
       response.json("DataUrl sauvegardé")
     })
@@ -410,7 +441,7 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
       multer({
         storage: storage
       }).single('upload'), function (req, res) {
-        res.redirect("/uploads/" + req.file.filename);
+        res.redirect(`/${UPLOAD_DIR}` + req.file.filename);
         DB.collection("drawings").findOneAndUpdate({ _id: mongoose.Types.ObjectId(req.params.drawingId.replaceAll(/"/g, '')) }, { $set: { "data": req.file.filename } }, { returnDocument: 'after' }, (err, res) => {
         });// ici tu par chercher le drawingID en base et tu mets le data de cet element au filename 
         return res.status(200).end();
@@ -448,8 +479,8 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
           } else {
             const file = result.data;
 
-            if (fs.readFileSync(__dirname + "/uploads/" + file, { encoding: 'base64' })) {
-              var img = fs.readFileSync(__dirname + "/uploads/" + file, { encoding: 'base64' });
+            if (fs.readFileSync(__dirname + `/${UPLOAD_DIR}` + file, { encoding: 'base64' })) {
+              var img = fs.readFileSync(__dirname + `/${UPLOAD_DIR}` + file, { encoding: 'base64' });
 
               var returnedJson = {
                 _id: result._id,
@@ -482,7 +513,7 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
       DB.collection("drawings").findOneAndDelete({ _id: mongoose.Types.ObjectId(drawingId) }, (err, res) => {
 
         // Remove drawing from the upload directory in the server
-        fs.unlink("./uploads/" + drawingId + ".png", function (err, res) {
+        fs.unlink(`./${UPLOAD_DIR}` + drawingId + ".png", function (err, res) {
           if (err) throw err;
           console.log(` Drawing with ID ${drawingId} has been deleted from server`);
         });
@@ -506,10 +537,11 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
     });
 
     // For Development Purpose Only: Delete all drawings from DB
-    app.delete("/delete", (request, response) => {
-      DB.collection("drawings").remove({}, (err, result) => {
-        if (err) console.log("CANNOT DELETE");
-        else response.json("DELETE OK")
+    app.delete("/delete/:field", (request, response) => {
+      let field = request.params.field;
+      DB.collection(field).remove({}, (err, result) => {
+        if (err) console.log(`CANNOT DELETE ${field}`);
+        else response.json(`DELETE ${field} COLLECTION OK`)
       })
     })
 
@@ -808,6 +840,103 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
       );
     });
 
+    //==========================================================================================================
+    // Profile : Statistics
+    //==========================================================================================================
+
+    // Get the total number of collabs that userId has participated in
+    app.get("/profile/stats/collabs/:username", (request, response) => {
+      const identifier = request.params.username;
+
+      DB.collection("users").findOne({ identifier: identifier }, function (error, user) {
+        if (error) throw error;
+        response.json(user.collaborationCount);
+      });
+    })
+
+    // Get the average duration of userId in a collab session
+    app.get("/profile/stats/collabs/session/:username", (request, response) => {
+      const identifier = request.params.username;
+
+      DB.collection("users").findOne({ identifier: identifier }, function (error, user) {
+        if (error) throw error;
+        if (user.collaborationCount == 0) {
+          response.json('0j 0h 0m 0s');
+        } else {
+          const collabTimeMean = Math.round(user.totalCollaborationTime / user.collaborationCount);
+          response.json(stringifySeconds(collabTimeMean));
+        }
+      });
+    })
+
+    // Get the total duration of userId in collab sessions
+    app.get("/profile/stats/collabs/total-duration/:username", (request, response) => {
+      const identifier = request.params.username;
+
+      DB.collection("users").findOne({ identifier: identifier }, function (error, user) {
+        if (error) throw error;
+        if (user.collaborationCount == 0) {
+          response.json('0j 0h 0m 0s');
+        } else {
+          response.json(stringifySeconds(user.totalCollaborationTime));
+        }
+      });
+    })
+
+    //Update collab stats
+    app.put("/profile/stats/collabs/update/:username", (request, response, next) => {
+      const identifier = request.params.username;
+      const secondsSpentInCollab = request.body.secondsSpentInCollab;
+
+      DB.collection("users").findOneAndUpdate({ identifier: identifier }, 
+        { $inc: { collaborationCount: 1, totalCollaborationTime: secondsSpentInCollab } }, { returnDocument: 'after' }, (err, res) => {
+        response.json(201)
+        console.log(`Updated collab stats for ${identifier}`);
+      })
+    });
+
+    // Get the total number of drawings created by username 
+    app.get("/profile/stats/drawings/:username", (request, response) => {
+      const username = request.params.username;
+
+      DB.collection("drawings").find( { owner : username }).toArray((error, result) => {
+        if (error) throw error;
+        console.log(result);
+        const totalNbrOfDrawingsCreated = result.length;
+        response.json(totalNbrOfDrawingsCreated)
+      })
+
+    })
+
+    // Get the total number of likes by username 
+    app.get("/profile/stats/drawings/likes/:username", (request, response) => {
+      const username = request.params.username;
+
+      DB.collection("drawings").find({ likes: { $all: [username] } }).toArray((error, result) => {
+        if (error) throw error;
+        
+        let likesCount = 0;
+        for (const drawing of result) {
+          likesCount += drawing.likes.length;
+        }
+
+        response.json(likesCount);
+      })
+    })
+
+    // Get the total number of private albums created by username 
+    app.get("/profile/stats/albums/:username", (request, response) => {
+      const username = request.params.username;
+
+      DB.collection("albums").find({ owner : username}).toArray((error, result) => {
+        if (error) throw error;
+        console.log(result);        
+        const totalNbrOfAlbumsCreated = result.length;
+        response.json(totalNbrOfAlbumsCreated);
+      })
+    })
+    
+
     // Start web server
     const server = app.listen(SERVER_PORT, () => {
       console.log(
@@ -829,4 +958,21 @@ let saveImageAsPNG = function (imageData, drawingId, filepath) {
   fs.writeFile(`${filepath}/${drawingId}.png`, dataBuffer, (error) => {
     if (error) throw error;
   });
+}
+
+let stringifySeconds = function (timeInSeconds) {
+  const secondsInMinute = 60;
+  const secondsInHour = secondsInMinute*60;
+  const secondsInDay = secondsInHour*24;
+
+  const days = Math.floor(timeInSeconds / secondsInDay);
+  timeInSeconds = timeInSeconds % secondsInDay;
+
+  const hours = Math.floor(timeInSeconds / secondsInHour);
+  timeInSeconds = timeInSeconds % secondsInHour;
+
+  const minutes = Math.floor(timeInSeconds / secondsInMinute);
+  timeInSeconds = timeInSeconds % secondsInMinute;
+
+  return days + 'j ' + hours + 'h ' + minutes + 'm ' + timeInSeconds + 's';
 }
