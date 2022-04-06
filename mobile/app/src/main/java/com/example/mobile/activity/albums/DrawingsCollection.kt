@@ -118,7 +118,7 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
         membersListButton.setOnClickListener {
             //ouvrir le popup window des utilisateurs
             //getAlbumParameters(albumName) //pour avoir les parametres d'album a jour
-            var dialog = UsersListPopUp(albumName, currentAlbum.members)
+            var dialog = UsersListPopUp(albumName, currentAlbum.members, user)
             dialog.show(supportFragmentManager, "customDialog")
         }
 

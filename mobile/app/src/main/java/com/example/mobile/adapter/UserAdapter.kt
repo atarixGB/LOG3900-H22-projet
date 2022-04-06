@@ -15,7 +15,7 @@ import com.example.mobile.activity.profile.visitingProfile
 import kotlinx.android.synthetic.main.item_user.view.*
 import java.util.ArrayList
 
-class UserAdapter (val context : Context, var users: ArrayList<String>, var requests: Boolean) : RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
+class UserAdapter (val context : Context,val user: String, var users: ArrayList<String>, var requests: Boolean) : RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
 
     private var listener: UserAdapterListener = context as UserAdapterListener
 
@@ -41,9 +41,16 @@ class UserAdapter (val context : Context, var users: ArrayList<String>, var requ
             }*/
 
             item_user_name.setOnClickListener{
-                val intent = Intent(context, visitingProfile::class.java)
-                intent.putExtra("visitingUser",currentUser)
-                context.startActivity(intent)
+                if (user == currentUser) {
+                    val intent = Intent(context, Profile::class.java)
+                    intent.putExtra("userName", user)
+                    context.startActivity(intent)
+                } else {
+                    val intent = Intent(context, visitingProfile::class.java)
+                    intent.putExtra("user", user)
+                    intent.putExtra("visitingUser", currentUser)
+                    context.startActivity(intent)
+                }
             }
             acceptButton.setOnClickListener {
                 listener.userAdapterListener(users[position])
