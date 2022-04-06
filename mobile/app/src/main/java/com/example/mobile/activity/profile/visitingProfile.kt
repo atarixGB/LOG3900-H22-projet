@@ -17,7 +17,16 @@ import com.example.mobile.bitmapDecoder
 import com.example.mobile.viewModel.SharedViewModelToolBar
 import com.mikhaellopez.circularimageview.CircularImageView
 import io.reactivex.disposables.CompositeDisposable
+import kotlinx.android.synthetic.main.activity_profile.*
 import kotlinx.android.synthetic.main.activity_visiting_profile.*
+import kotlinx.android.synthetic.main.activity_visiting_profile.badge
+import kotlinx.android.synthetic.main.activity_visiting_profile.description_field
+import kotlinx.android.synthetic.main.activity_visiting_profile.nbCreatedDrawings
+import kotlinx.android.synthetic.main.activity_visiting_profile.nbPrivateAlbums
+import kotlinx.android.synthetic.main.activity_visiting_profile.showFavorites
+import kotlinx.android.synthetic.main.activity_visiting_profile.showMostLiked
+import kotlinx.android.synthetic.main.activity_visiting_profile.userAvatar
+import kotlinx.android.synthetic.main.activity_visiting_profile.user_email
 import retrofit2.Call
 import retrofit2.Response
 
@@ -29,7 +38,8 @@ class visitingProfile : AppCompatActivity() {
     private lateinit var user: String
     private lateinit var visitingUser: String
     private var totalNbLikes:Int = 0
-
+    private var totalNbDrawingCreated:Double = 0.0
+    private var totalNbAlbumCreated :Double =0.0
     //    private lateinit var email: String
     private lateinit var usernameDisplayed: TextView
     private lateinit var iMyService: IMyService
@@ -79,6 +89,9 @@ class visitingProfile : AppCompatActivity() {
             intent.putExtra("userName",visitingUser)
             startActivity(intent)
         }
+
+        getNbDrawings(user)
+        getNbAlbumsCreated(user)
 
 
     }
@@ -133,5 +146,52 @@ class visitingProfile : AppCompatActivity() {
         else if(totalNbLikes > 50){
             badge.setImageResource(R.drawable.artiste)
         }
+    }
+
+    private fun getNbDrawings(user:String) {
+        var call: Call<Any> = iMyService.getNbTotalDrawings(user)
+
+        call.enqueue(object: retrofit2.Callback<Any> {
+            override fun onResponse(call: Call<Any>, response: Response<Any>) {
+
+                if(response.body()!=null){
+                    totalNbDrawingCreated= response.body() as Double
+                    nbCreatedDrawings.setText(totalNbDrawingCreated.toInt().toString())
+                }
+                else{
+                    nbCreatedDrawings.setText("0")
+                }
+
+
+            }
+
+            override fun onFailure(call: Call<Any>, t: Throwable) {
+                Toast.makeText(this@visitingProfile, "erreur statistique introuvable", Toast.LENGTH_SHORT).show()
+            }
+        })
+
+    }
+
+    private fun getNbAlbumsCreated(user:String) {
+        var call: Call<Any> = iMyService.getNbAlbumsCreated(user)
+
+        call.enqueue(object: retrofit2.Callback<Any> {
+            override fun onResponse(call: Call<Any>, response: Response<Any>) {
+
+                if(response.body()!=null){
+                    totalNbAlbumCreated= response.body() as Double
+
+                    nbPrivateAlbums.setText(totalNbAlbumCreated.toInt().toString())
+                }
+                else {
+                    nbPrivateAlbums.setText("0")
+                }
+            }
+
+            override fun onFailure(call: Call<Any>, t: Throwable) {
+                Toast.makeText(this@visitingProfile, "erreur statistique introuvable", Toast.LENGTH_SHORT).show()
+            }
+        })
+
     }
 }
