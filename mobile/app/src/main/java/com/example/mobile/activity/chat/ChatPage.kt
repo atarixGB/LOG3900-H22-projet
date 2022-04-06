@@ -91,6 +91,7 @@ class ChatPage : AppCompatActivity(), UserAdapter.UserAdapterListener {
         if(checkFileExist("$roomName.txt") && !checkIfFileEmpty("$roomName.txt")){
             readAllMessagesFromFile("$roomName.txt")
         }
+        var mediaPlayerReceiveSuccess: MediaPlayer = MediaPlayer.create(baseContext,R.raw.receive)
 
         //for test purpose
         readBtn = findViewById(R.id.readBtn)
@@ -125,6 +126,7 @@ class ChatPage : AppCompatActivity(), UserAdapter.UserAdapterListener {
                 val time = messageData.get("time") as String
                 val room = messageData.get("room") as String
                 val msg = IMessage(message, user, time, room, false)
+                mediaPlayerReceiveSuccess.start()
                 printMessagesOnUI(msg)
             }
         }
@@ -233,7 +235,6 @@ class ChatPage : AppCompatActivity(), UserAdapter.UserAdapterListener {
             rvOutputMsgs.scrollToPosition((rvOutputMsgs.adapter as MessageAdapter).itemCount - 1)
             messageText.text.clear()
             saveInFile(msg)
-            //mediaPlayerReceiveSuccess.start()
         }
     }
 
