@@ -34,6 +34,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.*
+import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
 
 
@@ -84,9 +85,10 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
         val retrofit = RetrofitClient.getInstance()
         iMyService = retrofit.create(IMyService::class.java)
 
+        DrawingSocket.socket.on("readyToJoin", onReadyToJoin)
+//        DrawingSocket.socket.on("joinSuccessful", onJoinCollab)
         DrawingSocket.socket.on("joinSuccessfulwithID", onJoinCollab)
         DrawingSocket.socket.on("joinFailure", onJoinFailure)
-       // socket.socket.on("receiveStroke", onReceiveStroke)
 
         searchView = findViewById<SearchView>(R.id.drawingsSearchView)
         searchView.queryHint = "cherchez un dessin"
@@ -234,15 +236,17 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
                 popupMenu.show()
             }
         }
+    }
 
-//        socket.socket.on("joinSuccessfulwithID", onJoinCollab)
-
-
+    private var onReadyToJoin = Emitter.Listener {
+        val drawingId = it[0] as String
+        TimeUnit.MILLISECONDS.sleep(200)
+        DrawingSocket.socket.emit("joinCollab", drawingId)
     }
 
     private var onJoinCollab = Emitter.Listener {
 //        val joinEvent = it[0] as JSONObject
-            val drawingId = it[0] as String
+        val drawingId = it[0] as String
 //        var strokes = java.util.ArrayList<Stroke>()
 //        val jsonStrokes = joinEvent["strokes"]  as JSONArray
 //        for (i in 0 until jsonStrokes.length()) {
@@ -250,7 +254,10 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
 //            //boundingPoints.add( IVec2(obj.getDouble("x").toFloat(), obj.getDouble("y").toFloat()) )
 //            strokes.add(obj as Stroke)
 //        }
-            editDrawing(drawingId)
+        val intent = Intent(this, DrawingActivity::class.java)
+        intent.putExtra("userName", user)
+        intent.putExtra("drawingCollabId", drawingId)
+        startActivity(intent)
     }
 
     private var onJoinFailure = Emitter.Listener {
@@ -327,13 +334,6 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
 //    override fun emitJoinDrawingListener(drawingId: String) {
 //        DrawingSocket.socket.emit("joinCollab", drawingId)
 //    }
-
-    fun editDrawing(drawingId: String) {
-        val intent = Intent(this, DrawingActivity::class.java)
-        intent.putExtra("userName", user)
-        intent.putExtra("drawingCollabId", drawingId)
-        startActivity(intent)
-    }
 
     private fun addLikeToDrawing(drawingId: String) {
         compositeDisposable.add(iMyService.addLikeToDrawing(drawingId, user)

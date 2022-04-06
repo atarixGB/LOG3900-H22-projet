@@ -169,44 +169,13 @@ class DrawingAdapter (val context: Context?, var drawings: ArrayList<IDrawing>, 
                 }
             }
 
-//            DrawingSocket.socket.on("joinSuccessful", Emitter.Listener {
-//                listener.emitJoinDrawingListener(currentDrawing._id!!)
-////                val intent = Intent(context, DrawingActivity::class.java)
-////                intent.putExtra("userName", user)
-////                intent.putExtra("drawingCollabId", currentDrawing._id!!)
-////                context.startActivity(intent)
-//            })
-
             modifDrawing.setOnClickListener {
                 DrawingSocket.prepForJoin(currentDrawing._id!!, user)
-                DrawingSocket.socket.emit("joinCollab", currentDrawing._id!!)
+//                DrawingSocket.socket.emit("joinCollab", currentDrawing._id!!)
             }
         }
-
-//        socket.socket.on("joinSuccessfulwithID", onJoinCollab)
-//        DrawingSocket.socket.on("joinSuccessfulwithID", Emitter.Listener {
-////            listener.emitJoinDrawingListener(currentDrawing._id!!)
-//            val intent = Intent(context, DrawingActivity::class.java)
-//            intent.putExtra("userName", user)
-//            intent.putExtra("drawingCollabId", dr)
-//            context!!.startActivity(intent)
-//        })
     }
 
-
-
-//    private var onJoinCollab = Emitter.Listener {
-////        val joinEvent = it[0] as JSONObject
-//        val drawingId = it[0] as String
-////        var strokes = java.util.ArrayList<Stroke>()
-////        val jsonStrokes = joinEvent["strokes"]  as JSONArray
-////        for (i in 0 until jsonStrokes.length()) {
-////            val obj = jsonStrokes[i] as JSONObject
-////            //boundingPoints.add( IVec2(obj.getDouble("x").toFloat(), obj.getDouble("y").toFloat()) )
-////            strokes.add(obj as Stroke)
-////        }
-//        listener.editDrawingListener(drawingId)
-//    }
 
     fun addDrawing (drawing: IDrawing) {
         drawings.add(drawing)

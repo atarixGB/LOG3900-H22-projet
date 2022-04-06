@@ -1,8 +1,10 @@
 package com.example.mobile.Interface
 
 import android.graphics.Canvas
+import android.graphics.Color
 import com.example.mobile.Tools.Tool
 import com.example.mobile.activity.drawing.ToolbarFragment
+import org.json.JSONObject
 
 
 abstract class Stroke(open var boundingPoints: ArrayList<IVec2>,
@@ -23,4 +25,12 @@ abstract class Stroke(open var boundingPoints: ArrayList<IVec2>,
 
     abstract fun updateMove(pos: IVec2)
     abstract fun rescale(scale: IVec2)
+    abstract fun convertToObject(): JSONObject
+
+    fun toRBGColor(color : Int) : String{
+        val red = Color.red(color)
+        val green = Color.green(color)
+        val blue = Color.blue(color)
+        return "rgb($red,$green,$blue)"
+    }
 }

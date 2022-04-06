@@ -4,6 +4,8 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Path
 import com.example.mobile.activity.drawing.ToolbarFragment
+import org.json.JSONArray
+import org.json.JSONObject
 
 data class IPencilStroke (
     override var boundingPoints: ArrayList<IVec2>,
@@ -77,6 +79,31 @@ data class IPencilStroke (
             points[i].y = points[i].y * scale.y
         }
         boundingPoints[1] = IVec2(boundingPoints[1].x * scale.x, boundingPoints[1].y * scale.y)
+    }
+
+    override fun convertToObject(): JSONObject {
+        //convert into the right json format
+        var bounding = JSONArray()
+        var pointsStr = JSONArray()
+        for(pts in boundingPoints){
+            var arr = JSONObject()
+            arr.put("x",pts.x)
+            arr.put("y",pts.y)
+            bounding.put(arr)
+        }
+        for(pts in points){
+            var arr = JSONObject()
+            arr.put("x",pts.x)
+            arr.put("y",pts.y)
+            pointsStr.put(arr)
+        }
+        var jo = JSONObject()
+        jo.put("boundingPoints", bounding)
+        jo.put("toolType", 0)
+        jo.put("primaryColor", toRBGColor(currentStrokeColor))
+        jo.put("strokeWidth", currentStrokeWidth)
+        jo.put("points", pointsStr)
+        return jo
     }
 
 //    override fun moveStroke(newPosition: IVec2) {

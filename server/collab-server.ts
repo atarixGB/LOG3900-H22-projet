@@ -84,6 +84,7 @@ ioCollab.on('connection', (socket) => {
 
       socket.on('updateCollabInfo', (collabData) => {
         console.log('updateCollabInfo');
+        console.log(collabData.strokes);
         
         let roomData = infoOnActiveRooms.get(collabData.collabDrawingId);
         roomData.strokes = collabData.strokes;

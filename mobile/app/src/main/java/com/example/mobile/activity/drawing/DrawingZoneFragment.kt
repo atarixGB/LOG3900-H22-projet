@@ -30,11 +30,13 @@ import com.example.mobile.viewModel.ToolParameters
 import com.example.mobile.viewModel.SharedViewModelToolBar
 import io.reactivex.disposables.CompositeDisposable
 import okhttp3.*
+import org.json.JSONArray
 import retrofit2.Call
 import retrofit2.Response
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
+import java.util.concurrent.TimeUnit
 
 class DrawingZoneFragment : Fragment() {
     private lateinit var mDrawingView: DrawingView
@@ -63,6 +65,8 @@ class DrawingZoneFragment : Fragment() {
         DrawingSocket.socket.on("receiveSelectionPos", onMoveRequest)
 
         DrawingSocket.socket.on("prepForNewMember", onPrepForNewMember)
+        DrawingSocket.socket.on("fetchStrokes", onFetchStrokes)
+
         DrawingSocket.socket.on("memberLeft", onMemberLeaving)
 
 
@@ -148,6 +152,10 @@ class DrawingZoneFragment : Fragment() {
         mDrawingView.onPrepForNewMember()
     }
 
+    private var onFetchStrokes = Emitter.Listener {
+        mDrawingView.updateCollabInfos()
+    }
+
     private var onMemberLeaving = Emitter.Listener {
         val userLeft = it[0] as String
         //Open Popup Window
@@ -178,6 +186,9 @@ class DrawingZoneFragment : Fragment() {
                 } else if (stroke.getInt("toolType") == 2) {
                     toolManager.ellipse.onStrokeReceived(stroke)
                 }
+                if (currentDrawingBitmap != null) {
+                    mCanvas!!.drawBitmap(currentDrawingBitmap!!, 0F, 0F, null)
+                }
                 invalidate()
             }
         }
@@ -185,6 +196,9 @@ class DrawingZoneFragment : Fragment() {
         fun onSelectionReceive(stroke: JSONObject){
             if (socket.socket.id() != stroke.getString("sender")) {
                 toolManager.selection.onStrokeReceived(stroke)
+                if (currentDrawingBitmap != null) {
+                    mCanvas!!.drawBitmap(currentDrawingBitmap!!, 0F, 0F, null)
+                }
                 invalidate()
             }
         }
@@ -194,6 +208,9 @@ class DrawingZoneFragment : Fragment() {
                 val width = newWidth.getInt("value").toFloat()
                 val strokeIndex = newWidth.getInt("strokeIndex")
                 toolManager.selection.changeReceivedWidth(newWidth.getString("sender"), width, strokeIndex)
+                if (currentDrawingBitmap != null) {
+                    mCanvas!!.drawBitmap(currentDrawingBitmap!!, 0F, 0F, null)
+                }
                 invalidate()
             }
         }
@@ -203,6 +220,9 @@ class DrawingZoneFragment : Fragment() {
                 val color = toolManager.currentTool.toIntColor(newColor.getString("color"))
                 val strokeIndex = newColor.getInt("strokeIndex")
                 toolManager.selection.changeReceivedColor(newColor.getString("sender"), color, strokeIndex)
+                if (currentDrawingBitmap != null) {
+                    mCanvas!!.drawBitmap(currentDrawingBitmap!!, 0F, 0F, null)
+                }
                 invalidate()
             }
         }
@@ -211,6 +231,9 @@ class DrawingZoneFragment : Fragment() {
             if (socket.socket.id() != stroke.getString("sender")) {
                 val strokeIndex = stroke.getInt("strokeIndex")
                 toolManager.selection.onPasteRequest(stroke.getString("sender"), strokeIndex)
+                if (currentDrawingBitmap != null) {
+                    mCanvas!!.drawBitmap(currentDrawingBitmap!!, 0F, 0F, null)
+                }
                 invalidate()
             }
         }
@@ -219,6 +242,9 @@ class DrawingZoneFragment : Fragment() {
             if (socket.socket.id() != stroke.getString("sender")) {
                 val strokeIndex = stroke.getInt("strokeIndex")
                 toolManager.selection.onDeleteRequest(stroke.getString("sender"),strokeIndex)
+                if (currentDrawingBitmap != null) {
+                    mCanvas!!.drawBitmap(currentDrawingBitmap!!, 0F, 0F, null)
+                }
                 invalidate()
             }
         }
@@ -228,6 +254,9 @@ class DrawingZoneFragment : Fragment() {
                 var obj = stroke["pos"] as JSONObject
                 val pos = IVec2(obj.getDouble("x").toFloat(), obj.getDouble("y").toFloat())
                 toolManager.selection.onMoveRequest(stroke.getString("sender"), pos)
+                if (currentDrawingBitmap != null) {
+                    mCanvas!!.drawBitmap(currentDrawingBitmap!!, 0F, 0F, null)
+                }
                 invalidate()
             }
         }
@@ -237,8 +266,25 @@ class DrawingZoneFragment : Fragment() {
                 resetPath()
                 toolManager.selection.sendPasteSelection()
                 toolManager.selection.resetSelection()
-                toolManager.changeTool(toolManager.selection.oldTool!!)
+                if (currentDrawingBitmap != null) {
+                    mCanvas!!.drawBitmap(currentDrawingBitmap!!, 0F, 0F, null)
+                }
+                if (toolManager.selection.oldTool != null) {
+                    toolManager.changeTool(toolManager.selection.oldTool!!)
+                }
             }
+        }
+
+        fun updateCollabInfos() {
+            var data = JSONObject()
+            data.put("collabDrawingId", drawingId)
+            var strokes = JSONArray()
+            toolManager.selection.strokes.forEach {
+                strokes.put(it.convertToObject())
+            }
+            data.put("strokes", strokes)
+
+            DrawingSocket.socket.emit("updateCollabInfo", data )
         }
 
         override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {

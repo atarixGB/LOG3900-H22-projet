@@ -38,7 +38,7 @@ class DrawingActivity : AppCompatActivity(), CreateDrawingPopUp.DialogListener, 
         if (isAlbumAlreadySelected) {
             albumName = intent.getStringExtra("albumName").toString()
             albumID = intent.getStringExtra("albumID").toString()
-            sharedViewModelCreateDrawingPopUp.setAlbum(albumName,albumID )
+            sharedViewModelCreateDrawingPopUp.setAlbum(albumName, albumID)
         }
 
         //collaboration
@@ -51,36 +51,12 @@ class DrawingActivity : AppCompatActivity(), CreateDrawingPopUp.DialogListener, 
         } else {
             // drawing already exists
             sharedViewModelToolBar.setCollabDrawingId(collabDrawingId)
-//            DrawingSocket.prepForJoin(collabDrawingId, user)
         }
-
-//        DrawingSocket.socket.on("prepForNewMember", onPrepForNewMember)
-//        DrawingSocket.socket.on("memberLeft", onMemberLeaving)
-
     }
 
-//    private val onPrepForNewMember = Emitter.Listener {
-//        val userJoined = it[0] as String
-//        //Open Popup Window
-//        var dialog = PrepForNewMemberPopUp(userJoined)
-//        try {
-//            dialog.show(supportFragmentManager, "customDialog")
-//        } catch (ignored: IllegalStateException ) {}
-//    }
-//
-//    private val onMemberLeaving = Emitter.Listener {
-//        val userLeft = it[0] as String
-//        //Open Popup Window
-//        var dialog = PrepForMemberLeavingPopUp(userLeft)
-//        try {
-//            dialog.show(supportFragmentManager, "customDialog")
-//        } catch (ignored: IllegalStateException ) {}
-//
-//    }
-
-    override fun albumAdapterListener(albumName: String,albumID:String) {
+    override fun albumAdapterListener(albumName: String, albumID: String) {
         this.albumName = albumName
-        sharedViewModelCreateDrawingPopUp.setAlbum(albumName,albumID)
+        sharedViewModelCreateDrawingPopUp.setAlbum(albumName, albumID)
     }
 
     override fun popUpListener(albumName: String, drawingName: String, drawingId: String) {
@@ -90,6 +66,7 @@ class DrawingActivity : AppCompatActivity(), CreateDrawingPopUp.DialogListener, 
 
     override fun drawingIdPopUpListener(drawingId: String) {
         sharedViewModelToolBar.setDrawingId(drawingId)
-        DrawingSocket.prepForJoin(collabDrawingId, user)
+        DrawingSocket.socket.emit("joinCollab", drawingId)
+//        DrawingSocket.prepForJoin(collabDrawingId, user)
     }
 }
