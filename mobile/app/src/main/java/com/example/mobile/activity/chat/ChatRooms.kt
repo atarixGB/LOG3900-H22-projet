@@ -90,6 +90,8 @@ class ChatRooms : AppCompatActivity(), CreateRoomPopUp.DialogListener, RoomAdapt
         notificationModel.roomName.observe(this, Observer { room : String ->
             Log.i("chatRooms", room)
         })
+        // TODO: ici tu dois parcourir la liste des rooms et trouver celle qui a le roomName qui est retournée par le observable
+        // et mettre le isNotified à true
 
         create_room_btn.setOnClickListener {
             //Open Popup Window
@@ -121,7 +123,7 @@ class ChatRooms : AppCompatActivity(), CreateRoomPopUp.DialogListener, RoomAdapt
                 for (i: Int in 0 until usersJsonArray.length()) {
                     usersList.add(usersJsonArray.get(i).toString())
                 }
-                val room = IRoom("1", user, roomName, usersList)
+                val room = IRoom("1", user, roomName, usersList,false)
 
                 if (this.user == user) {
                     runOnUiThread {

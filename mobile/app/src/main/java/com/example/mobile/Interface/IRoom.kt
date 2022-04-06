@@ -1,4 +1,4 @@
 package com.example.mobile
 
 
-data class IRoom(val id:String?, val identifier:String?, val roomName: String, val usersList: ArrayList<String>)
+data class IRoom(val id:String?, val identifier:String?, val roomName: String, val usersList: ArrayList<String>,val isNotified:Boolean)

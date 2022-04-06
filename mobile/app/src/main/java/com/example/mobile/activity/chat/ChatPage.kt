@@ -132,6 +132,7 @@ class ChatPage : AppCompatActivity(), UserAdapter.UserAdapterListener {
                 val msg = IMessage(message, user, time, room, false)
                 mediaPlayerReceiveSuccess.start()
                 notificationModel.updateRoom(this.roomName)
+
                 printMessagesOnUI(msg)
             }
         }

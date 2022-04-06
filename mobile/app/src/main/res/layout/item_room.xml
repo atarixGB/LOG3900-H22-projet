@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:paddingStart="8dp"
     android:paddingTop="8dp">
-
+    
     <TextView
         android:id="@+id/item_room_name"
         android:layout_width="wrap_content"

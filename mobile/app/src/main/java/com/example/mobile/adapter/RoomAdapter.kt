@@ -30,6 +30,9 @@ class RoomAdapter (val context : Context, var IRooms: ArrayList<IRoom>, val owne
 
         holder.itemView.apply {
             item_room_name.text = currentRoom.roomName
+            if(currentRoom.isNotified){
+                setBackgroundColor(Color.MAGENTA)
+            }
             item_room_name.setOnClickListener {
                 listener.roomAdapterListener(item_room_name.text.toString())
             }
