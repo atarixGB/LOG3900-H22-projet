@@ -27,6 +27,7 @@ class visitingProfile : AppCompatActivity() {
     private lateinit var modifyProfile: TextView
     private lateinit var avatar: CircularImageView
     private lateinit var user: String
+    private lateinit var visitingUser: String
     private var totalNbLikes:Int = 0
 
     //    private lateinit var email: String
@@ -49,39 +50,41 @@ class visitingProfile : AppCompatActivity() {
         usernameDisplayed= findViewById(R.id.username)
         avatar = findViewById(R.id.userAvatar)
 
-        user = intent.getStringExtra("visitingUser").toString()
+        visitingUser = intent.getStringExtra("visitingUser").toString()
+        user = intent.getStringExtra("user").toString()
 
-        sharedViewModel.setVisitorUser(user)
+        sharedViewModel.setVisitorUser(visitingUser)
+        sharedViewModel.setUser(user)
         //username and email sent from registration or login page displayed
-        usernameDisplayed.setText(user)
+        usernameDisplayed.setText(visitingUser)
 
         //init api
         val retrofit = RetrofitClient.getInstance()
         iMyService = retrofit.create(IMyService::class.java)
 
         //changing the avatar with what was stored in the db
-        getUserFromDB(user)
+        getUserFromDB(visitingUser)
 
         //display badge
-        getNbLikes(user)
+        getNbLikes(visitingUser)
 
         showMostLiked.setOnClickListener(){
             val intent = Intent(this, TopDrawingDisplay::class.java)
-            intent.putExtra("userName",user)
+            intent.putExtra("userName",visitingUser)
             startActivity(intent)
         }
 
         showFavorites.setOnClickListener(){
             val intent = Intent(this, FavoriteDrawingDisplay::class.java)
-            intent.putExtra("userName",user)
+            intent.putExtra("userName",visitingUser)
             startActivity(intent)
         }
 
 
     }
 
-    private fun getUserFromDB(user:String) {
-        var call: Call<User> = iMyService.getUserFromDB(user)
+    private fun getUserFromDB(visitingUser:String) {
+        var call: Call<User> = iMyService.getUserFromDB(visitingUser)
 
         call.enqueue(object: retrofit2.Callback<User> {
             override fun onResponse(call: Call<User>, response: Response<User>) {
@@ -100,8 +103,8 @@ class visitingProfile : AppCompatActivity() {
 
     }
 
-    private fun getNbLikes(user: String) {
-        var call: Call<List<IDrawing>> = iMyService.getTopDrawings(user)
+    private fun getNbLikes(visitingUser: String) {
+        var call: Call<List<IDrawing>> = iMyService.getTopDrawings(visitingUser)
         call.enqueue(object: retrofit2.Callback<List<IDrawing>> {
 
             override fun onResponse(call: Call<List<IDrawing>>, response: Response<List<IDrawing>>) {
