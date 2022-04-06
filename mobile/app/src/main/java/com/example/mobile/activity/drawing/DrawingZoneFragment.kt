@@ -9,6 +9,8 @@ import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.example.mobile.Interface.IDrawing
@@ -21,6 +23,8 @@ import com.example.mobile.Retrofit.IMyService
 import com.example.mobile.Retrofit.RetrofitClient
 import com.example.mobile.bitmapDecoder
 import com.example.mobile.convertBitmapToByteArray
+import com.example.mobile.popup.PrepForMemberLeavingPopUp
+import com.example.mobile.popup.PrepForNewMemberPopUp
 import com.example.mobile.viewModel.ToolModel
 import com.example.mobile.viewModel.ToolParameters
 import com.example.mobile.viewModel.SharedViewModelToolBar
@@ -57,6 +61,9 @@ class DrawingZoneFragment : Fragment() {
         DrawingSocket.socket.on("receivePasteRequest", onPasteRequest)
         DrawingSocket.socket.on("receiveDeleteRequest", onDeleteRequest)
         DrawingSocket.socket.on("receiveSelectionPos", onMoveRequest)
+
+        DrawingSocket.socket.on("prepForNewMember", onPrepForNewMember)
+        DrawingSocket.socket.on("memberLeft", onMemberLeaving)
 
 
         toolParameters.weight.observe(viewLifecycleOwner, Observer { weight ->
@@ -130,6 +137,28 @@ class DrawingZoneFragment : Fragment() {
         mDrawingView.onMoveRequest (drawEvent)
     }
 
+    private var onPrepForNewMember = Emitter.Listener {
+        val userJoined = it[0] as String
+        //Open Popup Window
+        val fragment = (context as FragmentActivity).supportFragmentManager
+        var dialog = PrepForNewMemberPopUp(userJoined)
+        try {
+            dialog.show(fragment, "customDialog")
+        } catch (ignored: IllegalStateException ) {}
+        mDrawingView.onPrepForNewMember()
+    }
+
+    private var onMemberLeaving = Emitter.Listener {
+        val userLeft = it[0] as String
+        //Open Popup Window
+        val fragment = (context as FragmentActivity).supportFragmentManager
+        var dialog = PrepForMemberLeavingPopUp(userLeft)
+        try {
+            dialog.show(fragment, "customDialog")
+        } catch (ignored: IllegalStateException ) {}
+        mDrawingView.onPrepForNewMember()
+    }
+
     class DrawingView (context: Context, val socket: DrawingSocket) : View(context){
         private lateinit var toolManager: ToolManager
         private var mPaint: Paint? = null
@@ -200,6 +229,15 @@ class DrawingZoneFragment : Fragment() {
                 val pos = IVec2(obj.getDouble("x").toFloat(), obj.getDouble("y").toFloat())
                 toolManager.selection.onMoveRequest(stroke.getString("sender"), pos)
                 invalidate()
+            }
+        }
+
+        fun onPrepForNewMember(){
+            if (this::toolManager.isInitialized) {
+                resetPath()
+                toolManager.selection.sendPasteSelection()
+                toolManager.selection.resetSelection()
+                toolManager.changeTool(toolManager.selection.oldTool!!)
             }
         }
 
@@ -337,6 +375,12 @@ class DrawingZoneFragment : Fragment() {
         fun saveImg() {
 
             if (mBitmap != null) {
+                if (this::toolManager.isInitialized) {
+                    resetPath()
+                    toolManager.selection.sendPasteSelection()
+                    toolManager.selection.resetSelection()
+                }
+
                 val retrofit = RetrofitClient.getInstance()
                 val myService = retrofit.create(IMyService::class.java)
 

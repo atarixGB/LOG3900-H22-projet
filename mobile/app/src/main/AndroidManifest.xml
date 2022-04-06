@@ -16,6 +16,12 @@
         android:theme="@style/Theme.Mobile"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".popup.PrepForMemberLeavingPopUp"
+            android:exported="false" />
+        <activity
+            android:name=".popup.PrepForNewMemberPopUp"
+            android:exported="false" />
+        <activity
             android:name=".activity.albums.DisplayAllDrawings"
             android:exported="false" />
         <activity

@@ -10,6 +10,8 @@ import androidx.fragment.app.DialogFragment
 import com.example.mobile.R
 import com.example.mobile.adapter.AlbumAdapter
 import com.example.mobile.popup.CreateDrawingPopUp
+import com.example.mobile.popup.PrepForMemberLeavingPopUp
+import com.example.mobile.popup.PrepForNewMemberPopUp
 import com.example.mobile.viewModel.SharedViewModelCreateDrawingPopUp
 import com.example.mobile.viewModel.SharedViewModelToolBar
 import io.socket.emitter.Emitter
@@ -53,14 +55,28 @@ class DrawingActivity : AppCompatActivity(), CreateDrawingPopUp.DialogListener, 
         }
 
 //        DrawingSocket.socket.on("prepForNewMember", onPrepForNewMember)
+//        DrawingSocket.socket.on("memberLeft", onMemberLeaving)
 
     }
 
-    private val onPrepForNewMember = Emitter.Listener {
-        val popup = StartGameDialogFragment()
-        popup.show(supportFragmentManager, "upcoming user")
-
-    }
+//    private val onPrepForNewMember = Emitter.Listener {
+//        val userJoined = it[0] as String
+//        //Open Popup Window
+//        var dialog = PrepForNewMemberPopUp(userJoined)
+//        try {
+//            dialog.show(supportFragmentManager, "customDialog")
+//        } catch (ignored: IllegalStateException ) {}
+//    }
+//
+//    private val onMemberLeaving = Emitter.Listener {
+//        val userLeft = it[0] as String
+//        //Open Popup Window
+//        var dialog = PrepForMemberLeavingPopUp(userLeft)
+//        try {
+//            dialog.show(supportFragmentManager, "customDialog")
+//        } catch (ignored: IllegalStateException ) {}
+//
+//    }
 
     override fun albumAdapterListener(albumName: String,albumID:String) {
         this.albumName = albumName
@@ -75,18 +91,5 @@ class DrawingActivity : AppCompatActivity(), CreateDrawingPopUp.DialogListener, 
     override fun drawingIdPopUpListener(drawingId: String) {
         sharedViewModelToolBar.setDrawingId(drawingId)
         DrawingSocket.prepForJoin(collabDrawingId, user)
-    }
-}
-
-class StartGameDialogFragment : DialogFragment() {
-
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return activity?.let {
-            // Use the Builder class for convenient dialog construction
-            val builder = AlertDialog.Builder(it)
-            builder.setMessage("Un utilisateur rejoins la salle")
-            // Create the AlertDialog object and return it
-            builder.create()
-        } ?: throw IllegalStateException("Activity cannot be null")
     }
 }
