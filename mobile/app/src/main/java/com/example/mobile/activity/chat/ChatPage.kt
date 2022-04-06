@@ -95,22 +95,7 @@ class ChatPage : AppCompatActivity(), UserAdapter.UserAdapterListener {
         readBtn = findViewById(R.id.readBtn)
 
         readBtn.setOnClickListener{
-            val fis: FileInputStream = baseContext.openFileInput("myfile.txt")
-            val isr = InputStreamReader(fis)
-            val bufferedReader = BufferedReader(isr)
-            val sb = StringBuilder()
-            var line: String?
-            while (bufferedReader.readLine().also { line = it } != null) {
-                sb.append(line)
-            }
-            val file = sb.toString()
-            val split = file.split("}")
-            var firstElement = split[0]
-//            val position = firstElement.length
-//            firstElement = firstElement.substring(0, position-2) + "}" + ('"')
-            val gson = Gson()
-            var testModel = gson.fromJson(file, IMessage::class.java)
-            Log.i("ChatPage", testModel.msgText)
+            readAllMessagesFromFile("myfile.txt")
         }
 
         //Connect to the Server
@@ -247,12 +232,34 @@ class ChatPage : AppCompatActivity(), UserAdapter.UserAdapterListener {
         }
     }
 
+    private fun readAllMessagesFromFile(val fileName : String) {
+        val fis: FileInputStream = baseContext.openFileInput(fileName)
+        val isr = InputStreamReader(fis)
+        val bufferedReader = BufferedReader(isr)
+        val sb = StringBuilder()
+        var line: String?
+        while (bufferedReader.readLine().also { line = it } != null) {
+            sb.append(line)
+        }
+        val file = sb.toString()
+        val split = file.split("//")
+        for (message in split) {
+            if (message.toString() != "") {
+                val gson = Gson()
+                var testModel = gson.fromJson(message, IMessage::class.java)
+                Log.i("ChatPage", testModel.msgText)
+            }
+
+        }
+    }
+
     private fun saveInFile(msg: IMessage) {
         try{
             var gson = Gson()
             var jsonString = gson.toJson(msg)
             baseContext.openFileOutput("myfile.txt", Context.MODE_APPEND).use {
                 it.write(jsonString.toByteArray())
+                it.write(("//").toByteArray())
             }
         }catch (e:Exception){
             Log.d("ChatPage", "Erreur dans l'ecriture du fichier")
