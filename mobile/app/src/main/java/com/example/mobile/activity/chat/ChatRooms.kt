@@ -1,6 +1,7 @@
 package com.example.mobile.activity.chat
 
 import android.content.Intent
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -8,6 +9,8 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.core.view.get
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mobile.IRoom
@@ -17,12 +20,14 @@ import com.example.mobile.Retrofit.RetrofitClient
 import com.example.mobile.SocketHandler
 import com.example.mobile.adapter.RoomAdapter
 import com.example.mobile.popup.CreateRoomPopUp
+import com.example.mobile.viewModel.NotificationModel
 import com.example.mobile.viewModel.SharedViewModelToolBar
 import com.google.gson.Gson
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import io.socket.client.Socket
+import kotlinx.android.synthetic.main.fragment_custom_tool.view.*
 import org.json.JSONArray
 import org.json.JSONObject
 import retrofit2.Call
@@ -45,6 +50,7 @@ class ChatRooms : AppCompatActivity(), CreateRoomPopUp.DialogListener, RoomAdapt
     internal var compositeDisposable = CompositeDisposable()
 
     private val sharedViewModel: SharedViewModelToolBar by viewModels()
+    private val notificationModel: NotificationModel by viewModels()
 
     override fun onStop() {
         compositeDisposable.clear()
@@ -74,7 +80,6 @@ class ChatRooms : AppCompatActivity(), CreateRoomPopUp.DialogListener, RoomAdapt
         rvOutputRooms.adapter = roomAdapter
         rvOutputRooms.layoutManager = GridLayoutManager(this, 2)
 
-
         //Connect to the Server
         SocketHandler.setSocket()
         socket = SocketHandler.getSocket()
@@ -82,6 +87,9 @@ class ChatRooms : AppCompatActivity(), CreateRoomPopUp.DialogListener, RoomAdapt
 
         getRooms()
 
+        notificationModel.roomName.observe(this, Observer { room : String ->
+            Log.i("chatRooms", room)
+        })
 
         create_room_btn.setOnClickListener {
             //Open Popup Window

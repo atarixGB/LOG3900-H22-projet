@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.KeyEvent
 import android.widget.*
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.view.isVisible
@@ -21,6 +22,8 @@ import com.example.mobile.SocketHandler
 import com.example.mobile.adapter.MessageAdapter
 import com.example.mobile.adapter.UserAdapter
 import com.example.mobile.popup.UsersListPopUp
+import com.example.mobile.viewModel.NotificationModel
+import com.example.mobile.viewModel.SharedViewModelToolBar
 import com.google.gson.Gson
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -56,6 +59,7 @@ class ChatPage : AppCompatActivity(), UserAdapter.UserAdapterListener {
     internal var compositeDisposable = CompositeDisposable()
     //to delete
     private lateinit var readBtn : Button
+    private val notificationModel: NotificationModel by viewModels()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -127,6 +131,7 @@ class ChatPage : AppCompatActivity(), UserAdapter.UserAdapterListener {
                 val room = messageData.get("room") as String
                 val msg = IMessage(message, user, time, room, false)
                 mediaPlayerReceiveSuccess.start()
+                notificationModel.updateRoom(this.roomName)
                 printMessagesOnUI(msg)
             }
         }

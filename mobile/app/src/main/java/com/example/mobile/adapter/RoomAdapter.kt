@@ -1,6 +1,7 @@
 package com.example.mobile.adapter
 
 import android.content.Context
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -47,6 +48,11 @@ class RoomAdapter (val context : Context, var IRooms: ArrayList<IRoom>, val owne
     override fun getItemCount(): Int {
         return IRooms.size
     }
+
+    fun getItem(position: Int) : IRoom{
+        return IRooms.get(position)
+    }
+
 
     public interface RoomAdapterListener {
         fun roomAdapterListener(roomName: String)
