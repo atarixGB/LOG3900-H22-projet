@@ -1,52 +1,63 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, ipcMain } = require('electron');
 const url = require('url');
 const path = require('path');
 
-let appWindow, chatWindow;
+let mainWindow, chatWindow;
 const APP_ICON = path.join(__dirname, '/dist/client/assets/PolyGramLogo.png');
 
-function initWindow() {
+function createAppWindows() {
+    /*************************************/
     /********** MAIN APP WINDOW **********/
-    appWindow = new BrowserWindow({
+    /*************************************/
+    mainWindow = new BrowserWindow({
         icon: APP_ICON,
-        // fullscreen: true,
         height: 1000,
-        // minHeight: 800,
-        // maxHeight: 1080,
         width: 1400,
-        // minWidth: 1000,
-        // maxWidth: 1920,
-        resizable: false,
-
+        minHeight: 1000,
+        minWidth: 1400,
+        maxHeight: 1080,
+        maxWidth: 1920,
         webPreferences: {
             nodeIntegration: true,
+            contextIsolation: false,
         },
     });
 
     // Electron Build Path
-    appWindow.loadURL(
+    mainWindow.loadURL(
         url.format({
             pathname: path.join(__dirname, `/dist/client/index.html`),
             protocol: 'file:',
             slashes: true,
         }),
     );
-    appWindow.setMenuBarVisibility(false);
+    mainWindow.setMenuBarVisibility(false);
 
     // Initialize the DevTools.
-    // appWindow.webContents.openDevTools()
+    mainWindow.webContents.openDevTools();
 
-    appWindow.on('closed', function () {
-        appWindow = null;
+    mainWindow.on('closed', () => {
+        mainWindow = null;
         app.quit();
     });
 
+    /*********************************/
     /********** CHAT WINDOW **********/
+    /*********************************/
+
     chatWindow = new BrowserWindow({
-        height: 800,
-        width: 1000,
+        height: 600,
+        width: 800,
+        minHeight: 600,
+        minWidth: 800,
+        maxHeight: 1080,
+        maxWidth: 1920,
         center: true,
-        // show: false,
+        show: false,
+        webPreferences: {
+            nodeIntegration: true,
+            contextIsolation: false,
+        },
     });
 
     chatWindow.loadURL(
@@ -54,17 +65,21 @@ function initWindow() {
             pathname: path.join(__dirname, `/dist/client/index.html`),
             protocol: 'file:',
             slashes: true,
-            hash: '/chatroom'
+            hash: '/chatmenu',
         }),
     );
+
     chatWindow.setMenuBarVisibility(false);
 
-    chatWindow.on('closed', function () {
-        chatWindow = null;
+    chatWindow.on('close', (e) => {
+      // On désactive la possibilité de fermer la fenêtre pour
+      // éviter la destruction de l'objet (ça lance une erreur sinon)
+      e.preventDefault();
+      console.log("Closing the chat window is disabled")
     });
 }
 
-app.on('ready', initWindow);
+app.on('ready', createAppWindows);
 
 // Close when all windows are closed.
 app.on('window-all-closed', function () {
@@ -76,6 +91,19 @@ app.on('window-all-closed', function () {
 
 app.on('activate', function () {
     if (win === null) {
-        initWindow();
+        createAppWindows();
     }
+});
+
+// Manage chat window
+ipcMain.on('open-chat', (event, data) => {
+    console.log('ipcMain received open-chat event. data:', data);
+    event.reply('open-chat-reply', 'response from ipcMain (open)');
+    chatWindow.show();
+});
+
+ipcMain.on('close-chat', (event, data) => {
+    console.log('ipcMain received close-chat event. data:', data);
+    event.reply('close-chat-reply', 'response from ipcMain (close)');
+    chatWindow.hide();
 });

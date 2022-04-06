@@ -12,8 +12,8 @@
   </div>
 
   <!-- Encadré du chat -->
-  <div fxFlex="70" fxLayout="row" fxLayoutAlign="center stretch">
-    <div fxFlex="50" class="bordered" fxLayout="column" fxLayoutAlign="center stretch">
+  <div id="main-wrapper" fxFlex="90" fxLayout="row" fxLayoutAlign="center stretch">
+    <div fxFlex="90" class="bordered" fxLayout="column" fxLayoutAlign="center stretch">
 
 
       <div id="more-vert-btn">
@@ -75,7 +75,7 @@
         <div fxFlex="5"></div>
 
         <!-- Input et Boutton -->
-        <div fxLayout="row" fxLayoutAlign="center stretch">
+        <div id="user-input-wrapper" fxLayout="row" fxLayoutAlign="center stretch">
           <div fxFlex="5"></div>
           <input id="msgInput" class="bordered" fxFlex="70" matInput placeholder="Écris ton message ici!" type="text"
             [(ngModel)]="this.message">

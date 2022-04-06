@@ -15,7 +15,7 @@
 
    <div fxLayout="column" fxLayoutAlign="center stretch">
       <button class="margin" mat-raised-button routerLink="/menu">Tableau de bord</button>
-      <button class="margin" mat-raised-button routerLink="/chatmenu">Clavardage</button>
+      <button class="margin" mat-raised-button (click)="this.chatService.openChat()">Clavardage</button>
       <!-- <button class="margin" mat-raised-button>Zone de dessin</button> -->
       <button class="margin" mat-raised-button routerLink="/my-albums">Albums</button>
       <button class="margin" mat-raised-button (click)="onMyProfileBtn()">Mon profil</button>
