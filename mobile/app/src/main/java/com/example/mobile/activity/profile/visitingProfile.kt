@@ -9,7 +9,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import com.example.mobile.Interface.IDrawing
-import com.example.mobile.Interface.User
+import com.example.mobile.Interface.IUser
 import com.example.mobile.R
 import com.example.mobile.Retrofit.IMyService
 import com.example.mobile.Retrofit.RetrofitClient
@@ -97,10 +97,10 @@ class visitingProfile : AppCompatActivity() {
     }
 
     private fun getUserFromDB(visitingUser:String) {
-        var call: Call<User> = iMyService.getUserFromDB(visitingUser)
+        var call: Call<IUser> = iMyService.getUserFromDB(visitingUser)
 
-        call.enqueue(object: retrofit2.Callback<User> {
-            override fun onResponse(call: Call<User>, response: Response<User>) {
+        call.enqueue(object: retrofit2.Callback<IUser> {
+            override fun onResponse(call: Call<IUser>, response: Response<IUser>) {
                 Toast.makeText(this@visitingProfile, "Bienvenu sur le profil de $user!", Toast.LENGTH_SHORT).show()
                 userAvatar.setImageBitmap(bitmapDecoder(response.body()?.avatar))
 //                username.setText(response.body()?.username)
@@ -109,7 +109,7 @@ class visitingProfile : AppCompatActivity() {
 
             }
 
-            override fun onFailure(call: Call<User>, t: Throwable) {
+            override fun onFailure(call: Call<IUser>, t: Throwable) {
                 Toast.makeText(this@visitingProfile, "erreur", Toast.LENGTH_SHORT).show()
             }
         })

@@ -6,6 +6,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -21,27 +23,34 @@
         <activity
             android:name=".activity.profile.FavoriteDrawingDisplay"
             android:exported="false" />
+
         <activity
             android:name=".activity.profile.TopDrawingDisplay"
             android:exported="false" />
+        <activity
+            android:name=".popup.StoriesPopUp"
+            android:exported="false"
+            tools:ignore="Instantiatable" />
+
         <activity
             android:name=".activity.albums.DisplayAllDrawings"
             android:exported="false" />
         <activity
             android:name=".popup.AcceptMembershipRequestsPopUp"
-            android:exported="false" />
+            android:exported="false"
+            tools:ignore="Instantiatable" />
         <activity
             android:name=".activity.albums.DrawingsCollection"
             android:exported="false" />
+
         <activity
-            android:name=".drawingsCollection"
-            android:exported="false" />
+            android:name=".popup.JoinAlbumPopUp"
+            android:exported="false"
+            tools:ignore="Instantiatable" />
         <activity
-            android:name=".joinAlbumPopUp"
-            android:exported="false" />
-        <activity
-            android:name=".createDrawingPopUp"
-            android:exported="false" />
+            android:name=".popup.CreateDrawingPopUp"
+            android:exported="false"
+            tools:ignore="Instantiatable" />
         <activity
             android:name=".activity.albums.DisplayPublicAlbums"
             android:exported="false" />
@@ -49,13 +58,14 @@
             android:name=".activity.albums.Albums"
             android:exported="false" />
         <activity
-            android:name=".usersListPopUp"
-            android:exported="false" />
+            android:name=".popup.UsersListPopUp"
+            android:exported="false"
+            tools:ignore="Instantiatable" />
         <activity android:name=".activity.Dashboard" />
         <activity
             android:name=".activity.profile.Profile_modification"
             android:exported="false" />
-        <activity android:name=".activity.Dashboard" />
+
         <activity
             android:name=".activity.profile.Profile"
             android:exported="false" />

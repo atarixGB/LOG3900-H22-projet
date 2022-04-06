@@ -20,7 +20,9 @@ import com.example.mobile.convertBitmapToByteArray
 import com.example.mobile.viewModel.ToolModel
 import com.example.mobile.viewModel.ToolParameters
 import com.example.mobile.viewModel.SharedViewModelToolBar
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import okhttp3.*
 import retrofit2.Call
 import retrofit2.Response
@@ -72,6 +74,10 @@ class DrawingZoneFragment : Fragment() {
             mDrawingView.saveImg()
         })
 
+        toolModel.onStory.observe(viewLifecycleOwner, Observer { onStory ->
+            mDrawingView.putToStory()
+        })
+
         view.findViewById<LinearLayout>(R.id.drawingView).addView(mDrawingView)
     }
     private var onReceiveStroke = Emitter.Listener {
@@ -88,8 +94,12 @@ class DrawingZoneFragment : Fragment() {
         private var mBitmap: Bitmap? = null
         private var mCanvas: Canvas? = null
         private var isDrawing = false
-        private lateinit var drawingId: String
+        private var drawingId: String? = null
+
         internal var compositeDisposable = CompositeDisposable()
+        val retrofit = RetrofitClient.getInstance()
+        val myService = retrofit.create(IMyService::class.java)
+
         fun onStrokeReceive(stroke: JSONObject){
             if(stroke.getInt("toolType") == 0){
                 toolManager.pencil.onStrokeReceived(stroke)
@@ -126,7 +136,6 @@ class DrawingZoneFragment : Fragment() {
 
             if (isDrawing) {
                 toolManager.currentTool.onDraw(canvas)
-
             }
         }
 
@@ -185,11 +194,28 @@ class DrawingZoneFragment : Fragment() {
             this.drawingId = drawingId
         }
 
+        fun putToStory() {
+            if (!this.drawingId.isNullOrEmpty()) {
+                compositeDisposable.add(myService.addDrawingToStory(drawingId!!)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe { result ->
+                        if (result == "201") {
+                            Toast.makeText(
+                                context,
+                                "Story ajoute avec succes",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        } else {
+                            Toast.makeText(context, "erreur", Toast.LENGTH_SHORT).show()
+                        }
+                    })
+            }
+        }
+
         fun saveImg() {
 
             if (mBitmap != null) {
-                val retrofit = RetrofitClient.getInstance()
-                val myService = retrofit.create(IMyService::class.java)
 
                 var filesDir: File = context.filesDir;
                 var file = File(filesDir, "image" + ".png")
@@ -209,7 +235,7 @@ class DrawingZoneFragment : Fragment() {
 
                 var name: RequestBody = RequestBody.create(MediaType.parse("text/plain"), "upload");
 
-                var call = myService.saveDrawing(drawingId, body, name)
+                var call = myService.saveDrawing(drawingId!!, body, name)
                 call.enqueue(object : retrofit2.Callback<ResponseBody> {
                     override fun onResponse(
                         call: Call<ResponseBody>,

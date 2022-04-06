@@ -1,8 +1,24 @@
+/******** PROFILE ******/
+export const BADGE_COUNT = {
+  BEGINNER: 5,
+  INTERMIDIATE: 25,
+  EXPERT: 50
+}
+
 /******** ALBUMS *******/
 export const PUBLIC_ALBUM = {
+  id: "623e5f7cbd233e887bcb6034",
   name: "album public",
-  id: "623e00d4c46d4d7f5c3118a3"
+  owner: "Poly-Gram"
 }
+
+export const PUBLIC_CHATROOM = {
+  name: "default-public-room",
+  owner: "Poly-Gram"
+}
+
+export const NAME_MAX_LENGTH = 40;
+
 /***********************/
 export const CNV_WIDTH = 1200;
 export const CNV_HEIGTH = 1000;

@@ -63,7 +63,7 @@ class DisplayAllDrawings : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
         drawings = java.util.ArrayList()
         searchArrayList = ArrayList()
 
-        drawingAdapter = DrawingAdapter(this, drawings, user)
+        drawingAdapter = DrawingAdapter(this, drawings, user, "")
 
         //Recycler View of rooms
         rvOutputDrawings.adapter = drawingAdapter
@@ -116,8 +116,10 @@ class DisplayAllDrawings : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
             override fun onResponse(call: Call<List<IAlbum>>, response: Response<List<IAlbum>>) {
                 for (album in response.body()!!) {
                     if (album.members.contains(user)!!) {
-                        for (drawing in album.drawingIDs!!) {
-                            displayDrawing(drawing)
+                        if (!album.drawingIDs.isNullOrEmpty()) {
+                            for (drawing in album.drawingIDs!!) {
+                                displayDrawing(drawing)
+                            }
                         }
                     }
                 }

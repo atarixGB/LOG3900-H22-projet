@@ -1,15 +1,29 @@
-import { AfterViewInit, Component } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { LoginService } from '@app/services/login/login.service';
 import { ProfileService } from '@app/services/profile/profile.service';
 
 @Component({
-    selector: 'app-profile',
-    templateUrl: './profile.component.html',
-    styleUrls: ['./profile.component.scss'],
+  selector: 'app-profile',
+  templateUrl: './profile.component.html',
+  styleUrls: ['./profile.component.scss'],
 })
-export class ProfileComponent implements AfterViewInit {
-    constructor(public profileService: ProfileService) {}
+export class ProfileComponent implements AfterViewInit, OnInit {
 
-    ngAfterViewInit(): void {
-        this.profileService.loadProfileInfo();
-    }
+  constructor(public profileService: ProfileService, public loginService: LoginService, private route: ActivatedRoute) {
+    this.profileService.isCurrentUserProfile = loginService.username == this.route.snapshot.paramMap.get('username');
+    console.log("is displayed profile mine?",this.profileService.isCurrentUserProfile);
+  }
+
+  ngOnInit(): void {
+    this.getProfileStatistics();
+  }
+
+  ngAfterViewInit(): void {
+    this.profileService.getUserProfileInfos(this.route.snapshot.paramMap.get('username'));
+  }
+
+  private getProfileStatistics(): void {
+    this.profileService.getUserProfileStatistics(this.route.snapshot.paramMap.get('username'));
+  }
 }

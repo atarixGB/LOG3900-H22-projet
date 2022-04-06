@@ -6,13 +6,13 @@
     <!-- Title -->
     <div fxFlex="5%" fxLayout="row" fxLayoutAlign="center center">
       <h1><u>Albums</u></h1>
-    </div>   
+    </div>
 
     <!-- Buttons -->
     <div fxFlex="10%" id="btnDiv" fxLayout="row" fxLayoutAlign="space-evenly center">
-      <button mat-raised-button color="accent" (click)="this.openCreateAlbumDialog()">Créer un nouvel album</button>
       <button mat-raised-button color="primary" (click)="this.onViewAllAlbumButton()" >Voir tous les albums disponibles</button>
-      <button mat-raised-button color="primary" routerLink="/public-gallery">Voir l'album public</button>
+      <button mat-raised-button color="primary" (click)="this.openCreateAlbumDialog()">Créer un nouvel album</button>
+      <!-- <button mat-raised-button color="primary" routerLink="/public-gallery">Voir l'album public</button> -->
     </div>
 
     <!-- Albums -->

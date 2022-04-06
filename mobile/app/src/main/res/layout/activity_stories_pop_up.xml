@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".popup.StoriesPopUp"
+    android:background="@color/black">
+
+    <LinearLayout
+        android:id="@+id/storyTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/stories"
+        android:layout_marginLeft="15dp"
+        android:layout_marginBottom="10dp">
+
+        <com.mikhaellopez.circularimageview.CircularImageView
+            android:id="@id/userAvatar"
+            android:layout_width="85dp"
+            android:layout_height="85dp"/>
+
+        <TextView
+            android:id="@+id/storyOwner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="story owner"
+            android:textColor="@color/white"
+            android:textSize="40sp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="15dp"/>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/image"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/storyTitle"
+        android:background="@color/white"
+        android:layout_centerHorizontal="true"
+        />
+
+    <jp.shts.android.storiesprogressview.StoriesProgressView
+        android:id="@+id/stories"
+        android:layout_width="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_height="20dp"/>
+
+</RelativeLayout>

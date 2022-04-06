@@ -15,10 +15,10 @@
     </li>
   </ul>
 
-  <div>Créateur: <span class="bold"> {{this.data.identifier}}</span></div>
+  <div>Propriétaire: <span class="bold"> {{this.data.identifier}}</span></div>
 </mat-dialog-content>
 
 <mat-dialog-actions>
-  <button mat-button mat-dialog-close>Annuler</button>
+  <button mat-button>Annuler</button>
   <button mat-button [mat-dialog-close]="true" cdkFocusInitial (click)="onJoinChatroom()">Joindre</button>
 </mat-dialog-actions>
