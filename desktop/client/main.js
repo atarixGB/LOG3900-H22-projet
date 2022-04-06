@@ -46,6 +46,7 @@ function createAppWindows() {
     /*********************************/
 
     chatWindow = new BrowserWindow({
+        icon: APP_ICON,
         height: 600,
         width: 800,
         minHeight: 600,

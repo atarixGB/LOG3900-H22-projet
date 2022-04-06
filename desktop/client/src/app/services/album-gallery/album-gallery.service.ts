@@ -38,8 +38,6 @@ export class AlbumGalleryService {
       creationDate: ""
     }
 
-    console.log("LOGIN USERNAME:", loginService.username)
-
     this.favoriteDrawingsData = [];
     this.topDrawingsData = [];
   }
