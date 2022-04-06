@@ -31,6 +31,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.BufferedReader
+import java.io.File
 import java.io.FileInputStream
 import java.io.InputStreamReader
 import java.time.LocalDateTime
@@ -53,7 +54,6 @@ class ChatPage : AppCompatActivity(), UserAdapter.UserAdapterListener {
 
     private lateinit var iMyService: IMyService
     internal var compositeDisposable = CompositeDisposable()
-
     //to delete
     private lateinit var readBtn : Button
 
@@ -61,8 +61,6 @@ class ChatPage : AppCompatActivity(), UserAdapter.UserAdapterListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat_page)
-
-        baseContext.deleteFile("myfile")
         val retrofit = RetrofitClient.getInstance()
         iMyService = retrofit.create(IMyService::class.java)
 
@@ -90,12 +88,15 @@ class ChatPage : AppCompatActivity(), UserAdapter.UserAdapterListener {
         rvOutputMsgs.adapter = msgAdapter
         rvOutputMsgs.layoutManager = LinearLayoutManager(this)
 
+        if(checkFileExist("$roomName.txt") && !checkIfFileEmpty("$roomName.txt")){
+            readAllMessagesFromFile("$roomName.txt")
+        }
 
         //for test purpose
         readBtn = findViewById(R.id.readBtn)
 
         readBtn.setOnClickListener{
-            readAllMessagesFromFile("myfile.txt")
+            readAllMessagesFromFile("$roomName.txt")
         }
 
         //Connect to the Server
@@ -123,15 +124,8 @@ class ChatPage : AppCompatActivity(), UserAdapter.UserAdapterListener {
                 val user = messageData.get("userName") as String
                 val time = messageData.get("time") as String
                 val room = messageData.get("room") as String
-                runOnUiThread{
-                    val msg = IMessage(message, user, time, room, false)
-                    msgAdapter.addMsg(msg)
-                    msgAdapter.notifyItemInserted((rvOutputMsgs.adapter as MessageAdapter).itemCount)
-                    rvOutputMsgs.scrollToPosition((rvOutputMsgs.adapter as MessageAdapter).itemCount-1)
-                    messageText.text.clear()
-                    saveInFile(msg)
-                    //mediaPlayerReceiveSuccess.start()
-                }
+                val msg = IMessage(message, user, time, room, false)
+                printMessagesOnUI(msg)
             }
         }
 
@@ -232,7 +226,34 @@ class ChatPage : AppCompatActivity(), UserAdapter.UserAdapterListener {
         }
     }
 
-    private fun readAllMessagesFromFile(val fileName : String) {
+    private fun printMessagesOnUI(msg: IMessage) {
+        runOnUiThread {
+            msgAdapter.addMsg(msg)
+            msgAdapter.notifyItemInserted((rvOutputMsgs.adapter as MessageAdapter).itemCount)
+            rvOutputMsgs.scrollToPosition((rvOutputMsgs.adapter as MessageAdapter).itemCount - 1)
+            messageText.text.clear()
+            saveInFile(msg)
+            //mediaPlayerReceiveSuccess.start()
+        }
+    }
+
+    private fun checkFileExist(fileName: String): Boolean{
+        val path = baseContext.getFilesDir().getParentFile().toString()+"/"+fileName
+        var fileDisk = File(path)
+        return fileDisk.exists()
+    }
+    private fun checkIfFileEmpty(fileName: String): Boolean{
+        val fis: FileInputStream = baseContext.openFileInput(fileName)
+        val isr = InputStreamReader(fis)
+        val bufferedReader = BufferedReader(isr)
+        var line: String?
+        bufferedReader.readLine().also {
+            line = it
+            return line == ""
+        }
+    }
+
+    private fun readAllMessagesFromFile(fileName : String) {
         val fis: FileInputStream = baseContext.openFileInput(fileName)
         val isr = InputStreamReader(fis)
         val bufferedReader = BufferedReader(isr)
@@ -246,18 +267,19 @@ class ChatPage : AppCompatActivity(), UserAdapter.UserAdapterListener {
         for (message in split) {
             if (message.toString() != "") {
                 val gson = Gson()
-                var testModel = gson.fromJson(message, IMessage::class.java)
-                Log.i("ChatPage", testModel.msgText)
+                var message = gson.fromJson(message, IMessage::class.java)
+                Log.i("ChatPage", message.msgText)
+                printMessagesOnUI(message)
             }
-
         }
+
     }
 
     private fun saveInFile(msg: IMessage) {
         try{
             var gson = Gson()
             var jsonString = gson.toJson(msg)
-            baseContext.openFileOutput("myfile.txt", Context.MODE_APPEND).use {
+            baseContext.openFileOutput("$roomName.txt", Context.MODE_APPEND).use {
                 it.write(jsonString.toByteArray())
                 it.write(("//").toByteArray())
             }
