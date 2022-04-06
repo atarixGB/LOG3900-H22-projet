@@ -10,28 +10,27 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Base64
+import android.view.View
 import android.view.animation.AnimationUtils
-import android.widget.EditText
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.Toast
+import android.widget.*
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.get
+import com.example.mobile.*
 import com.example.mobile.Interface.IUser
 import com.example.mobile.R
 import com.example.mobile.Retrofit.IMyService
 import com.example.mobile.Retrofit.RetrofitClient
-import com.example.mobile.bitmapDecoder
-import com.example.mobile.convertToByteArray
 import com.example.mobile.popup.SelectAvatarPopUp
+import com.example.mobile.viewModel.SharedViewModelToolBar
 import com.mikhaellopez.circularimageview.CircularImageView
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_profile_modification.*
 import kotlinx.android.synthetic.main.activity_profile_modification.modify_label
-import kotlinx.android.synthetic.main.activity_profile_modification.user_email
 import kotlinx.android.synthetic.main.activity_profile_modification.username
 import retrofit2.Call
 import retrofit2.Response
@@ -39,20 +38,20 @@ import retrofit2.Response
 class Profile_modification : AppCompatActivity(), SelectAvatarPopUp.DialogListener {
     private lateinit var cameraBtn : ImageButton
     private lateinit var avatarBtn : ImageButton
-    private lateinit var backBtn : ImageView
     private lateinit var avatarPicker: CircularImageView
     private lateinit var newIdentifier: EditText
-    private lateinit var newEmail: EditText
+
     private lateinit var newDescription: EditText
 
     private lateinit var oldUsername:String
-    private lateinit var oldEmail:String
+
     private lateinit var oldDescription:String
 
     private lateinit var iMyService: IMyService
     internal var compositeDisposable = CompositeDisposable()
 
     private val REQUEST_IMAGE_CAMERA = 142
+    private val sharedViewModel: SharedViewModelToolBar by viewModels()
 
     override fun onStop() {
         compositeDisposable.clear()
@@ -64,18 +63,17 @@ class Profile_modification : AppCompatActivity(), SelectAvatarPopUp.DialogListen
 
         avatarBtn=findViewById(R.id.edt_avatar)
         cameraBtn= findViewById(R.id.edt_camera)
-        backBtn=findViewById(R.id.back_btn_modification)
+
         avatarPicker = findViewById(R.id.userAvatarModif)
 
         newIdentifier=findViewById(R.id.username)
-        newEmail=findViewById(R.id.user_email)
+
         newDescription=findViewById(R.id.edt_description)
         oldUsername= intent.getStringExtra("userName").toString()
-        oldEmail=intent.getStringExtra("email").toString()
+
         oldDescription=intent.getStringExtra("description").toString()
 
         newIdentifier.setText(oldUsername)
-        newEmail.setText(oldEmail)
         newDescription.setText(oldDescription)
 
 
@@ -85,6 +83,7 @@ class Profile_modification : AppCompatActivity(), SelectAvatarPopUp.DialogListen
 
         //to get avatar from DB
         getUserFromDB(oldUsername)
+        sharedViewModel.setUser(oldUsername)
 
         //lancer la camera quand tu clic sur icone caméra
         cameraBtn.setOnClickListener {
@@ -121,24 +120,82 @@ class Profile_modification : AppCompatActivity(), SelectAvatarPopUp.DialogListen
             var dialog = SelectAvatarPopUp()
             dialog.show(supportFragmentManager,"customDialog")
         }
-        backBtn.setOnClickListener(){
+
+        modify_label.setOnClickListener(){
+            if(!username.text.toString().isNullOrBlank()){
+                updateProfile(oldUsername,username.text.toString(),userAvatarModif,edt_description.text.toString())
+                sharedViewModel.setUser(username.text.toString())
+            }
+            else if(username.text.toString().isNullOrBlank()){
+                username.animation=AnimationUtils.loadAnimation(this,R.anim.shake_animation)
+                Toast.makeText(this, "Les champs sont vides réessayer!", Toast.LENGTH_SHORT).show()
+            }
+        }
+        discard_label.setOnClickListener{
             val intent = Intent(this, Profile::class.java)
             var bundle:Bundle = ActivityOptions.makeSceneTransitionAnimation(this).toBundle()
             intent.putExtra("userName",oldUsername)
-            intent.putExtra("email",oldEmail)
             intent.putExtra("description",oldDescription)
             startActivity(intent,bundle)
         }
-        modify_label.setOnClickListener(){
-            if(!username.text.toString().isNullOrBlank()&& !user_email.text.toString().isNullOrBlank()){
-                updateProfile(oldUsername,username.text.toString(),userAvatarModif,user_email.text.toString(),edt_description.text.toString())
-            }
-            else if(username.text.toString().isNullOrBlank() || user_email.text.toString().isNullOrBlank()){
-                username.animation=AnimationUtils.loadAnimation(this,R.anim.shake_animation)
-                user_email.animation=AnimationUtils.loadAnimation(this,R.anim.shake_animation)
-                Toast.makeText(this, "Les champs sont vides réessayer!", Toast.LENGTH_SHORT).show()
+
+        val soundActivator:MutableList<String> = ArrayList()
+        soundActivator.add("Activés")
+        soundActivator.add("Désactivés")
+
+        val adapter = ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item,soundActivator)
+        soundControl.adapter = adapter
+
+        soundControl.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+               val item = soundActivator[position]
+                Toast.makeText(this@Profile_modification,"$item selected",Toast.LENGTH_SHORT).show()
+                if (item=="Activés"){
+                    SOUND_EFFECT=true
+                }
+                else if(item=="Désactivés"){
+                    SOUND_EFFECT=false
+                }
             }
 
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+
+        }
+
+        val musicSelector:MutableList<String> = ArrayList()
+        musicSelector.add("Desactiver")
+        musicSelector.add("Lofi1")
+        musicSelector.add("Lofi2")
+        musicSelector.add("Minecraft")
+        musicSelector.add("Kahoot")
+
+        val adapter2 = ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item,musicSelector)
+        musicPicker.adapter = adapter2
+        musicPicker.onItemSelectedListener = object:AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                val item = musicSelector[position]
+                Toast.makeText(this@Profile_modification,"$item selected",Toast.LENGTH_SHORT).show()
+
+                when(item){
+                    MUSIC.Desactiver.name -> MUSIC_TRACK=0
+                    MUSIC.Kahoot.name-> MUSIC_TRACK=1
+                    MUSIC.Lofi1.name-> MUSIC_TRACK=2
+                    MUSIC.Lofi2.name-> MUSIC_TRACK=3
+                    MUSIC.Minecraft.name-> MUSIC_TRACK=4
+                }
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
 
     }
@@ -157,10 +214,10 @@ class Profile_modification : AppCompatActivity(), SelectAvatarPopUp.DialogListen
     override fun popUpListener(avatarChosen: Drawable) {
         this.avatarPicker.setImageDrawable(avatarChosen)
     }
-    private fun updateProfile(oldIdentifier: String,newIdentifier:String,avatar:CircularImageView,newEmail: String,newDescription:String) {
+    private fun updateProfile(oldIdentifier: String,newIdentifier:String,avatar:CircularImageView,newDescription:String) {
         var avatarByteArray:ByteArray = convertToByteArray(avatar)
         var avatar_str:String = Base64.encodeToString(avatarByteArray,0)
-        compositeDisposable.add(iMyService.updateProfile(oldIdentifier, newIdentifier,avatar_str,newEmail,newDescription)
+        compositeDisposable.add(iMyService.updateProfile(oldIdentifier, newIdentifier,avatar_str,newDescription)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { result->
@@ -168,7 +225,6 @@ class Profile_modification : AppCompatActivity(), SelectAvatarPopUp.DialogListen
                     Toast.makeText(this,"Modification faite avec succès", Toast.LENGTH_SHORT).show()
                     val intent = Intent(this, Profile::class.java)
                     intent.putExtra("userName",username.text.toString())
-                    intent.putExtra("email",user_email.text.toString())
                     var bundle:Bundle =ActivityOptions.makeSceneTransitionAnimation(this).toBundle()
                     startActivity(intent,bundle)
                 }else{

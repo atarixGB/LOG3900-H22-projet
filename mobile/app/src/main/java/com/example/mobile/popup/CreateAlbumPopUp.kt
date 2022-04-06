@@ -11,6 +11,7 @@ import android.widget.*
 import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
 import com.example.mobile.R
+import com.example.mobile.SOUND_EFFECT
 
 
 class CreateAlbumPopUp : DialogFragment() {
@@ -20,6 +21,7 @@ class CreateAlbumPopUp : DialogFragment() {
     private lateinit var cancelButton: Button
     private lateinit var listener: DialogListener
     private lateinit var albumNameEmptyError:TextView
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -48,26 +50,32 @@ class CreateAlbumPopUp : DialogFragment() {
                 var description = albumDescription.text.toString()
                 albumNameEmptyError.isVisible=false
                 listener.popUpListener(name,description)
-                mediaPlayerMagic.start()
+                if(SOUND_EFFECT){
+                    mediaPlayerMagic.start()
+                }
 
                 dismiss()
             }
-            else if(albumName.text.toString().isNullOrBlank() || albumName.text.toString().isEmpty() ){
+            else if(albumName.text.toString().isNullOrBlank() || albumName.text.toString().isEmpty()){
                 albumNameEmptyError.isVisible=true
                 albumName.animation=AnimationUtils.loadAnimation(context,R.anim.shake_animation)
-                mediaPlayerFail.start()
+                if(SOUND_EFFECT){
+                    mediaPlayerFail.start()
+                }
 
             }
             else {
                 Toast.makeText(context,"Album public est un nom reservé", Toast.LENGTH_SHORT).show()
                 albumName.animation=AnimationUtils.loadAnimation(context,R.anim.shake_animation)
-                mediaPlayerFail.start()
+                if(SOUND_EFFECT){
+                    mediaPlayerFail.start()
+                }
             }
-
         }
 
         return rootView
     }
+
 
     override fun onAttach(context: Context) {
         super.onAttach(context)

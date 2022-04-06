@@ -505,6 +505,40 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
         });
     });
 
+
+  //get all drawings that specified user liked
+  app.get("/drawings/favorite/:username", (request, response) => {
+    let username = request.params.username;
+    DB.collection("drawings").find({ likes: { $all: [username] } }).toArray(function (error, result) {
+      if (error) throw error;
+      
+      response.json(result);
+      console.log(result)
+    })
+  })
+
+  //get all drawings of specified user that has at least one Like
+  app.get("/drawings/top/:username", (request, response) => {
+    let username = request.params.username;
+    DB.collection("drawings")
+      .find({ $and: [{ owner: username }, { likes: { $exists: true, $not: { $size: 0 } } }] }).toArray(function (error, result) {
+        if (error) throw error;
+
+        result.sort((a,b)=> a.likes.length < b.likes.length ? 1: a.likes.length > b.likes.length ? -1 : 0);
+        response.json(result);
+        console.log(result)
+      })
+  })
+
+    //delete all drawings pour faire le menage
+    app.delete("/drawing/deleteAll", (request, response, next) => {
+      DB.collection("drawings").deleteMany({}, (err, res) => {
+        response.json(201)
+      });
+    }); 
+
+    
+
     //delete drawing with specific id from collection
     app.delete("/drawing/delete/:id", (request, response, next) => {
       let drawingId = request.params.id;
@@ -545,9 +579,9 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
       })
     })
 
-    //==========================================================================================================
-    // Album Management
-    //==========================================================================================================
+//==========================================================================================================
+// Album Management
+//==========================================================================================================
 
     //create new album
     app.post("/albums", (request, response, next) => {
@@ -793,8 +827,6 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
       var newUsername = post_data.newUsername;
       var avatar = post_data.newAvatar;
       var description = post_data.newDescription;
-      var newEmail = post_data.newEmail;
-
 
       //check if a user already has the new name
       DB.collection("users")
@@ -806,11 +838,10 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
           } else {
             // Update user data
             DB.collection("users").updateOne({ identifier: oldUsername }, {
-              $set: {
-                "identifier": newUsername,
-                "avatar": avatar,
-                "description": description,
-                "email": newEmail
+              $set : {
+                "identifier" : newUsername,
+                "avatar" : avatar,
+                "description" : description
               },
             }).then(result => {
               response.json(200);
@@ -819,30 +850,26 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
         });
     });
 
-    app.get("/profile/:username", (request, response, next) => {
 
-      var identifier = request.params.username;
-      console.log(identifier.toString());
-      var db = client.db("PolyGramDB");
+    //get userid when we send username 
+    app.get("/getUserID/:username", (request, response, next) => {
 
-      //check if identifier exists
-      db.collection("users").findOne(
-        { identifier: identifier },
-        function (error, result) {
-          if (err) {
-            console.log("error getting");
-            response.status(400).send("Error fetching users");
-          } else {
-            response.json(result);
-            console.log("Got user data for profile load: ", identifier);
-          }
-        }
-      );
+      let username = request.params.username;
+    
+          DB.collection("users")
+            .findOne({ identifier: username }, function (err, result) {
+              if (err) {
+                console.log("error getting");
+                response.status(400).send("Error fetching id");
+              } else {
+                response.json(result._id);
+              }
+          });
     });
 
-    //==========================================================================================================
-    // Profile : Statistics
-    //==========================================================================================================
+//==========================================================================================================
+// Profile : Statistics
+//==========================================================================================================
 
     // Get the total number of collabs that userId has participated in
     app.get("/profile/stats/collabs/:username", (request, response) => {
@@ -935,8 +962,38 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
         response.json(totalNbrOfAlbumsCreated);
       })
     })
+
+    // Get the total number of likes by username 
+    app.get("/profile/stats/drawings/likes/:username", (request, response) => {
+      const username = request.params.username;
+
+      DB.collection("drawings").find({ likes: { $all: [username] } }).toArray((error, result) => {
+        if (error) throw error;
+        
+        let likesCount = 0;
+        for (const drawing of result) {
+          likesCount += drawing.likes.length;
+        }
+
+        response.json(likesCount);
+      })
+    })
+
+    // Get the total number of private albums created by username 
+    app.get("/profile/stats/albums/:username", (request, response) => {
+      const username = request.params.username;
+
+      DB.collection("albums").find({ owner : username}).toArray((error, result) => {
+        if (error) throw error;
+        console.log(result);        
+        const totalNbrOfAlbumsCreated = result.length;
+        response.json(totalNbrOfAlbumsCreated);
+      })
+    })
     
 
+
+//-----------------------------------
     // Start web server
     const server = app.listen(SERVER_PORT, () => {
       console.log(
@@ -945,6 +1002,8 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
     });
   }
 });
+
+
 
 //==========================================================================================================
 // UTILITY FUNCTIONS
