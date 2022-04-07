@@ -45,4 +45,6 @@ export const DELETE_ROOM_URL = `${DATABASE_URL}/deleteRoom`;
 
 export const CREATE_COLLAB_URL = `${DATABASE_URL}/createCollab`;
 
+export const RESET_PASSWORD_URL = `${DATABASE_URL}/resetPassword`
+
 

@@ -8,7 +8,8 @@ const mongoose = require("mongoose");
 const socket = require('socket.io');
 const multer = require('multer')
 const path = require('path');
-var fs = require('fs');
+const fs = require('fs');
+const nodemailer = require('nodemailer');
 
 //constants
 const DATABASE_URL =
@@ -392,7 +393,7 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
 
         app.get("/getAllUserDrawings/:user", (request, response, next) => {
 
-          var user = request.params.user.replaceAll(/"/g, '');;
+          var user = request.params.user.replace(/"/g, '');;
     
           console.log(user);
     
@@ -992,6 +993,36 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
     })
     
 
+    //==========================================================================================================
+    // Reset password
+    //==========================================================================================================
+    let uniqueCode;
+
+    app.post("/resetPassword", (request, response) => {
+      const email = request.body.email;
+      console.log("Courriel recu", email);
+
+      DB.collection("users").findOne({ email: email }, (error, result) => {
+        if (error) throw err;
+
+        if (result) {
+          console.log(`Le courriel ${result.email} existe!`);
+
+          uniqueCode = generateUniqueCode();
+
+          sendEmail(result.email, uniqueCode)
+            .then(() => { console.log(`Courriel envoyé à ${result.email}`) })
+            .catch((error) => { throw error });
+
+        } else {
+          response.json({
+            status: "Échec",
+            message: "Aucun compte n'est relié à ce courriel."
+          })
+        }
+      })
+
+    });
 
 //-----------------------------------
     // Start web server
@@ -1034,4 +1065,48 @@ let stringifySeconds = function (timeInSeconds) {
   timeInSeconds = timeInSeconds % secondsInMinute;
 
   return days + 'j ' + hours + 'h ' + minutes + 'm ' + timeInSeconds + 's';
+}
+
+async function sendEmail(email, uniqueCode) {
+
+  let testAccount = await nodemailer.createTestAccount();
+
+  let transporter = nodemailer.createTransport({
+    host: "smtp.ethereal.email",
+    port: 587,
+    secure: false, // true for 465, false for other ports
+    auth: {
+      user: testAccount.user,
+      pass: testAccount.pass,
+    },
+  });
+
+  const message = {
+    from: '"Poly-Gram 🎨" <poly.gramlog3900@gmail.com>', // sender address
+    to: email, // list of receivers
+    subject: "Poly-Gram - Changement de mot de passe", // Subject line
+    html: `Salut!
+    <br><br>
+    Il parait que tu as oublié ton mot de passe!
+    <br><br>
+    Entre ce code unique dans l'application pour le réinitialiser :
+    <br><br>
+    <b>${uniqueCode}</b>
+    <br><br>
+    L'équipe de Poly-Gram 🎨`, // plain text body
+  }
+
+  // send mail with defined transport object
+  let info = await transporter.sendMail(message);
+
+  console.log("Message sent: %s", info.messageId);
+  // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
+
+  // Preview only available when sending through an Ethereal account
+  console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+  // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
+}
+
+let generateUniqueCode = () => {
+  return Math.floor(Math.random() * 100000);
 }
