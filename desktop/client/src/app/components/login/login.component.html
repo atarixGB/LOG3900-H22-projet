@@ -9,8 +9,8 @@
            <input matInput placeholder="Entrez votre courriel" [(ngModel)]="this.email" name="email">
          </mat-form-field>
       </form>
-      <p *ngIf="!this.loginService.isValidEmail" class="error">^ <u>Aucun compte a été créé avec ce courriel</u> ^</p>
- 
+      <p *ngIf="!this.loginService.isValidEmail" class="error">^ <u>Aucun compte n'a été créé avec ce courriel</u> ^</p>
+
       <form>
          <mat-form-field class="animate__animated" [ngClass]="{animate__headShake: !this.isValidFields || !this.loginService.isValidPW}" appearance="fill">
            <mat-label>Mot de passe</mat-label>
@@ -21,6 +21,7 @@
       <p *ngIf="!this.isValidFields" class="error">* <u>Les champs ne peuvent pas être vides</u> *</p>
 
       <button mat-raised-button color="primary" (click)="this.connect()">SE CONNECTER</button>
+      <p routerLink="/reset-password" id="reset-password-link">Mot de passe oublié ?</p>
    </div>
 
    <div fxLayout="column" fxLayoutAlign="start center">
