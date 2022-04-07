@@ -70,6 +70,7 @@
             tools:ignore="Instantiatable" />
         <activity
             android:name=".activity.chat.ChatRooms"
+            android:launchMode="singleInstance"
             android:exported="false" />
         <activity android:name=".activity.drawing.DrawingActivity" />
         <activity
