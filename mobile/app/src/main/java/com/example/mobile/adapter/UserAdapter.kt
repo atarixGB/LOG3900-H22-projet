@@ -1,16 +1,21 @@
 package com.example.mobile.adapter
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat.startActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mobile.R
+import com.example.mobile.activity.profile.Profile
+import com.example.mobile.activity.profile.TopDrawingDisplay
+import com.example.mobile.activity.profile.visitingProfile
 import kotlinx.android.synthetic.main.item_user.view.*
 import java.util.ArrayList
 
-class UserAdapter (val context : Context, var users: ArrayList<String>, var requests: Boolean) : RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
+class UserAdapter (val context : Context,val user: String, var users: ArrayList<String>, var requests: Boolean) : RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
 
     private var listener: UserAdapterListener = context as UserAdapterListener
 
@@ -35,6 +40,18 @@ class UserAdapter (val context : Context, var users: ArrayList<String>, var requ
                 //A implementer plus tard : Quand on clique sur un utilisateur, ca nous ramene a son profil
             }*/
 
+            item_user_name.setOnClickListener{
+                if (user == currentUser) {
+                    val intent = Intent(context, Profile::class.java)
+                    intent.putExtra("userName", user)
+                    context.startActivity(intent)
+                } else {
+                    val intent = Intent(context, visitingProfile::class.java)
+                    intent.putExtra("user", user)
+                    intent.putExtra("visitingUser", currentUser)
+                    context.startActivity(intent)
+                }
+            }
             acceptButton.setOnClickListener {
                 listener.userAdapterListener(users[position])
             }

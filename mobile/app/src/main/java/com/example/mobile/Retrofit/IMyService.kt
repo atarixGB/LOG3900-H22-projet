@@ -47,7 +47,6 @@ interface IMyService {
         @Field("oldUsername") oldUsername: String,
         @Field("newUsername") newUsername: String,
         @Field("newAvatar") newAvatar: String,
-        @Field("newEmail") newEmail:String,
         @Field("newDescription") newDescription:String,
     ): Observable<String>
 
@@ -163,6 +162,18 @@ interface IMyService {
     @FormUrlEncoded
     fun addLikeToDrawing(@Path("drawingId") drawingId: String,
                          @Field("user")user:String): Observable<String>
+
+    @GET("/drawings/favorite/{username}")
+    fun getFavoriteDrawings(@Path("username")username:String):Call<List<IDrawing>>
+
+    @GET("/drawings/top/{username}")
+    fun getTopDrawings(@Path("username")username:String):Call<List<IDrawing>>
+
+    @GET("/profile/stats/drawings/{username}")
+    fun getNbTotalDrawings(@Path("username")username:String):Call<Any>
+
+    @GET("/profile/stats/albums/{username}")
+    fun getNbAlbumsCreated(@Path("username")username:String):Call<Any>
 
     @DELETE("/drawing/delete/{id}")
     fun deleteDrawing(@Path("id")drawingID:String): Observable<String>
