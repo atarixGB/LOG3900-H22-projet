@@ -20,7 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="52dp"
-        android:text="Mode collaboratif"
+        android:text="Commencer un dessin"
         android:textAppearance="@style/TextAppearance.AppCompat.Display2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.658"
@@ -102,34 +102,19 @@
 
     <Button
         android:id="@+id/session_start"
-        android:layout_width="350dp"
-        android:layout_height="wrap_content"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:layout_marginTop="25dp"
-        android:layout_marginStart="250dp"
-        android:background="@drawable/dashboard_button_box"
+        android:layout_marginStart="700dp"
+        android:background="@drawable/ic_baseline_palette"
         android:padding="20dp"
-        android:text="Créer une session"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textColor="@color/black"
-        app:backgroundTint="#C8C0C0"
-        app:layout_constraintEnd_toStartOf="@+id/solo_start_btn4"
+        app:backgroundTint="#83C655"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/collab_text" />
 
-    <Button
-        android:id="@+id/solo_start_btn4"
-        android:layout_width="350dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:layout_marginEnd="100dp"
-        android:background="@drawable/dashboard_button_box"
-        android:padding="20dp"
-        android:text="Joindre une session"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:textColor="@color/black"
-        app:backgroundTint="#C8C0C0"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/collab_text" />
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

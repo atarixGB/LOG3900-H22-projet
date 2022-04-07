@@ -25,6 +25,7 @@ class ToolbarNavigationFragment: Fragment() {
     private lateinit var draw: TextView
     private lateinit var albums: TextView
     private lateinit var profile: TextView
+    private lateinit var draft: TextView
     private lateinit var logout: TextView
     private lateinit var user: String
     private val sharedViewModel: SharedViewModelToolBar by activityViewModels()
@@ -43,9 +44,11 @@ class ToolbarNavigationFragment: Fragment() {
 
         dashbord = rootView.findViewById(R.id.dashbord)
         chat = rootView.findViewById(R.id.chat)
-        draw = rootView.findViewById(R.id.draw)
+//        draw = rootView.findViewById(R.id.draw)
         albums = rootView.findViewById(R.id.albums)
         profile = rootView.findViewById(R.id.profile)
+        draft=rootView.findViewById(R.id.draft)
+
         logout = rootView.findViewById(R.id.logout)
 
         if (MUSIC_TRACK==0){
@@ -84,13 +87,13 @@ class ToolbarNavigationFragment: Fragment() {
 
         }
 
-        draw.setOnClickListener {
-            draw.setBackgroundResource(R.color.greenOnClick)
-            Toast.makeText(context, "draw", Toast.LENGTH_SHORT).show()
-            val intent = Intent(activity, DrawingActivity::class.java)
-            intent.putExtra("userName",user)
-            startActivity(intent)
-        }
+//        draw.setOnClickListener {
+//            draw.setBackgroundResource(R.color.greenOnClick)
+//            Toast.makeText(context, "draw", Toast.LENGTH_SHORT).show()
+//            val intent = Intent(activity, DrawingActivity::class.java)
+//            intent.putExtra("userName",user)
+//            startActivity(intent)
+//        }
 
         albums.setOnClickListener {
             albums.setBackgroundResource(R.color.greenOnClick)
@@ -108,6 +111,14 @@ class ToolbarNavigationFragment: Fragment() {
             startActivity(intent)
         }
 
+        draft.setOnClickListener{
+            draft.setBackgroundResource(R.color.greenOnClick)
+            Toast.makeText(context, "draft", Toast.LENGTH_SHORT).show()
+            val intent = Intent(activity, DrawingActivity::class.java)
+            intent.putExtra("userName",user)
+            ISDRAFT=true
+            startActivity(intent)
+        }
         logout.setOnClickListener{
             logout.setBackgroundResource(R.color.greenOnClick)
             Toast.makeText(context, "Déconnexion", Toast.LENGTH_SHORT).show()

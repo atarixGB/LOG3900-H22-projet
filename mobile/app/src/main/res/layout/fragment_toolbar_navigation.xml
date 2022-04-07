@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:background="#a8d08c"
     app:columnCount="1"
-    app:rowCount="7"
+    app:rowCount="8"
     tools:context="com.example.mobile.ToolbarNavigationFragment">
 
     <ImageView
@@ -54,21 +54,7 @@
         app:drawableLeftCompat="@drawable/ic_baseline_chat_bubble_24"
         app:drawableTint="#e1efd8" />
 
-    <TextView
-        android:id="@+id/draw"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="60dp"
-        android:gravity="center"
-        android:background="@drawable/toolbar_btn"
-        android:fontFamily="@font/roboto"
-        android:text="Zone de dessin"
-        android:textColor="@color/white"
-        android:textSize="24sp"
-        app:layout_column="0"
-        app:layout_row="3"
-        app:drawableLeftCompat="@drawable/ic_baseline_draw_24"
-        app:drawableTint="#e1efd8" />
+
 
     <TextView
         android:id="@+id/albums"
@@ -82,7 +68,7 @@
         android:textColor="@color/white"
         android:textSize="24sp"
         app:layout_column="0"
-        app:layout_row="4"
+        app:layout_row="3"
         app:drawableLeftCompat="@drawable/ic_baseline_photo_library_24"
         app:drawableTint="#e1efd8" />
 
@@ -98,8 +84,26 @@
         android:textColor="@color/white"
         android:textSize="24sp"
         app:layout_column="0"
-        app:layout_row="5"
+        app:layout_row="4"
         app:drawableLeftCompat="@drawable/ic_baseline_person_24"
+        app:drawableTint="#e1efd8"
+        android:paddingLeft="10dp"/>
+
+    <TextView
+        android:id="@+id/draft"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="60dp"
+        android:gravity="center"
+        android:background="@drawable/toolbar_btn"
+        android:fontFamily="@font/roboto"
+        android:text="Brouillon"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        app:layout_column="0"
+        app:layout_row="5"
+        app:drawableLeftCompat="@drawable/ic_draft"
+        android:paddingLeft="10dp"
         app:drawableTint="#e1efd8" />
 
     <TextView
@@ -116,7 +120,8 @@
         app:layout_column="0"
         app:layout_row="6"
         app:drawableLeftCompat="@drawable/ic_baseline_logout_24"
-        app:drawableTint="#e1efd8" />
+        app:drawableTint="#e1efd8"
+        android:paddingLeft="10dp"/>
 
 
 

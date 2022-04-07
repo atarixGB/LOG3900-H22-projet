@@ -9,7 +9,9 @@ import android.util.Base64
 import android.util.DisplayMetrics
 import com.mikhaellopez.circularimageview.CircularImageView
 import java.io.ByteArrayOutputStream
+val REQUEST_IMAGE_CAMERA = 142
 
+var ISDRAFT=false
 var SOUND_EFFECT=true
 
 enum class MUSIC{

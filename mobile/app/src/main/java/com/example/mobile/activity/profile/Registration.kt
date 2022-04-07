@@ -26,6 +26,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.example.mobile.R
+import com.example.mobile.REQUEST_IMAGE_CAMERA
 import com.example.mobile.Retrofit.IMyService
 import com.example.mobile.Retrofit.RetrofitClient
 import com.example.mobile.activity.MainActivity
@@ -56,7 +57,6 @@ class Registration : AppCompatActivity(), SelectAvatarPopUp.DialogListener {
     private lateinit var description:String
 
 
-    private val REQUEST_IMAGE_CAMERA = 142
 
     override fun onStop() {
         compositeDisposable.clear()
@@ -97,23 +97,6 @@ class Registration : AppCompatActivity(), SelectAvatarPopUp.DialogListener {
             builder.setNegativeButton("Lance la caméra") { dialog, which ->
                 dialog.dismiss()
                 activityResultLauncher.launch(Manifest.permission.CAMERA)
-//                Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
-//                    takePictureIntent.resolveActivity(packageManager).also {
-//                        val permission = ContextCompat.checkSelfPermission(
-//                            this,
-//                            android.Manifest.permission.CAMERA
-//                        )
-//                        if (permission != PackageManager.PERMISSION_GRANTED) {
-//                            ActivityCompat.requestPermissions(
-//                                this,
-//                                arrayOf(android.Manifest.permission.CAMERA),
-//                                1
-//                            )
-//                        } else {
-//                            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAMERA)
-//                        }
-//                    }
-//                }
             }
 
             val dialog: AlertDialog = builder.create()

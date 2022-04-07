@@ -3,6 +3,12 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/15149/Desktop/Clone fin tache album/log3900-203/mobile/app/src/main/res/layout/activity_chat_page.xml" value="0.153125" />
+        <entry key="..\:/Users/15149/Desktop/Clone fin tache album/log3900-203/mobile/app/src/main/res/layout/activity_drawings_collection.xml" value="0.2767210144927536" />
+        <entry key="..\:/Users/15149/Desktop/Clone fin tache album/log3900-203/mobile/app/src/main/res/layout/activity_main.xml" value="0.5" />
+        <entry key="..\:/Users/15149/Desktop/Clone fin tache album/log3900-203/mobile/app/src/main/res/layout/fragment_custom_tool.xml" value="0.153125" />
+        <entry key="..\:/Users/15149/Desktop/Clone fin tache album/log3900-203/mobile/app/src/main/res/layout/fragment_toolbar.xml" value="0.24479166666666666" />
+        <entry key="..\:/Users/15149/Desktop/Clone fin tache album/log3900-203/mobile/app/src/main/res/layout/item_drawing.xml" value="0.2767210144927536" />
         <entry key="..\:/Users/15149/Desktop/git clone final/log3900-203/mobile/app/src/main/res/drawable/bg_btn.xml" value="0.3725" />
         <entry key="..\:/Users/15149/Desktop/git clone final/log3900-203/mobile/app/src/main/res/drawable/message_input_box.xml" value="0.1995" />
         <entry key="..\:/Users/15149/Desktop/git clone final/log3900-203/mobile/app/src/main/res/layout/activity_albums.xml" value="0.18" />
@@ -18,12 +24,14 @@
         <entry key="..\:/Users/15149/Desktop/git clone final/log3900-203/mobile/app/src/main/res/layout/fragment_create_album_pop_up.xml" value="0.18" />
         <entry key="..\:/Users/15149/Desktop/git clone final/log3900-203/mobile/app/src/main/res/layout/fragment_toolbar_navigation.xml" value="0.1" />
         <entry key="..\:/Users/15149/Desktop/git clone final/log3900-203/mobile/app/src/main/res/layout/item_room.xml" value="0.1" />
+        <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/drawable/camera.xml" value="0.2155" />
         <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/drawable/ic_baseline_delete_forever_24.xml" value="0.1505" />
         <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/drawable/ic_baseline_directions_run_24.xml" value="0.1505" />
         <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/drawable/ic_baseline_edit_24.xml" value="0.228" />
         <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/drawable/ic_baseline_edit_note_24.xml" value="0.228" />
         <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/drawable/ic_baseline_library_music_24.xml" value="0.3725" />
         <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/drawable/ic_baseline_more_vert_24.xml" value="0.228" />
+        <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/drawable/ic_baseline_palette.xml" value="0.236" />
         <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/drawable/ic_baseline_person_24.xml" value="0.3725" />
         <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/drawable/ic_save.xml" value="0.179" />
         <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/drawable/spinner_bg.xml" value="0.3725" />
@@ -33,8 +41,10 @@
         <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/activity_chat_rooms.xml" value="0.1" />
         <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/activity_create_drawing_pop_up.xml" value="0.3015625" />
         <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/activity_create_room_pop_up.xml" value="0.15911458333333334" />
+        <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/activity_dashboard.xml" value="0.25" />
         <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/activity_display_all_drawings.xml" value="0.1" />
         <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/activity_display_public_albums.xml" value="0.1" />
+        <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/activity_drawing.xml" value="0.11484375" />
         <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/activity_drawings_collection.xml" value="0.1" />
         <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/activity_favorite_drawing_display.xml" value="0.1" />
         <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/activity_join_room.xml" value="0.1" />
@@ -47,12 +57,16 @@
         <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/change_album_pop_up.xml" value="0.13802083333333334" />
         <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/fragment_album_attribute_modification_pop_up.xml" value="0.1859375" />
         <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/fragment_create_album_pop_up.xml" value="0.21" />
+        <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/fragment_custom_tool.xml" value="0.11484375" />
         <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/fragment_drawing_name_modification_pop_up.xml" value="0.1859375" />
+        <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/fragment_drawing_zone.xml" value="0.11484375" />
         <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/fragment_gallery_fullscreen.xml" value="0.1" />
+        <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/fragment_toolbar.xml" value="0.1" />
         <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/fragment_toolbar_navigation.xml" value="0.2" />
         <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/image_fullscreen.xml" value="0.1" />
         <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/item_drawing.xml" value="0.3557312252964427" />
         <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/item_gallery_image.xml" value="0.1" />
+        <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/item_room.xml" value="0.11484375" />
         <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/item_top_drawing.xml" value="0.1" />
         <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/item_user.xml" value="0.1" />
         <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/sentmessage.xml" value="0.1" />
@@ -105,7 +119,7 @@
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
