@@ -21,6 +21,7 @@ export class ForgotPasswordComponent {
 
     if(this.checkEmail()) {
       this.isValidEmail = true;
+      this.passwordService.email = this.email;
       this.passwordService.confirmEmail(this.email);
     } else {
       this.isValidEmail = false;

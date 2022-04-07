@@ -996,8 +996,9 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
     //==========================================================================================================
     // Reset password
     //==========================================================================================================
-    let uniqueCode;
+    let uniqueCode = null;
 
+    // send unique code to user if emails exists
     app.post("/forgotPassword", (request, response) => {
       const email = request.body.email;
 
@@ -1006,6 +1007,7 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
 
         if (result) {
           uniqueCode = generateUniqueCode();
+          console.log("Code genere", uniqueCode)
 
           sendEmail(result.email, uniqueCode)
             .then(() => { console.log(`Courriel envoyé à ${result.email}`) })
@@ -1020,8 +1022,39 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
 
     });
 
-//-----------------------------------
+    // verify unique code received by the user
+    app.post("/verifyUniqueCode", (request, response) => {
+      const userCode = request.body.code;
+      console.log("code recu", userCode);
+      if (userCode == uniqueCode) {
+        response.json(204);
+        uniqueCode = null;
+      } else {
+        response.json(-1)
+      }
+    })
+
+    // change the password if user code is valid
+    app.put("/resetPassword", (request, response) => {
+      const email = request.body.email;
+      const newPassword = request.body.newPassword;
+      const confirmedPassword = request.body.confirmedPassword;
+      console.log("mdp recu", newPassword, confirmedPassword)
+
+      // TODO: Change the password in DB
+      // if (newPassword == confirmedPassword) {
+      //   DB.collection("users").findOne({ email: email }, { $set: { password: salHashPassword(newPassword) }, }, ((error, result) => {
+      //     if (error) throw err;
+      //     console.log(result)
+      //     response.json(204)
+      //   }))
+      // }
+
+    })
+
+    //-----------------------------------
     // Start web server
+    //-----------------------------------
     const server = app.listen(SERVER_PORT, () => {
       console.log(
         `connected to MongoDB server, webserver running on port ${SERVER_PORT}`
@@ -1063,6 +1096,7 @@ let stringifySeconds = function (timeInSeconds) {
   return days + 'j ' + hours + 'h ' + minutes + 'm ' + timeInSeconds + 's';
 }
 
+// TODO: Change Ethereal email with real email
 async function sendEmail(email, uniqueCode) {
 
   let testAccount = await nodemailer.createTestAccount();
