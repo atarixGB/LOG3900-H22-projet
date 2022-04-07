@@ -100,7 +100,7 @@ class CustomToolFragment : Fragment(), AdapterView.OnItemClickListener {
         setAllWeightToUnselectedIcon()
         val weightItem: ToolWeightItem = weights!!.get(0)
         weights!!.set(0, ToolWeightItem(R.drawable.circle1_selected, 1f))
-        toolParametersModel.changeWeight(weightItem.size!!)
+//        toolParametersModel.changeWeight(weightItem.size!!)
         weightAdapter!!.notifyDataSetChanged()
     }
 
@@ -108,7 +108,7 @@ class CustomToolFragment : Fragment(), AdapterView.OnItemClickListener {
         setAllColorToUnselectedIcon()
         val colorItem: ToolColorItem = colors!!.get(2)
         colors!!.set(2, ToolColorItem(R.drawable.black_color_selected,resources.getColor(R.color.black)))
-        toolParametersModel.changeColor(colorItem.color!!)
+//        toolParametersModel.changeColor(colorItem.color!!)
         colorAdapter!!.notifyDataSetChanged()
     }
 

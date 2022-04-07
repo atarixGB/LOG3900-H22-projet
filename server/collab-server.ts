@@ -99,7 +99,7 @@ ioCollab.on('connection', (socket) => {
 
       // DRAWING EVENTS
       socket.on('broadcastStroke', (data) => {
-        console.log('broadcastStroke');
+        console.log('broadcastStroke', data);
         const roomName = data.room;
         const stroke = data.data
         socket.broadcast.to(roomName).emit('receiveStroke', stroke);

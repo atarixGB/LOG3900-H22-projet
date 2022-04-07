@@ -700,7 +700,7 @@ class  Selection(context: Context, baseCanvas: Canvas, val socket : DrawingSocke
         )
         strokes[index].boundingPoints[0] = IVec2(pos.x, pos.y)
 
-        strokesSelected[0] = strokes[index]
+        strokesSelected[0] = strokes[index] //TODO de i au lieu de 0?
 
 
 
