@@ -76,7 +76,8 @@ import { StoryComponent } from './components/story/story.component';
 import { ChangeDrawingNameDialogComponent } from './components/album-gallery/drawings-view/change-drawing-name-dialog/change-drawing-name-dialog.component';
 import { ChangeAlbumDialogComponent } from './components/album-gallery/drawings-view/change-album-dialog/change-album-dialog.component';
 import { DeleteDrawingDialogComponent } from './components/album-gallery/drawings-view/delete-drawing-dialog/delete-drawing-dialog.component';
-import { ResetPasswordComponent } from './components/reset-password/reset-password.component'
+import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
+import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 
 @NgModule({
     declarations: [
@@ -132,6 +133,7 @@ import { ResetPasswordComponent } from './components/reset-password/reset-passwo
         ChangeAlbumDialogComponent,
         DeleteDrawingDialogComponent,
         ResetPasswordComponent,
+        ForgotPasswordComponent,
     ],
     imports: [
         BrowserModule,

@@ -15,6 +15,7 @@ import { ProfileSettingsComponent } from './components/profile/profile-settings/
 import { ProfileComponent } from './components/profile/profile.component';
 import { TopDrawingsComponent } from './components/profile/top-drawings/top-drawings.component';
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
+import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component'
 import { SignUpComponent } from './components/sign-up/sign-up.component';
 
 const routes: Routes = [
@@ -34,6 +35,7 @@ const routes: Routes = [
     { path: 'profileSettings', component: ProfileSettingsComponent },
     { path: 'favorite-drawings', component: FavoriteDrawingsComponent },
     { path: 'top-drawings', component: TopDrawingsComponent },
+    { path: 'forgot-password', component: ForgotPasswordComponent },
     { path: 'reset-password', component: ResetPasswordComponent },
     { path: '**', redirectTo: '/menu' },
 ];

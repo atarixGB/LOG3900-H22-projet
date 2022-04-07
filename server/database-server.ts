@@ -998,27 +998,23 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
     //==========================================================================================================
     let uniqueCode;
 
-    app.post("/resetPassword", (request, response) => {
+    app.post("/forgotPassword", (request, response) => {
       const email = request.body.email;
-      console.log("Courriel recu", email);
 
       DB.collection("users").findOne({ email: email }, (error, result) => {
         if (error) throw err;
 
         if (result) {
-          console.log(`Le courriel ${result.email} existe!`);
-
           uniqueCode = generateUniqueCode();
 
           sendEmail(result.email, uniqueCode)
             .then(() => { console.log(`Courriel envoyé à ${result.email}`) })
             .catch((error) => { throw error });
 
+          response.json(204);
+
         } else {
-          response.json({
-            status: "Échec",
-            message: "Aucun compte n'est relié à ce courriel."
-          })
+          response.json(404);
         }
       })
 
