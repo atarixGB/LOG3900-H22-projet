@@ -125,6 +125,7 @@ ioCollab.on('connection', (socket) => {
         console.log('broadcastSelectionSize');
         const roomName = data.room;
         const size = data.data
+        console.log(size);
         socket.broadcast.to(roomName).emit('receiveSelectionSize', size);
          
       })

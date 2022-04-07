@@ -22,6 +22,7 @@ class  Selection(context: Context, baseCanvas: Canvas, val socket : DrawingSocke
     private var selectionBitmap: Bitmap? = null
     private var otherSelectionBitmap: Bitmap? = null
     private var selectedIndex: Int? = null
+    private var dimensionsBeforeResize = IVec2(0F, 0F)
     var isToolSelection: Boolean? = null
     var oldTool: ToolbarFragment.MenuItem? = null
     var oldMousePosition: IVec2 = IVec2(0F, 0F)
@@ -51,6 +52,7 @@ class  Selection(context: Context, baseCanvas: Canvas, val socket : DrawingSocke
                 ) || isToolSelection == true
             ) {
                 nextTool = ToolbarFragment.MenuItem.SELECTION
+                dimensionsBeforeResize = IVec2(selectionBitmap!!.width.toFloat(),selectionBitmap!!.height.toFloat())
             }
         }
     }
@@ -58,39 +60,65 @@ class  Selection(context: Context, baseCanvas: Canvas, val socket : DrawingSocke
     override fun touchMove() {
         if (currentStroke != null) {
             if (isInResizingPoints(currentStroke!!.boundingPoints, IVec2(mx, my))) {
-                val oldWidth = (currentStroke!!.boundingPoints[1].x - currentStroke!!.boundingPoints[0].x)
-                val oldHeight = (currentStroke!!.boundingPoints[1].y - currentStroke!!.boundingPoints[0].y)
+                var oldWidth = (currentStroke!!.boundingPoints[1].x - currentStroke!!.boundingPoints[0].x)
+                var oldHeight = (currentStroke!!.boundingPoints[1].y - currentStroke!!.boundingPoints[0].y)
 
-                var newWidth = 0F
-                var newHeight = 0F
+                var newWidth = oldWidth
+                var newHeight = oldHeight
 
                 when(currentCpIndex) {
                     0 -> {
-                        newWidth = (mx - currentStroke!!.boundingPoints[1].x)
-                        newHeight = (my - currentStroke!!.boundingPoints[1].y)
-                        currentStroke!!.boundingPoints[0] = IVec2(mx,my)
+                        if (mx - currentStroke!!.boundingPoints[1].x > 2F) {
+                            newWidth = (mx - currentStroke!!.boundingPoints[1].x)
+                            currentStroke!!.boundingPoints[0] = IVec2(mx,my)
+                        }
+                        if (my - currentStroke!!.boundingPoints[1].y > 2F) {
+                            newHeight = (my - currentStroke!!.boundingPoints[1].y)
+                            currentStroke!!.boundingPoints[0] = IVec2(mx,my)
+                        }
                     }
                     1 -> {
-                        newWidth = (mx - currentStroke!!.boundingPoints[0].x)
-                        newHeight = (currentStroke!!.boundingPoints[1].y - my)
-                        currentStroke!!.boundingPoints[0].y = my
-                        currentStroke!!.boundingPoints[1].x = mx
+                        if (mx - currentStroke!!.boundingPoints[0].x > 2F) {
+                            newWidth = (mx - currentStroke!!.boundingPoints[0].x)
+                            currentStroke!!.boundingPoints[0].y = my
+                            currentStroke!!.boundingPoints[1].x = mx
+                        }
+                        if (currentStroke!!.boundingPoints[1].y - my > 2F) {
+                            newHeight = (currentStroke!!.boundingPoints[1].y - my)
+                            currentStroke!!.boundingPoints[0].y = my
+                            currentStroke!!.boundingPoints[1].x = mx
+                        }
                     }
                     2 -> {
-                        newWidth = (currentStroke!!.boundingPoints[1].x - mx)
-                        newHeight = (my - currentStroke!!.boundingPoints[0].y)
-                        currentStroke!!.boundingPoints[0].x = mx
-                        currentStroke!!.boundingPoints[1].y = my
+                        if (currentStroke!!.boundingPoints[1].x - mx > 2F) {
+                            newWidth = (currentStroke!!.boundingPoints[1].x - mx)
+                            currentStroke!!.boundingPoints[0].x = mx
+                            currentStroke!!.boundingPoints[1].y = my
+                        }
+
+                        if(my - currentStroke!!.boundingPoints[0].y > 2F) {
+                            newHeight = (my - currentStroke!!.boundingPoints[0].y)
+                            currentStroke!!.boundingPoints[0].x = mx
+                            currentStroke!!.boundingPoints[1].y = my
+                        }
+
                     }
                     3 -> {
-                        newWidth = (mx - currentStroke!!.boundingPoints[0].x)
-                        newHeight = (my - currentStroke!!.boundingPoints[0].y)
-                        currentStroke!!.boundingPoints[1] = IVec2(mx,my)
+                        if (mx - currentStroke!!.boundingPoints[0].x > 2F) {
+                            newWidth = (mx - currentStroke!!.boundingPoints[0].x)
+                            currentStroke!!.boundingPoints[1] = IVec2(mx,my)
+                        }
+                        if (my - currentStroke!!.boundingPoints[0].y > 2F) {
+                            newHeight = (my - currentStroke!!.boundingPoints[0].y)
+                            currentStroke!!.boundingPoints[1] = IVec2(mx,my)
+                        }
+
                     }
                 }
 
+                var scale = IVec2(newWidth/oldWidth, newHeight/oldHeight)
 
-                currentStroke!!.rescale(IVec2(newWidth/oldWidth, newHeight/oldHeight))
+                currentStroke!!.rescale(scale)
                 selectionCanvas!!.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR)
                 createSelectionCanvas(currentStroke!!)
                 currentStroke!!.drawStroke(selectionCanvas!!)
@@ -122,7 +150,35 @@ class  Selection(context: Context, baseCanvas: Canvas, val socket : DrawingSocke
 
             socket.socket.emit("broadcastSelectionPos", data)
             isMoving = false
+
         } else if (isResizing) {
+            //send
+            var newPos = JSONObject()
+            newPos.put("x", currentStroke!!.boundingPoints[0].x)
+            newPos.put("y", currentStroke!!.boundingPoints[0].y)
+
+            var newDimensions = JSONObject()
+            newDimensions.put("x", selectionBitmap!!.width)
+            newDimensions.put("y", selectionBitmap!!.height)
+
+            var scale = JSONObject()
+            scale.put("x", selectionBitmap!!.width/dimensionsBeforeResize.x)
+            scale.put("y", selectionBitmap!!.height/dimensionsBeforeResize.y)
+
+
+            var jo = JSONObject()
+
+            jo.put("strokeIndex", selectedIndex)
+            jo.put("newPos", newPos)
+            jo.put("newDimensions", newDimensions)
+            jo.put("scale", scale)
+            jo.put("sender", socket.socket.id())
+
+            var data = JSONObject()
+            data.put("room", drawingId)
+            data.put("data", jo)
+
+            socket.socket.emit("broadcastSelectionSize", data)
             isResizing = false
         }
         var isInStrokesSelected = false
@@ -265,10 +321,10 @@ class  Selection(context: Context, baseCanvas: Canvas, val socket : DrawingSocke
         strokes.reversed().forEach { element ->
             if (this.isInBounds(element.boundingPoints, clickedPos)) {
                 this.selectedIndex = strokes.indexOf(element)
-                return true;
+                return true
             }
         }
-        return false;
+        return false
     }
 
     private fun isInBounds(bounds: ArrayList<IVec2>, pointToCheck: IVec2): Boolean {
@@ -681,8 +737,61 @@ class  Selection(context: Context, baseCanvas: Canvas, val socket : DrawingSocke
         }
     }
 
+    fun onResizeRequest(sender: String, strokeIndex: Int, newPos: IVec2, newDimensions: IVec2, scale: IVec2) {
+        strokes[strokeIndex].rescale(scale)
+        strokes[strokeIndex].boundingPoints[0] = newPos
+        strokes[strokeIndex].boundingPoints[1] = IVec2(newDimensions.x + strokes[strokeIndex].boundingPoints[0].x, newDimensions.y + strokes[strokeIndex].boundingPoints[0].y)
+
+        if (otherSelectionCanvas != null) {
+            otherSelectionCanvas!!.drawColor(
+                Color.TRANSPARENT,
+                PorterDuff.Mode.CLEAR
+            ) //clear le canvas de selection des autres
+        }
+
+        baseCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR) //clear le base canvas
+
+        strokes.forEachIndexed { i, element ->
+            if (i != selectedIndex && i!=strokeIndex) {
+                element.drawStroke(baseCanvas) //redessiner les autres formes sauf la forme selectionner
+            }
+        }
+
+        if (selectionBitmap != null && currentStroke != null) {
+            baseCanvas.drawBitmap(
+                selectionBitmap!!,
+                currentStroke!!.boundingPoints[0].x,
+                currentStroke!!.boundingPoints[0].y,
+                null
+            ) //dessiner la forme selectionner sur le base
+            strokes[selectedIndex!!] = currentStroke!!
+        }
+
+        //redessiner les formes selectionner par les autres
+//            strokesSelected.forEachIndexed { i, element ->
+//                createOtherSelectionCanvas(null, element)
+//            }
+        var i = 0
+        strokesSelectedBitmap.forEach {
+            if (it.key != sender) {
+                baseCanvas.drawBitmap(
+                    it.value, //hereeeeeeeeeeeeeeeeeeeeeeeeeeeee
+                    strokesSelected[i].boundingPoints[0].x,
+                    strokesSelected[i].boundingPoints[0].y,
+                    null
+                )
+                i++
+            } else {
+                strokesSelectedBitmap.remove(sender)
+                strokesSelected[i] = strokes[strokeIndex]
+                createOtherSelectionCanvas(sender, strokes[strokeIndex])
+            }
+        }
+
+    }
+
+
     fun onMoveRequest(sender: String, pos: IVec2) {
-//        var index = strokes.indexOf(strokesSelected[0])
 
         var i = 0
         strokesSelectedBitmap.forEach {

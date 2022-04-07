@@ -62,6 +62,7 @@ class DrawingZoneFragment : Fragment() {
         DrawingSocket.socket.on("receivePasteRequest", onPasteRequest)
         DrawingSocket.socket.on("receiveDeleteRequest", onDeleteRequest)
         DrawingSocket.socket.on("receiveSelectionPos", onMoveRequest)
+        DrawingSocket.socket.on("receiveSelectionSize", onResizeRequest)
 
         DrawingSocket.socket.on("prepForNewMember", onPrepForNewMember)
         DrawingSocket.socket.on("fetchStrokes", onFetchStrokes)
@@ -144,6 +145,11 @@ class DrawingZoneFragment : Fragment() {
     private var onMoveRequest = Emitter.Listener {
         val drawEvent = it[0] as JSONObject
         mDrawingView.onMoveRequest (drawEvent)
+    }
+
+    private var onResizeRequest = Emitter.Listener {
+        val drawEvent = it[0] as JSONObject
+        mDrawingView.onResizeRequest (drawEvent)
     }
 
     private var onPrepForNewMember = Emitter.Listener {
@@ -294,6 +300,24 @@ class DrawingZoneFragment : Fragment() {
                 }
                 invalidate()
             }
+        }
+
+        fun onResizeRequest(stroke: JSONObject) {
+            val sender = stroke["sender"] as String
+            val strokeIndex = stroke["strokeIndex"] as Int
+            val newPosObj = stroke["newPos"] as JSONObject
+            val newDimensionsObj = stroke["newDimensions"] as JSONObject
+            val scaleObj = stroke["scale"] as JSONObject
+
+            var newPos = IVec2(newPosObj.getDouble("x").toFloat(), newPosObj.getDouble("y").toFloat())
+            var newDimensions = IVec2(newDimensionsObj.getDouble("x").toFloat(), newDimensionsObj.getDouble("y").toFloat())
+            var scale = IVec2(scaleObj.getDouble("x").toFloat(), scaleObj.getDouble("y").toFloat())
+
+            toolManager.selection.onResizeRequest(sender, strokeIndex, newPos, newDimensions, scale)
+            if (currentDrawingBitmap != null) {
+                mCanvas!!.drawBitmap(currentDrawingBitmap!!, 0F, 0F, null)
+            }
+            invalidate()
         }
 
         fun onPrepForNewMember(){
