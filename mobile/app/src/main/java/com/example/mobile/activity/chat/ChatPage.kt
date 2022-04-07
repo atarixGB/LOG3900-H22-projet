@@ -11,6 +11,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.view.isVisible
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mobile.IRoom
@@ -29,6 +30,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import io.socket.client.Socket
+import kotlinx.android.synthetic.main.activity_profile.*
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
@@ -54,6 +56,7 @@ class ChatPage : AppCompatActivity(), UserAdapter.UserAdapterListener {
     private lateinit var chatViewOptions: ImageButton
     private lateinit var roomName : String
     private lateinit var IRoom: IRoom
+    private var isOnline  = false as Boolean
 
     private lateinit var iMyService: IMyService
     internal var compositeDisposable = CompositeDisposable()
@@ -99,6 +102,7 @@ class ChatPage : AppCompatActivity(), UserAdapter.UserAdapterListener {
 
         //for test purpose
         readBtn = findViewById(R.id.readBtn)
+        isOnline = true
 
         readBtn.setOnClickListener{
             readAllMessagesFromFile("$roomName.txt")
@@ -131,9 +135,18 @@ class ChatPage : AppCompatActivity(), UserAdapter.UserAdapterListener {
                 val room = messageData.get("room") as String
                 val msg = IMessage(message, user, time, room, false)
                 mediaPlayerReceiveSuccess.start()
-                notificationModel.updateRoom(this.roomName)
+                if(!isOnline){
+                    var jo = JSONObject()
+                    jo.put("roomName", roomName)
+                    //TODO : change username to id
+                    jo.put("userId",this.user)
+                    socket.emit("onMessageReceivedOffline", jo)
+                }else{
+                    printMessagesOnUI(msg)
+                }
+               // notificationModel.updateRoom(this.roomName)
 
-                printMessagesOnUI(msg)
+
             }
         }
 
@@ -387,6 +400,10 @@ class ChatPage : AppCompatActivity(), UserAdapter.UserAdapterListener {
             }
             else -> super.onKeyUp(keyCode, event)
         }
+    }
+    override fun onPause() {
+        super.onPause()
+        isOnline = false
     }
 }
 

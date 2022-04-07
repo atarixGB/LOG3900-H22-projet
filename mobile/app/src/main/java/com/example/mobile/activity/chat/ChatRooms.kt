@@ -18,6 +18,7 @@ import com.example.mobile.R
 import com.example.mobile.Retrofit.IMyService
 import com.example.mobile.Retrofit.RetrofitClient
 import com.example.mobile.SocketHandler
+import com.example.mobile.adapter.MessageAdapter
 import com.example.mobile.adapter.RoomAdapter
 import com.example.mobile.popup.CreateRoomPopUp
 import com.example.mobile.viewModel.NotificationModel
@@ -87,9 +88,6 @@ class ChatRooms : AppCompatActivity(), CreateRoomPopUp.DialogListener, RoomAdapt
 
         getRooms()
 
-        notificationModel.roomName.observe(this, Observer { room : String ->
-            Log.i("chatRooms", room)
-        })
         // TODO: ici tu dois parcourir la liste des rooms et trouver celle qui a le roomName qui est retournée par le observable
         // et mettre le isNotified à true
 
@@ -129,6 +127,27 @@ class ChatRooms : AppCompatActivity(), CreateRoomPopUp.DialogListener, RoomAdapt
                     runOnUiThread {
                         roomAdapter.addRoom(room)
                         roomAdapter.notifyItemInserted((rvOutputRooms.adapter as RoomAdapter).itemCount)
+                    }
+                }
+            }
+        }
+
+        socket.on("messageOffline") { args ->
+            if(args[0] != null){
+                val obj = args[0]  as JSONObject
+                var room = obj.getString("roomName")
+                var inComingUser = obj.getString("userId")
+
+                //only the one connected on this device receive the message
+                if(inComingUser == user){
+                    for(r in IRooms){
+                        if(r.roomName == room){
+                            r.isNotified = true
+                            runOnUiThread {
+                                roomAdapter.notifyDataSetChanged()
+                            }
+
+                        }
                     }
                 }
             }

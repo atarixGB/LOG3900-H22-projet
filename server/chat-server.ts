@@ -115,16 +115,15 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
                     message:msg.message,
                     time: msg.time,
                   };
-
-                DB.collection("rooms").findOneAndUpdate({ roomName: msg.room }, { "$push": { messages: message } },
-                    function (error, result) {
-                    console.log("result");
-                    }
-                );
             })
 
             socket.on('disconnectUser', (userName) => {
                 users.delete(userName);
+            })
+
+            socket.on('onMessageReceivedOffline', (message) =>{
+                console.log(message)
+                io.emit("messageOffline", message)
             })
         })
     }
