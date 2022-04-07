@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { PROFILE_URL, STATS_AVERAGE_COLLAB_TIME_URL, STATS_COLLAB_COUNT_URL, STATS_TOTAL_ALBUMS_CREATED_URL, STATS_TOTAL_COLLAB_TIME_URL, STATS_TOTAL_DRAWINGS_CREATED_URL, STATS_TOTAL_LIKES_URL } from '@app/constants/api-urls'
 import { BADGES, FAVOURITE, MOST_LIKED, STATS } from '@app/constants/badges'
 import { BADGE_COUNT } from '@app/constants/constants'
-
+const electron = (<any>window).require('electron');
 @Injectable({
   providedIn: 'root',
 })
@@ -12,13 +12,14 @@ export class ProfileService {
   avatarSrc: string;
   email: string;
   description: string;
-  
+
   currentBadge: string;
   statsImg: string;
   favoritesImg: string;
   mostLikedImg: string;
 
   isCurrentUserProfile: boolean;
+  isFromChatWindow: boolean;
 
   // Statistics
   totalNbrDrawings: number;
@@ -32,6 +33,7 @@ export class ProfileService {
     this.statsImg = STATS;
     this.favoritesImg = FAVOURITE;
     this.mostLikedImg = MOST_LIKED;
+    this.isFromChatWindow = false;
   }
 
   setUsername(name: string): void {
@@ -116,5 +118,14 @@ export class ProfileService {
     } else {
       this.currentBadge = BADGES.ARTIST;
     }
+  }
+
+  viewProfile(): void {
+    const isFromChatWindow = true;
+    electron.ipcRenderer.send("view-profile", isFromChatWindow);
+
+    electron.ipcRenderer.on("view-profile-reply", (event : any, result : boolean) => {
+      this.isFromChatWindow = result;
+    });
   }
 }

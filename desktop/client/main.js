@@ -96,15 +96,18 @@ app.on('activate', function () {
     }
 });
 
-// Manage chat window
+// Gestion de la fenêtre de clavardage
 ipcMain.on('open-chat', (event, data) => {
-    console.log('ipcMain received open-chat event. data:', data);
-    event.reply('open-chat-reply', 'response from ipcMain (open)');
+    console.log('ipcMain received open-chat event');
     chatWindow.show();
 });
 
 ipcMain.on('close-chat', (event, data) => {
-    console.log('ipcMain received close-chat event. data:', data);
-    event.reply('close-chat-reply', 'response from ipcMain (close)');
+    console.log('ipcMain received close-chat event');
     chatWindow.hide();
 });
+
+ipcMain.on('view-profile', (event, data) => {
+  console.log("ipcMain received view-profile event. Is event send from chat window ?", data);
+  event.reply('view-profile-reply', data);
+})

@@ -170,19 +170,11 @@ export class ChatService {
   }
 
   openChat(): any {
-    const test = "Message from chat-service (open)";
-    electron.ipcRenderer.send("open-chat", test);
-    electron.ipcRenderer.on("open-chat-reply", (event: any, data: any) => {
-      console.log(data);
-    })
+    electron.ipcRenderer.send("open-chat", null);
   }
 
   closeChat(): any {
-    const test = "Message from chat-service (close)";
-    electron.ipcRenderer.send("close-chat", test);
-    electron.ipcRenderer.on("close-chat-reply", (event: any, data: any) => {
-      console.log(data);
-    })
+    electron.ipcRenderer.send("close-chat", null);
   }
 
   disconnect(): void {

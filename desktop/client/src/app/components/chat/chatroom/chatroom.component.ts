@@ -35,7 +35,8 @@ export class ChatroomComponent implements AfterViewInit {
       public dialog: MatDialog,
       private soundEffectsService: SoundEffectsService,
       private router: Router,
-      private route: ActivatedRoute) {
+      private route: ActivatedRoute
+      ) {
         this.userName = '';
         this.message = '';
         this.messageList = [];
@@ -140,6 +141,7 @@ export class ChatroomComponent implements AfterViewInit {
     getUserProfileInfos(username: string): void {
       if (username != PUBLIC_CHATROOM.owner) {
         console.log("Get info of", username);
+        this.profileService.viewProfile();
         this.router.navigate([`../profile/${username}`], { relativeTo: this.route });
       }
     }
