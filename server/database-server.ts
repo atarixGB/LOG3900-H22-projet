@@ -1034,21 +1034,30 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
       }
     })
 
-    // change the password if user code is valid
+    // change the password if unique code is valid
     app.put("/resetPassword", (request, response) => {
       const email = request.body.email;
       const newPassword = request.body.newPassword;
       const confirmedPassword = request.body.confirmedPassword;
       console.log("mdp recu", newPassword, confirmedPassword)
 
-      // TODO: Change the password in DB
-      // if (newPassword == confirmedPassword) {
-      //   DB.collection("users").findOne({ email: email }, { $set: { password: salHashPassword(newPassword) }, }, ((error, result) => {
-      //     if (error) throw err;
-      //     console.log(result)
-      //     response.json(204)
-      //   }))
-      // }
+      if (newPassword == confirmedPassword) {
+        const hashData = salHashPassword(newPassword);
+        const hashPassword = hashData.passwordHash;
+        const salt = hashData.salt;
+        console.log(hashPassword, salt);
+        DB.collection("users").update({ email: email }, { $set: { password: hashPassword, salt : salt } } , ((error, result) => {
+          if (error) throw err;
+          console.log(result)
+          if (result) {
+            response.json(204)
+          } else {
+            response.json(404);
+          }
+        }))
+      }
+
+      
 
     })
 

@@ -1,12 +1,12 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, OnDestroy } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CHECK_UNIQUE_CODE, FORGOT_PASSWORD_URL, RESET_PASSWORD_URL } from '@app/constants/api-urls';
 
 @Injectable({
   providedIn: 'root'
 })
-export class PasswordService implements OnDestroy {
+export class PasswordService {
   emailExists: boolean;
   codeIsValid: boolean;
 
@@ -21,11 +21,7 @@ export class PasswordService implements OnDestroy {
     this.email = "";
     this.newPassword = "";
     this.confirmedPassword = "";
-   }
-
-   ngOnDestroy(): void {
-     this.codeIsValid = false;
-   }
+  }
 
   confirmEmail(email: string): void {
     const body = {
@@ -79,23 +75,20 @@ export class PasswordService implements OnDestroy {
       confirmedPassword: this.confirmedPassword,
     }
 
-    if (this.checkNewPassword()) {
-      this.httpClient.put(RESET_PASSWORD_URL, body).subscribe(
-        (result) => {
-          console.log(`Résultat du serveur: ${result}`);
+    this.httpClient.put(RESET_PASSWORD_URL, body).subscribe(
+      (result) => {
+        console.log(`Résultat du serveur: ${result}`);
 
-          if (result == 204) {
-            console.log("Le mot de passe a été changé!")
-          } else if (result == -1) {
-            console.log("Le mot de passe est diff/rent");
-
-          }
-        },
-        (error) => {
-          console.log(`Erreur du serveur: ${error}`);
+        if (result == 204) {
+          console.log("Le mot de passe a été changé!")
+          this.router.navigate(['../home'], { relativeTo: this.route });
         }
-      )
-    }
+      },
+      (error) => {
+        console.log(`Erreur du serveur: ${error}`);
+      }
+    )
+
   }
 
   checkNewPassword(): boolean {
