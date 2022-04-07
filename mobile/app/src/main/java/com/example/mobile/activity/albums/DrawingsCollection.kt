@@ -17,6 +17,7 @@ import com.example.mobile.CURRENT_ALBUM_ID
 import com.example.mobile.activity.drawing.DrawingActivity
 import com.example.mobile.Interface.IAlbum
 import com.example.mobile.Interface.IDrawing
+import com.example.mobile.Interface.Stroke
 import com.example.mobile.R
 import com.example.mobile.Retrofit.IMyService
 import com.example.mobile.Retrofit.RetrofitClient
@@ -26,10 +27,13 @@ import com.example.mobile.adapter.DrawingAdapter
 import com.example.mobile.adapter.UserAdapter
 import com.example.mobile.popup.*
 import com.example.mobile.viewModel.SharedViewModelCreateDrawingPopUp
+import com.google.gson.Gson
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import io.socket.emitter.Emitter
+import org.json.JSONArray
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -245,18 +249,29 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
     }
 
     private var onJoinCollab = Emitter.Listener {
-//        val joinEvent = it[0] as JSONObject
-        val drawingId = it[0] as String
-//        var strokes = java.util.ArrayList<Stroke>()
-//        val jsonStrokes = joinEvent["strokes"]  as JSONArray
-//        for (i in 0 until jsonStrokes.length()) {
-//            val obj = jsonStrokes[i] as JSONObject
-//            //boundingPoints.add( IVec2(obj.getDouble("x").toFloat(), obj.getDouble("y").toFloat()) )
-//            strokes.add(obj as Stroke)
-//        }
+        /*        let collabData = {
+          roomName: roomName,
+          strokes: infoOnActiveRooms.get(roomName).strokes,
+        };*/
+        val collabData = it[0] as JSONObject
+        val drawingId = collabData["roomName"] as String
+
+        val jsonStrokes = collabData["strokes"] as JSONArray
+        val jsonStrings = ArrayList<String> ()
+
+        for (i in 0 until jsonStrokes.length()) {
+            jsonStrings.add(jsonStrokes[i].toString())
+        }
+
+//        var gson = Gson()
+//        var jsonString = gson.toJson(jsonStrokes)
+
         val intent = Intent(this, DrawingActivity::class.java)
+        var bundle: Bundle = Bundle()
+        bundle.putStringArrayList("jsonString", jsonStrings)
         intent.putExtra("userName", user)
         intent.putExtra("drawingCollabId", drawingId)
+        intent.putExtras(bundle)
         startActivity(intent)
     }
 

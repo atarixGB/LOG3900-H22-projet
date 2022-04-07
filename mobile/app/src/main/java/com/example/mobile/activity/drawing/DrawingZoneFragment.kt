@@ -10,33 +10,32 @@ import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
-import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.example.mobile.Interface.IDrawing
 import com.example.mobile.Interface.IVec2
 import com.example.mobile.R
-import com.example.mobile.Tools.ToolManager
-import io.socket.emitter.Emitter
-import org.json.JSONObject
 import com.example.mobile.Retrofit.IMyService
 import com.example.mobile.Retrofit.RetrofitClient
+import com.example.mobile.Tools.ToolManager
 import com.example.mobile.bitmapDecoder
 import com.example.mobile.convertBitmapToByteArray
 import com.example.mobile.popup.PrepForMemberLeavingPopUp
 import com.example.mobile.popup.PrepForNewMemberPopUp
+import com.example.mobile.viewModel.SharedViewModelToolBar
 import com.example.mobile.viewModel.ToolModel
 import com.example.mobile.viewModel.ToolParameters
-import com.example.mobile.viewModel.SharedViewModelToolBar
+import com.google.gson.Gson
 import io.reactivex.disposables.CompositeDisposable
+import io.socket.emitter.Emitter
 import okhttp3.*
 import org.json.JSONArray
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Response
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
-import java.util.concurrent.TimeUnit
 
 class DrawingZoneFragment : Fragment() {
     private lateinit var mDrawingView: DrawingView
@@ -67,6 +66,8 @@ class DrawingZoneFragment : Fragment() {
         DrawingSocket.socket.on("prepForNewMember", onPrepForNewMember)
         DrawingSocket.socket.on("fetchStrokes", onFetchStrokes)
 
+//        DrawingSocket.socket.on("joinSuccessful", onLoadCurrentSessionData)
+
         DrawingSocket.socket.on("memberLeft", onMemberLeaving)
 
 
@@ -94,6 +95,10 @@ class DrawingZoneFragment : Fragment() {
         sharedViewModelToolBar.collabDrawingId.observe(viewLifecycleOwner, Observer { collabDrawingId ->
             mDrawingView.setDrawingId(collabDrawingId)
             mDrawingView.displayDrawingCollab(collabDrawingId)
+        })
+
+        sharedViewModelToolBar.jsonString.observe(viewLifecycleOwner, Observer { jsonString ->
+            mDrawingView.onLoadCurrentStrokeData(jsonString)
         })
 
         toolModel.onClick.observe(viewLifecycleOwner, Observer { onClick ->
@@ -156,6 +161,19 @@ class DrawingZoneFragment : Fragment() {
         mDrawingView.updateCollabInfos()
     }
 
+//    private var onLoadCurrentSessionData= Emitter.Listener {
+//        /* let roomData = {
+//          members: [socket.id],
+//          strokes: [],
+//        };*/
+//        val joinEvent = it[0] as JSONObject
+//        val jsonStrokes = joinEvent["strokes"] as JSONArray
+//        for (i in 0 until jsonStrokes.length()) {
+//            val obj = jsonStrokes[i] as JSONObject
+//            mDrawingView.onStrokeReceive(obj)
+//        }
+//    }
+
     private var onMemberLeaving = Emitter.Listener {
         val userLeft = it[0] as String
         //Open Popup Window
@@ -177,8 +195,8 @@ class DrawingZoneFragment : Fragment() {
         private var currentDrawingBitmap: Bitmap? = null
         internal var compositeDisposable = CompositeDisposable()
 
-        fun onStrokeReceive(stroke: JSONObject){
-            if (socket.socket.id() != stroke.getString("sender")) {
+        fun onStrokeReceive(stroke: JSONObject) {
+            if (this::toolManager.isInitialized) {
                 if (stroke.getInt("toolType") == 0) {
                     toolManager.pencil.onStrokeReceived(stroke)
                 } else if (stroke.getInt("toolType") == 1) {
@@ -191,6 +209,23 @@ class DrawingZoneFragment : Fragment() {
                 }
                 invalidate()
             }
+        }
+
+        fun onLoadCurrentStrokeData(jsonString: ArrayList<String>) {
+
+
+
+            jsonString.forEachIndexed{ i, it ->
+                var obj = JSONObject(jsonString[i])
+                this.onStrokeReceive(obj)
+            }
+
+//            for (i in 0 until jsonStrokes.length()) {
+//                val obj = jsonStrokes[0.toString()]
+////                val obj2 = gson.toJsonTree(obj)
+//                val b =false
+////                this.onStrokeReceive(obj2)
+//            }
         }
 
         fun onSelectionReceive(stroke: JSONObject){
@@ -264,7 +299,7 @@ class DrawingZoneFragment : Fragment() {
         fun onPrepForNewMember(){
             if (this::toolManager.isInitialized) {
                 resetPath()
-                toolManager.selection.sendPasteSelection()
+//                toolManager.selection.sendPasteSelection()
                 toolManager.selection.resetSelection()
                 if (currentDrawingBitmap != null) {
                     mCanvas!!.drawBitmap(currentDrawingBitmap!!, 0F, 0F, null)

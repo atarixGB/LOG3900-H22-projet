@@ -20,6 +20,7 @@ import org.json.JSONObject
 class DrawingActivity : AppCompatActivity(), CreateDrawingPopUp.DialogListener, AlbumAdapter.AlbumAdapterListener {
     private lateinit var user: String
     private lateinit var collabDrawingId: String
+    private lateinit var jsonString: ArrayList<String>
     private var isAlbumAlreadySelected: Boolean = false
     private lateinit var albumName: String
     private lateinit var albumID: String
@@ -43,6 +44,8 @@ class DrawingActivity : AppCompatActivity(), CreateDrawingPopUp.DialogListener, 
 
         //collaboration
         collabDrawingId = intent.getStringExtra("drawingCollabId").toString()
+//        jsonString = intent.getStringArrayExtra("jsonString").toString()
+
         sharedViewModelToolBar.setUser(user)
         if (collabDrawingId == "null") {
             //Open Popup Window
@@ -51,6 +54,9 @@ class DrawingActivity : AppCompatActivity(), CreateDrawingPopUp.DialogListener, 
         } else {
             // drawing already exists
             sharedViewModelToolBar.setCollabDrawingId(collabDrawingId)
+            val bundle = intent.extras
+            jsonString = bundle!!.getStringArrayList("jsonString") as ArrayList<String>
+            sharedViewModelToolBar.setJsonString(jsonString)
         }
     }
 

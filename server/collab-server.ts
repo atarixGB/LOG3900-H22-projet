@@ -47,17 +47,23 @@ ioCollab.on('connection', (socket) => {
           members: [socket.id],
           strokes: [],
         };
+
+
         if (infoOnActiveRooms.has(roomName)) {
           roomData = infoOnActiveRooms.get(roomName);
           roomData.members.push(socket.id);
         }
         infoOnActiveRooms.set(roomName, roomData);
 
+        let collabData = {
+          roomName: roomName,
+          strokes: infoOnActiveRooms.get(roomName).strokes,
+        };
         // Joining
         socket.join(roomName);
         ioCollab.in(roomName).emit('memberNbUpdate', roomData.members.length);
+        socket.emit('joinSuccessfulwithID', collabData);
         socket.emit('joinSuccessful', infoOnActiveRooms.get(roomName));
-        socket.emit('joinSuccessfulwithID', roomName);
 
         // Utile pour voir l'état des rooms
         console.log(infoOnActiveRooms); 
@@ -130,7 +136,7 @@ ioCollab.on('connection', (socket) => {
         socket.broadcast.to(roomName).emit('receivePasteRequest', pasteReq);
          
 
-        socket.emit('fetchStrokes');
+        // socket.emit('fetchStrokes');
       })
   
       socket.on('broadcastDeleteRequest', (data) => {
