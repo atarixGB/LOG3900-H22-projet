@@ -7,10 +7,20 @@
     android:screenOrientation="landscape"
     tools:context=".activity.albums.DrawingsCollection">
 
+    <fragment
+        android:id="@+id/toolbarNavigation"
+        android:name="com.example.mobile.ToolbarNavigationFragment"
+        android:layout_width="250dp"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
     <ImageButton
         android:id="@+id/leaveAlbumBtn"
-        android:layout_width="70dp"
-        android:layout_height="65dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:background="@color/white"
         android:src="@drawable/ic_baseline_arrow_back_ios_new_24"
         app:layout_constraintStart_toStartOf="parent"
@@ -23,6 +33,7 @@
         android:layout_height="wrap_content"
         android:text="Nom de l'album"
         android:textColor="@color/black"
+        android:layout_marginLeft="250dp"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -62,6 +73,7 @@
         android:id="@+id/drawingsSearchView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="250dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:iconifiedByDefault="false"
@@ -69,6 +81,7 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvOutputDrawings"
+        android:layout_marginLeft="270dp"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="10dp"

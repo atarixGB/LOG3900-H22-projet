@@ -2,9 +2,7 @@ package com.example.mobile.activity.drawing
 
 import android.content.Context
 import android.graphics.*
-import android.media.MediaPlayer
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.LinearLayout
 import android.widget.Toast
@@ -138,9 +136,6 @@ class DrawingZoneFragment : Fragment() {
 
             if (isDrawing) {
                 toolManager.currentTool.onDraw(canvas)
-
-
-
             }
         }
 
