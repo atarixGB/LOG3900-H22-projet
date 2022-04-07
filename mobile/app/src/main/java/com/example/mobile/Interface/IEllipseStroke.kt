@@ -3,6 +3,9 @@ package com.example.mobile.Interface
 import android.graphics.Canvas
 import android.graphics.Paint
 import com.example.mobile.activity.drawing.ToolbarFragment
+import org.json.JSONArray
+import org.json.JSONObject
+import kotlin.math.abs
 
 data class IEllipseStroke (
     override var boundingPoints: ArrayList<IVec2>,
@@ -46,6 +49,35 @@ data class IEllipseStroke (
 
     override fun rescale(scale: IVec2) {
         TODO("Not yet implemented")
+    }
+
+    override fun convertToObject(): JSONObject {
+        var bounding = JSONArray()
+        for(pts in this.boundingPoints){
+            var arr = JSONObject()
+            arr.put("x",pts.x)
+            arr.put("y",pts.y)
+            bounding.put(arr)
+        }
+
+        var jo = JSONObject()
+        jo.put("boundingPoints", bounding) //TODO
+        jo.put("toolType", 2) //number of the ellipse
+        jo.put("primaryColor", toRBGColor(currentStrokeColor))
+        jo.put("secondaryColor", toRBGColor(secondaryColor))
+        jo.put("strokeWidth", currentStrokeWidth)
+
+        var center = JSONObject()
+        center.put("x", this.center.x)
+        center.put("y", this.center.y)
+        jo.put("center", center)
+
+        var radius = JSONObject()
+        radius.put("x", this.radius.x)
+        radius.put("y", this.radius.y)
+        jo.put("radius", radius)
+
+        return jo
     }
 //
 //    override fun moveStroke(newPosition: IVec2) {

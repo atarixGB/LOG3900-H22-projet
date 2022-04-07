@@ -1,12 +1,14 @@
 <div>
-  <h4>Épaisseur de trait:</h4>
-  <mat-grid-list id="thicknessGrid" cols="3">
-     <mat-grid-tile *ngFor="let i of [1, 2, 3, 4, 5, 6, 7, 8, 9]">
-        <div fxLayout="row" fxLayoutAlign="center stretch" class="circle" id="circle" [ngClass]="{ selected: this.ellipseService.selectedWidth == i }" (click)="changeWidth(i)">
-           <div fxLayout="column" fxLayoutAlign="center center">
-              <div class="thicknessE"></div>
-           </div>
-        </div>
-     </mat-grid-tile>
- </mat-grid-list>
-</div>
+   <h4>Épaisseur de trait:</h4>
+   <div fxLayout="row" fxLayoutAlign="center center" >
+      <mat-grid-list id="thicknessGrid" cols="3">
+         <mat-grid-tile *ngFor="let i of [1, 2, 3, 4, 5, 6, 7, 8, 9]">
+            <div fxLayout="row" fxLayoutAlign="center stretch" class="circle" id="circle" [ngClass]="{ selected: this.ellipseService.selectedWidth == i, black: 9 == i }" (click)="changeWidth(i)">
+               <div fxLayout="column" fxLayoutAlign="center center">
+                  <div class="thicknessE"></div>
+               </div>
+            </div>
+         </mat-grid-tile>
+      </mat-grid-list>
+   </div>
+ </div>

@@ -1,6 +1,8 @@
 package com.example.mobile.activity
 
+import android.app.ActivityOptions
 import android.content.Intent
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
@@ -13,7 +15,10 @@ import com.example.mobile.Retrofit.IMyService
 import com.example.mobile.Retrofit.RetrofitClient
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
+import android.view.animation.AnimationUtils
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import com.example.mobile.R
 import com.example.mobile.activity.profile.Registration
 import retrofit2.Call
@@ -29,6 +34,9 @@ class MainActivity : AppCompatActivity()  {
     private lateinit var showHideBtn:Button
     private lateinit var createAccountBtn: Button
     private lateinit var identifiant:String
+
+    private lateinit var mdpEmptyError: TextView
+    private lateinit var emailEmptyError: TextView
     private var isChatOpen: Boolean = false
 
     override fun onStop(){
@@ -47,6 +55,13 @@ class MainActivity : AppCompatActivity()  {
         pwd = findViewById(R.id.edt_password)
 
 
+        mdpEmptyError=findViewById(R.id.mdpEmptyError)
+        emailEmptyError=findViewById(R.id.emailEmptyError)
+        var mediaPlayerFail:MediaPlayer=MediaPlayer.create(this,R.raw.failure)
+        mdpEmptyError.isVisible=false
+        emailEmptyError.isVisible=false
+
+
 
         //Connect to the Server
 
@@ -62,16 +77,27 @@ class MainActivity : AppCompatActivity()  {
             if (email.text.toString().length > 0) {
                 if (!email.text.toString().isNullOrBlank()) {
                     //socket.emit("newUser", identifiant.text.toString())
+                    mdpEmptyError.isVisible=false
+                    emailEmptyError.isVisible=false
                     loginUser(email.text.toString(), pwd.text.toString())
                 }
+
+            }
+            else if(email.text.toString().isNullOrBlank() && pwd.text.toString().isNullOrBlank()){
+                emailEmptyError.isVisible=true
+                mdpEmptyError.isVisible=true
+                email.animation= AnimationUtils.loadAnimation(this,R.anim.shake_animation)
+                pwd.animation= AnimationUtils.loadAnimation(this,R.anim.shake_animation)
+                mediaPlayerFail.start()
             }
         }
 
 
         createAccountBtn.setOnClickListener {
             val intent = Intent(this, Registration::class.java)
+            var bundle:Bundle = ActivityOptions.makeSceneTransitionAnimation(this).toBundle()
 //            intent.putExtra("userName",identifiant.text.toString())
-            startActivity(intent)
+            startActivity(intent,bundle)
         }
 
         showHideBtn.setOnClickListener {
@@ -94,8 +120,9 @@ class MainActivity : AppCompatActivity()  {
     private fun openDashboard(){
         isDashboardOpen = true
         val intent = Intent(this, Dashboard::class.java)
+        var bundle:Bundle =ActivityOptions.makeSceneTransitionAnimation(this).toBundle()
         intent.putExtra("userName",identifiant)
-        startActivity(intent)
+        startActivity(intent,bundle)
     }
 
 
@@ -114,17 +141,20 @@ class MainActivity : AppCompatActivity()  {
 
 
     private fun loginUser(email: String, password: String) {
+        var mediaPlayerFail: MediaPlayer = MediaPlayer.create(this,R.raw.failure)
         compositeDisposable.add(iMyService.loginUser(email, password)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { result ->
                 if(result == "404"){
                     Toast.makeText(this, "Utilisateur inexistant", Toast.LENGTH_SHORT).show()
+                    mediaPlayerFail.start()
                 }else if(result == "200"){
                     getUsernameFromDB(email)
                 }
                 else{
                     Toast.makeText(this, "Mot de passe incorrect", Toast.LENGTH_SHORT).show()
+                    mediaPlayerFail.start()
                 }
             })
 

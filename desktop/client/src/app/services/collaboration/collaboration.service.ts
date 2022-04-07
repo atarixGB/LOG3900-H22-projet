@@ -2,132 +2,187 @@ import { Injectable } from '@angular/core';
 import { DrawingService } from '@app/services/editor/drawing/drawing.service';
 import * as io from 'socket.io-client';
 import { Observable, Subject } from 'rxjs';
-import { DATABASE_URL } from '@app/constants/api-urls';
+import { COLLAB_URL } from '@app/constants/api-urls';
+import { MatDialog } from '@angular/material/dialog';
+import { ProfileService } from '../profile/profile.service';
+import { MemberJoinedDialogComponent } from '@app/components/editor/member-joined-dialog/member-joined-dialog.component';
+import { MemberLeftDialogComponent } from '@app/components/editor/member-left-dialog/member-left-dialog.component';
 
 @Injectable({
     providedIn: 'root',
 })
 export class CollaborationService {
     socket: any;
+    room: string;
+    nbMembersInCollab: number;
 
     newStroke: Subject<any>;
     newStroke$: Observable<any>;
-
     newSelection: Subject<any>;
     newSelection$: Observable<any>;
-
     newSelectionPos: Subject<any>;
     newSelectionPos$: Observable<any>;
-
     newSelectionSize: Subject<any>;
     newSelectionSize$: Observable<any>;
-
     pasteRequest: Subject<any>;
     pasteRequest$: Observable<any>;
-
     deleteRequest: Subject<any>;
     deleteRequest$: Observable<any>;
-
     newStrokeWidth: Subject<any>;
     newStrokeWidth$: Observable<any>;
-
     newPrimaryColor: Subject<any>;
     newPrimaryColor$: Observable<any>;
-
     newSecondaryColor: Subject<any>;
     newSecondaryColor$: Observable<any>;
 
-    constructor(public drawingService: DrawingService) { 
+    newCollabData: Subject<any>;
+    newCollabData$: Observable<any>;
+    pasteOnNewMemberJoin: Subject<any>;
+    pasteOnNewMemberJoin$: Observable<any>;
+    fetchRequest: Subject<any>;
+    fetchRequest$: Observable<any>;
+
+    constructor(public dialog: MatDialog, public drawingService: DrawingService, private profileService: ProfileService) { 
+        this.nbMembersInCollab = 0;
+
         this.newStroke = new Subject();
         this.newStroke$ = this.newStroke.asObservable();
-
         this.newSelection = new Subject();
         this.newSelection$ = this.newSelection.asObservable();
-
         this.newSelectionPos = new Subject();
         this.newSelectionPos$ = this.newSelectionPos.asObservable();
-
         this.newSelectionSize = new Subject();
         this.newSelectionSize$ = this.newSelectionSize.asObservable();
-
         this.pasteRequest = new Subject();
         this.pasteRequest$ = this.pasteRequest.asObservable();
-
         this.deleteRequest = new Subject();
         this.deleteRequest$ = this.deleteRequest.asObservable();
-
         this.newStrokeWidth = new Subject();
         this.newStrokeWidth$ = this.newStrokeWidth.asObservable();
-
         this.newPrimaryColor = new Subject();
         this.newPrimaryColor$ = this.newPrimaryColor.asObservable();
-
         this.newSecondaryColor = new Subject();
         this.newSecondaryColor$ = this.newSecondaryColor.asObservable();
+
+        this.newCollabData = new Subject();
+        this.newCollabData$ = this.newCollabData.asObservable();
+        this.pasteOnNewMemberJoin = new Subject();
+        this.pasteOnNewMemberJoin$ = this.pasteOnNewMemberJoin.asObservable();
+        this.fetchRequest = new Subject();
+        this.fetchRequest$ = this.fetchRequest.asObservable();
     }
 
     enterCollaboration(): void {
-        this.socket = io.io(DATABASE_URL, { transports: ['websocket'] });
+        this.socket = io.io(COLLAB_URL, { transports: ['websocket'] });
 
+        // -------------------Room receiving events
+        this.socket.on('prepForNewMember', (memberUsername: any) => {
+            this.pasteOnNewMemberJoin.next();
+            let dialogRef = this.dialog.open(MemberJoinedDialogComponent, {
+                width: "50%"
+            });
+            dialogRef.componentInstance.username = memberUsername;
+        });
+
+        this.socket.on('readyToJoin', (room: any) => {
+            setTimeout(() => {this.socket.emit('joinCollab', room);}, 200);
+        });
+
+        this.socket.on('joinSuccessful', (collabData: any) => {
+            this.newCollabData.next(collabData);
+        });
+
+        this.socket.on('memberNbUpdate', (nbMembersRemaining: any) => {
+            this.nbMembersInCollab = nbMembersRemaining;
+            console.log(nbMembersRemaining);
+            
+        });
+
+        this.socket.on('memberLeft', (memberUsername: any) => {
+            let dialogRef = this.dialog.open(MemberLeftDialogComponent, {
+                width: "50%"
+            });
+            dialogRef.componentInstance.username = memberUsername;
+        });
+
+        this.socket.on('fetchStrokes', () => {
+            this.fetchRequest.next();
+        });
+
+        // -------------------Editor receiving events
         this.socket.on('receiveStroke', (stroke: any) => {
-            if (stroke.sender !== this.socket.id) {
-                this.newStroke.next(stroke);
-            }
+            this.newStroke.next(stroke);
         });
 
         this.socket.on('receiveSelection', (selection: any) => {
-            if (selection.sender !== this.socket.id) {
-                this.newSelection.next(selection);
-            }
+            this.newSelection.next(selection);
         });
 
         this.socket.on('receiveSelectionPos', (selectionPos: any) => {
-            if (selectionPos.sender !== this.socket.id) {
-                this.newSelectionPos.next(selectionPos);
-            }
+            this.newSelectionPos.next(selectionPos);
         });
 
         this.socket.on('receiveSelectionSize', (selectionSize: any) => {
-            if (selectionSize.sender !== this.socket.id) {
-                this.newSelectionSize.next(selectionSize); 
-            }
+            this.newSelectionSize.next(selectionSize); 
         });
 
         this.socket.on('receivePasteRequest', (pasteReq: any) => {
-            if (pasteReq.sender !== this.socket.id) {
-                this.pasteRequest.next(pasteReq); 
-            }
+            this.pasteRequest.next(pasteReq); 
         });
 
         this.socket.on('receiveDeleteRequest', (delReq: any) => {
-            if (delReq.sender !== this.socket.id) {
-                this.deleteRequest.next(delReq); 
-            }
+            this.deleteRequest.next(delReq); 
         });
 
         this.socket.on('receiveStrokeWidth', (width: any) => {
-            if (width.sender !== this.socket.id) {
-                this.newStrokeWidth.next(width); 
-            }
+            this.newStrokeWidth.next(width); 
         });
 
         this.socket.on('receiveNewPrimaryColor', (color: any) => {
-            if (color.sender !== this.socket.id) {
-                this.newPrimaryColor.next(color); 
-            }
+            this.newPrimaryColor.next(color); 
         });
 
         this.socket.on('receiveNewSecondaryColor', (color: any) => {
-            if (color.sender !== this.socket.id) {
-                this.newSecondaryColor.next(color); 
-            }
+            this.newSecondaryColor.next(color); 
         });
     } 
 
+    // -------------------Room emits
+    joinCollab(drawingId: any): void {
+        this.room = drawingId.replaceAll(/"/g, '');
+        const data = {
+            username: this.profileService.username,
+            room: this.room
+        }
+        this.socket.emit('prepForJoin', data);
+    }
+
+    leaveCollab(): void {
+        const data = {
+            username: this.profileService.username,
+            room: this.room
+        }
+        this.socket.emit('leaveCollab', data);
+    }
+
+    /* collabData:
+        collabDrawingId: string,
+        strokes: Strokes[]
+    */
+    updateCollabInfo(collabData: any): void {
+        collabData.collabDrawingId = this.room;
+        this.socket.emit('updateCollabInfo', collabData);
+    }
+
+    // -------------------Editor emits
     // Un stroke: voir les classes Stroke, StrokePencil, StrokeRectangle et StrokeEllipse
     broadcastStroke(stroke: any): void {
         stroke.sender = this.socket.id;
-        this.socket.emit('broadcastStroke', stroke);
+        const data = {
+            room: this.room,
+            data: stroke
+        }
+        this.socket.emit('broadcastStroke', data);
     }
 
     /* selection:
@@ -137,7 +192,11 @@ export class CollaborationService {
     }*/
     broadcastSelection(selection: any): void {
         selection.sender = this.socket.id;
-        this.socket.emit('broadcastSelection', selection);
+        const data = {
+            room: this.room,
+            data: selection
+        }
+        this.socket.emit('broadcastSelection', data);
     }
 
     /* selectionPos:
@@ -147,7 +206,11 @@ export class CollaborationService {
     }*/
     broadcastSelectionPos(selectionPos: any): void {
         selectionPos.sender = this.socket.id;
-        this.socket.emit('broadcastSelectionPos', selectionPos);
+        const data = {
+            room: this.room,
+            data: selectionPos
+        }
+        this.socket.emit('broadcastSelectionPos', data);
     }
 
     /* selectionSize:
@@ -160,7 +223,11 @@ export class CollaborationService {
     }*/
     broadcastSelectionSize(selectionSize: any): void {
         selectionSize.sender = this.socket.id;
-        this.socket.emit('broadcastSelectionSize', selectionSize);
+        const data = {
+            room: this.room,
+            data: selectionSize
+        }
+        this.socket.emit('broadcastSelectionSize', data);
     }
 
     /* pasteData:
@@ -170,7 +237,11 @@ export class CollaborationService {
     }*/
     broadcastPasteRequest(pasteData: any): void {
         pasteData.sender = this.socket.id;
-        this.socket.emit('broadcastPasteRequest', pasteData);
+        const data = {
+            room: this.room,
+            data: pasteData
+        }
+        this.socket.emit('broadcastPasteRequest', data);
     }
 
     /* delData:
@@ -180,7 +251,11 @@ export class CollaborationService {
     }*/
     broadcastDeleteRequest(delData: any): void {
         delData.sender = this.socket.id;
-        this.socket.emit('broadcastDeleteRequest', delData);
+        const data = {
+            room: this.room,
+            data: delData
+        }
+        this.socket.emit('broadcastDeleteRequest', data);
     }
 
     /* width:
@@ -191,7 +266,11 @@ export class CollaborationService {
     }*/
     broadcastNewStrokeWidth(width: any): void {
         width.sender = this.socket.id;
-        this.socket.emit('broadcastNewStrokeWidth', width);
+        const data = {
+            room: this.room,
+            data: width
+        }
+        this.socket.emit('broadcastNewStrokeWidth', data);
     }
 
     /* color:
@@ -202,7 +281,11 @@ export class CollaborationService {
     }*/
     broadcastNewPrimaryColor(color: any): void {
         color.sender = this.socket.id;
-        this.socket.emit('broadcastNewPrimaryColor', color);
+        const data = {
+            room: this.room,
+            data: color
+        }
+        this.socket.emit('broadcastNewPrimaryColor', data);
     }
 
      /* color:
@@ -213,6 +296,10 @@ export class CollaborationService {
     }*/
     broadcastNewSecondaryColor(color: any): void {
         color.sender = this.socket.id;
-        this.socket.emit('broadcastNewSecondaryColor', color);
+        const data = {
+            room: this.room,
+            data: color
+        }
+        this.socket.emit('broadcastNewSecondaryColor', data);
     }
 }

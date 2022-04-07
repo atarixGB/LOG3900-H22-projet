@@ -2,17 +2,16 @@ package com.example.mobile.Tools
 
 import android.content.Context
 import android.graphics.*
-import android.util.Log
 import com.example.mobile.Interface.IPencilStroke
 import com.example.mobile.Interface.IVec2
-import com.example.mobile.activity.drawing.DrawingCollaboration
+import com.example.mobile.activity.drawing.DrawingSocket
 import com.example.mobile.activity.drawing.ToolbarFragment
 import org.json.JSONArray
 import org.json.JSONObject
 import java.util.*
 import kotlin.math.abs
 
-class Pencil(context: Context, baseCanvas: Canvas, val socket : DrawingCollaboration, val selection: Selection) : Tool(context, baseCanvas, socket){
+class Pencil(context: Context, baseCanvas: Canvas, val socket : DrawingSocket, val selection: Selection, val drawingId: String) : Tool(context, baseCanvas, socket){
     var leftestCoord: Float = 0F;
     var rightestCoord: Float = 0F;
     var lowestCoord: Float = 0F;
@@ -46,7 +45,7 @@ class Pencil(context: Context, baseCanvas: Canvas, val socket : DrawingCollabora
         }
         this.checkEdgeCoords(IVec2(mx, my))
         points.add(IVec2(mx, my))
-        baseCanvas!!.drawPath(path!!, paint!!)
+        baseCanvas!!.drawPath(path!!, strokePaint!!)
     }
 
     override fun touchUp() {
@@ -54,9 +53,9 @@ class Pencil(context: Context, baseCanvas: Canvas, val socket : DrawingCollabora
             path!!.lineTo(mStartX, mStartY)
             points.add(IVec2(mStartX, mStartY))
             this.sendPencilStroke()
-            paint.strokeJoin = Paint.Join.ROUND // default: MITER
-            paint.strokeCap = Paint.Cap.ROUND
-            baseCanvas!!.drawPath(path!!, paint!!)
+            strokePaint.strokeJoin = Paint.Join.ROUND // default: MITER
+            strokePaint.strokeCap = Paint.Cap.ROUND
+            baseCanvas!!.drawPath(path!!, strokePaint!!)
             path!!.reset()
 
             //ajout a l'array list des strokes
@@ -87,8 +86,8 @@ class Pencil(context: Context, baseCanvas: Canvas, val socket : DrawingCollabora
 
     private fun getPaintParameters(): Paint {
         val paint = Paint()
-        paint.color = this.paint.color
-        paint.strokeWidth = this.paint.strokeWidth
+        paint.color = this.strokePaint.color
+        paint.strokeWidth = this.strokePaint.strokeWidth
         return paint
     }
 
@@ -169,11 +168,15 @@ class Pencil(context: Context, baseCanvas: Canvas, val socket : DrawingCollabora
         var jo = JSONObject()
         jo.put("boundingPoints", bounding)
         jo.put("toolType", 0)
-        jo.put("primaryColor", toRBGColor(paint.color))
-        jo.put("strokeWidth", this.paint.strokeWidth)
+        jo.put("primaryColor", toRBGColor(strokePaint.color))
+        jo.put("strokeWidth", this.strokePaint.strokeWidth)
         jo.put("points", pointsStr)
         jo.put("sender", socket.socket.id())
-        socket.socket.emit("broadcastStroke", jo )
+
+        var data = JSONObject()
+        data.put("room", drawingId)
+        data.put("data", jo)
+        socket.socket.emit("broadcastStroke", data )
     }
 
     private fun getBoundingPoints():ArrayList<IVec2>{

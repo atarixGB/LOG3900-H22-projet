@@ -7,6 +7,7 @@ import { ColorManagerService } from '@app/services/editor/color-manager/color-ma
 import { DrawingService } from '@app/services/editor/drawing/drawing.service';
 import { SelectionService } from '@app/services/editor/tools/selection/selection.service';
 import { ShapeService } from '@app/services/editor/tools/shape/shape.service';
+import { SoundEffectsService } from '@app/services/sound-effects/sound-effects.service';
 
 @Injectable({
     providedIn: 'root',
@@ -21,8 +22,9 @@ export class RectangleService extends ShapeService {
         colorManager: ColorManagerService,
         private collaborationService: CollaborationService,
         private selectionService: SelectionService,
+        protected soundEffectsService: SoundEffectsService,
     ) {
-        super(drawingService, colorManager);
+        super(drawingService, colorManager, soundEffectsService);
     }
 
     getPositionFromMouse(event: MouseEvent): Vec2 {
@@ -55,7 +57,10 @@ export class RectangleService extends ShapeService {
             this.height = this.shortestSide;
         }
 
-        this.mouseDown = false;
+        if (this.mouseDown) {
+            this.mouseDown = false;
+            this.soundEffectsService.stopDrawSound();
+        }
 
         this.clearPath();
     }

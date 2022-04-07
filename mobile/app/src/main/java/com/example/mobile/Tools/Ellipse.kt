@@ -5,16 +5,15 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import com.example.mobile.Interface.IEllipseStroke
-import com.example.mobile.Interface.IRectangleStroke
 import com.example.mobile.Interface.IVec2
-import com.example.mobile.activity.drawing.DrawingCollaboration
+import com.example.mobile.activity.drawing.DrawingSocket
 import com.example.mobile.activity.drawing.ToolbarFragment
 import org.json.JSONArray
 import org.json.JSONObject
 import java.util.ArrayList
 import kotlin.math.abs
 
-class  Ellipse(context: Context, baseCanvas: Canvas, val socket : DrawingCollaboration, val selection: Selection) : Tool(context, baseCanvas, socket) {
+class  Ellipse(context: Context, baseCanvas: Canvas, val socket : DrawingSocket, val selection: Selection, val drawingId: String) : Tool(context, baseCanvas, socket) {
     var top = 0F
     var right = 0F
     var bottom = 0F
@@ -69,8 +68,8 @@ class  Ellipse(context: Context, baseCanvas: Canvas, val socket : DrawingCollabo
 
     private fun getPaintParameters(): Paint {
         val paint = Paint()
-        paint.color = this.paint.color
-        paint.strokeWidth = this.paint.strokeWidth
+        paint.color = this.strokePaint.color
+        paint.strokeWidth = this.strokePaint.strokeWidth
         return paint
     }
 
@@ -85,12 +84,13 @@ class  Ellipse(context: Context, baseCanvas: Canvas, val socket : DrawingCollabo
         val radius = stroke.getJSONObject("radius")
         val iEllipseStroke = IEllipseStroke(boundingPoints,
             toIntColor(stroke.getString("primaryColor")),
-            Color.WHITE, //to change
+            toIntColor(stroke.getString("secondaryColor")),
             stroke.getDouble("strokeWidth").toFloat(),
             false,
             IVec2(center.getDouble("x").toFloat(), center.getDouble("y").toFloat()),
             IVec2(radius.getDouble("x").toFloat(), radius.getDouble("y").toFloat()),
-            )
+
+        )
         draw(iEllipseStroke)
 
         selection.addStroke(iEllipseStroke)
@@ -101,7 +101,10 @@ class  Ellipse(context: Context, baseCanvas: Canvas, val socket : DrawingCollabo
         left = if (mStartX > mx) mx else mStartX
         bottom = if (mStartY > my) mStartY else my
         top = if (mStartY > my) my else mStartY
-        canvas!!.drawOval(left, top, right, bottom, paint!!)
+        canvas!!.drawOval(left, top, right, bottom, strokePaint!!)
+
+        canvas.drawOval(left, top, right, bottom, fillPaint!!)
+        canvas!!.drawOval(left, top, right, bottom, strokePaint!!)
     }
     private fun sendEllipseStroke(left : Float, top: Float, right: Float, bottom: Float){
         var bounding = JSONArray()
@@ -115,10 +118,9 @@ class  Ellipse(context: Context, baseCanvas: Canvas, val socket : DrawingCollabo
         var jo = JSONObject()
         jo.put("boundingPoints", bounding) //TODO
         jo.put("toolType", 2) //number of the ellipse
-        jo.put("primaryColor", toRBGColor(paint.color))
-        //TODO secondary color
-        jo.put("secondaryColor", toRBGColor(Color.WHITE))
-        jo.put("strokeWidth", this.paint.strokeWidth)
+        jo.put("primaryColor", toRBGColor(strokePaint.color))
+        jo.put("secondaryColor", toRGBAColor(fillPaint.color))
+        jo.put("strokeWidth", this.strokePaint.strokeWidth)
 
         var center = JSONObject()
         center.put("x", left+ abs(left-right)/2)
@@ -131,25 +133,48 @@ class  Ellipse(context: Context, baseCanvas: Canvas, val socket : DrawingCollabo
         jo.put("radius", radius)
 
         jo.put("sender", socket.socket.id())
+
+        var data = JSONObject()
+        data.put("room", drawingId)
+        data.put("data", jo)
+
         socket.socket.emit("broadcastStroke", jo )
     }
 
     private fun draw(stroke: IEllipseStroke) {
-        val upcomingPaint = Paint().apply {
+        val upcomingPaintStroke = Paint().apply {
             color = stroke.currentStrokeColor
             strokeWidth = stroke.currentStrokeWidth
             isAntiAlias = true
-            // Dithering affects how colors with higher-precision than the device are down-sampled.
             isDither = true
-            style = Paint.Style.STROKE // default: FILL
-            strokeJoin = Paint.Join.MITER // default: MITER
-            strokeCap = Paint.Cap.SQUARE // default: BUTT
+            style = Paint.Style.STROKE
+            strokeJoin = Paint.Join.MITER
+            strokeCap = Paint.Cap.SQUARE
         }
+
+        val upcomingPaintFill = Paint().apply {
+            color = stroke.secondaryColor
+            strokeWidth = stroke.currentStrokeWidth
+            isAntiAlias = true
+            isDither = true
+            style = Paint.Style.FILL
+            strokeJoin = Paint.Join.MITER
+            strokeCap = Paint.Cap.SQUARE
+        }
+
         baseCanvas!!.drawOval(stroke.center.x-stroke.radius.x,
             stroke.center.y-stroke.radius.y,
             stroke.center.x+stroke.radius.x,
             stroke.center.y+stroke.radius.y,
-            upcomingPaint!!)
+            upcomingPaintFill!!)
+
+        baseCanvas!!.drawOval(stroke.center.x-stroke.radius.x,
+            stroke.center.y-stroke.radius.y,
+            stroke.center.x+stroke.radius.x,
+            stroke.center.y+stroke.radius.y,
+            upcomingPaintStroke!!)
+
+
     }
 
     private fun getBoundingPoints():ArrayList<IVec2>{

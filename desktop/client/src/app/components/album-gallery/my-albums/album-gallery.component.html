@@ -1,22 +1,36 @@
 <div fxLayout="row" fxLayoutAlign="center stretch" fxFlex="100">
   <app-side-menu fxLayout="column" fxLayoutAlign="start stretch" fxFlex="15%"></app-side-menu>
 
-  <div fxLayout="column" fxLayoutAlign="space-evenly stretch" fxFlex="auto">
-
-      <mat-grid-list cols="3" rowHeight="3:1">
-        <mat-grid-tile *ngFor="let album of this.albumGalleryService.myAlbums">
-          <button mat-icon-button disableRipple="true" (click)="this.onAlbumClick(album)" routerLink="/drawing-view">
-            <div><mat-icon>folder</mat-icon></div>
-            <div>{{album.name}}</div>
-          </button>
-        </mat-grid-tile>
-      </mat-grid-list>
-
-    <div fxLayout="row" fxLayoutAlign="space-evenly center">
-      <button mat-raised-button color="accent" (click)="this.openCreateAlbumDialog()">Créer un nouvel album</button>
-      <button mat-raised-button color="primary" (click)="this.onViewAllAlbumButton()" >Voir tous les albums disponibles</button>
-      <button mat-raised-button color="primary" routerLink="/public-gallery">Voir l'album public</button>
+  <div fxLayout="column" fxLayoutAlign="start stretch" fxFlex="auto">
+    <div fxFlex="10%"></div> <!-- Spacer -->
+    <!-- Title -->
+    <div fxFlex="5%" fxLayout="row" fxLayoutAlign="center center">
+      <h1><u>Albums</u></h1>
     </div>
 
+    <!-- Buttons -->
+    <div fxFlex="10%" id="btnDiv" fxLayout="row" fxLayoutAlign="space-evenly center">
+      <button mat-raised-button color="primary" (click)="this.onViewAllAlbumButton()" >Voir tous les albums disponibles</button>
+      <button mat-raised-button color="primary" (click)="this.openCreateAlbumDialog()">Créer un nouvel album</button>
+      <!-- <button mat-raised-button color="primary" routerLink="/public-gallery">Voir l'album public</button> -->
+    </div>
+
+    <!-- Albums -->
+    <div fxFlex="65%">
+      <div id="albumRow" fxLayout="row" fxLayoutAlign="center stretch">
+        <div id="albumsDiv" fxFlex="85%">
+          <mat-grid-list cols="4">
+            <mat-grid-tile *ngFor="let album of this.albumGalleryService.myAlbums">
+              <button mat-icon-button disableRipple="true" (click)="this.onAlbumClick(album)" routerLink="/drawing-view">
+                <div><mat-icon>folder</mat-icon></div>
+                <div>{{album.name}}</div>
+              </button>
+            </mat-grid-tile>
+          </mat-grid-list>
+        </div>
+      </div>
+    </div>
+
+    <div fxFlex="10%"></div> <!-- Spacer -->
   </div>
 </div>

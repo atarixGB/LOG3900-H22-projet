@@ -12,8 +12,8 @@
 }
 
 #thicknessGrid {
-   scale: 0.75;
-   margin-top: -15px;
+   width: 75%;
+   padding-bottom: 140px !important; 
 }
 
 .margin {
@@ -45,4 +45,8 @@
    border-width: 2px;
    border-color: rgb(66, 243, 131);
    box-shadow: 2px 2px 5px rgb(46, 137, 0);
+}
+
+.black {
+   background-color: black;
 }

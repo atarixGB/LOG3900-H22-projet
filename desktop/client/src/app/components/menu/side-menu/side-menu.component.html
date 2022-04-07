@@ -5,12 +5,21 @@
       <div fxFlex></div>
    </div>
 
+   <div fxLayout="row" fxLayoutAlign="space-between stretch">
+      <div fxFlex></div>
+      <span id="welcome-text">
+        Bienvenue {{ this.loginService.username }} !
+      </span>
+      <div fxFlex></div>
+   </div>
+
    <div fxLayout="column" fxLayoutAlign="center stretch">
       <button class="margin" mat-raised-button routerLink="/menu">Tableau de bord</button>
       <button class="margin" mat-raised-button routerLink="/chatmenu">Clavardage</button>
-      <button class="margin" mat-raised-button routerLink="/editor">Zone de dessin</button>
+      <!-- <button class="margin" mat-raised-button>Zone de dessin</button> -->
       <button class="margin" mat-raised-button routerLink="/my-albums">Albums</button>
-      <button class="margin" mat-raised-button routerLink="/profile">Mon profil</button>
+      <button class="margin" mat-raised-button (click)="onMyProfileBtn()">Mon profil</button>
+      <button class="margin" mat-raised-button routerLink="/home" (click)="this.chatService.disconnect()">Déconnexion</button>
    </div>
 
 </div>

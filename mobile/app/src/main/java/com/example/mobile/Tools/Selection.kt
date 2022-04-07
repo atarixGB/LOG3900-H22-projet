@@ -2,25 +2,16 @@ package com.example.mobile.Tools
 
 import android.content.Context
 import android.graphics.*
-import android.net.ipsec.ike.exceptions.InvalidMajorVersionException
 import androidx.core.content.res.ResourcesCompat
-import androidx.core.graphics.scale
-import androidx.core.graphics.set
-import androidx.fragment.app.activityViewModels
-import com.example.mobile.Interface.IPencilStroke
 import com.example.mobile.Interface.IVec2
 import com.example.mobile.Interface.Stroke
 import com.example.mobile.R
-import com.example.mobile.activity.drawing.DrawingCollaboration
+import com.example.mobile.activity.drawing.DrawingSocket
 import com.example.mobile.activity.drawing.ToolbarFragment
-import com.example.mobile.viewModel.ToolParameters
-import org.json.JSONArray
 import org.json.JSONObject
-import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.math.abs
 
-class  Selection(context: Context, baseCanvas: Canvas, val socket : DrawingCollaboration) : Tool(context, baseCanvas, socket) {
+class  Selection(context: Context, baseCanvas: Canvas, val socket : DrawingSocket, val drawingId: String) : Tool(context, baseCanvas, socket) {
     var strokes = ArrayList<Stroke>()
     var strokesSelected = ArrayList<Stroke>()
     var strokesSelectedBitmap: MutableMap<String, Bitmap> = mutableMapOf()
@@ -124,7 +115,12 @@ class  Selection(context: Context, baseCanvas: Canvas, val socket : DrawingColla
             var jo = JSONObject()
             jo.put("pos", pos)
             jo.put("sender", socket.socket.id())
-            socket.socket.emit("broadcastSelectionPos", jo)
+
+            var data = JSONObject()
+            data.put("room", drawingId)
+            data.put("data", jo)
+
+            socket.socket.emit("broadcastSelectionPos", data)
             isMoving = false
         } else if (isResizing) {
             isResizing = false
@@ -341,7 +337,11 @@ class  Selection(context: Context, baseCanvas: Canvas, val socket : DrawingColla
             jo.put("strokeIndex", selectedIndex)
             jo.put("value", width)
             jo.put("sender", socket.socket.id())
-            socket.socket.emit("broadcastNewStrokeWidth", jo)
+
+            var data = JSONObject()
+            data.put("room", drawingId)
+            data.put("data", jo)
+            socket.socket.emit("broadcastNewStrokeWidth", data)
         }
     }
 
@@ -357,7 +357,12 @@ class  Selection(context: Context, baseCanvas: Canvas, val socket : DrawingColla
             jo.put("strokeIndex", selectedIndex)
             jo.put("color", toRBGColor(color))
             jo.put("sender", socket.socket.id())
-            socket.socket.emit("broadcastNewPrimaryColor", jo)
+
+            var data = JSONObject()
+            data.put("room", drawingId)
+            data.put("data", jo)
+
+            socket.socket.emit("broadcastNewPrimaryColor", data)
         }
     }
 
@@ -482,7 +487,11 @@ class  Selection(context: Context, baseCanvas: Canvas, val socket : DrawingColla
         var jo = JSONObject()
         jo.put("strokeIndex", selectedIndex)
         jo.put("sender", socket.socket.id())
-        socket.socket.emit("broadcastSelection", jo)
+
+        var data = JSONObject()
+        data.put("room", drawingId)
+        data.put("data", jo)
+        socket.socket.emit("broadcastSelection", data)
     }
 
     private fun displaySelection(sender: String, strokeIndex: Int) {
@@ -561,7 +570,11 @@ class  Selection(context: Context, baseCanvas: Canvas, val socket : DrawingColla
             var jo = JSONObject()
             jo.put("strokeIndex", selectedIndex)
             jo.put("sender", socket.socket.id())
-            socket.socket.emit("broadcastPasteRequest", jo)
+
+            var data = JSONObject()
+            data.put("room", drawingId)
+            data.put("data", jo)
+            socket.socket.emit("broadcastPasteRequest", data)
         }
     }
 
@@ -570,7 +583,11 @@ class  Selection(context: Context, baseCanvas: Canvas, val socket : DrawingColla
             var jo = JSONObject()
             jo.put("strokeIndex", selectedIndex)
             jo.put("sender", socket.socket.id())
-            socket.socket.emit("broadcastDeleteRequest", jo)
+
+            var data = JSONObject()
+            data.put("room", drawingId)
+            data.put("data", jo)
+            socket.socket.emit("broadcastDeleteRequest", data)
 
             strokes.removeAt(selectedIndex!!)
             strokesSelected.remove(currentStroke)

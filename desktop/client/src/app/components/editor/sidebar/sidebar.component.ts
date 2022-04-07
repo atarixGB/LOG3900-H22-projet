@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { ToolList } from '@app/interfaces-enums/tool-list';
+import { AlbumGalleryService } from '@app/services/album-gallery/album-gallery.service';
+import { CollaborationService } from '@app/services/collaboration/collaboration.service';
+import { SelectionService } from '@app/services/editor/tools/selection/selection.service';
 import { ToolManagerService } from '@app/services/editor/tools/tool-manager.service';
 
 @Component({
@@ -9,5 +12,20 @@ import { ToolManagerService } from '@app/services/editor/tools/tool-manager.serv
 })
 export class SidebarComponent {
     ToolList: typeof ToolList = ToolList;
-    constructor(public toolManagerService: ToolManagerService) {}
+    constructor(public toolManagerService: ToolManagerService, public selectionService: SelectionService, public collaborationService: CollaborationService, public albumGalleryService: AlbumGalleryService) {}
+
+    saveAndLeave(): void {
+        if (this.collaborationService.nbMembersInCollab == 1) {
+            if (this.selectionService.isActiveSelection) {
+                this.selectionService.pasteBase();
+            }
+            this.albumGalleryService.saveDrawing();
+        } else {
+            if (this.selectionService.isActiveSelection) {
+                this.selectionService.pasteSelectionOnBaseCnv();
+            }
+        }
+        this.collaborationService.leaveCollab();
+    }    
 }
+

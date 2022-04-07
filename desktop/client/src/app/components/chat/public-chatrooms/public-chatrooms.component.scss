@@ -3,7 +3,17 @@
 }
 
 mat-icon {
-  color: rgb(144, 238, 221);
+  color: #A8D08C;
+}
+
+button {
+  margin: 2px;
+  height: 4em;
+}
+
+#search-bar {
+  width: 50%;
+  margin: 2px;
 }
 
 #back-btn {
@@ -16,4 +26,8 @@ mat-icon {
   width: 100px;
   padding: 10px;
   margin: 2px;
+}
+
+#scroll-container {
+  overflow: scroll;
 }

@@ -53,24 +53,49 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="32dp"
+        android:fontFamily="@font/roboto"
         android:text="Couleur"
         android:textColor="@color/black"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/weight_view" />
 
+    <ToggleButton
+        android:id="@+id/toggle_trait"
+        android:layout_width="78dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:checked="true"
+        android:fontFamily="@font/roboto"
+        android:textOff="Trait"
+        android:textOn=">Trait"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/color_text" />
+
+    <ToggleButton
+        android:id="@+id/toggle_fond"
+        android:layout_width="78dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:checked="false"
+        android:fontFamily="@font/roboto"
+        android:textOff="Fond"
+        android:textOn=">Fond"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toggle_trait" />
+
     <GridView
         android:id="@+id/color_view"
         android:layout_width="wrap_content"
-        android:layout_height="250dp"
-        android:layout_marginTop="0dp"
+        android:layout_height="280dp"
         android:columnWidth="50dp"
         android:horizontalSpacing="0dp"
         android:numColumns="3"
         android:verticalSpacing="0dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/color_text" />
+        app:layout_constraintTop_toBottomOf="@+id/toggle_fond" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

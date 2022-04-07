@@ -12,6 +12,7 @@ import { StrokeRectangle } from '@app/classes/strokes/stroke-rectangle';
 import { StrokeEllipse } from '@app/classes/strokes/stroke-ellipse';
 import { StrokePencil } from '@app/classes/strokes/stroke-pencil';
 import { ToolList } from '@app/interfaces-enums/tool-list';
+import { SoundEffectsService } from '@app/services/sound-effects/sound-effects.service';
 
 @Injectable({
   providedIn: 'root',
@@ -37,7 +38,7 @@ export class SelectionService extends Tool {
   oldTool: number;
   currentStrokeWidthPreset:number;
 
-  constructor(drawingService: DrawingService, private moveSelectionService: MoveSelectionService, private collaborationService: CollaborationService, private resizeSelectionService: ResizeSelectionService) {
+  constructor(drawingService: DrawingService, private moveSelectionService: MoveSelectionService, private collaborationService: CollaborationService, private resizeSelectionService: ResizeSelectionService, private soundEffectsService: SoundEffectsService) {
     super(drawingService);
     this.strokes = []; 
     this.strokesSelected = []; 
@@ -55,9 +56,33 @@ export class SelectionService extends Tool {
     this.collaborationService.newStroke$.subscribe((newStroke: any) => {
       this.addIncomingStrokeFromOtherUser(newStroke);
     });
+
+    this.collaborationService.newCollabData$.subscribe((newCollabData: any) => {
+      this.loadCurrentSessionData(newCollabData.strokes);
+    });
+
+    this.collaborationService.fetchRequest$.subscribe(() => {
+      this.broadcastCurrentStrokes();
+    });
+  }
+
+  broadcastCurrentStrokes(): void {
+    this.collaborationService.updateCollabInfo({
+      collabDrawingId: '',
+      strokes: this.strokes,
+    });
+  }
+
+  private loadCurrentSessionData(strokes: any[]): void {
+    this.drawingService.loadCurrentDrawing();
+    this.strokes = [];
+    strokes.forEach(s => {
+      this.addIncomingStrokeFromOtherUser(s);
+    });
   }
 
   delete(): void {
+    this.soundEffectsService.playDeleteSound();
     this.deleteSelection(this.selectionCnv);
     this.hideSelectionCps();
     this.strokes.splice(this.selectedIndex, 1);
@@ -66,10 +91,12 @@ export class SelectionService extends Tool {
       sender: '',
       strokeIndex: this.selectedIndex
     });
+     
     this.isActiveSelection = false;
   }
 
   paste(): void {
+    this.soundEffectsService.playPasteSound();
     this.pasteSelectionOnBaseCnv();
     this.toolUpdate.next(this.oldTool);
   }
@@ -96,6 +123,7 @@ export class SelectionService extends Tool {
       sender: '',
       strokeIndex: this.selectedIndex,
     });
+     
   }
 
   getPositionFromMouse(event: MouseEvent): Vec2 {
@@ -107,6 +135,7 @@ export class SelectionService extends Tool {
   onMouseClick(event: MouseEvent): void {
     if (!this.isActiveSelection && this.isStrokeFound(this.getPositionFromMouse(event))) {
       this.selectStroke(this.strokes[this.selectedIndex]);
+      this.soundEffectsService.playSelectionSound();
     } 
   }
 
@@ -182,6 +211,7 @@ export class SelectionService extends Tool {
       strokeIndex: this.selectedIndex,
       value: newWidth,
     });
+     
   }
 
   updateSelectionPrimaryColor(newPrimary: string): void {
@@ -193,6 +223,7 @@ export class SelectionService extends Tool {
       strokeIndex: this.selectedIndex,
       color: newPrimary,
     });
+     
   }
 
   updateSelectionSecondaryColor(newSecondary: string): void {
@@ -204,9 +235,15 @@ export class SelectionService extends Tool {
       strokeIndex: this.selectedIndex,
       color: newSecondary,
     });
+     
   }
 
   pasteSelectionOnBaseCnv(): void {
+    this.pasteBase();  
+    this.sendPaste();
+  }
+
+  pasteBase(): void {
     const selectionTopLeftCorner = { x: this.selectionCnv.offsetLeft, y: this.selectionCnv.offsetTop }
     const selectionSize = { x: this.selectionCnv.width, y: this.selectionCnv.height }
     this.selectedStroke.prepForBaseCanvas(selectionTopLeftCorner, selectionSize);
@@ -215,6 +252,9 @@ export class SelectionService extends Tool {
     this.deleteSelection(this.selectionCnv);
     this.hideSelectionCps();
     this.isActiveSelection = false;
+  }
+
+  sendPaste(): void {
     this.collaborationService.broadcastPasteRequest({
       sender: '',
       strokeIndex: this.selectedIndex,
@@ -251,7 +291,7 @@ export class SelectionService extends Tool {
   }
 
   redrawAllStrokesExceptSelected(): void {
-    this.drawingService.clearCanvas(this.drawingService.baseCtx);
+    this.drawingService.loadCurrentDrawing();
     this.strokes.forEach(stroke => {
       if (!this.strokesSelected.includes(stroke)) {
         stroke.drawStroke(this.drawingService.baseCtx);
@@ -323,19 +363,19 @@ export class SelectionService extends Tool {
       case ToolList.Rectangle: {
           const strokeRect: Stroke = new StrokeRectangle(stroke.boundingPoints, stroke.primaryColor, stroke.strokeWidth, stroke.secondaryColor, stroke.topLeftCorner, stroke.width, stroke.height);
           strokeRect.drawStroke(this.drawingService.baseCtx);
-          this.addStroke(strokeRect);
+          this.strokes.push(strokeRect);
           break;
       }
       case ToolList.Ellipse: {
           const strokeEllipse: Stroke = new StrokeEllipse(stroke.boundingPoints, stroke.primaryColor, stroke.strokeWidth, stroke.secondaryColor, stroke.center, stroke.radius);
           strokeEllipse.drawStroke(this.drawingService.baseCtx);
-          this.addStroke(strokeEllipse);
+          this.strokes.push(strokeEllipse);
           break;
       }
       case ToolList.Pencil: {
           const strokePencil: Stroke = new StrokePencil(stroke.boundingPoints, stroke.primaryColor, stroke.strokeWidth, stroke.points);
           strokePencil.drawStroke(this.drawingService.baseCtx);
-          this.addStroke(strokePencil);
+          this.strokes.push(strokePencil);
           break;
       }
     }

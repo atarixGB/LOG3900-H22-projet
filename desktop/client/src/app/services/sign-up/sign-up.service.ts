@@ -2,6 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SIGN_UP_URL } from '@app/constants/api-urls';
+import { SoundEffectsService } from '../sound-effects/sound-effects.service';
+import { IUser } from '@app/interfaces-enums/IUser'
 import { AlbumGalleryService } from '../album-gallery/album-gallery.service';
 
 @Injectable({
@@ -18,7 +20,7 @@ export class SignUpService {
     isUsedEmail: boolean;
     isAvatarTooLarge: boolean;
 
-    constructor(private httpClient: HttpClient, private albumGalleryService: AlbumGalleryService, private router: Router, private route: ActivatedRoute) {
+    constructor(private httpClient: HttpClient, private albumGalleryService: AlbumGalleryService, private router: Router, private route: ActivatedRoute, private soundEffectsService: SoundEffectsService) {
         this.setBoolsToDefault();
     }
 
@@ -30,7 +32,7 @@ export class SignUpService {
 
     signUp(): void {
         // POST resquest to create a new user in the database
-        const userInfos = {
+        const userInfos: IUser = {
             identifier: this.identifier,
             password: this.password,
             avatar: this.avatarSrc,
@@ -44,15 +46,19 @@ export class SignUpService {
                     console.log(result, 'Signup success');
                     this.albumGalleryService.addUserToPublicAlbum(this.identifier);
                     this.router.navigate(['../home'], { relativeTo: this.route });
+                    this.soundEffectsService.playSuccessSound();
                 } else if (result == 406) {
                     this.isExistingUsername = true;
-                }else if (result == 406) {
+                    this.soundEffectsService.playFailureSound();
+                } else if (result == 406) {
                     this.isUsedEmail = true;
+                    this.soundEffectsService.playFailureSound();
                 }
             },
             (error) => {
                 console.log('Error:', error);
                 this.isAvatarTooLarge = true;
+                this.soundEffectsService.playFailureSound();
             },
         );
     }
