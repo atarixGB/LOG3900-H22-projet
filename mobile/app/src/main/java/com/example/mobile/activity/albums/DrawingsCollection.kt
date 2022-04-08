@@ -64,9 +64,6 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
     private lateinit var dialogEditAlbumAttributes: AlbumAttributeModificationPopUp
 
     private val sharedViewModelCreateDrawingPopUp: SharedViewModelCreateDrawingPopUp by viewModels()
-
-
-
     private lateinit var iMyService: IMyService
     internal var compositeDisposable = CompositeDisposable()
 
@@ -89,10 +86,6 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
         val retrofit = RetrofitClient.getInstance()
         iMyService = retrofit.create(IMyService::class.java)
 
-        DrawingSocket.socket.on("readyToJoin", onReadyToJoin)
-//        DrawingSocket.socket.on("joinSuccessful", onJoinCollab)
-        DrawingSocket.socket.on("joinSuccessfulwithID", onJoinCollab)
-        DrawingSocket.socket.on("joinFailure", onJoinFailure)
 
         searchView = findViewById<SearchView>(R.id.drawingsSearchView)
         searchView.queryHint = "cherchez un dessin"
@@ -127,6 +120,12 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
         albumNameTextView.text = albumName
 
         getAllAlbumDrawings(albumID)
+
+
+        DrawingSocket.socket.on("readyToJoin", onReadyToJoin)
+//        DrawingSocket.socket.on("joinSuccessful", onJoinCollab)
+        DrawingSocket.socket.on("joinSuccessfulwithID", onJoinCollab)
+        DrawingSocket.socket.on("joinFailure", onJoinFailure)
 
         leaveAlbumBtn.setOnClickListener {
             val intent = Intent(this, Albums::class.java)
@@ -262,10 +261,6 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
         for (i in 0 until jsonStrokes.length()) {
             jsonStrings.add(jsonStrokes[i].toString())
         }
-
-//        var gson = Gson()
-//        var jsonString = gson.toJson(jsonStrokes)
-
         val intent = Intent(this, DrawingActivity::class.java)
         var bundle: Bundle = Bundle()
         bundle.putStringArrayList("jsonString", jsonStrings)

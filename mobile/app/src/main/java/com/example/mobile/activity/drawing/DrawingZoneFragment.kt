@@ -41,8 +41,6 @@ class DrawingZoneFragment : Fragment() {
     private lateinit var mDrawingView: DrawingView
     private val toolParameters: ToolParameters by activityViewModels()
     private val toolModel: ToolModel by activityViewModels()
-    private val sharedViewModelToolBar: SharedViewModelToolBar by activityViewModels()
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -55,6 +53,8 @@ class DrawingZoneFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         mDrawingView = DrawingView(requireContext(), DrawingSocket)
+        view.findViewById<LinearLayout>(R.id.drawingView).addView(mDrawingView)
+
         DrawingSocket.socket.on("receiveStroke", onReceiveStroke)
         DrawingSocket.socket.on("receiveSelection", onReceiveSelection)
         DrawingSocket.socket.on("receiveStrokeWidth", onReceiveStrokeWidth)
@@ -70,6 +70,7 @@ class DrawingZoneFragment : Fragment() {
 
         DrawingSocket.socket.on("memberLeft", onMemberLeaving)
 
+        val sharedViewModelToolBar: SharedViewModelToolBar by activityViewModels()
 
         toolParameters.weight.observe(viewLifecycleOwner, Observer { weight ->
             mDrawingView.changeWeight(weight)
@@ -94,7 +95,7 @@ class DrawingZoneFragment : Fragment() {
 
         sharedViewModelToolBar.collabDrawingId.observe(viewLifecycleOwner, Observer { collabDrawingId ->
             mDrawingView.setDrawingId(collabDrawingId)
-            mDrawingView.displayDrawingCollab(collabDrawingId)
+           // mDrawingView.displayDrawingCollab(collabDrawingId)
         })
 
         sharedViewModelToolBar.jsonString.observe(viewLifecycleOwner, Observer { jsonString ->
@@ -105,7 +106,7 @@ class DrawingZoneFragment : Fragment() {
             mDrawingView.saveImg()
         })
 
-        view.findViewById<LinearLayout>(R.id.drawingView).addView(mDrawingView)
+
     }
 
     private var onReceiveStroke = Emitter.Listener {
@@ -194,6 +195,7 @@ class DrawingZoneFragment : Fragment() {
         private var drawingId: String = ""
         private var currentDrawingBitmap: Bitmap? = null
         internal var compositeDisposable = CompositeDisposable()
+        private var upComingStrokes = ArrayList<String>()
 
         fun onStrokeReceive(stroke: JSONObject) {
             if (this::toolManager.isInitialized) {
@@ -212,13 +214,7 @@ class DrawingZoneFragment : Fragment() {
         }
 
         fun onLoadCurrentStrokeData(jsonString: ArrayList<String>) {
-
-
-
-            jsonString.forEachIndexed{ i, it ->
-                var obj = JSONObject(jsonString[i])
-                this.onStrokeReceive(obj)
-            }
+            this.upComingStrokes = jsonString
 
 //            for (i in 0 until jsonStrokes.length()) {
 //                val obj = jsonStrokes[0.toString()]
@@ -338,6 +334,14 @@ class DrawingZoneFragment : Fragment() {
             }
             mCanvas!!.drawRect(0f,0f, w.toFloat(), h.toFloat(),borderPaint )
             toolManager = ToolManager(context, mCanvas!!, this.socket, drawingId)
+
+            //draw upcoming strokes
+            if(this.upComingStrokes.size >0){
+                this.upComingStrokes.forEachIndexed{ i, it ->
+                    var obj = JSONObject(this.upComingStrokes[i])
+                    this.onStrokeReceive(obj)
+                }
+            }
         }
 
         override fun onDraw(canvas: Canvas) {
