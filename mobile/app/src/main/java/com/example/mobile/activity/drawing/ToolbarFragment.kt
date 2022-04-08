@@ -28,7 +28,7 @@ class ToolbarFragment : Fragment(), AdapterView.OnItemClickListener {
     private var gridView: GridView? = null
     private var arrayList:ArrayList<ToolItem> ? = null
     private var toolAdapter: ToolAdapter? = null
-    private var cameraPictureBitmap:Bitmap? = null
+//    private var cameraPictureBitmap:Bitmap? = null
     private lateinit var user: String
     private lateinit var saveDrawingBtn : Button
     private lateinit var addToStoryBtn : Button
@@ -111,7 +111,8 @@ class ToolbarFragment : Fragment(), AdapterView.OnItemClickListener {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_IMAGE_CAMERA && resultCode == Activity.RESULT_OK && data != null) {
-            cameraPictureBitmap=data.extras?.get("data") as Bitmap
+            _img=data.extras?.get("data") as Bitmap
+            toolChange.changeImg(_img)
         } else if(resultCode==Activity.RESULT_CANCELED){
             Toast.makeText(activity, "Erreur capture", Toast.LENGTH_SHORT).show()
         }

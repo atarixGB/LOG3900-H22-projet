@@ -78,6 +78,10 @@ class DrawingZoneFragment : Fragment() {
             mDrawingView.putToStory()
         })
 
+        toolModel.img.observe(viewLifecycleOwner, Observer { img ->
+            mDrawingView.putPictureOnCanvas(img)
+        })
+
         view.findViewById<LinearLayout>(R.id.drawingView).addView(mDrawingView)
     }
     private var onReceiveStroke = Emitter.Listener {
@@ -211,6 +215,10 @@ class DrawingZoneFragment : Fragment() {
                         }
                     })
             }
+        }
+
+        fun putPictureOnCanvas(img:Bitmap){
+            mCanvas = Canvas(img!!)
         }
 
         fun saveImg() {
