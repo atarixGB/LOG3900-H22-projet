@@ -1,28 +1,30 @@
 package com.example.mobile.activity
 
 import android.app.ActivityOptions
+import android.content.Context
 import android.content.Intent
 import android.media.MediaPlayer
 import android.os.Bundle
+import android.text.method.HideReturnsTransformationMethod
+import android.text.method.PasswordTransformationMethod
+import android.util.Log
+import android.view.animation.AnimationUtils
 import android.widget.Button
 import android.widget.EditText
-import android.widget.Toast
-
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
-import com.example.mobile.Retrofit.IMyService
-import com.example.mobile.Retrofit.RetrofitClient
-import android.text.method.HideReturnsTransformationMethod;
-import android.text.method.PasswordTransformationMethod;
-import android.view.animation.AnimationUtils
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.example.mobile.R
+import com.example.mobile.Retrofit.IMyService
+import com.example.mobile.Retrofit.RetrofitClient
 import com.example.mobile.activity.profile.Registration
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import retrofit2.Call
 import retrofit2.Response
+import java.io.File
 
 class MainActivity : AppCompatActivity()  {
     private var isDashboardOpen: Boolean = false
@@ -61,14 +63,7 @@ class MainActivity : AppCompatActivity()  {
         mdpEmptyError.isVisible=false
         emailEmptyError.isVisible=false
 
-
-
-        //Connect to the Server
-
-//        SocketHandler.setSocket()
-//        val socket = SocketHandler.getSocket()
-//        socket.connect()
-
+        clearAllInternalFiles(baseContext)
         //init API
         val retrofit = RetrofitClient.getInstance()
         iMyService = retrofit.create(IMyService::class.java)
@@ -158,6 +153,17 @@ class MainActivity : AppCompatActivity()  {
                 }
             })
 
+
+    }
+
+    private fun clearAllInternalFiles(context : Context){
+        var orignalPath = baseContext.getFilesDir().getParentFile().toString()
+        var files: Array<String> = context.fileList()
+        for(file in files){
+            var path = orignalPath+"/files/"+file
+            var fileDisk = File(path)
+            fileDisk.delete()
+        }
 
     }
 }

@@ -68,9 +68,7 @@ class Profile : AppCompatActivity() {
         getUserFromDB(user)
 
         //Connect to the Server
-        SocketHandler.setSocket()
-        socket = SocketHandler.getSocket()
-        socket.connect()
+       socket = SocketHandler.mSocket
 
         leave.setOnClickListener() {
             val intent = Intent(this, MainActivity::class.java)

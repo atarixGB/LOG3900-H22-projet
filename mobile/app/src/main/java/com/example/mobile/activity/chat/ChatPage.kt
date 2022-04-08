@@ -56,7 +56,7 @@ class ChatPage : AppCompatActivity(), UserAdapter.UserAdapterListener {
     private lateinit var chatViewOptions: ImageButton
     private lateinit var roomName : String
     private lateinit var IRoom: IRoom
-    private var isOnline  = false as Boolean
+    private var isOnline  = false
 
     private lateinit var iMyService: IMyService
     internal var compositeDisposable = CompositeDisposable()
@@ -104,15 +104,11 @@ class ChatPage : AppCompatActivity(), UserAdapter.UserAdapterListener {
         readBtn = findViewById(R.id.readBtn)
         isOnline = true
 
-        readBtn.setOnClickListener{
-            readAllMessagesFromFile("$roomName.txt")
-        }
 
         //Connect to the Server
         SocketHandler.setSocket()
         socket = SocketHandler.getSocket()
         socket.connect()
-        var jo :JSONObject = JSONObject()
 
         var mediaPlayerHello:MediaPlayer = MediaPlayer.create(this,R.raw.hello)
         btnSend.setOnClickListener{
@@ -127,7 +123,7 @@ class ChatPage : AppCompatActivity(), UserAdapter.UserAdapterListener {
         socket.on("message"){ args ->
 
             if(args[0] != null){
-                var messageData : JSONObject = JSONObject()
+                var messageData = JSONObject()
                 messageData = args[0] as JSONObject
                 val message = messageData.get("message") as String
                 val user = messageData.get("userName") as String
@@ -135,18 +131,16 @@ class ChatPage : AppCompatActivity(), UserAdapter.UserAdapterListener {
                 val room = messageData.get("room") as String
                 val msg = IMessage(message, user, time, room, false)
                 mediaPlayerReceiveSuccess.start()
-                if(!isOnline){
-                    var jo = JSONObject()
-                    jo.put("roomName", roomName)
-                    //TODO : change username to id
-                    jo.put("userId",this.user)
-                    socket.emit("onMessageReceivedOffline", jo)
-                }else{
+                saveInFile(msg)
+//                if(!isOnline){
+//                    var jo = JSONObject()
+//                    jo.put("roomName", roomName)
+//                    //TODO : change username to id
+//                    jo.put("userId",this.user)
+//                    socket.emit("onMessageReceivedOffline", jo)
+//                }else{
                     printMessagesOnUI(msg)
-                }
-               // notificationModel.updateRoom(this.roomName)
-
-
+               // }
             }
         }
 
@@ -253,12 +247,11 @@ class ChatPage : AppCompatActivity(), UserAdapter.UserAdapterListener {
             msgAdapter.notifyItemInserted((rvOutputMsgs.adapter as MessageAdapter).itemCount)
             rvOutputMsgs.scrollToPosition((rvOutputMsgs.adapter as MessageAdapter).itemCount - 1)
             messageText.text.clear()
-            saveInFile(msg)
         }
     }
 
     private fun checkFileExist(fileName: String): Boolean{
-        val path = baseContext.getFilesDir().getParentFile().toString()+"/"+fileName
+        val path = baseContext.getFilesDir().getParentFile().toString()+"/files/"+fileName
         var fileDisk = File(path)
         return fileDisk.exists()
     }
@@ -326,9 +319,10 @@ class ChatPage : AppCompatActivity(), UserAdapter.UserAdapterListener {
     }
 
     fun leaveChat(){
-        val intent = Intent(this, ChatRooms::class.java)
-        intent.putExtra("userName", user)
-        startActivity(intent)
+        isOnline = false
+        socket.emit("userLeftChatPage", roomName)
+        socket.disconnect()
+        onBackPressed()
     }
 
     fun userLeftChat () {
@@ -401,9 +395,10 @@ class ChatPage : AppCompatActivity(), UserAdapter.UserAdapterListener {
             else -> super.onKeyUp(keyCode, event)
         }
     }
-    override fun onPause() {
-        super.onPause()
-        isOnline = false
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.i("tag", "destroy")
     }
 }
 

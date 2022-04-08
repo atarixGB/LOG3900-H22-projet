@@ -109,21 +109,15 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
             socket.on('message', (msg) => {
                 console.log(msg)
                 io.to(msg.room).emit('message', msg);
-
-                var message = {
-                    userName: msg.userName,
-                    message:msg.message,
-                    time: msg.time,
-                  };
             })
 
             socket.on('disconnectUser', (userName) => {
                 users.delete(userName);
             })
 
-            socket.on('onMessageReceivedOffline', (message) =>{
-                console.log(message)
-                io.emit("messageOffline", message)
+            socket.on('userLeftChatPage', (roomName) =>{
+                console.log("veification")
+                io.emit("userLeftChatPage", roomName)
             })
         })
     }
