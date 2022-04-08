@@ -10,10 +10,9 @@ const multer = require('multer')
 const path = require('path');
 const fs = require('fs');
 const nodemailer = require('nodemailer');
+require('dotenv').config();
 
 //constants
-const DATABASE_URL =
-  "mongodb+srv://equipe203:Log3900-H22@polygramcluster.arebt.mongodb.net/PolyGramDB?retryWrites=true&w=majority";
 const SERVER_PORT = 3001;
 const UPLOAD_DIR = 'uploads/'
 
@@ -71,7 +70,7 @@ function checkHashPassword(userPassword, salt) {
 //==========================================================================================================
 // Accout Registration and login
 //==========================================================================================================
-mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, client) {
+mongoClient.connect(process.env.POLYGRAM_APP_DATABASE_URL, { useNewUrlParser: true }, function (err, client) {
 
   const DB = client.db("PolyGramDB");
 
@@ -197,10 +196,10 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
         });
     });
 
-//==========================================================================================================
-// ROOM management
-//==========================================================================================================
-      
+    //==========================================================================================================
+    // ROOM management
+    //==========================================================================================================
+
     //Rooms
     app.post("/createRoom", (request, response, next) => {
       var post_data = request.body;
@@ -359,7 +358,7 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
     //==========================================================================================================
     // Drawing Management
     //==========================================================================================================
-    
+
     //create drawing
     app.post("/drawing/create", (request, response, next) => {
       DB.collection("drawings").insertOne(request.body, (err, res) => {
@@ -389,31 +388,31 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
         });
     });
 
-        //get all user drawings in DB
+    //get all user drawings in DB
 
-        app.get("/getAllUserDrawings/:user", (request, response, next) => {
+    app.get("/getAllUserDrawings/:user", (request, response, next) => {
 
-          var user = request.params.user.replace(/"/g, '');;
-    
-          console.log(user);
-    
-          DB.collection("drawings")
-    
-            .find({owner: user}).limit(50).toArray(function (err, result) {
-    
-              if (err) {
-    
-                response.status(400).send("Error fetching drawings");
-    
-              } else {
-    
-                response.json(result)
-    
-              }
-    
-            });
-    
+      var user = request.params.user.replace(/"/g, '');;
+
+      console.log(user);
+
+      DB.collection("drawings")
+
+        .find({ owner: user }).limit(50).toArray(function (err, result) {
+
+          if (err) {
+
+            response.status(400).send("Error fetching drawings");
+
+          } else {
+
+            response.json(result)
+
+          }
+
         });
+
+    });
 
     //Save drawing data (desktop client)
     app.post("/drawing/save/:drawingId", (request, response, next) => {
@@ -507,38 +506,36 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
     });
 
 
-  //get all drawings that specified user liked
-  app.get("/drawings/favorite/:username", (request, response) => {
-    let username = request.params.username;
-    DB.collection("drawings").find({ likes: { $all: [username] } }).toArray(function (error, result) {
-      if (error) throw error;
-      
-      response.json(result);
-      console.log(result)
-    })
-  })
-
-  //get all drawings of specified user that has at least one Like
-  app.get("/drawings/top/:username", (request, response) => {
-    let username = request.params.username;
-    DB.collection("drawings")
-      .find({ $and: [{ owner: username }, { likes: { $exists: true, $not: { $size: 0 } } }] }).toArray(function (error, result) {
+    //get all drawings that specified user liked
+    app.get("/drawings/favorite/:username", (request, response) => {
+      let username = request.params.username;
+      DB.collection("drawings").find({ likes: { $all: [username] } }).toArray(function (error, result) {
         if (error) throw error;
 
-        result.sort((a,b)=> a.likes.length < b.likes.length ? 1: a.likes.length > b.likes.length ? -1 : 0);
         response.json(result);
         console.log(result)
       })
-  })
+    })
+
+    //get all drawings of specified user that has at least one Like
+    app.get("/drawings/top/:username", (request, response) => {
+      let username = request.params.username;
+      DB.collection("drawings")
+        .find({ $and: [{ owner: username }, { likes: { $exists: true, $not: { $size: 0 } } }] }).toArray(function (error, result) {
+          if (error) throw error;
+
+          result.sort((a, b) => a.likes.length < b.likes.length ? 1 : a.likes.length > b.likes.length ? -1 : 0);
+          response.json(result);
+          console.log(result)
+        })
+    })
 
     //delete all drawings pour faire le menage
     app.delete("/drawing/deleteAll", (request, response, next) => {
       DB.collection("drawings").deleteMany({}, (err, res) => {
         response.json(201)
       });
-    }); 
-
-    
+    });
 
     //delete drawing with specific id from collection
     app.delete("/drawing/delete/:id", (request, response, next) => {
@@ -571,18 +568,9 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
       })
     });
 
-    // For Development Purpose Only: Delete all drawings from DB
-    app.delete("/delete/:field", (request, response) => {
-      let field = request.params.field;
-      DB.collection(field).remove({}, (err, result) => {
-        if (err) console.log(`CANNOT DELETE ${field}`);
-        else response.json(`DELETE ${field} COLLECTION OK`)
-      })
-    })
-
-//==========================================================================================================
-// Album Management
-//==========================================================================================================
+    //==========================================================================================================
+    // Album Management
+    //==========================================================================================================
 
     //create new album
     app.post("/albums", (request, response, next) => {
@@ -779,9 +767,9 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
       var newAlbumName = post_data.newAlbumName;
       var newDescription = post_data.newDescription;
 
-//==========================================================================================================
-// Profile modification
-//==========================================================================================================
+      //==========================================================================================================
+      // Profile modification
+      //==========================================================================================================
       //check if an album already has the new name
       DB.collection("albums")
         .find({ name: newAlbumName })
@@ -806,7 +794,7 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
     //==========================================================================================================
     // Profile modification
     //==========================================================================================================
-    
+
     //Getting a user's data 
     app.get("/profile/:username", (request, response, next) => {
       var identifier = request.params.username;
@@ -839,10 +827,10 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
           } else {
             // Update user data
             DB.collection("users").updateOne({ identifier: oldUsername }, {
-              $set : {
-                "identifier" : newUsername,
-                "avatar" : avatar,
-                "description" : description
+              $set: {
+                "identifier": newUsername,
+                "avatar": avatar,
+                "description": description
               },
             }).then(result => {
               response.json(200);
@@ -856,21 +844,21 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
     app.get("/getUserID/:username", (request, response, next) => {
 
       let username = request.params.username;
-    
-          DB.collection("users")
-            .findOne({ identifier: username }, function (err, result) {
-              if (err) {
-                console.log("error getting");
-                response.status(400).send("Error fetching id");
-              } else {
-                response.json(result._id);
-              }
-          });
+
+      DB.collection("users")
+        .findOne({ identifier: username }, function (err, result) {
+          if (err) {
+            console.log("error getting");
+            response.status(400).send("Error fetching id");
+          } else {
+            response.json(result._id);
+          }
+        });
     });
 
-//==========================================================================================================
-// Profile : Statistics
-//==========================================================================================================
+    //==========================================================================================================
+    // Profile : Statistics
+    //==========================================================================================================
 
     // Get the total number of collabs that userId has participated in
     app.get("/profile/stats/collabs/:username", (request, response) => {
@@ -916,18 +904,18 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
       const identifier = request.params.username;
       const secondsSpentInCollab = request.body.secondsSpentInCollab;
 
-      DB.collection("users").findOneAndUpdate({ identifier: identifier }, 
+      DB.collection("users").findOneAndUpdate({ identifier: identifier },
         { $inc: { collaborationCount: 1, totalCollaborationTime: secondsSpentInCollab } }, { returnDocument: 'after' }, (err, res) => {
-        response.json(201)
-        console.log(`Updated collab stats for ${identifier}`);
-      })
+          response.json(201)
+          console.log(`Updated collab stats for ${identifier}`);
+        })
     });
 
     // Get the total number of drawings created by username 
     app.get("/profile/stats/drawings/:username", (request, response) => {
       const username = request.params.username;
 
-      DB.collection("drawings").find( { owner : username }).toArray((error, result) => {
+      DB.collection("drawings").find({ owner: username }).toArray((error, result) => {
         if (error) throw error;
         console.log(result);
         const totalNbrOfDrawingsCreated = result.length;
@@ -942,7 +930,7 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
 
       DB.collection("drawings").find({ likes: { $all: [username] } }).toArray((error, result) => {
         if (error) throw error;
-        
+
         let likesCount = 0;
         for (const drawing of result) {
           likesCount += drawing.likes.length;
@@ -956,9 +944,9 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
     app.get("/profile/stats/albums/:username", (request, response) => {
       const username = request.params.username;
 
-      DB.collection("albums").find({ owner : username}).toArray((error, result) => {
+      DB.collection("albums").find({ owner: username }).toArray((error, result) => {
         if (error) throw error;
-        console.log(result);        
+        console.log(result);
         const totalNbrOfAlbumsCreated = result.length;
         response.json(totalNbrOfAlbumsCreated);
       })
@@ -970,7 +958,7 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
 
       DB.collection("drawings").find({ likes: { $all: [username] } }).toArray((error, result) => {
         if (error) throw error;
-        
+
         let likesCount = 0;
         for (const drawing of result) {
           likesCount += drawing.likes.length;
@@ -984,14 +972,14 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
     app.get("/profile/stats/albums/:username", (request, response) => {
       const username = request.params.username;
 
-      DB.collection("albums").find({ owner : username}).toArray((error, result) => {
+      DB.collection("albums").find({ owner: username }).toArray((error, result) => {
         if (error) throw error;
-        console.log(result);        
+        console.log(result);
         const totalNbrOfAlbumsCreated = result.length;
         response.json(totalNbrOfAlbumsCreated);
       })
     })
-    
+
 
     //==========================================================================================================
     // Reset password
@@ -1007,10 +995,10 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
 
         if (result) {
           uniqueCode = generateUniqueCode();
-          console.log("Code genere", uniqueCode)
+          console.log("Generated code", uniqueCode)
 
           sendEmail(result.email, uniqueCode)
-            .then(() => { console.log(`Courriel envoyé à ${result.email}`) })
+            .then(() => { console.log(`Email sent to ${result.email}`) })
             .catch((error) => { throw error });
 
           response.json(204);
@@ -1025,7 +1013,6 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
     // verify unique code received by the user
     app.post("/verifyUniqueCode", (request, response) => {
       const userCode = request.body.code;
-      console.log("code recu", userCode);
       if (userCode == uniqueCode) {
         response.json(204);
         uniqueCode = null;
@@ -1045,9 +1032,8 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
         const hashPassword = hashData.passwordHash;
         const salt = hashData.salt;
         console.log(hashPassword, salt);
-        DB.collection("users").update({ email: email }, { $set: { password: hashPassword, salt : salt } } , ((error, result) => {
+        DB.collection("users").update({ email: email }, { $set: { password: hashPassword, salt: salt } }, ((error, result) => {
           if (error) throw err;
-          console.log(result)
           if (result) {
             response.json(204)
           } else {
@@ -1056,8 +1042,19 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
         }))
       }
 
-      
+    })
 
+    //==========================================================================================================
+    // For Development Purpose Only
+    //==========================================================================================================
+
+    // Delete all element from specified collection from DB
+    app.delete("/delete/:collection", (request, response) => {
+      let collection = request.params.collection;
+      DB.collection(collection).remove({}, (err, result) => {
+        if (err) console.log(`CANNOT DELETE ${collection}`);
+        else response.json(`DELETE ${collection} OK`)
+      })
     })
 
     //-----------------------------------
@@ -1089,8 +1086,8 @@ let saveImageAsPNG = function (imageData, drawingId, filepath) {
 
 let stringifySeconds = function (timeInSeconds) {
   const secondsInMinute = 60;
-  const secondsInHour = secondsInMinute*60;
-  const secondsInDay = secondsInHour*24;
+  const secondsInHour = secondsInMinute * 60;
+  const secondsInDay = secondsInHour * 24;
 
   const days = Math.floor(timeInSeconds / secondsInDay);
   timeInSeconds = timeInSeconds % secondsInDay;
@@ -1104,45 +1101,45 @@ let stringifySeconds = function (timeInSeconds) {
   return days + 'j ' + hours + 'h ' + minutes + 'm ' + timeInSeconds + 's';
 }
 
-// TODO: Change Ethereal email with real email
 async function sendEmail(email, uniqueCode) {
-
-  let testAccount = await nodemailer.createTestAccount();
-
-  let transporter = nodemailer.createTransport({
-    host: "smtp.ethereal.email",
-    port: 587,
-    secure: false, // true for 465, false for other ports
+  const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    // host: 'smtp.gmail.com',
+    // port: 587,
+    // secure: false,
+    // requireTLS: true,
+    // sendmail: true,
     auth: {
-      user: testAccount.user,
-      pass: testAccount.pass,
+      user: process.env.POLYGRAM_APP_GMAIL,
+      pass: process.env.POLYGRAM_APP_GMAIL_PASSWORD,
     },
   });
 
-  const message = {
-    from: '"Poly-Gram 🎨" <poly.gramlog3900@gmail.com>', // sender address
-    to: email, // list of receivers
-    subject: "Poly-Gram - Changement de mot de passe", // Subject line
-    html: `Salut!
-    <br><br>
-    Il parait que tu as oublié ton mot de passe!
-    <br><br>
-    Entre ce code unique dans l'application pour le réinitialiser :
-    <br><br>
-    <b>${uniqueCode}</b>
-    <br><br>
-    L'équipe de Poly-Gram 🎨`, // plain text body
+  const messageWithCode = {
+    from: `"Poly-Gram 🎨" <${process.env.POLYGRAM_APP_GMAIL}>`,
+    to: email,
+    subject: "Poly-Gram - Changement de mot de passe",
+    html: `
+    <html>
+      <body>
+        Salut!
+        <br><br>
+        Il parait que tu as oublié ton mot de passe!
+        <br><br>
+        Entre ce code unique dans l'application pour le réinitialiser :
+        <br><br>
+        <b>${uniqueCode}</b>
+        <br><br>
+        L'équipe de Poly-Gram 🎨
+      </body>
+    </html>
+    `,
   }
 
-  // send mail with defined transport object
-  let info = await transporter.sendMail(message);
-
-  console.log("Message sent: %s", info.messageId);
-  // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
-
-  // Preview only available when sending through an Ethereal account
-  console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
-  // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
+  await transporter.sendMail(messageWithCode, (error, result) => {
+    if (error) throw error;
+    console.log(result);
+  });
 }
 
 let generateUniqueCode = () => {
