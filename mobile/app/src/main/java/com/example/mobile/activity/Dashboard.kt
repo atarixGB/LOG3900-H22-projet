@@ -1,4 +1,5 @@
 package com.example.mobile.activity
+import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
@@ -27,6 +28,7 @@ class Dashboard : AppCompatActivity() {
     }
     private fun openSoloDrawing(){
         val intent = Intent(this, DrawingActivity::class.java)
-        startActivity(intent)
+        var bundle:Bundle = ActivityOptions.makeSceneTransitionAnimation(this).toBundle()
+        startActivity(intent,bundle)
     }
 }

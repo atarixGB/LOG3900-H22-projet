@@ -1,0 +1,17 @@
+<h2 mat-dialog-title>Quitter une conversation</h2>
+
+<mat-dialog-content class="mat-typography">
+  <p>
+    Es-tu certain.e de vouloir quitter la conversation
+    <span class="bold">
+      {{this.data.roomName}} ?
+    </span>
+  </p>
+
+  <p>Tu devras joindre la conversation à nouveau pour y participer.</p>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close>Annuler</button>
+  <button mat-button [mat-dialog-close]="true" cdkFocusInitial (click)="onLeaveChatroom()">Quitter</button>
+</mat-dialog-actions>

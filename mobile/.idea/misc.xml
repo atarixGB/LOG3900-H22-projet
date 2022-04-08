@@ -3,12 +3,6 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/15149/Desktop/Clone fin tache album/log3900-203/mobile/app/src/main/res/layout/activity_chat_page.xml" value="0.153125" />
-        <entry key="..\:/Users/15149/Desktop/Clone fin tache album/log3900-203/mobile/app/src/main/res/layout/activity_drawings_collection.xml" value="0.2767210144927536" />
-        <entry key="..\:/Users/15149/Desktop/Clone fin tache album/log3900-203/mobile/app/src/main/res/layout/activity_main.xml" value="0.5" />
-        <entry key="..\:/Users/15149/Desktop/Clone fin tache album/log3900-203/mobile/app/src/main/res/layout/fragment_custom_tool.xml" value="0.153125" />
-        <entry key="..\:/Users/15149/Desktop/Clone fin tache album/log3900-203/mobile/app/src/main/res/layout/fragment_toolbar.xml" value="0.24479166666666666" />
-        <entry key="..\:/Users/15149/Desktop/Clone fin tache album/log3900-203/mobile/app/src/main/res/layout/item_drawing.xml" value="0.2767210144927536" />
         <entry key="..\:/Users/15149/Desktop/git clone final/log3900-203/mobile/app/src/main/res/drawable/bg_btn.xml" value="0.3725" />
         <entry key="..\:/Users/15149/Desktop/git clone final/log3900-203/mobile/app/src/main/res/drawable/message_input_box.xml" value="0.1995" />
         <entry key="..\:/Users/15149/Desktop/git clone final/log3900-203/mobile/app/src/main/res/layout/activity_albums.xml" value="0.18" />
@@ -28,17 +22,6 @@
         <entry key="..\:/Users/15149/Desktop/prototype_clone/prototype_leger/ChatRoomMobile/app/src/main/res/drawable/ic_baseline_launch_24.xml" value="0.1505" />
         <entry key="..\:/Users/15149/Desktop/prototype_clone/prototype_leger/ChatRoomMobile/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1505" />
         <entry key="..\:/Users/15149/Desktop/prototype_clone/prototype_leger/ChatRoomMobile/app/src/main/res/layout/activity_main.xml" value="0.18085106382978725" />
-<<<<<<< HEAD
-=======
-        <entry key="..\:/Users/Mio/Desktop/log3900-203/mobile/app/src/main/res/layout/activity_drawing.xml" value="0.15677083333333333" />
-<<<<<<< HEAD
-        <entry key="..\:/Users/Mio/Desktop/log3900-203/mobile/app/src/main/res/layout/color_list.xml" value="0.15677083333333333" />
-        <entry key="..\:/Users/Mio/Desktop/log3900-203/mobile/app/src/main/res/layout/fragment_custom_tool.xml" value="0.33" />
-        <entry key="..\:/Users/Mio/Desktop/log3900-203/mobile/app/src/main/res/layout/fragment_toolbar.xml" value="0.15677083333333333" />
-        <entry key="..\:/Users/Mio/Desktop/log3900-203/mobile/app/src/main/res/layout/fragment_toolbar_navigation.xml" value="0.15677083333333333" />
-=======
->>>>>>> 8be9562f89d3ea7c20575d96d6e13caca3eb64f0
->>>>>>> newDev
         <entry key="..\:/Users/Mio/Desktop/log3900-203/mobile/app/src/main/res/layout/tools_weight_list.xml" value="0.3359375" />
         <entry key="..\:/Users/chaim/Documents/GitHub/prototype_leger/ChatRoomMobile/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.258" />
         <entry key="..\:/Users/chaim/Documents/GitHub/prototype_leger/ChatRoomMobile/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2765" />
@@ -66,15 +49,19 @@
         <entry key="..\:/Users/chaim/log3900-203/mobile/app/src/main/res/layout/activity_drawings_collection.xml" value="0.1" />
         <entry key="..\:/Users/chaim/log3900-203/mobile/app/src/main/res/layout/activity_join_album_pop_up.xml" value="0.1" />
         <entry key="..\:/Users/chaim/log3900-203/mobile/app/src/main/res/layout/activity_join_room.xml" value="0.1" />
+        <entry key="..\:/Users/chaim/log3900-203/mobile/app/src/main/res/layout/activity_prep_for_member_leaving_pop_up.xml" value="0.18151041666666667" />
+        <entry key="..\:/Users/chaim/log3900-203/mobile/app/src/main/res/layout/activity_prep_for_new_member_pop_up.xml" value="0.18151041666666667" />
         <entry key="..\:/Users/chaim/log3900-203/mobile/app/src/main/res/layout/activity_users_list_pop_up.xml" value="0.18151041666666667" />
         <entry key="..\:/Users/chaim/log3900-203/mobile/app/src/main/res/layout/fragment_create_album_pop_up.xml" value="0.13634488448844884" />
         <entry key="..\:/Users/chaim/log3900-203/mobile/app/src/main/res/layout/fragment_custom_tool.xml" value="0.1" />
+        <entry key="..\:/Users/chaim/log3900-203/mobile/app/src/main/res/layout/fragment_drawing_zone.xml" value="0.1" />
         <entry key="..\:/Users/chaim/log3900-203/mobile/app/src/main/res/layout/fragment_toolbar.xml" value="0.1" />
         <entry key="..\:/Users/chaim/log3900-203/mobile/app/src/main/res/layout/item_album.xml" value="0.13634488448844884" />
         <entry key="..\:/Users/chaim/log3900-203/mobile/app/src/main/res/layout/item_drawing.xml" value="0.1" />
         <entry key="..\:/Users/chaim/log3900-203/mobile/app/src/main/res/layout/item_room.xml" value="0.1417079207920792" />
         <entry key="..\:/Users/chaim/log3900-203/mobile/app/src/main/res/layout/item_user.xml" value="0.18151041666666667" />
         <entry key="..\:/Users/chaim/log3900-203/mobile/app/src/main/res/layout/receivemessage.xml" value="0.18151041666666667" />
+        <entry key="..\:/Users/chaim/log3900-203/mobile/app/src/main/res/layout/tools_weight_list.xml" value="0.1" />
         <entry key="..\:/Users/chaim/log3900-203/mobile/app/src/main/res/layout/userjoined.xml" value="0.1417079207920792" />
         <entry key="..\:/Users/chaim/log3900-203/mobile/app/src/main/res/layout/userleft.xml" value="0.18151041666666667" />
         <entry key="..\:/Users/chaim/log3900-203/mobile/app/src/main/res/menu/chatpage_options_menu.xml" value="0.17291666666666666" />

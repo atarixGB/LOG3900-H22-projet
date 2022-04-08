@@ -3,6 +3,25 @@
 }
 
 mat-icon {
-  transform: scale(4) !important;
-  color: lightgreen;
+  transform: scale(5) !important;
+  color: #A8D08C;
+}
+
+::ng-deep md-grid-tile.mat-grid-tile .mat-figure {
+  height: 30px !important;
+}
+
+#btnDiv {
+  margin: 30px;
+}
+
+#albumsDiv {
+  border: solid 2px;
+  border-radius: 5px;
+  height: 100%;
+  overflow-y: auto;
+}
+
+#albumRow {
+  height: 100%;
 }

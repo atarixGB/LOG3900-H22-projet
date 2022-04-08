@@ -2,29 +2,12 @@
     height: 100%;
 }
 
-.sectionTitle {
-    text-decoration: underline;
-}
-
 #title {
     text-decoration: underline;
 }
 
-#description {
-    text-align: justify;
-}
-
 #avatarImg {
     height: 90%;
-}
-
-#username {
-    margin-bottom: 0;
-}
-
-#email {
-    color: rgb(101, 101, 101);
-    font-style: italic;
 }
 
 #avatarDisplay {
@@ -46,4 +29,59 @@
 
 #settingsBtn {
     width: 200px;
+}
+
+#badge {
+    width: 150px;
+    height: 150px;
+}
+
+#favoritesImg {
+    width: 150px;
+    height: 150px;
+}
+
+#mostLikedImg {
+    width: 150px;
+    height: 150px;
+}
+
+#statsImg {
+    height: 100px;    
+    width: 100px;    
+}
+
+#modifierProfil {
+    margin-left: 10px;
+    margin-right: 5px;
+}
+
+#settingsBtnDiv {
+    border:solid 2px;
+    border-radius: 15px;
+    padding: 5px;
+    width: 160px;
+}
+
+#settingsBtnDiv:hover {
+    cursor: pointer;
+    color: rgb(78, 78, 78);
+}
+
+.sectionTitle {
+    text-decoration: underline;
+}
+
+.sectionTitleContainer {
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    margin-top: 15px;
+}
+
+.bold {
+    font-weight: bold;
+} 
+
+.userInfo {
+    color: rgb(94, 94, 94);
 }

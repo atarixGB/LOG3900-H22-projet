@@ -3,6 +3,9 @@ package com.example.mobile.Interface
 import android.graphics.Canvas
 import android.graphics.Paint
 import com.example.mobile.activity.drawing.ToolbarFragment
+import org.json.JSONArray
+import org.json.JSONObject
+import kotlin.math.abs
 
 data class IRectangleStroke(
     override var boundingPoints: ArrayList<IVec2>,
@@ -48,6 +51,30 @@ data class IRectangleStroke(
     override fun rescale(scale: IVec2) {
         width *= scale.x
         height *= scale.y
-        boundingPoints[1] = IVec2(boundingPoints[1].x * scale.x, boundingPoints[1].y * scale.y)
+    }
+
+    override fun convertToObject(): JSONObject {
+        var bounding = JSONArray()
+        for(pts in this.boundingPoints){
+            var arr = JSONObject()
+            arr.put("x",pts.x)
+            arr.put("y",pts.y)
+            bounding.put(arr)
+        }
+
+        var topLeftCorner = JSONObject()
+        topLeftCorner.put("x", this.topLeftCorner.x)
+        topLeftCorner.put("y",this.topLeftCorner.y)
+
+        var jo = JSONObject()
+        jo.put("boundingPoints", bounding) //TODO
+        jo.put("toolType", 1)
+        jo.put("primaryColor", toRBGColor(currentStrokeColor))
+        jo.put("secondaryColor", toRBGColor(secondaryColor))
+        jo.put("strokeWidth", currentStrokeWidth)
+        jo.put("topLeftCorner", topLeftCorner)
+        jo.put("width", width)
+        jo.put("height", height)
+        return jo
     }
 }

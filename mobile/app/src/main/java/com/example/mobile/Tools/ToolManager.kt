@@ -2,7 +2,7 @@ package com.example.mobile.Tools
 
 import android.content.Context
 import android.graphics.Canvas
-import com.example.mobile.activity.drawing.DrawingCollaboration
+import com.example.mobile.activity.drawing.DrawingSocket
 import com.example.mobile.activity.drawing.ToolbarFragment
 
 class ToolManager {
@@ -13,10 +13,12 @@ class ToolManager {
     lateinit var rectangle: Rectangle
     lateinit var ellipse: Ellipse
     lateinit var selection:Selection
-    private var socket: DrawingCollaboration
+    private var socket: DrawingSocket
+    lateinit var drawingId: String
 
-    constructor(context: Context, baseCanvas : Canvas, socket : DrawingCollaboration){
+    constructor(context: Context, baseCanvas : Canvas, socket : DrawingSocket, drawingId: String){
         this.socket = socket
+        this.drawingId = drawingId
         this.baseCanvas = baseCanvas
         this.context = context
         initialiseTools()
@@ -24,10 +26,10 @@ class ToolManager {
     }
 
     private fun initialiseTools(){
-        this.selection= Selection(context,baseCanvas,socket)
-        this.pencil = Pencil(context,baseCanvas,socket, selection )
-        this.rectangle = Rectangle(context, baseCanvas, socket, selection)
-        this.ellipse = Ellipse(context, baseCanvas, socket, selection)
+        this.selection= Selection(context,baseCanvas,socket, drawingId)
+        this.pencil = Pencil(context,baseCanvas,socket, selection, drawingId )
+        this.rectangle = Rectangle(context, baseCanvas, socket, selection, drawingId)
+        this.ellipse = Ellipse(context, baseCanvas, socket, selection, drawingId)
     }
 
 

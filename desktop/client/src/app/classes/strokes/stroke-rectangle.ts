@@ -7,7 +7,6 @@ export class StrokeRectangle extends Stroke {
     topLeftCorner: Vec2;
     width: number;
     height: number;
-    isSecondColorTransparent: boolean;
 
     constructor(
         boundingPoints: Vec2[],

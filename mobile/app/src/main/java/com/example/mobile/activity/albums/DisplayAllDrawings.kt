@@ -14,6 +14,7 @@ import com.example.mobile.Interface.IDrawing
 import com.example.mobile.R
 import com.example.mobile.Retrofit.IMyService
 import com.example.mobile.Retrofit.RetrofitClient
+import com.example.mobile.activity.drawing.DrawingActivity
 import com.example.mobile.adapter.DrawingAdapter
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -58,7 +59,7 @@ class DisplayAllDrawings : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
         drawings = java.util.ArrayList()
         searchArrayList = ArrayList()
 
-        drawingAdapter = DrawingAdapter(this, drawings, user)
+        drawingAdapter = DrawingAdapter(this, drawings, user, "")
 
         //Recycler View of rooms
         rvOutputDrawings.adapter = drawingAdapter
@@ -111,8 +112,10 @@ class DisplayAllDrawings : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
             override fun onResponse(call: Call<List<IAlbum>>, response: Response<List<IAlbum>>) {
                 for (album in response.body()!!) {
                     if (album.members.contains(user)!!) {
-                        for (drawing in album.drawingIDs!!) {
-                            displayDrawing(drawing)
+                        if (!album.drawingIDs.isNullOrEmpty()) {
+                            for (drawing in album.drawingIDs!!) {
+                                displayDrawing(drawing)
+                            }
                         }
                     }
                 }
@@ -148,6 +151,11 @@ class DisplayAllDrawings : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
     override fun addLikeToDrawingAdapterListener(drawingId: String) {
         addLikeToDrawing(drawingId)
     }
+
+    override fun emitJoinDrawingListener(drawingId: String) {
+        TODO("Not yet implemented")
+    }
+
 
     private fun addLikeToDrawing(drawingId: String) {
         compositeDisposable.add(iMyService.addLikeToDrawing(drawingId, user)

@@ -1,6 +1,7 @@
 package com.example.mobile.activity.chat
 
 import android.content.Intent
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.util.Log
 import android.widget.*
@@ -84,6 +85,7 @@ class ChatPage : AppCompatActivity(), UserAdapter.UserAdapterListener {
         socket.connect()
         var jo :JSONObject = JSONObject()
 
+        var mediaPlayerHello:MediaPlayer = MediaPlayer.create(this,R.raw.hello)
         btnSend.setOnClickListener{
             if(messageText.text.isNotEmpty()) {
                 if(!messageText.text.isNullOrBlank() ) {
@@ -96,6 +98,7 @@ class ChatPage : AppCompatActivity(), UserAdapter.UserAdapterListener {
                     messageData.put("time", formatted)
                     messageData.put("room", roomName)
                     socket.emit("message", messageData)
+//                    mediaPlayerSendSuccess.start()
                 }
             }
         }
@@ -120,6 +123,7 @@ class ChatPage : AppCompatActivity(), UserAdapter.UserAdapterListener {
                     msgAdapter.notifyItemInserted((rvOutputMsgs.adapter as MessageAdapter).itemCount)
                     rvOutputMsgs.scrollToPosition((rvOutputMsgs.adapter as MessageAdapter).itemCount-1)
                     messageText.text.clear()
+                    //mediaPlayerReceiveSuccess.start()
                 }
             }
         }
@@ -136,6 +140,7 @@ class ChatPage : AppCompatActivity(), UserAdapter.UserAdapterListener {
                     msgAdapter.notifyItemInserted((rvOutputMsgs.adapter as MessageAdapter).itemCount)
                     rvOutputMsgs.scrollToPosition((rvOutputMsgs.adapter as MessageAdapter).itemCount-1)
                     messageText.text.clear()
+                    mediaPlayerHello.start()
                 }
             }
         }
