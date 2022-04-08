@@ -1039,7 +1039,6 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
       const email = request.body.email;
       const newPassword = request.body.newPassword;
       const confirmedPassword = request.body.confirmedPassword;
-      console.log("mdp recu", newPassword, confirmedPassword)
 
       if (newPassword == confirmedPassword) {
         const hashData = salHashPassword(newPassword);

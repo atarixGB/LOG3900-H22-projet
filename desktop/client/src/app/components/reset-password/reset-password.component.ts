@@ -1,5 +1,6 @@
-import { Component, HostListener, OnDestroy } from '@angular/core';
-import { PasswordService } from '@app/services/password/password.service'
+import { Component, OnDestroy } from '@angular/core';
+import { PasswordService } from '@app/services/password/password.service';
+import { NAME_MAX_LENGTH } from '@app/constants/constants';
 
 @Component({
   selector: 'app-reset-password',
@@ -7,29 +8,41 @@ import { PasswordService } from '@app/services/password/password.service'
   styleUrls: ['./reset-password.component.scss']
 })
 export class ResetPasswordComponent implements OnDestroy {
-  uniqueCode: number;
+  readonly MAX_LENGTH = NAME_MAX_LENGTH;
+  uniqueCode: string;
+  areEquals: boolean;
+  isLengthValid: boolean;
 
-  constructor(public passwordService: PasswordService) {}
+  constructor(public passwordService: PasswordService) {
+    this.areEquals = true;
+    this.isLengthValid = true;
 
-  ngOnInit(): void {
+    console.log(this.uniqueCode)
+    console.log(this.passwordService.codeIsValid)
   }
 
   ngOnDestroy(): void {
-    this.passwordService.codeIsValid = false;
+    this.passwordService.emailExists = true;
     this.passwordService.email = "";
+    this.passwordService.newPassword = "";
+    this.passwordService.confirmedPassword = "";
   }
 
-  @HostListener('document:keyup.enter', ['$event'])
   verifyCode(): void {
-    this.passwordService.verifyCode(this.uniqueCode);
+    this.passwordService.verifyCode(Number(this.uniqueCode));
+
   }
 
   changePassword(): void {
-    if (this.passwordService.checkNewPassword()) {
+    if (this.checkPassword()) {
       this.passwordService.changePassword();
-    } else {
-      console.log("Les mots de passe sont différents.")
     }
+  }
+
+  private checkPassword(): boolean {
+    this.areEquals = this.passwordService.newPassword == this.passwordService.confirmedPassword;
+    this.isLengthValid = this.passwordService.newPassword.length <= NAME_MAX_LENGTH
+    return this.areEquals && this.isLengthValid;
   }
 
 }

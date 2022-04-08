@@ -30,7 +30,6 @@ export class PasswordService {
 
     this.httpClient.post(FORGOT_PASSWORD_URL, body).subscribe(
       (result: number) => {
-        console.log("LOLOLOL", result)
         console.log(`Résultat du serveur: ${result}`)
 
         if (result == 204) {
@@ -60,6 +59,7 @@ export class PasswordService {
           this.codeIsValid = true;
         } else if (result == -1) {
           this.codeIsValid = false;
+
         }
       },
       (error) => {
@@ -80,7 +80,6 @@ export class PasswordService {
         console.log(`Résultat du serveur: ${result}`);
 
         if (result == 204) {
-          console.log("Le mot de passe a été changé!")
           this.router.navigate(['../home'], { relativeTo: this.route });
         }
       },
@@ -89,9 +88,5 @@ export class PasswordService {
       }
     )
 
-  }
-
-  checkNewPassword(): boolean {
-    return this.newPassword == this.confirmedPassword;
   }
 }
