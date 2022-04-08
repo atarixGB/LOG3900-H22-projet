@@ -13,7 +13,7 @@
     <form>
       <mat-form-field class="animate__animated"
         [ngClass]="{animate__headShake: !this.isValidUsername || this.signUpService.isExistingUsername}"
-        appearance="fill">
+        appearance="outline">
         <mat-label>Identifiant</mat-label>
         <input matInput placeholder="Entrez votre nom" [(ngModel)]="this.username" name="username">
       </mat-form-field>
@@ -22,7 +22,7 @@
     <p *ngIf="!this.isValidUsername" class="error errorMargin">^ <u>L'identifiant doit être composé de lettres et/ou de
         chiffres uniquement</u> ^</p>
     <form>
-      <mat-form-field class="animate__animated" [ngClass]="{animate__headShake: !this.isValidPW}" appearance="fill">
+      <mat-form-field class="animate__animated" [ngClass]="{animate__headShake: !this.isValidPW}" appearance="outline">
         <mat-label>Mot de passe</mat-label>
         <input matInput placeholder="Entrez votre mot de passe" type="password" [(ngModel)]="this.password"
           name="password">
@@ -31,7 +31,7 @@
     <p *ngIf="!this.isValidPW" class="error errorMargin">^ <u>Le mot de passe ne doit pas contenir d'espaces.</u> ^</p>
     <form>
       <mat-form-field class="animate__animated" [ngClass]="{animate__headShake: !this.isValidConfirmation}"
-        appearance="fill">
+        appearance="outline">
         <mat-label>Confirmation du mot de passe</mat-label>
         <input matInput placeholder="Confirmer votre mot de passe" type="password" [(ngModel)]="this.confirmedPassword"
           name="confirmedPassword">
@@ -41,7 +41,7 @@
         correspondent pas</u> ^</p>
     <form>
       <mat-form-field class="animate__animated"
-        [ngClass]="{animate__headShake: !this.isValidEmail || this.signUpService.isUsedEmail}" appearance="fill">
+        [ngClass]="{animate__headShake: !this.isValidEmail || this.signUpService.isUsedEmail}" appearance="outline">
         <mat-label>Courriel</mat-label>
         <input matInput placeholder="Entrez votre courriel" [(ngModel)]="this.email" name="email">
       </mat-form-field>

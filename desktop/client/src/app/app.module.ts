@@ -78,6 +78,7 @@ import { ChangeAlbumDialogComponent } from './components/album-gallery/drawings-
 import { DeleteDrawingDialogComponent } from './components/album-gallery/drawings-view/delete-drawing-dialog/delete-drawing-dialog.component';
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
+import { PasswordSnackbarComponent } from './components/reset-password/password-snackbar/password-snackbar.component';
 
 @NgModule({
     declarations: [
@@ -134,6 +135,7 @@ import { ForgotPasswordComponent } from './components/forgot-password/forgot-pas
         DeleteDrawingDialogComponent,
         ResetPasswordComponent,
         ForgotPasswordComponent,
+        PasswordSnackbarComponent,
     ],
     imports: [
         BrowserModule,

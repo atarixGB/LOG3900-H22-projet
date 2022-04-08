@@ -68,7 +68,7 @@ export class PasswordService {
     )
   }
 
-  changePassword(): void {
+  async changePassword(): Promise<void> {
     const body = {
       email: this.email,
       newPassword: this.newPassword,
@@ -87,6 +87,5 @@ export class PasswordService {
         console.log(`Erreur du serveur: ${error}`);
       }
     )
-
   }
 }
