@@ -52,6 +52,7 @@
         <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/activity_profile.xml" value="0.1" />
         <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/activity_profile_modification.xml" value="0.15" />
         <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/activity_registration.xml" value="0.3370064279155188" />
+        <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/activity_stories_pop_up.xml" value="0.1382013201320132" />
         <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/activity_top_dessin.xml" value="0.18" />
         <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/activity_visiting_profile.xml" value="0.1" />
         <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/change_album_pop_up.xml" value="0.13802083333333334" />
@@ -61,12 +62,13 @@
         <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/fragment_drawing_name_modification_pop_up.xml" value="0.1859375" />
         <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/fragment_drawing_zone.xml" value="0.11484375" />
         <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/fragment_gallery_fullscreen.xml" value="0.1" />
-        <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/fragment_toolbar.xml" value="0.1" />
+        <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/fragment_toolbar.xml" value="0.22" />
         <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/fragment_toolbar_navigation.xml" value="0.2" />
         <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/image_fullscreen.xml" value="0.1" />
         <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/item_drawing.xml" value="0.3557312252964427" />
         <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/item_gallery_image.xml" value="0.1" />
         <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/item_room.xml" value="0.11484375" />
+        <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/item_story.xml" value="0.1382013201320132" />
         <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/item_top_drawing.xml" value="0.1" />
         <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/item_user.xml" value="0.1" />
         <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/sentmessage.xml" value="0.1" />

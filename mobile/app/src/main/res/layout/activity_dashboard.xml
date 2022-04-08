@@ -100,13 +100,13 @@
         app:layout_constraintTop_toBottomOf="@+id/stories_text" />
 
 
-    <Button
+    <ImageView
         android:id="@+id/session_start"
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_marginTop="25dp"
         android:layout_marginStart="700dp"
-        android:background="@drawable/ic_baseline_palette"
+        android:src="@drawable/startdrawing"
         android:padding="20dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textColor="@color/black"

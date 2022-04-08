@@ -3,6 +3,7 @@ package com.example.mobile.activity.drawing
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
+import com.example.mobile.ISDRAFT
 import com.example.mobile.R
 import com.example.mobile.adapter.AlbumAdapter
 import com.example.mobile.popup.CreateDrawingPopUp
@@ -32,8 +33,11 @@ class DrawingActivity : AppCompatActivity(), CreateDrawingPopUp.DialogListener, 
         sharedViewModelToolBar.setUser(user)
 
         //Open Popup Window
-        var dialog = CreateDrawingPopUp(user, isAlbumAlreadySelected)
-        dialog.show(supportFragmentManager, "customDialog")
+        if(!ISDRAFT){
+            var dialog = CreateDrawingPopUp(user, isAlbumAlreadySelected)
+            dialog.show(supportFragmentManager, "customDialog")
+        }
+
     }
 
     override fun albumAdapterListener(albumName: String,albumID:String) {

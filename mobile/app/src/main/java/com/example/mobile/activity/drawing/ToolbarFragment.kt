@@ -1,42 +1,39 @@
 package com.example.mobile.activity.drawing
 
-import android.Manifest
-import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.*
-import androidx.fragment.app.Fragment
-import android.widget.AdapterView
-import android.widget.Button
-import android.widget.GridView
-import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AlertDialog
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
+import android.widget.*
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.example.mobile.ISDRAFT
 import com.example.mobile.R
 import com.example.mobile.REQUEST_IMAGE_CAMERA
 import com.example.mobile.Tools.ToolAdapter
 import com.example.mobile.Tools.ToolItem
+import com.example.mobile.activity.Dashboard
 import com.example.mobile.activity.albums.Albums
-import com.example.mobile.viewModel.ToolModel
 import com.example.mobile.viewModel.SharedViewModelToolBar
+import com.example.mobile.viewModel.ToolModel
+import kotlinx.android.synthetic.main.activity_registration.*
+import kotlinx.android.synthetic.main.fragment_toolbar.*
+
 
 class ToolbarFragment : Fragment(), AdapterView.OnItemClickListener {
 
     private var gridView: GridView? = null
     private var arrayList:ArrayList<ToolItem> ? = null
     private var toolAdapter: ToolAdapter? = null
+    private var cameraPictureBitmap:Bitmap? = null
     private lateinit var user: String
     private lateinit var saveDrawingBtn : Button
     private lateinit var addToStoryBtn : Button
     private lateinit var takePictureBtn : Button
+    private lateinit var addToStoryText :TextView
     private lateinit var backBtn : Button
     private lateinit var _img: Bitmap
     private val toolChange: ToolModel by activityViewModels()
@@ -57,6 +54,7 @@ class ToolbarFragment : Fragment(), AdapterView.OnItemClickListener {
         val rootView = inflater.inflate(R.layout.fragment_toolbar, container, false)
         saveDrawingBtn = rootView.findViewById(R.id.saveDrawingBtn)
         addToStoryBtn = rootView.findViewById(R.id.addToStoryBtn)
+        addToStoryText=rootView.findViewById(R.id.addToStoryText)
         takePictureBtn=rootView.findViewById(R.id.takePictureBtn)
         backBtn = rootView.findViewById(R.id.backBtn)
         gridView = rootView.findViewById(R.id.weight_view)
@@ -65,6 +63,8 @@ class ToolbarFragment : Fragment(), AdapterView.OnItemClickListener {
         toolAdapter = ToolAdapter(activity?.baseContext!!, arrayList!!)
         gridView?.adapter = toolAdapter
         gridView?.onItemClickListener = this
+
+
 
         sharedViewModel.user.observe(viewLifecycleOwner) {
             user = it
@@ -83,7 +83,6 @@ class ToolbarFragment : Fragment(), AdapterView.OnItemClickListener {
             backBtn.setOnClickListener {
                 //enregistrer avant de quitter
                 toolChange.onClick()
-
                 val intent = Intent(activity, Albums::class.java)
                 intent.putExtra("userName", user)
                 startActivity(intent)
@@ -92,42 +91,30 @@ class ToolbarFragment : Fragment(), AdapterView.OnItemClickListener {
         else{
             saveDrawingBtn.isVisible=false
             addToStoryBtn.isVisible=false
+            addToStoryText.isVisible=false
+
+            backBtn.setOnClickListener {
+                val intent = Intent(activity, Dashboard::class.java)
+                intent.putExtra("userName", user)
+                startActivity(intent)
+            }
 
             takePictureBtn.setOnClickListener{
-
-                val builder = AlertDialog.Builder(requireContext())
-                builder.setTitle("Photo de profile")
-                builder.setMessage("Prends une belle photo! ")
-                builder.setNegativeButton("Lance la caméra") { dialog, which ->
-                    dialog.dismiss()
-                    Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
-                        takePictureIntent.resolveActivity().also {
-                            val permission = ContextCompat.checkSelfPermission(
-                                this,
-                                android.Manifest.permission.CAMERA
-                            )
-                            if (permission != PackageManager.PERMISSION_GRANTED) {
-                                ActivityCompat.requestPermissions(
-                                    this,
-                                    arrayOf(android.Manifest.permission.CAMERA),
-                                    1
-                                )
-                            } else {
-                                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAMERA)
-                            }
-                        }
-                    }
-                }
-
-                val dialog: AlertDialog = builder.create()
-                dialog.show()
+                val cInt = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+                startActivityForResult(cInt, REQUEST_IMAGE_CAMERA)
             }
 
         }
-
-
-
         return rootView
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_IMAGE_CAMERA && resultCode == Activity.RESULT_OK && data != null) {
+            cameraPictureBitmap=data.extras?.get("data") as Bitmap
+        } else if(resultCode==Activity.RESULT_CANCELED){
+            Toast.makeText(activity, "Erreur capture", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun setDataList():ArrayList<ToolItem>{
