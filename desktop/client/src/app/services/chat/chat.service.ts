@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as io from 'socket.io-client';
-import { CHAT_URL, JOIN_ROOM_URL, LEAVE_ROOM_URL } from '@app/constants/api-urls';
+import { ALL_PUBLIC_CHATROOM_USERS_URL, CHAT_URL, JOIN_ROOM_URL, LEAVE_ROOM_URL } from '@app/constants/api-urls';
 import { HttpClient } from '@angular/common/http';
 import { CREATE_ROOM_URL, ALL_ROOMS_URL, DELETE_ROOM_URL } from '@app/constants/api-urls';
 import { LoginService } from '../login/login.service';
@@ -16,6 +16,7 @@ export class ChatService {
   publicRooms: IChatroom[];
   myRooms: IChatroom[];
   currentRoom: IChatroom;
+  publicUsersList: any;
 
   filteredRooms: IChatroom[];
   filterActivated: boolean;
@@ -29,6 +30,8 @@ export class ChatService {
     };
     this.publicRooms = [];
     this.myRooms = [];
+
+    this.publicUsersList = [];
 
     this.filteredRooms = [];
     this.filterActivated = false;
@@ -167,6 +170,20 @@ export class ChatService {
       (error) => {
         console.log(`Impossible de supprimer la conversation "${roomName}".\nErreur:`, error);
       })
+  }
+
+  getAllUsers(): void {
+    const url = ALL_PUBLIC_CHATROOM_USERS_URL;
+    this.httpClient.get(url).subscribe(
+      (result) => {
+        console.log("Résultat du serveur", result);
+        this.publicUsersList = result;
+
+      },
+      (error) => {
+        console.log("Impossible de récupérer la liste des membres dans le canal public.\nErreur:", error)
+      }
+    )
   }
 
   disconnect(): void {

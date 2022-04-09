@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AlbumGalleryComponent } from '@app/components/album-gallery/my-albums/album-gallery.component';
+import { AdvancedResearchComponent } from './components/advanced-research/advanced-research.component';
 import { DrawingsViewComponent } from './components/album-gallery/drawings-view/drawings-view.component';
 import { PublicAlbumsComponent } from './components/album-gallery/public-albums/public-albums.component';
-import { PublicDrawingGalleryComponent } from './components/album-gallery/public-drawing-gallery/public-drawing-gallery.component';
 import { ChatMenuComponent } from './components/chat/chat-menu/chat-menu.component';
 import { ChatroomComponent } from './components/chat/chatroom/chatroom.component';
 import { PublicChatroomsComponent } from './components/chat/public-chatrooms/public-chatrooms.component';
@@ -29,7 +29,6 @@ const routes: Routes = [
     { path: 'public-chatrooms', component: PublicChatroomsComponent },
     { path: 'my-albums', component: AlbumGalleryComponent },
     { path: 'all-albums', component: PublicAlbumsComponent },
-    { path: 'public-gallery', component: PublicDrawingGalleryComponent },
     { path: 'drawing-view', component: DrawingsViewComponent },
     { path: 'profile/:username', component: ProfileComponent },
     { path: 'profileSettings', component: ProfileSettingsComponent },
@@ -37,6 +36,7 @@ const routes: Routes = [
     { path: 'top-drawings', component: TopDrawingsComponent },
     { path: 'forgot-password', component: ForgotPasswordComponent },
     { path: 'reset-password', component: ResetPasswordComponent },
+    { path: 'advanced-search', component: AdvancedResearchComponent },
     { path: '**', redirectTo: '/menu' },
 ];
 

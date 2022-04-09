@@ -6,7 +6,6 @@ export interface IUser {
   avatar: any,
   email: string,
   description?: string,
-  favoriteDrawingsID?: string[];
   collaborationCount?: number;
   totalCollaborationTime?: number;
 }

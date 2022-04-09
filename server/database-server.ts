@@ -355,6 +355,14 @@ mongoClient.connect(process.env.POLYGRAM_APP_DATABASE_URL, { useNewUrlParser: tr
         });
     });
 
+    // get all users in the public chatroom (aka all signed up users)
+    app.get("/chat/users", (request, response) => {
+      DB.collection("users").aggregate([{ $project: { identifier: 1 } }]).toArray((err, res) => {
+        if (err) throw err;
+        console.log(res.length)
+        response.json(res);
+      })
+    })
     //==========================================================================================================
     // Drawing Management
     //==========================================================================================================
@@ -392,7 +400,8 @@ mongoClient.connect(process.env.POLYGRAM_APP_DATABASE_URL, { useNewUrlParser: tr
 
     app.get("/getAllUserDrawings/:user", (request, response, next) => {
 
-      var user = request.params.user.replace(/"/g, '');;
+      var user = request.params.user.replace(/"/g, '');
+      // var user = request.params.user.replaceAll(/"/g, '');
 
       console.log(user);
 
@@ -733,7 +742,7 @@ mongoClient.connect(process.env.POLYGRAM_APP_DATABASE_URL, { useNewUrlParser: tr
             DB.collection("albums").findOneAndUpdate({ _id: mongoose.Types.ObjectId(albumId) }, { "$pull": { drawingIDs: drawingID } },
               function (error, result) {
                 response.json(201);
-                console.log("album updated");
+                console.log(`Drawing with ID ${drawingID} has been successfuly removed from album ${albumId}`);
               }
             );
           }
@@ -767,9 +776,6 @@ mongoClient.connect(process.env.POLYGRAM_APP_DATABASE_URL, { useNewUrlParser: tr
       var newAlbumName = post_data.newAlbumName;
       var newDescription = post_data.newDescription;
 
-      //==========================================================================================================
-      // Profile modification
-      //==========================================================================================================
       //check if an album already has the new name
       DB.collection("albums")
         .find({ name: newAlbumName })
@@ -885,7 +891,7 @@ mongoClient.connect(process.env.POLYGRAM_APP_DATABASE_URL, { useNewUrlParser: tr
       });
     })
 
-    // Get the total duration of userId in collab sessions
+    // Get the total duration of username in collab sessions
     app.get("/profile/stats/collabs/total-duration/:username", (request, response) => {
       const identifier = request.params.username;
 
@@ -921,7 +927,6 @@ mongoClient.connect(process.env.POLYGRAM_APP_DATABASE_URL, { useNewUrlParser: tr
         const totalNbrOfDrawingsCreated = result.length;
         response.json(totalNbrOfDrawingsCreated)
       })
-
     })
 
     // Get the total number of likes by username 
@@ -979,7 +984,21 @@ mongoClient.connect(process.env.POLYGRAM_APP_DATABASE_URL, { useNewUrlParser: tr
         response.json(totalNbrOfAlbumsCreated);
       })
     })
+    
+    //==========================================================================================================
+    // Advanced Search 
+    //==========================================================================================================
 
+    app.get("/search/:category/:attribute/:keyword", (request, response) => {
+      const category = request.params.category;
+      const attribute = request.params.attribute;
+      const keyword = request.params.keyword;
+
+      DB.collection(category).find({ [attribute]: { $regex: keyword } }).toArray((error, result) => {
+        if (error) throw error;
+        response.json(result);
+      })
+    })
 
     //==========================================================================================================
     // Reset password
