@@ -23,6 +23,15 @@ let infoOnActiveRooms = new Map();
 ioCollab.on('connection', (socket) => {
 
       // COLLAB ROOM EVENTS
+      // Messaging
+      socket.on('collabMessage', (msg) => {
+        ioCollab.to(msg.room).emit('receiveCollabMessage', msg);
+      })
+
+      socket.on('joinCollabChat', (room) => {
+        socket.join(room);
+      })
+
       // This event is to make sure the other collaborator's selections are pasted before a new member joins
       socket.on('prepForJoin', (data) => {
         const roomName = data.room; // Note: The room name is the drawingID

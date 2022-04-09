@@ -66,7 +66,7 @@ function createAppWindows() {
             pathname: path.join(__dirname, `/dist/client/index.html`),
             protocol: 'file:',
             slashes: true,
-            hash: '/chatmenu',
+            hash: '/collab-chatroom',
         }),
     );
 
@@ -78,6 +78,7 @@ function createAppWindows() {
       e.preventDefault();
       console.log("Closing the chat window is disabled")
     });
+
 }
 
 app.on('ready', createAppWindows);
@@ -111,3 +112,51 @@ ipcMain.on('view-profile', (event, data) => {
   console.log("ipcMain received view-profile event. Is event send from chat window ?", data);
   event.reply('view-profile-reply', data);
 })
+
+// Gestion de la fenêtre de clavardage lors d'une session collaborative
+ipcMain.on('open-collab-chat', (event, data) => {
+    console.log('ipcMain received open-collab-chat event');
+
+    /*********************************/
+    /******* COLLAB CHAT WINDOW *****/
+    /*********************************/
+
+    collabChatWindow = new BrowserWindow({
+        icon: APP_ICON,
+        height: 600,
+        width: 800,
+        minHeight: 600,
+        minWidth: 800,
+        maxHeight: 1080,
+        maxWidth: 1920,
+        center: true,
+        show: true,
+        webPreferences: {
+            nodeIntegration: true,
+            contextIsolation: false,
+        },
+    });
+
+    collabChatWindow.loadURL(
+        url.format({
+            pathname: path.join(__dirname, `/dist/client/index.html`),
+            protocol: 'file:',
+            slashes: true,
+            hash: '/collab-chatroom',
+        }),
+    );
+
+    collabChatWindow.setMenuBarVisibility(false);
+
+    collabChatWindow.on('close', (e) => {
+      // On désactive la possibilité de fermer la fenêtre pour
+      // éviter la destruction de l'objet (ça lance une erreur sinon)
+      e.preventDefault();
+      console.log("Closing the chat window is disabled")
+    });
+});
+
+ipcMain.on('close-collab-chat', (event, data) => {
+    console.log('ipcMain received close-collab-chat event');
+    collabChatWindow = null;
+});

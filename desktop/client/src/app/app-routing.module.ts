@@ -6,6 +6,7 @@ import { PublicAlbumsComponent } from './components/album-gallery/public-albums/
 import { PublicDrawingGalleryComponent } from './components/album-gallery/public-drawing-gallery/public-drawing-gallery.component';
 import { ChatMenuComponent } from './components/chat/chat-menu/chat-menu.component';
 import { ChatroomComponent } from './components/chat/chatroom/chatroom.component';
+import { CollabChatroomComponent } from './components/chat/collab-chatroom/collab-chatroom.component';
 import { PublicChatroomsComponent } from './components/chat/public-chatrooms/public-chatrooms.component';
 import { EditorComponent } from './components/editor/editor.component';
 import { LoginComponent } from './components/login/login.component';
@@ -23,6 +24,7 @@ const routes: Routes = [
     { path: 'menu', component: MenuComponent },
     { path: 'editor', component: EditorComponent },
     { path: 'chatroom', component: ChatroomComponent },
+    { path: 'collab-chatroom', component: CollabChatroomComponent },
     { path: 'chatmenu', component: ChatMenuComponent },
     { path: 'public-chatrooms', component: PublicChatroomsComponent },
     { path: 'my-albums', component: AlbumGalleryComponent },
