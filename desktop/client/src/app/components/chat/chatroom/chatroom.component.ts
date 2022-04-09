@@ -5,7 +5,6 @@ import { IChatroom } from '@app/interfaces-enums/IChatroom';
 import { IMessage } from '@app/interfaces-enums/IMessage';
 import { ChatService } from '@app/services/chat/chat.service';
 import { SoundEffectsService } from '@app/services/sound-effects/sound-effects.service';
-import { LoginService } from '@app/services/login/login.service';
 import { ChatroomUsersDialogComponent } from './chatroom-users-dialog/chatroom-users-dialog.component';
 import { DeleteRoomDialogComponent } from './delete-room-dialog/delete-room-dialog.component';
 import { LeaveRoomDialogComponent } from './leave-room-dialog/leave-room-dialog.component';
@@ -14,6 +13,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { PUBLIC_CHATROOM } from '@app/constants/constants';
 import { ChatTheme, DARK_THEME, DEFAULT_THEME, IChatTheme, MINECRAFT_THEME } from '@app/constants/chat-themes';
 import { ProfileSettingsService } from '@app/services/profile/profile-settings.service';
+import { LoginService } from '@app/services/login/login.service';
 
 @Component({
   selector: 'app-chatroom',
@@ -21,7 +21,7 @@ import { ProfileSettingsService } from '@app/services/profile/profile-settings.s
   styleUrls: ['./chatroom.component.scss'],
 })
 export class ChatroomComponent implements AfterViewInit {
-  userName: string;
+  userName: string | null;
   message: string;
   timestamp: any;
   messageList: IMessage[];
@@ -49,7 +49,7 @@ export class ChatroomComponent implements AfterViewInit {
     this.userList = [];
     this.socket = this.chatService.socket;
     this.currentRoom = this.chatService.currentRoom;
-    this.isCurrentChatroomMine = this.chatService.currentRoom.identifier == loginService.username;
+    this.isCurrentChatroomMine = this.chatService.currentRoom.identifier == this.loginService.username;
     this.isPublicChatroom = this.currentRoom.roomName == 'default-public-room';
     this.displayedRoomName = this.currentRoom.roomName == "default-public-room" ? "Canal public" : this.currentRoom.roomName;
     this.changeTheme(this.profileSettingsService.currentChatThemeId);
@@ -149,6 +149,7 @@ export class ChatroomComponent implements AfterViewInit {
   getUserProfileInfos(username: string): void {
     if (username != PUBLIC_CHATROOM.owner) {
       console.log("Get info of", username);
+      this.profileService.viewProfile(this.router.url);
       this.router.navigate([`../profile/${username}`], { relativeTo: this.route });
     }
   }

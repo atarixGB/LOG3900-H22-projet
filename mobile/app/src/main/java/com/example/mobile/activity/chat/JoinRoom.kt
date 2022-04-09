@@ -106,6 +106,8 @@ class joinRoom : AppCompatActivity(), RoomAdapter.RoomAdapterListener{
         leaveChatBtn.setOnClickListener {
             leaveChat()
         }
+
+
     }
 
 
@@ -158,7 +160,7 @@ class joinRoom : AppCompatActivity(), RoomAdapter.RoomAdapterListener{
 
             override fun onResponse(call: Call<List<IRoom>>, response: Response<List<IRoom>>) {
                 for (room in response.body()!!) {
-                    if (!room.usersList?.contains(user)) {
+                    if (!room.usersList?.contains(user)!!) {
                         roomAdapter.addRoom(room)
                         roomAdapter.notifyItemInserted((rvOutputRooms.adapter as RoomAdapter).itemCount)
                     }

@@ -67,6 +67,7 @@ export class LoginService {
             (result) => {
                 console.log("Current user:", result);
                 this.username = result.toString();
+                window.localStorage.setItem("username", this.username);
                 this.profileService.setUsername(this.username);
                 this.profileServiceSettings.getChatThemeId();
             },

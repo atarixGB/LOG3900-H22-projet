@@ -198,5 +198,5 @@ interface IMyService {
     ): Observable<String>
 
     @PUT("drawings/addDrawingToStory/{drawingId}")
-    fun addDrawingToStory(@Path("drawingId") drawingId: String): Observable<String>
+    fun addDrawingToStory(@Path("drawingId") drawingId: String): Observable<Any>
 }

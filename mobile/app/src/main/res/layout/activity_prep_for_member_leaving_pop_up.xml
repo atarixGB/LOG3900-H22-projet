@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".popup.PrepForMemberLeavingPopUp"
+    android:background="@color/white"
+    android:gravity="center">
+
+    <TextView
+        android:id="@+id/popupTitleMemberLeaving"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:text="X a quitte la session"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <Button
+        android:id="@+id/continueBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
+        android:background="@color/black"
+        android:layout_below="@+id/popupTitleMemberLeaving"
+        android:text="Continuer le dessin"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/white"
+        android:textSize="15sp" />
+
+
+
+</RelativeLayout>

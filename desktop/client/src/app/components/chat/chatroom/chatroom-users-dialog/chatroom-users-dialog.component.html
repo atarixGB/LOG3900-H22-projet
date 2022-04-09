@@ -1,10 +1,18 @@
 <h2 mat-dialog-title>Membres de "{{this.displayedRoomName}}"</h2>
 
 <mat-dialog-content class="mat-typography">
-  <ul>
+  <ul *ngIf="!this.isPublicChatroom">
     <li *ngFor="let user of this.data.usersList">
       <span id="username" (click)="getUserProfileInfos(user)">
         {{user}}
+      </span>
+    </li>
+  </ul>
+
+  <ul *ngIf="this.isPublicChatroom">
+    <li *ngFor="let user of this.chatService.publicUsersList">
+      <span id="username" (click)="getUserProfileInfos(user.identifier)">
+        {{user.identifier}}
       </span>
     </li>
   </ul>

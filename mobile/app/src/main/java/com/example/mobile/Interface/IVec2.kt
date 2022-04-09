@@ -4,6 +4,6 @@ import com.google.gson.annotations.SerializedName
 
 data class IVec2 (
     @SerializedName("x")
-    val x: Float,
+    var x: Float,
     @SerializedName("y")
-    val y: Float){}
+    var y: Float){}
