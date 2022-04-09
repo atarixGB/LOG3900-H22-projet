@@ -3,6 +3,7 @@ package com.example.mobile.activity.chat
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -55,6 +56,8 @@ class ChatRooms : AppCompatActivity(), CreateRoomPopUp.DialogListener, RoomAdapt
     private val sharedViewModel: SharedViewModelToolBar by viewModels()
     private var openedChatPageName = ""
 
+
+
     override fun onStop() {
         compositeDisposable.clear()
         super.onStop()
@@ -89,6 +92,8 @@ class ChatRooms : AppCompatActivity(), CreateRoomPopUp.DialogListener, RoomAdapt
         socket.connect()
 
         getRooms()
+
+        var mediaPlayerReceiveSuccess: MediaPlayer = MediaPlayer.create(baseContext,R.raw.receive)
 
         // TODO: ici tu dois parcourir la liste des rooms et trouver celle qui a le roomName qui est retournée par le observable
         // et mettre le isNotified à true
@@ -144,6 +149,7 @@ class ChatRooms : AppCompatActivity(), CreateRoomPopUp.DialogListener, RoomAdapt
                 val room = messageData.get("room") as String
                 val msg = IMessage(message, user, time, room, false)
                 if (room != openedChatPageName) {
+                    mediaPlayerReceiveSuccess.start()
                     saveInFile(msg)
                     colorMessageRoom(messageData, user)
                 }
@@ -161,7 +167,7 @@ class ChatRooms : AppCompatActivity(), CreateRoomPopUp.DialogListener, RoomAdapt
         try{
             var gson = Gson()
             var jsonString = gson.toJson(msg)
-            baseContext.openFileOutput("$roomName.txt", Context.MODE_APPEND).use {
+            baseContext.openFileOutput("${msg.room}.txt", Context.MODE_APPEND).use {
                 it.write(jsonString.toByteArray())
                 it.write(("//").toByteArray())
             }

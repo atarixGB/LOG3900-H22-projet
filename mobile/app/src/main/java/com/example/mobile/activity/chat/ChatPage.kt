@@ -57,14 +57,9 @@ class ChatPage : AppCompatActivity(), UserAdapter.UserAdapterListener {
     private lateinit var chatViewOptions: ImageButton
     private lateinit var roomName : String
     private lateinit var IRoom: IRoom
-    private var isOnline  = false
 
     private lateinit var iMyService: IMyService
     internal var compositeDisposable = CompositeDisposable()
-    //to delete
-    private lateinit var readBtn : Button
-    private val notificationModel: NotificationModel by viewModels()
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -101,11 +96,6 @@ class ChatPage : AppCompatActivity(), UserAdapter.UserAdapterListener {
         }
         var mediaPlayerReceiveSuccess: MediaPlayer = MediaPlayer.create(baseContext,R.raw.receive)
 
-        //for test purpose
-        readBtn = findViewById(R.id.readBtn)
-        isOnline = true
-
-
         //Connect to the Server
         SocketHandler.setSocket()
         socket = SocketHandler.getSocket()
@@ -133,15 +123,7 @@ class ChatPage : AppCompatActivity(), UserAdapter.UserAdapterListener {
                 val msg = IMessage(message, user, time, room, false)
                 mediaPlayerReceiveSuccess.start()
                 saveInFile(msg)
-//                if(!isOnline){
-//                    var jo = JSONObject()
-//                    jo.put("roomName", roomName)
-//                    //TODO : change username to id
-//                    jo.put("userId",this.user)
-//                    socket.emit("onMessageReceivedOffline", jo)
-//                }else{
-                    printMessagesOnUI(msg)
-               // }
+                printMessagesOnUI(msg)
             }
         }
 
@@ -317,13 +299,11 @@ class ChatPage : AppCompatActivity(), UserAdapter.UserAdapterListener {
                 messageData.put("time", formatted)
                 messageData.put("room", roomName)
                 socket.emit("message", messageData)
-    //                    mediaPlayerSendSuccess.start()
             }
         }
     }
 
     fun leaveChat(){
-        isOnline = false
         socket.emit("userLeftChatPage", roomName)
         socket.disconnect()
         onBackPressed()
