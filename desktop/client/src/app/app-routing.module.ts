@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AlbumGalleryComponent } from '@app/components/album-gallery/my-albums/album-gallery.component';
+import { AdvancedResearchComponent } from './components/advanced-research/advanced-research.component';
 import { DrawingsViewComponent } from './components/album-gallery/drawings-view/drawings-view.component';
 import { PublicAlbumsComponent } from './components/album-gallery/public-albums/public-albums.component';
-import { PublicDrawingGalleryComponent } from './components/album-gallery/public-drawing-gallery/public-drawing-gallery.component';
 import { ChatMenuComponent } from './components/chat/chat-menu/chat-menu.component';
 import { ChatroomComponent } from './components/chat/chatroom/chatroom.component';
 import { CollabChatroomComponent } from './components/chat/collab-chatroom/collab-chatroom.component';
@@ -15,6 +15,8 @@ import { FavoriteDrawingsComponent } from './components/profile/favorite-drawing
 import { ProfileSettingsComponent } from './components/profile/profile-settings/profile-settings.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { TopDrawingsComponent } from './components/profile/top-drawings/top-drawings.component';
+import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
+import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component'
 import { SignUpComponent } from './components/sign-up/sign-up.component';
 
 const routes: Routes = [
@@ -29,12 +31,14 @@ const routes: Routes = [
     { path: 'public-chatrooms', component: PublicChatroomsComponent },
     { path: 'my-albums', component: AlbumGalleryComponent },
     { path: 'all-albums', component: PublicAlbumsComponent },
-    { path: 'public-gallery', component: PublicDrawingGalleryComponent },
     { path: 'drawing-view', component: DrawingsViewComponent },
     { path: 'profile/:username', component: ProfileComponent },
     { path: 'profileSettings', component: ProfileSettingsComponent },
     { path: 'favorite-drawings', component: FavoriteDrawingsComponent },
     { path: 'top-drawings', component: TopDrawingsComponent },
+    { path: 'forgot-password', component: ForgotPasswordComponent },
+    { path: 'reset-password', component: ResetPasswordComponent },
+    { path: 'advanced-search', component: AdvancedResearchComponent },
     { path: '**', redirectTo: '/menu' },
 ];
 
