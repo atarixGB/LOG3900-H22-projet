@@ -73,6 +73,11 @@ mat-icon {
   --textColor: none;
   --backgroundColor: none;
   --backgroundImage: none;
+  --backgroundColorMainMessageContainer: none;
+  --backgroundColorSecondMessageContainer: none;
+  --opacityMainContainer: none;
+  --opacitySecondContainer: none;
+  --borderColor: none;
   --messageColorMine: none;
   --messageBackgroundMine: none;
   --messageColorYours: none;
@@ -96,5 +101,18 @@ mat-icon {
   #custom-msg-yours {
     color: var(--messageColorYours);
     background-color: var(--messageBackgroundYours);
+  }
+
+  // Main chat container
+  div .bordered {
+    border-color: var(--borderColor);
+    background-color: var(--backgroundColorMainMessageContainer);
+    opacity: var(--opacityMainContainer);
+  }
+
+  // Second chat container
+  div #messagesContainer {
+    background-color: var(--backgroundColorSecondMessageContainer);
+    opacity: var(--opacitySecondContainer);
   }
 }

@@ -158,6 +158,11 @@ export class ChatroomComponent implements AfterViewInit {
   @HostBinding("style.--textColor") textColor: string;
   @HostBinding("style.--backgroundColor") backgroundColor: string;
   @HostBinding("style.--backgroundImage") backgroundImage: string;
+  @HostBinding("style.--backgroundColorMainMessageContainer") backgroundColorMainMessageContainer: string;
+  @HostBinding("style.--backgroundColorSecondMessageContainer") backgroundColorSecondMessageContainer: string;
+  @HostBinding("style.--opacityMainContainer") opacityMainContainer: string;
+  @HostBinding("style.--opacitySecondContainer") opacitySecondContainer: string;
+  @HostBinding("style.--borderColor") borderColor: string;
   @HostBinding("style.--messageColorMine") messageColorMine: string;
   @HostBinding("style.--messageBackgroundMine") messageBackgroundMine: string;
   @HostBinding("style.--messageColorYours") messageColorYours: string;
@@ -182,6 +187,11 @@ export class ChatroomComponent implements AfterViewInit {
     this.textColor = theme.textColor;
     this.backgroundColor = theme.backgroundColor;
     this.backgroundImage = theme.backgroundImage;
+    this.backgroundColorMainMessageContainer = theme.backgroundColorMainMessageContainer;
+    this.backgroundColorSecondMessageContainer = theme.backgroundColorSecondMessageContainer;
+    this.opacityMainContainer = theme.opacityMainContainer;
+    this.opacitySecondContainer = theme.opacitySecondContainer;
+    this.borderColor = theme.borderColor;
     this.messageColorMine = theme.messageColorMine;
     this.messageBackgroundMine = theme.messageBackgroundMine;
     this.messageColorYours = theme.messageColorYours;
