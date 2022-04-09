@@ -36,8 +36,7 @@ export class ProfileSettingsComponent implements AfterContentInit {
     }
 
     changeTheme(themeId: ChatTheme): void {
-      console.log(themeId);
-      this.profileSettingsService.currentChatThemeId = themeId;
+      this.profileSettingsService.newChatThemeId = themeId;
     }
 
     onCancel(): void {

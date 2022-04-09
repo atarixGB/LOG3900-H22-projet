@@ -19,6 +19,7 @@ export class ProfileSettingsService {
     isExistingUsername: boolean;
 
     currentChatThemeId: ChatTheme;
+    newChatThemeId: ChatTheme;
 
     constructor(private httpClient: HttpClient,  private router: Router, private route: ActivatedRoute, public profileService: ProfileService, private soundEffectsService: SoundEffectsService) {
         this.getUserInfoFromProfile();
@@ -40,7 +41,9 @@ export class ProfileSettingsService {
 
     saveChanges() : void {
         this.setBoolsToDefault();
+
         if(this.somethingChanged()) {
+          this.currentChatThemeId = this.newChatThemeId;
             if (this.isValidNewUsername()) {
                 this.sendChangesToDB()
             } else {
@@ -53,7 +56,10 @@ export class ProfileSettingsService {
     }
 
     private somethingChanged(): boolean {
-        return this.profileService.username != this.newUsername || this.profileService.avatarSrc != this.newAvatarSrc || this.profileService.description != this.newDescription;
+        return this.profileService.username != this.newUsername
+        || this.profileService.avatarSrc != this.newAvatarSrc
+        || this.profileService.description != this.newDescription
+        || this.currentChatThemeId != this.newChatThemeId;
     }
 
     private isValidNewUsername(): boolean {
@@ -63,12 +69,15 @@ export class ProfileSettingsService {
 
     private sendChangesToDB(): void {
         // POST request to update new profile info
+        console.log("sendChangesToDB()");
+
         const newInfos = {
             oldUsername: this.profileService.username,
             newUsername: this.newUsername,
             newAvatar: this.newAvatarSrc,
             newDescription : this.newDescription,
-            newEmail: this.profileService.email
+            newEmail: this.profileService.email,
+            newChatThemeId: this.newChatThemeId
         };
 
         this.httpClient.post(PROFILE_UPDATE_URL, newInfos).subscribe(
@@ -89,5 +98,4 @@ export class ProfileSettingsService {
             },
         );
     }
-
 }

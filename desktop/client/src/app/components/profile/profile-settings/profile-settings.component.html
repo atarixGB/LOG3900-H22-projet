@@ -114,7 +114,7 @@
           <div fxLayout="column" fxLayoutAlign="center start">
             <span>Thème</span>
             <mat-form-field class="soundField" appearance="outline">
-              <mat-select [(ngModel)]="this.profileSettingsService.currentChatThemeId" [value]="this.profileSettingsService.currentChatThemeId" (valueChange)="changeTheme($event)">
+              <mat-select [value]="this.profileSettingsService.currentChatThemeId" (valueChange)="changeTheme($event)">
                 <mat-option [value]="0">Clair (défaut)</mat-option>
                 <mat-option [value]="1">Sombre</mat-option>
                 <mat-option [value]="2">Minecraft</mat-option>

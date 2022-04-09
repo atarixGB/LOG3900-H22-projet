@@ -827,6 +827,7 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
       var newUsername = post_data.newUsername;
       var avatar = post_data.newAvatar;
       var description = post_data.newDescription;
+      var chatThemeId = post_data.newChatThemeId;
 
       //check if a user already has the new name
       DB.collection("users")
@@ -838,11 +839,12 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
           } else {
             // Update user data
             DB.collection("users").updateOne({ identifier: oldUsername }, {
-              $set : {
-                "identifier" : newUsername,
-                "avatar" : avatar,
-                "description" : description
-              },
+              $set: {
+                "identifier": newUsername,
+                "avatar": avatar,
+                "description": description,
+                "chatThemeId" : chatThemeId // add new theme id
+              }
             }).then(result => {
               response.json(200);
             });
