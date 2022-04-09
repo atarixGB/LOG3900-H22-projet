@@ -96,11 +96,11 @@ export class CollabChatroomComponent implements AfterViewInit {
       if (inputField) inputField.focus();
   }
 
-  /*viewUsers(): void {
-    this.dialog.open(ChatroomUsersDialogComponent, {
+  viewUsers(): void {
+    /*this.dialog.open(ChatroomUsersDialogComponent, {
       data: this.chatService.currentRoom
-    })
-  }*/
+    })*/
+  }
 
   getUserProfileInfos(username: string): void {
     /*if (username != PUBLIC_CHATROOM.owner) {

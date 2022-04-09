@@ -38,6 +38,12 @@ function createAppWindows() {
 
     mainWindow.on('closed', () => {
         mainWindow = null;
+        if (chatWindow) {
+            chatWindow.destroy();
+        }
+        if (collabChatWindow) {
+            collabChatWindow.destroy();
+        }
         app.quit();
     });
 
@@ -66,7 +72,7 @@ function createAppWindows() {
             pathname: path.join(__dirname, `/dist/client/index.html`),
             protocol: 'file:',
             slashes: true,
-            hash: '/collab-chatroom',
+            hash: '/chatmenu',
         }),
     );
 
