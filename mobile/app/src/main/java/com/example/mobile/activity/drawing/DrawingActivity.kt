@@ -44,8 +44,7 @@ class DrawingActivity : AppCompatActivity(), CreateDrawingPopUp.DialogListener, 
 
         //collaboration
         collabDrawingId = intent.getStringExtra("drawingCollabId").toString()
-//        jsonString = intent.getStringArrayExtra("jsonString").toString()
-
+        sharedViewModelToolBar.setDrawingId(collabDrawingId)
         sharedViewModelToolBar.setUser(user)
         if (collabDrawingId == "null") {
             //Open Popup Window
@@ -73,6 +72,5 @@ class DrawingActivity : AppCompatActivity(), CreateDrawingPopUp.DialogListener, 
     override fun drawingIdPopUpListener(drawingId: String) {
         sharedViewModelToolBar.setDrawingId(drawingId)
         DrawingSocket.socket.emit("joinCollab", drawingId)
-//        DrawingSocket.prepForJoin(collabDrawingId, user)
     }
 }

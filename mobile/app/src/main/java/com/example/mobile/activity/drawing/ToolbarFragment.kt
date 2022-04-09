@@ -15,6 +15,7 @@ import com.example.mobile.Tools.ToolItem
 import com.example.mobile.activity.albums.Albums
 import com.example.mobile.viewModel.ToolModel
 import com.example.mobile.viewModel.SharedViewModelToolBar
+import org.json.JSONObject
 
 class ToolbarFragment : Fragment(), AdapterView.OnItemClickListener {
 
@@ -22,6 +23,7 @@ class ToolbarFragment : Fragment(), AdapterView.OnItemClickListener {
     private var arrayList:ArrayList<ToolItem> ? = null
     private var toolAdapter: ToolAdapter? = null
     private lateinit var user: String
+    private lateinit var drawingId: String
     private lateinit var saveDrawingBtn : Button
     private lateinit var backBtn : Button
     private lateinit var _img: Bitmap
@@ -53,14 +55,23 @@ class ToolbarFragment : Fragment(), AdapterView.OnItemClickListener {
             user = it
         }
 
+        sharedViewModel.drawingId.observe(viewLifecycleOwner){
+            drawingId = it
+        }
+
         saveDrawingBtn.setOnClickListener {
             toolChange.onClick()
         }
 
         backBtn.setOnClickListener {
+            //tell server we leavin
+            var roomData = JSONObject()
+            roomData.put("room", drawingId)
+            roomData.put("username", user)
+            DrawingSocket.socket.emit("leaveCollab", roomData)
+
             //enregistrer avant de quitter
             toolChange.onClick()
-
             val intent = Intent(activity, Albums::class.java)
             intent.putExtra("userName", user)
             startActivity(intent)

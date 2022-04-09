@@ -22,9 +22,6 @@ class PrepForMemberLeavingPopUp(val userLeft: String) : DialogFragment() {
         savedInstanceState: Bundle?
     ): View? {
         var rootView: View = inflater.inflate(R.layout.activity_prep_for_member_leaving_pop_up, container, false)
-
-
-
         popUpTitle = rootView.popupTitleMemberLeaving
         popUpTitle.text = "$userLeft a quitté la session! "
 

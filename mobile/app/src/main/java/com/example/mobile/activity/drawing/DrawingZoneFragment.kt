@@ -66,8 +66,6 @@ class DrawingZoneFragment : Fragment() {
         DrawingSocket.socket.on("prepForNewMember", onPrepForNewMember)
         DrawingSocket.socket.on("fetchStrokes", onFetchStrokes)
 
-//        DrawingSocket.socket.on("joinSuccessful", onLoadCurrentSessionData)
-
         DrawingSocket.socket.on("memberLeft", onMemberLeaving)
 
         val sharedViewModelToolBar: SharedViewModelToolBar by activityViewModels()
@@ -162,19 +160,6 @@ class DrawingZoneFragment : Fragment() {
         mDrawingView.updateCollabInfos()
     }
 
-//    private var onLoadCurrentSessionData= Emitter.Listener {
-//        /* let roomData = {
-//          members: [socket.id],
-//          strokes: [],
-//        };*/
-//        val joinEvent = it[0] as JSONObject
-//        val jsonStrokes = joinEvent["strokes"] as JSONArray
-//        for (i in 0 until jsonStrokes.length()) {
-//            val obj = jsonStrokes[i] as JSONObject
-//            mDrawingView.onStrokeReceive(obj)
-//        }
-//    }
-
     private var onMemberLeaving = Emitter.Listener {
         val userLeft = it[0] as String
         //Open Popup Window
@@ -215,13 +200,6 @@ class DrawingZoneFragment : Fragment() {
 
         fun onLoadCurrentStrokeData(jsonString: ArrayList<String>) {
             this.upComingStrokes = jsonString
-
-//            for (i in 0 until jsonStrokes.length()) {
-//                val obj = jsonStrokes[0.toString()]
-////                val obj2 = gson.toJsonTree(obj)
-//                val b =false
-////                this.onStrokeReceive(obj2)
-//            }
         }
 
         fun onSelectionReceive(stroke: JSONObject){
