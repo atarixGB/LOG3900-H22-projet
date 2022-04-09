@@ -1,6 +1,8 @@
 package com.example.mobile.activity.chat
 
+import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -8,21 +10,27 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.core.view.get
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mobile.IRoom
+import com.example.mobile.Interface.IMessage
 import com.example.mobile.R
 import com.example.mobile.Retrofit.IMyService
 import com.example.mobile.Retrofit.RetrofitClient
 import com.example.mobile.SocketHandler
+import com.example.mobile.adapter.MessageAdapter
 import com.example.mobile.adapter.RoomAdapter
 import com.example.mobile.popup.CreateRoomPopUp
+import com.example.mobile.viewModel.NotificationModel
 import com.example.mobile.viewModel.SharedViewModelToolBar
 import com.google.gson.Gson
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import io.socket.client.Socket
+import kotlinx.android.synthetic.main.fragment_custom_tool.view.*
 import org.json.JSONArray
 import org.json.JSONObject
 import retrofit2.Call
@@ -45,6 +53,7 @@ class ChatRooms : AppCompatActivity(), CreateRoomPopUp.DialogListener, RoomAdapt
     internal var compositeDisposable = CompositeDisposable()
 
     private val sharedViewModel: SharedViewModelToolBar by viewModels()
+    private var openedChatPageName = ""
 
     override fun onStop() {
         compositeDisposable.clear()
@@ -74,7 +83,6 @@ class ChatRooms : AppCompatActivity(), CreateRoomPopUp.DialogListener, RoomAdapt
         rvOutputRooms.adapter = roomAdapter
         rvOutputRooms.layoutManager = GridLayoutManager(this, 2)
 
-
         //Connect to the Server
         SocketHandler.setSocket()
         socket = SocketHandler.getSocket()
@@ -82,6 +90,8 @@ class ChatRooms : AppCompatActivity(), CreateRoomPopUp.DialogListener, RoomAdapt
 
         getRooms()
 
+        // TODO: ici tu dois parcourir la liste des rooms et trouver celle qui a le roomName qui est retournée par le observable
+        // et mettre le isNotified à true
 
         create_room_btn.setOnClickListener {
             //Open Popup Window
@@ -113,7 +123,7 @@ class ChatRooms : AppCompatActivity(), CreateRoomPopUp.DialogListener, RoomAdapt
                 for (i: Int in 0 until usersJsonArray.length()) {
                     usersList.add(usersJsonArray.get(i).toString())
                 }
-                val room = IRoom("1", user, roomName, usersList)
+                val room = IRoom("1", user, roomName, usersList, false)
 
                 if (this.user == user) {
                     runOnUiThread {
@@ -123,10 +133,45 @@ class ChatRooms : AppCompatActivity(), CreateRoomPopUp.DialogListener, RoomAdapt
                 }
             }
         }
+
+        socket.on("message") { args ->
+            if (args[0] != null) {
+                var messageData = JSONObject()
+                messageData = args[0] as JSONObject
+                val message = messageData.get("message") as String
+                val user = messageData.get("userName") as String
+                val time = messageData.get("time") as String
+                val room = messageData.get("room") as String
+                val msg = IMessage(message, user, time, room, false)
+                if (room != openedChatPageName) {
+                    saveInFile(msg)
+                    colorMessageRoom(messageData, user)
+                }
+            }
+        }
+
+        socket.on("userLeftChatPage") { args ->
+            if (args[0] != null) {
+                openedChatPageName = ""
+            }
+        }
+    }
+
+    private fun saveInFile(msg: IMessage) {
+        try{
+            var gson = Gson()
+            var jsonString = gson.toJson(msg)
+            baseContext.openFileOutput("$roomName.txt", Context.MODE_APPEND).use {
+                it.write(jsonString.toByteArray())
+                it.write(("//").toByteArray())
+            }
+        }catch (e:Exception){
+            Log.d("ChatPage", "Erreur dans l'ecriture du fichier")
+        }
     }
 
     fun openChat(){
-        //isChatOpen = true
+        openedChatPageName = this.roomName
         val intent = Intent(this, ChatPage::class.java)
         intent.putExtra("userName",user)
         intent.putExtra("roomName", this.roomName)
@@ -193,7 +238,24 @@ class ChatRooms : AppCompatActivity(), CreateRoomPopUp.DialogListener, RoomAdapt
 
         })
 
-
     }
+    private fun colorMessageRoom(obj : JSONObject, user : String){
+        var room = obj.getString("room")
+        var inComingUser = obj.getString("userName")
+        //only the one connected on this device receive the message
+        if(inComingUser == user){
+            for(r in IRooms){
+                if(r.roomName == room){
+                    r.isNotified = true
+                    runOnUiThread {
+                        roomAdapter.notifyDataSetChanged()
+                    }
+                }
+            }
+        }
+    }
+
+
+
 }
 

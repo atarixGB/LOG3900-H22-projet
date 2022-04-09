@@ -207,6 +207,7 @@ mongoClient.connect(process.env.POLYGRAM_APP_DATABASE_URL, { useNewUrlParser: tr
       var identifier = post_data.identifier;
       var roomName = post_data.roomName;
       var usersList = post_data.usersList;
+      var messages = post_data.messages
 
       if (typeof usersList === 'string' || usersList instanceof String) {
         usersList = [post_data.usersList];
@@ -220,7 +221,8 @@ mongoClient.connect(process.env.POLYGRAM_APP_DATABASE_URL, { useNewUrlParser: tr
       var insertJson = {
         identifier: identifier,
         roomName: roomName,
-        usersList: usersList
+        usersList: usersList,
+        messages : []
       };
 
       //check if room exists
