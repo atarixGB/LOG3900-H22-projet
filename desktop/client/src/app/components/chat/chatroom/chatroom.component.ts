@@ -32,6 +32,8 @@ export class ChatroomComponent implements AfterViewInit {
   isCurrentChatroomMine: boolean;
   isPublicChatroom: boolean;
 
+  displayedRoomName: string;
+
   constructor(
     public chatService: ChatService,
     public loginService: LoginService,
@@ -49,6 +51,7 @@ export class ChatroomComponent implements AfterViewInit {
     this.currentRoom = this.chatService.currentRoom;
     this.isCurrentChatroomMine = this.chatService.currentRoom.identifier == loginService.username;
     this.isPublicChatroom = this.currentRoom.roomName == 'default-public-room';
+    this.displayedRoomName = this.currentRoom.roomName == "default-public-room" ? "Canal public" : this.currentRoom.roomName;
     this.changeTheme(this.profileSettingsService.currentChatThemeId);
 
   }

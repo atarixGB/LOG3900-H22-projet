@@ -10,8 +10,11 @@ import { ProfileService } from '@app/services/profile/profile.service';
   styleUrls: ['./chatroom-users-dialog.component.scss']
 })
 export class ChatroomUsersDialogComponent implements OnInit {
+  displayedRoomName: string;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: IChatroom, public profileService: ProfileService, private router: Router, private route: ActivatedRoute) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: IChatroom, public profileService: ProfileService, private router: Router, private route: ActivatedRoute) {
+    this.displayedRoomName = this.data.roomName == "default-public-room" ? "Canal public" : this.data.roomName;
+  }
 
   ngOnInit(): void {
   }

@@ -10,7 +10,7 @@
   </div>
 
   <div class="center">
-    <h1 class="custom-font"> Conversation "{{this.chatService.currentRoom.roomName}}" </h1>
+    <h1 class="custom-font"> Conversation "{{ this.displayedRoomName }}" </h1>
     <h3 class="custom-font">créée par <span class="username-link" (click)="this.getUserProfileInfos(this.chatService.currentRoom.identifier)">{{this.chatService.currentRoom.identifier}}</span></h3>
   </div>
 
