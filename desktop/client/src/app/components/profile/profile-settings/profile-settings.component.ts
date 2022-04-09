@@ -21,9 +21,7 @@ export class ProfileSettingsComponent implements AfterContentInit {
       public dialog: MatDialog,
       private router: Router,
       private route: ActivatedRoute,
-      public soundEffectsService: SoundEffectsService) {
-        this.profileSettingsService.selectedTheme = ChatTheme.Default;
-    }
+      public soundEffectsService: SoundEffectsService) {}
 
     ngAfterContentInit(): void {
         this.profileSettingsService.getUserInfoFromProfile();
@@ -37,8 +35,9 @@ export class ProfileSettingsComponent implements AfterContentInit {
         this.dialog.open(AvatarImportModalComponent, {});
     }
 
-    changeTheme(event: any): void {
-      this.profileSettingsService.selectedTheme = event.value;
+    changeTheme(themeId: ChatTheme): void {
+      console.log(themeId);
+      this.profileSettingsService.currentChatThemeId = themeId;
     }
 
     onCancel(): void {

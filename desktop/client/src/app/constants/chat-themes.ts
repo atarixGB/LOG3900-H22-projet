@@ -20,7 +20,7 @@ export const DEFAULT_THEME: IChatTheme = {
   id: ChatTheme.Default,
   font: "Helvetica",
   textColor: "black",
-  backgroundColor: "black",
+  backgroundColor: "white",
   backgroundImage: "none",
   messageColorMine: "rgb(255, 184, 51)", // Orange
   messageBackgroundMine: "blue",
