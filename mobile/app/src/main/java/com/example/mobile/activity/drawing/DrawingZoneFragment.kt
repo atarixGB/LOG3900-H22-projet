@@ -3,6 +3,7 @@ package com.example.mobile.activity.drawing
 import android.content.Context
 import android.graphics.*
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.LinearLayout
 import android.widget.Toast
@@ -21,11 +22,11 @@ import com.example.mobile.bitmapDecoder
 import com.example.mobile.convertBitmapToByteArray
 import com.example.mobile.popup.PrepForMemberLeavingPopUp
 import com.example.mobile.popup.PrepForNewMemberPopUp
-import com.example.mobile.viewModel.SharedViewModelToolBar
+
 import com.example.mobile.viewModel.ToolModel
 import com.example.mobile.viewModel.ToolParameters
 import com.google.gson.Gson
-import io.reactivex.disposables.CompositeDisposable
+
 import io.socket.emitter.Emitter
 import com.example.mobile.viewModel.SharedViewModelToolBar
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -59,7 +60,7 @@ class DrawingZoneFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         mDrawingView = DrawingView(requireContext(), DrawingSocket)
-        view.findViewById<LinearLayout>(R.id.drawingView).addView(mDrawingView)
+//        view.findViewById<LinearLayout>(R.id.drawingView).addView(mDrawingView)
 
         DrawingSocket.socket.on("receiveStroke", onReceiveStroke)
         DrawingSocket.socket.on("receiveSelection", onReceiveSelection)
@@ -110,9 +111,9 @@ class DrawingZoneFragment : Fragment() {
             mDrawingView.saveImg()
         })
 
-        toolModel.onStory.observe(viewLifecycleOwner, Observer { onStory ->
-            mDrawingView.putToStory()
-        })
+//        toolModel.onStory.observe(viewLifecycleOwner, Observer { onStory ->
+//            mDrawingView.putToStory()
+//        })
 
         view.findViewById<LinearLayout>(R.id.drawingView).addView(mDrawingView)
     }
@@ -445,6 +446,8 @@ class DrawingZoneFragment : Fragment() {
         }
 
         fun putToStory() {
+            val retrofit = RetrofitClient.getInstance()
+            val myService = retrofit.create(IMyService::class.java)
             if (!this.drawingId.isNullOrEmpty()) {
                 compositeDisposable.add(myService.addDrawingToStory(drawingId!!)
                     .subscribeOn(Schedulers.io())

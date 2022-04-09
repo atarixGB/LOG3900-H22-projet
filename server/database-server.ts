@@ -650,7 +650,7 @@ mongoClient.connect(process.env.POLYGRAM_APP_DATABASE_URL, { useNewUrlParser: tr
 
     //add one like to a drawing
     app.put("/drawings/addLike/:drawingId", (request, response, next) => {
-      let drawingId = request.params.drawingId.replace(/"/g, '');
+      let drawingId = request.params.drawingId.replaceAll(/"/g, '');
       let user = request.body.user
 
       DB.collection("drawings").findOneAndUpdate({ _id: mongoose.Types.ObjectId(drawingId) }, { $push: { likes: user } }, { returnDocument: 'after' }, (err, res) => {
