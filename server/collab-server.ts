@@ -38,6 +38,7 @@ ioCollab.on('connection', (socket) => {
 
       // This event is to make sure the other collaborator's selections are pasted before a new member joins
       socket.on('prepForJoin', (data) => {
+        console.log(data)
         const roomName = data.room; // Note: The room name is the drawingID
         const userJoining = data.username;
         console.log("Prepping for join " , roomName);
@@ -62,6 +63,8 @@ ioCollab.on('connection', (socket) => {
           usernames: [userJoining],
           strokes: [],
         };
+
+
         if (infoOnActiveRooms.has(roomName)) {
           roomData = infoOnActiveRooms.get(roomName);
           roomData.usernames.push(userJoining);
@@ -69,9 +72,15 @@ ioCollab.on('connection', (socket) => {
         }
         infoOnActiveRooms.set(roomName, roomData);
 
+        let collabData = {
+          roomName: roomName,
+          strokes: infoOnActiveRooms.get(roomName).strokes,
+        };
         // Joining
         socket.join(roomName);
         ioCollab.in(roomName).emit('memberNbUpdate', roomData.members.length);
+        console.log("collabData hereeeeeeeeeeeeee " , collabData);
+        socket.emit('joinSuccessfulwithID', collabData);
         socket.emit('joinSuccessful', infoOnActiveRooms.get(roomName));
 
         // Utile pour voir l'état des rooms
@@ -99,6 +108,7 @@ ioCollab.on('connection', (socket) => {
 
       socket.on('updateCollabInfo', (collabData) => {
         console.log('updateCollabInfo');
+        console.log(collabData.strokes);
         
         let roomData = infoOnActiveRooms.get(collabData.collabDrawingId);
         roomData.strokes = collabData.strokes;
@@ -144,7 +154,7 @@ ioCollab.on('connection', (socket) => {
         socket.broadcast.to(roomName).emit('receivePasteRequest', pasteReq);
          
 
-        socket.emit('fetchStrokes');
+        // socket.emit('fetchStrokes');
       })
   
       socket.on('broadcastDeleteRequest', (data) => {

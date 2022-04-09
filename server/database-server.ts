@@ -458,6 +458,47 @@ mongoClient.connect(process.env.POLYGRAM_APP_DATABASE_URL, { useNewUrlParser: tr
         return res.status(200).end();
       });
 
+  //get image from DB
+   app.get('/drawings/:drawingId', function (req, res){
+    DB.collection("drawings")
+    .findOne({ _id: mongoose.Types.ObjectId(req.params.drawingId.replace(/"/g, '')) }, function (err, result) {
+      if (err) throw err
+      else {
+        const file = result.data;
+
+        if (fs.existsSync(__dirname + "/uploads/" + file, {encoding: 'base64'})) {
+          var img = fs.readFileSync(__dirname + "/uploads/" + file, {encoding: 'base64'});
+          var returnedJson = {
+            _id: result._id,
+            name: result.name,
+            owner: result.owner,
+            description: result.description,
+            data: img,
+            members: result.members,
+            likes: result.likes,
+            albumName:result.albumName
+          };
+          res.json(returnedJson)
+          console.log("GotDrawing");
+
+        }
+
+        else{
+          console.log(`File ${file} does not exist on server`);
+        }
+
+      }
+    });
+  });
+
+  //delete drawing with specific id
+  app.delete("/drawing/delete/:id", (request, response, next) => {
+    let drawingId = request.params.id;
+    DB.collection("drawings").findOneAndDelete({ _id: mongoose.Types.ObjectId(drawingId) }, (err, res) => {
+      console.log(`Drawing with id ${request.params.id} has been deleted successfully!`);
+      response.json(201)
+    });
+  });    
     //get all drawings that specified user liked
     app.get("/drawings/favorite/:username", (request, response) => {
       let username = request.params.username;
@@ -480,41 +521,11 @@ mongoClient.connect(process.env.POLYGRAM_APP_DATABASE_URL, { useNewUrlParser: tr
           response.json(result);
         })
     })
+  
 
-    //get image from DB
-    app.get('/drawings/:drawingId', function (req, res) {
-      DB.collection("drawings")
-        .findOne({ _id: mongoose.Types.ObjectId(req.params.drawingId.replace(/"/g, '')) }, function (err, result) {
-          if (err) {
-            console.log("error getting");
-          } else {
-            const file = result.data;
-
-            if (fs.readFileSync(__dirname + `/${UPLOAD_DIR}` + file, { encoding: 'base64' })) {
-              var img = fs.readFileSync(__dirname + `/${UPLOAD_DIR}` + file, { encoding: 'base64' });
-
-              var returnedJson = {
-                _id: result._id,
-                name: result.name,
-                owner: result.owner,
-                description: result.description,
-                data: img,
-                members: result.members,
-                likes: result.likes,
-                albumName: result.albumName,
-              };
-              res.json(returnedJson)
-              console.log("GotDrawing");
-
-            }
-
-            else {
-              console.log(`File ${file} does not exist on server`);
-            }
-
-          }
-        });
-    });
+//==========================================================================================================
+// Album Management
+//==========================================================================================================
 
 
     //get all drawings that specified user liked
@@ -641,7 +652,7 @@ mongoClient.connect(process.env.POLYGRAM_APP_DATABASE_URL, { useNewUrlParser: tr
 
     //add one like to a drawing
     app.put("/drawings/addLike/:drawingId", (request, response, next) => {
-      let drawingId = request.params.drawingId.replace(/"/g, '');
+      let drawingId = request.params.drawingId.replaceAll(/"/g, '');
       let user = request.body.user
 
       DB.collection("drawings").findOneAndUpdate({ _id: mongoose.Types.ObjectId(drawingId) }, { $push: { likes: user } }, { returnDocument: 'after' }, (err, res) => {
@@ -802,6 +813,7 @@ mongoClient.connect(process.env.POLYGRAM_APP_DATABASE_URL, { useNewUrlParser: tr
     //==========================================================================================================
     // Profile modification
     //==========================================================================================================
+    
 
     //Getting a user's data 
     app.get("/profile/:username", (request, response, next) => {

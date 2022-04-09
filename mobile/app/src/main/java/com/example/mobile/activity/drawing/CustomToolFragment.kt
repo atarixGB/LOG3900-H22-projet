@@ -10,6 +10,7 @@ import android.widget.AdapterView
 import android.widget.GridView
 import android.widget.Toast
 import android.widget.ToggleButton
+import android.widget.ImageButton
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.example.mobile.R
@@ -27,6 +28,8 @@ class CustomToolFragment : Fragment(), AdapterView.OnItemClickListener {
     private var weightView:GridView ? = null
     private var weights:ArrayList<ToolWeightItem> ? = null
     private var weightAdapter: ToolWeightAdapter? = null
+    private lateinit var deleteSelection: ImageButton
+    private lateinit var pasteSelection: ImageButton
     private val toolParametersModel: ToolParameters by activityViewModels()
 
     private var colorView:GridView ? = null
@@ -46,15 +49,17 @@ class CustomToolFragment : Fragment(), AdapterView.OnItemClickListener {
         // Inflate the layout for this fragment
         val rootView = inflater.inflate(R.layout.fragment_custom_tool, container, false)
         weightView = rootView.findViewById(R.id.weight_view)
+        deleteSelection = rootView.findViewById(R.id.deleteSelection)
+        pasteSelection = rootView.findViewById(R.id.pasteSelection)
         weights = ArrayList()
-        weights  = setWeightList()
+        weights = setWeightList()
         weightAdapter = ToolWeightAdapter(activity?.baseContext!!, weights!!)
         weightView?.adapter = weightAdapter
         weightView?.onItemClickListener = this
 
         colorView = rootView.findViewById(R.id.color_view)
         colors = ArrayList()
-        colors  = setColortList()
+        colors = setColortList()
         colorAdapter = ColorAdapter(activity?.baseContext!!, colors!!)
         colorView?.adapter = colorAdapter!!
         colorView?.onItemClickListener = this
@@ -80,6 +85,9 @@ class CustomToolFragment : Fragment(), AdapterView.OnItemClickListener {
             setDefault()
         })
 
+        deleteSelection.setOnClickListener {
+            toolParametersModel.deleteSelection(true)
+        }
         return rootView
     }
 
@@ -154,7 +162,7 @@ class CustomToolFragment : Fragment(), AdapterView.OnItemClickListener {
                 8 -> weights!!.set(8, ToolWeightItem(R.drawable.circle30_selected, 30f))
             }
             weightAdapter!!.notifyDataSetChanged()
-        }else{
+        }else if(parent == colorView){
             val colorItem: ToolColorItem = colors!!.get(position)
             toolParametersModel.changeColor(colorItem.color!!)
             setAllColorToUnselectedIcon()
