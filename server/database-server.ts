@@ -392,7 +392,7 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
 
         app.get("/getAllUserDrawings/:user", (request, response, next) => {
 
-          var user = request.params.user.replaceAll(/"/g, '');;
+          var user = request.params.user.replace(/"/g, '');;
     
           console.log(user);
     

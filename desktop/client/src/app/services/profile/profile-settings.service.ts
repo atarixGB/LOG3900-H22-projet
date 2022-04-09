@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProfileService } from './profile.service';
 import { PROFILE_UPDATE_URL } from '@app/constants/api-urls';
+import { ChatTheme } from '@app/constants/chat-themes'
 import { SoundEffectsService } from '../sound-effects/sound-effects.service';
 
 @Injectable({
@@ -16,6 +17,8 @@ export class ProfileSettingsService {
     isAvatarTooLarge: boolean;
     isValidUsername: boolean;
     isExistingUsername: boolean;
+
+    selectedTheme: ChatTheme;
 
     constructor(private httpClient: HttpClient,  private router: Router, private route: ActivatedRoute, public profileService: ProfileService, private soundEffectsService: SoundEffectsService) {
         this.getUserInfoFromProfile();
@@ -47,6 +50,8 @@ export class ProfileSettingsService {
             this.router.navigate([`../profile/${this.profileService.username}`], { relativeTo: this.route });
         }
     }
+
+    
 
     private somethingChanged(): boolean {
         return this.profileService.username != this.newUsername || this.profileService.avatarSrc != this.newAvatarSrc || this.profileService.description != this.newDescription;

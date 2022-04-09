@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AvatarImportModalComponent } from '@app/components/avatar/avatar-import-modal/avatar-import-modal.component';
 import { AvatarSelectionModalComponent } from '@app/components/avatar/avatar-selection-modal/avatar-selection-modal.component';
+import { ChatTheme } from '@app/constants/chat-themes';
 import { LoginService } from '@app/services/login/login.service';
 import { ProfileSettingsService } from '@app/services/profile/profile-settings.service';
 import { SoundEffectsService } from '@app/services/sound-effects/sound-effects.service';
@@ -13,7 +14,16 @@ import { SoundEffectsService } from '@app/services/sound-effects/sound-effects.s
     styleUrls: ['./profile-settings.component.scss'],
 })
 export class ProfileSettingsComponent implements AfterContentInit {
-    constructor(public profileSettingsService: ProfileSettingsService, public loginService: LoginService, public dialog: MatDialog, private router: Router, private route: ActivatedRoute, public soundEffectsService: SoundEffectsService) {}
+
+    constructor(
+      public profileSettingsService: ProfileSettingsService,
+      public loginService: LoginService,
+      public dialog: MatDialog,
+      private router: Router,
+      private route: ActivatedRoute,
+      public soundEffectsService: SoundEffectsService) {
+        this.profileSettingsService.selectedTheme = ChatTheme.Default;
+    }
 
     ngAfterContentInit(): void {
         this.profileSettingsService.getUserInfoFromProfile();
@@ -25,6 +35,10 @@ export class ProfileSettingsComponent implements AfterContentInit {
 
     openAvatarImportModal(): void {
         this.dialog.open(AvatarImportModalComponent, {});
+    }
+
+    changeTheme(event: any): void {
+      this.profileSettingsService.selectedTheme = event.value;
     }
 
     onCancel(): void {

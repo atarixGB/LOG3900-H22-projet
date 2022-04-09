@@ -23,7 +23,8 @@
     border-width: 1px;
     border-color: rgb(214, 214, 214);
     border-radius: 5px;
-}
+  }
+
 
 .fullHeight {
     height: 100%;
@@ -59,20 +60,30 @@ input {
   text-align: end;
 }
 
-#disconnectDiv {
-    border-style: solid;
-    border-width: 1px;
-    border-color: darkslateblue;
-    border-radius: 5px;
-}
-
-#disconnectDiv:hover {
-    cursor: pointer;
-    background-color: rgba(187, 81, 236, 0.13);
-}
-
 
 mat-icon {
   transform: scale(0.75);
   cursor: pointer;
 }
+
+// ****** Classes to customize chat theme ******
+
+// #custom-wrapper {
+//   background-color: black;
+//   color: white;
+//   // background-image: url('../../../../assets/minecraft.jpg');
+// }
+
+// .custom-font {
+//   font-family: 'Courier New', Courier, monospace;
+// }
+
+// #custom-msg-mine {
+//   color: white;
+//   background-color: blue;
+// }
+
+// #custom-msg-yours {
+//   color: black;
+//   background-color: greenyellow;
+// }
