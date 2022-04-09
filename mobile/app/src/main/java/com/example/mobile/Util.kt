@@ -10,6 +10,15 @@ import android.util.DisplayMetrics
 import com.mikhaellopez.circularimageview.CircularImageView
 import java.io.ByteArrayOutputStream
 
+var SOUND_EFFECT=true
+
+enum class MUSIC{
+    Lofi1 , Lofi2,Kahoot,Minecraft,Desactiver
+}
+
+var MUSIC_TRACK = 0
+
+
 var CURRENT_ALBUM_ID :String = ""
 fun convertToByteArray(imageView: CircularImageView): ByteArray {
     val bitmap = (imageView.drawable as BitmapDrawable).bitmap

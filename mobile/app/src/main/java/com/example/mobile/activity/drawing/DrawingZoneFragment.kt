@@ -3,7 +3,6 @@ package com.example.mobile.activity.drawing
 import android.content.Context
 import android.graphics.*
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.LinearLayout
 import android.widget.Toast
@@ -28,6 +27,10 @@ import com.example.mobile.viewModel.ToolParameters
 import com.google.gson.Gson
 import io.reactivex.disposables.CompositeDisposable
 import io.socket.emitter.Emitter
+import com.example.mobile.viewModel.SharedViewModelToolBar
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import okhttp3.*
 import org.json.JSONArray
 import org.json.JSONObject
@@ -41,6 +44,9 @@ class DrawingZoneFragment : Fragment() {
     private lateinit var mDrawingView: DrawingView
     private val toolParameters: ToolParameters by activityViewModels()
     private val toolModel: ToolModel by activityViewModels()
+    private val sharedViewModelToolBar: SharedViewModelToolBar by activityViewModels()
+
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -104,7 +110,11 @@ class DrawingZoneFragment : Fragment() {
             mDrawingView.saveImg()
         })
 
+        toolModel.onStory.observe(viewLifecycleOwner, Observer { onStory ->
+            mDrawingView.putToStory()
+        })
 
+        view.findViewById<LinearLayout>(R.id.drawingView).addView(mDrawingView)
     }
 
     private var onReceiveStroke = Emitter.Listener {
@@ -325,7 +335,6 @@ class DrawingZoneFragment : Fragment() {
         override fun onDraw(canvas: Canvas) {
             super.onDraw(canvas)
             canvas.drawBitmap(mBitmap!!, 0f, 0f, mPaint)
-            //var mediaPlayerDrawing: MediaPlayer = MediaPlayer.create(context,R.raw.draw)
 
             if (isDrawing) {
                 toolManager.currentTool.onDraw(canvas)
@@ -365,7 +374,7 @@ class DrawingZoneFragment : Fragment() {
                         mCanvas!!.drawBitmap(currentDrawingBitmap!!, 0F, 0F, null)
                     }
                     invalidate()
-//                    mediaPlayerDrawing.stop()
+
                 }
                 MotionEvent.ACTION_UP -> {
                     isDrawing = false
@@ -376,7 +385,7 @@ class DrawingZoneFragment : Fragment() {
                         mCanvas!!.drawBitmap(currentDrawingBitmap!!, 0F, 0F, null)
                     }
                     invalidate()
-//                    mediaPlayerDrawing.stop()
+
                 }
             }
             return true
@@ -435,6 +444,25 @@ class DrawingZoneFragment : Fragment() {
             this.drawingId = drawingId
         }
 
+        fun putToStory() {
+            if (!this.drawingId.isNullOrEmpty()) {
+                compositeDisposable.add(myService.addDrawingToStory(drawingId!!)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe { result ->
+                        if (result == "201") {
+                            Toast.makeText(
+                                context,
+                                "Story ajoute avec succes",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        } else {
+                            Toast.makeText(context, "erreur", Toast.LENGTH_SHORT).show()
+                        }
+                    })
+            }
+        }
+
         fun saveImg() {
 
             if (mBitmap != null) {
@@ -465,7 +493,7 @@ class DrawingZoneFragment : Fragment() {
 
                 var name: RequestBody = RequestBody.create(MediaType.parse("text/plain"), "upload");
 
-                var call = myService.saveDrawing(drawingId, body, name)
+                var call = myService.saveDrawing(drawingId!!, body, name)
                 call.enqueue(object : retrofit2.Callback<ResponseBody> {
                     override fun onResponse(
                         call: Call<ResponseBody>,

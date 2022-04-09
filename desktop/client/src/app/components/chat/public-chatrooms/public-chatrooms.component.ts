@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { ChatService } from '@app/services/chat/chat.service';
 import { IChatroom } from '@app/interfaces-enums/IChatroom'
 import { MatDialog } from '@angular/material/dialog';
@@ -25,11 +25,13 @@ export class PublicChatroomsComponent implements OnInit {
     this.chatService.myRooms = [];
   }
 
+  @HostListener('document:keyup.enter', ['$event'])
   onSearchBtn(): void {
     this.chatService.findRoomByRoomName(this.searchBarInput);
   }
 
   onCancelFilteringBtn(): void {
+    this.searchBarInput = "";
     this.chatService.filterActivated = false;
   }
 

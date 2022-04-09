@@ -8,6 +8,9 @@ class SharedViewModelToolBar: ViewModel() {
     private val _user = MutableLiveData<String>()
     val user: LiveData<String> = _user
 
+    private val _visitorUser = MutableLiveData<String>()
+    val visitorUser: LiveData<String> = _visitorUser
+
     private val _drawingId = MutableLiveData<String>()
     val drawingId: LiveData<String> = _drawingId
 
@@ -19,6 +22,10 @@ class SharedViewModelToolBar: ViewModel() {
 
     fun setUser(newUser: String) {
         _user.value = newUser
+    }
+
+    fun setVisitorUser(visitorUser:String){
+        _visitorUser.value=visitorUser
     }
 
     fun setDrawingId(newId: String) {

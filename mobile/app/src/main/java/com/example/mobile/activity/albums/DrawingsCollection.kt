@@ -25,6 +25,10 @@ import com.example.mobile.activity.drawing.DrawingSocket
 import com.example.mobile.adapter.AlbumAdapter
 import com.example.mobile.adapter.DrawingAdapter
 import com.example.mobile.adapter.UserAdapter
+import com.example.mobile.popup.AcceptMembershipRequestsPopUp
+import com.example.mobile.popup.AlbumAttributeModificationPopUp
+import com.example.mobile.popup.UsersListPopUp
+import com.example.mobile.viewModel.SharedViewModelToolBar
 import com.example.mobile.popup.*
 import com.example.mobile.viewModel.SharedViewModelCreateDrawingPopUp
 import com.google.gson.Gson
@@ -63,6 +67,7 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
     private lateinit var dialogAcceptMembershipRequest: AcceptMembershipRequestsPopUp
     private lateinit var dialogEditAlbumAttributes: AlbumAttributeModificationPopUp
 
+    private val sharedViewModelToolBar: SharedViewModelToolBar by viewModels()
     private val sharedViewModelCreateDrawingPopUp: SharedViewModelCreateDrawingPopUp by viewModels()
     private lateinit var iMyService: IMyService
     internal var compositeDisposable = CompositeDisposable()
@@ -94,6 +99,8 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
 
 
         albumName = intent.getStringExtra("albumName").toString()
+
+        sharedViewModelToolBar.setUser(user)
         if(albumName!="album public"){
             albumID=intent.getStringExtra("albumID").toString()
         }
@@ -117,6 +124,8 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
         rvOutputDrawings.adapter = drawingAdapter
         rvOutputDrawings.layoutManager = GridLayoutManager(this, 3)
 
+
+
         albumNameTextView.text = albumName
 
         getAllAlbumDrawings(albumID)
@@ -136,7 +145,7 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
         membersListButton.setOnClickListener {
             //ouvrir le popup window des utilisateurs
             //getAlbumParameters(albumName) //pour avoir les parametres d'album a jour
-            var dialog = UsersListPopUp(albumName, currentAlbum.members)
+            var dialog = UsersListPopUp(albumName, currentAlbum.members, user)
             dialog.show(supportFragmentManager, "customDialog")
         }
 

@@ -25,6 +25,7 @@ class ToolbarFragment : Fragment(), AdapterView.OnItemClickListener {
     private lateinit var user: String
     private lateinit var drawingId: String
     private lateinit var saveDrawingBtn : Button
+    private lateinit var addToStoryBtn : Button
     private lateinit var backBtn : Button
     private lateinit var _img: Bitmap
     private val toolChange: ToolModel by activityViewModels()
@@ -43,6 +44,7 @@ class ToolbarFragment : Fragment(), AdapterView.OnItemClickListener {
         // Inflate the layout for this fragment
         val rootView = inflater.inflate(R.layout.fragment_toolbar, container, false)
         saveDrawingBtn = rootView.findViewById(R.id.saveDrawingBtn)
+        addToStoryBtn = rootView.findViewById(R.id.addToStoryBtn)
         backBtn = rootView.findViewById(R.id.backBtn)
         gridView = rootView.findViewById(R.id.weight_view)
         arrayList = ArrayList()
@@ -61,6 +63,10 @@ class ToolbarFragment : Fragment(), AdapterView.OnItemClickListener {
 
         saveDrawingBtn.setOnClickListener {
             toolChange.onClick()
+        }
+
+        addToStoryBtn.setOnClickListener {
+            toolChange.onStory()
         }
 
         backBtn.setOnClickListener {

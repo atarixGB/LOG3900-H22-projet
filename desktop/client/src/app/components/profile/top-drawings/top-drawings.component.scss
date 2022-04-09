@@ -13,6 +13,19 @@ mat-icon {
 
 .content {
   overflow-y: scroll;
+  height: 100%;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+#username {
+  cursor: pointer;
+}
+
+#username:hover {
+  color:#A8D08C;
 }
 
 ::-webkit-scrollbar {

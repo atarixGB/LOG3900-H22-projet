@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { NAME_MAX_LENGTH } from '@app/constants/constants';
 import { AlbumGalleryService } from '@app/services/album-gallery/album-gallery.service';
 
 @Component({
@@ -14,19 +15,19 @@ export class CreateAlbumDialogComponent {
   constructor(public albumGalleryService: AlbumGalleryService) {
     this.name = "";
     this.description = "";
-   }
+  }
 
   createAlbumButton(): void {
-    if (this.checkAlbumName()) {
+    if (this.isValidInput(this.name) && this.name.length < NAME_MAX_LENGTH) {
       this.albumGalleryService.createAlbum(this.name, this.description);
     } else {
-      // TODO: visual feedback in UI
+      // TODO: UI feedback. Following line is temporary
+      alert("L'album doit avoir un nom et posséder moins de 40 caractères.");
     }
   }
 
-  checkAlbumName(): boolean {
-    // TODO: user input validation (no empty, no special character)
-    return true;
+  private isValidInput(str: string): boolean {
+    return !(str === null || str.match(/^ *$/) !== null);
   }
 
 }

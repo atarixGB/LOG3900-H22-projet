@@ -35,7 +35,7 @@ export class ChatMenuComponent implements OnInit {
   }
 
   onOpenDefaultPublicRoom(): void {
-    this.chatService.username = this.loginService.username;
+    this.chatService.username = window.localStorage.getItem("username");
     this.chatService.currentRoom = {
       identifier: PUBLIC_CHATROOM.owner,
       roomName: PUBLIC_CHATROOM.name,
@@ -45,7 +45,7 @@ export class ChatMenuComponent implements OnInit {
   }
 
   onOpenChatroom(selectedRoom: IChatroom): void {
-    this.chatService.username = this.loginService.username;
+    this.chatService.username = window.localStorage.getItem("username");
     this.chatService.currentRoom = selectedRoom;
     this.chatService.joinRoom(this.chatService.currentRoom.roomName);
   }

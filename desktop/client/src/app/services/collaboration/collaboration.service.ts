@@ -2,11 +2,14 @@ import { Injectable } from '@angular/core';
 import { DrawingService } from '@app/services/editor/drawing/drawing.service';
 import * as io from 'socket.io-client';
 import { Observable, Subject } from 'rxjs';
-import { COLLAB_URL } from '@app/constants/api-urls';
+import { COLLAB_URL, STATS_COLLAB_UPDATE_URL } from '@app/constants/api-urls';
 import { MatDialog } from '@angular/material/dialog';
 import { ProfileService } from '../profile/profile.service';
 import { MemberJoinedDialogComponent } from '@app/components/editor/member-joined-dialog/member-joined-dialog.component';
 import { MemberLeftDialogComponent } from '@app/components/editor/member-left-dialog/member-left-dialog.component';
+import { HttpClient } from '@angular/common/http';
+
+const electron = (<any>window).require('electron');
 
 @Injectable({
     providedIn: 'root',
@@ -15,6 +18,8 @@ export class CollaborationService {
     socket: any;
     room: string;
     nbMembersInCollab: number;
+
+    collabStartTime: number;
 
     newStroke: Subject<any>;
     newStroke$: Observable<any>;
@@ -42,7 +47,7 @@ export class CollaborationService {
     fetchRequest: Subject<any>;
     fetchRequest$: Observable<any>;
 
-    constructor(public dialog: MatDialog, public drawingService: DrawingService, private profileService: ProfileService) { 
+    constructor(public dialog: MatDialog, public drawingService: DrawingService, private profileService: ProfileService, private httpClient: HttpClient) { 
         this.nbMembersInCollab = 0;
 
         this.newStroke = new Subject();
@@ -85,11 +90,19 @@ export class CollaborationService {
         });
 
         this.socket.on('readyToJoin', (room: any) => {
-            setTimeout(() => {this.socket.emit('joinCollab', room);}, 200);
+            window.localStorage.setItem("collabChatRoom", this.room);
+            const data = {
+                room: room,
+                username: this.profileService.username
+            }
+            setTimeout(() => {this.socket.emit('joinCollab', data);}, 200);
         });
 
         this.socket.on('joinSuccessful', (collabData: any) => {
             this.newCollabData.next(collabData);
+            this.collabStartTime = new Date().getTime();
+
+            electron.ipcRenderer.send("open-collab-chat", null);
         });
 
         this.socket.on('memberNbUpdate', (nbMembersRemaining: any) => {
@@ -163,6 +176,9 @@ export class CollaborationService {
             room: this.room
         }
         this.socket.emit('leaveCollab', data);
+        this.updateCollabStats(new Date().getTime());
+
+        electron.ipcRenderer.send("close-collab-chat", null);
     }
 
     /* collabData:
@@ -301,5 +317,20 @@ export class CollaborationService {
             data: color
         }
         this.socket.emit('broadcastNewSecondaryColor', data);
+    }
+
+    // BD
+    updateCollabStats(now: number): void {
+        const data = {
+            secondsSpentInCollab: Math.round((now - this.collabStartTime) / 1000),
+        };
+        this.httpClient.put(STATS_COLLAB_UPDATE_URL + `/${this.profileService.username}`, data).subscribe(
+            (result) => {
+              console.log("Résultat du serveur:", result);
+            },
+            (error) => {
+              console.log(`Impossible d'update les stats de collaboration.\nErreur: ${error}`);
+        });
+
     }
 }
