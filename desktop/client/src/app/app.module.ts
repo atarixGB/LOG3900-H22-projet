@@ -53,7 +53,6 @@ import { AlbumGalleryComponent } from './components/album-gallery/my-albums/albu
 import { CreateAlbumDialogComponent } from './components/album-gallery/create-album-dialog/create-album-dialog.component';
 import { PublicAlbumsComponent } from './components/album-gallery/public-albums/public-albums.component';
 import { DrawingsViewComponent } from './components/album-gallery/drawings-view/drawings-view.component';
-import { PublicDrawingGalleryComponent } from './components/album-gallery/public-drawing-gallery/public-drawing-gallery.component';
 import { ColorConfigComponent } from './components/editor/sidebar/color-config/color-config.component';
 import { CreateRoomDialogComponent } from './components/chat/create-room-dialog/create-room-dialog.component';
 import { PublicChatroomsComponent } from './components/chat/public-chatrooms/public-chatrooms.component';
@@ -72,10 +71,15 @@ import { MemberJoinedDialogComponent } from './components/editor/member-joined-d
 import { MemberLeftDialogComponent } from './components/editor/member-left-dialog/member-left-dialog.component';
 import { FavoriteDrawingsComponent } from './components/profile/favorite-drawings/favorite-drawings.component';
 import { TopDrawingsComponent } from './components/profile/top-drawings/top-drawings.component';
+import { AdvancedResearchComponent } from './components/advanced-research/advanced-research.component';
 import { StoryComponent } from './components/story/story.component';
 import { ChangeDrawingNameDialogComponent } from './components/album-gallery/drawings-view/change-drawing-name-dialog/change-drawing-name-dialog.component';
 import { ChangeAlbumDialogComponent } from './components/album-gallery/drawings-view/change-album-dialog/change-album-dialog.component';
 import { DeleteDrawingDialogComponent } from './components/album-gallery/drawings-view/delete-drawing-dialog/delete-drawing-dialog.component';
+import { CollabChatroomComponent } from './components/chat/collab-chatroom/collab-chatroom.component';
+import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
+import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
+import { PasswordSnackbarComponent } from './components/reset-password/password-snackbar/password-snackbar.component';
 
 @NgModule({
     declarations: [
@@ -102,7 +106,6 @@ import { DeleteDrawingDialogComponent } from './components/album-gallery/drawing
         ChatroomComponent,
         PublicAlbumsComponent,
         DrawingsViewComponent,
-        PublicDrawingGalleryComponent,
         AvatarSelectionModalComponent,
         AvatarImportModalComponent,
         ChatroomComponent,
@@ -126,10 +129,15 @@ import { DeleteDrawingDialogComponent } from './components/album-gallery/drawing
         MemberLeftDialogComponent,
         FavoriteDrawingsComponent,
         TopDrawingsComponent,
-        StoryComponent,
-        ChangeDrawingNameDialogComponent,
+        AdvancedResearchComponent,
         ChangeAlbumDialogComponent,
+        ChangeDrawingNameDialogComponent,
         DeleteDrawingDialogComponent,
+        CollabChatroomComponent,
+        ResetPasswordComponent,
+        ForgotPasswordComponent,
+        PasswordSnackbarComponent,
+        StoryComponent,
     ],
     imports: [
         BrowserModule,

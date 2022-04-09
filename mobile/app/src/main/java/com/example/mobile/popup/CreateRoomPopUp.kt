@@ -12,6 +12,7 @@ import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
 import com.example.mobile.R
+import com.example.mobile.SOUND_EFFECT
 import kotlinx.android.synthetic.main.activity_create_room_pop_up.view.*
 import kotlinx.android.synthetic.main.activity_profile_modification.*
 
@@ -32,6 +33,7 @@ class CreateRoomPopUp : DialogFragment() {
         this.editTextNewRoomName = rootView.findViewById<EditText>(R.id.newRoomName)
         this.roomNameEmptyError=rootView.findViewById<EditText>(R.id.roomNameEmptyError)
         var mediaPlayerMagic: MediaPlayer = MediaPlayer.create(context,R.raw.magic)
+        var mediaPlayerFail: MediaPlayer = MediaPlayer.create(context,R.raw.failure)
         roomNameEmptyError.isVisible=false
 
         rootView.cancelBtn.setOnClickListener {
@@ -39,21 +41,31 @@ class CreateRoomPopUp : DialogFragment() {
         }
 
         rootView.submitBtn.setOnClickListener {
-            if(!editTextNewRoomName.text.toString().isNullOrBlank()) {
+            if(!editTextNewRoomName.text.toString().isNullOrBlank() && !editTextNewRoomName.text.toString().isEmpty() ) {
                 roomName = this.editTextNewRoomName.text.toString()
                 roomNameEmptyError.isVisible=false
-                mediaPlayerMagic.start()
+                if(SOUND_EFFECT){
+                    mediaPlayerMagic.start()
+                }
+
                 listener.popUpListener(roomName)
+                dismiss()
 
             }
-            else if(editTextNewRoomName.text.toString().isNullOrBlank())  {
+            else if(editTextNewRoomName.text.toString().isNullOrBlank() || editTextNewRoomName.text.toString().isEmpty() )  {
                 editTextNewRoomName.animation= AnimationUtils.loadAnimation(context,R.anim.shake_animation)
                 roomNameEmptyError.isVisible=true
+                if(SOUND_EFFECT){
+                    mediaPlayerFail.start()
+                }
+
             }
 
 
             //Toast.makeText(context, "$roomName created!" , Toast.LENGTH_LONG).show()
-            dismiss()
+
+//            mediaPlayerMagic.release()
+//            mediaPlayerFail.release()
         }
 
         return rootView

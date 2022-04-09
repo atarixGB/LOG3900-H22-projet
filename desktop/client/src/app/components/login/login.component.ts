@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { LoginService } from '@app/services/login/login.service';
 import { SoundEffectsService } from '@app/services/sound-effects/sound-effects.service';
 import { fadeInAnimation } from '@app/constants/animations';
@@ -28,6 +28,7 @@ export class LoginComponent {
         this.isValidFields = true;
     }
 
+    @HostListener('document:keyup.enter', ['$event'])
     connect(): void {
         this.setBoolsToDefault();
         if (this.isValidInput(this.email) && this.isValidInput(this.password)) {

@@ -1,0 +1,75 @@
+<div fxLayout="column" fxLayoutAlign="center stretch" fxFlex="100">
+ 
+   <div class="center">
+     <h1> Conversation du dessin {{this.drawingName}} </h1>
+   </div>
+ 
+   <!-- Encadré du chat -->
+   <div id="main-wrapper" fxFlex="90" fxLayout="row" fxLayoutAlign="center stretch">
+     <div fxFlex="90" class="bordered" fxLayout="column" fxLayoutAlign="center stretch">
+
+      <button mat-button matIcon (click)="viewUsers()"><mat-icon>group</mat-icon>Liste des collaborateurs</button>
+ 
+       <!-- Colonne ayant le chat, l'input et le bouton -->
+       <div fxFlex="92" fxLayout="column" fxLayoutAlign="end stretch">
+ 
+         <!-- Messages -->
+         <div fxFlex="90" fxLayout="row" fxLayoutAlign="center center">
+           <div fxFlex="90" fxLayout="column" fxLayoutAlign="start stretch" class="bordered fullHeight scrollable"
+             id="messagesContainer">
+ 
+             <!-- Individual message -->
+             <div fxLayout="column" fxLayoutAlign="center stretch" *ngFor="let message of this.messageList">
+ 
+               <!-- Right message / Message sent -->
+               <div *ngIf="message.mine" fxLayout="row" fxLayoutAlign="end center">
+                 <div fxFlex="47" fxLayout="column" fxLayoutAlign="center end">
+ 
+                   <div class="username">
+                     <span class="username-link" (click)="this.getUserProfileInfos(message.userName)">{{message.userName}}</span> - <span class="timestamp">{{ message.time }}</span>
+                   </div>
+                   <div class="message mine">
+                     {{message.message}}
+                   </div>
+ 
+                 </div>
+                 <div fxFlex="3"></div>
+               </div>
+ 
+               <!-- Left message / Message received -->
+               <div *ngIf="!message.mine" fxLayout="row" fxLayoutAlign="start center">
+                 <div fxFlex="3"></div>
+                 <div fxFlex="47" fxLayout="column" fxLayoutAlign="center start">
+ 
+                   <div class="username">
+                     <span class="username-link" (click)="this.getUserProfileInfos(message.userName)">{{message.userName}}</span> - <span class="timestamp">{{ message.time }}</span>
+                   </div>
+                   <div class="message yours">
+                     {{message.message}}
+                   </div>
+ 
+                 </div>
+               </div>
+ 
+             </div>
+ 
+           </div>
+         </div>
+ 
+         <div fxFlex="5"></div>
+ 
+         <!-- Input et Boutton -->
+         <div id="user-input-wrapper" fxLayout="row" fxLayoutAlign="center stretch">
+           <div fxFlex="5"></div>
+           <input id="msgInput" class="bordered" fxFlex="70" matInput placeholder="Écris ton message ici!" type="text"
+             [(ngModel)]="this.message">
+           <button fxFlex="20" mat-raised-button color="primary" (click)="sendMessage()">Envoyer</button>
+           <div fxFlex="5"></div>
+         </div>
+ 
+       </div>
+     </div>
+   </div>
+ 
+ </div>
+ 

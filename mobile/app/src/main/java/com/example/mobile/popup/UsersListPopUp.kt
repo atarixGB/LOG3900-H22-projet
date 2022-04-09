@@ -11,7 +11,7 @@ import com.example.mobile.adapter.UserAdapter
 import kotlinx.android.synthetic.main.activity_users_list_pop_up.view.*
 import java.util.ArrayList
 
-class UsersListPopUp(val name: String, val usersList: ArrayList<String>) : DialogFragment() {
+class UsersListPopUp(val name: String, val usersList: ArrayList<String>, val currentUser: String) : DialogFragment() {
     private lateinit var userAdapter: UserAdapter
     private lateinit var users : ArrayList<String>
 
@@ -25,7 +25,7 @@ class UsersListPopUp(val name: String, val usersList: ArrayList<String>) : Dialo
         rootView.roomName.text = "Membres de ${name}"
         users = ArrayList()
 
-        userAdapter = UserAdapter(requireContext(), users, false)
+        userAdapter = UserAdapter(requireContext(), currentUser, users, false)
         //Recycler View of rooms
         rootView.rvUsersList.adapter = userAdapter
         rootView.rvUsersList.layoutManager = LinearLayoutManager(requireContext())

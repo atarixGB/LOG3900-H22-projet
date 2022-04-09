@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:background="#a8d08c"
     app:columnCount="1"
-    app:rowCount="6"
+    app:rowCount="7"
     tools:context="com.example.mobile.ToolbarNavigationFragment">
 
     <ImageView
@@ -100,6 +100,22 @@
         app:layout_column="0"
         app:layout_row="5"
         app:drawableLeftCompat="@drawable/ic_baseline_person_24"
+        app:drawableTint="#e1efd8" />
+
+    <TextView
+        android:id="@+id/logout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="60dp"
+        android:gravity="center"
+        android:background="@drawable/toolbar_btn"
+        android:fontFamily="@font/roboto"
+        android:text="Déconnexion"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        app:layout_column="0"
+        app:layout_row="6"
+        app:drawableLeftCompat="@drawable/ic_baseline_logout_24"
         app:drawableTint="#e1efd8" />
 
 

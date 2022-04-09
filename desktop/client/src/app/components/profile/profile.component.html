@@ -1,6 +1,13 @@
 <div fxLayout="row" fxLayoutAlign="center stretch" fxFlex="100">
-  <!-- Side Menu -->
-  <app-side-menu fxLayout="column" fxLayoutAlign="start stretch" fxFlex="15%"></app-side-menu>
+  <!-- Side Menu : Disabled when displaeyed in chat window -->
+  <app-side-menu fxLayout="column" fxLayoutAlign="start stretch" fxFlex="15%" *ngIf="!this.profileService.isFromChatWindow"></app-side-menu>
+
+  <!-- Back button : Activated when displayed in chat window -->
+  <div *ngIf="this.profileService.isFromChatWindow">
+    <button mat-icon-button disableRipple="true" (click)="this.profileService.return()">
+      <mat-icon id="back-btn">keyboard_arrow_left</mat-icon> Retour
+    </button>
+  </div>
 
   <!-- Profil page -->
   <div fxLayout="column" fxLayoutAlign="start stretch" fxFlex="auto">
