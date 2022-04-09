@@ -76,6 +76,7 @@ import { StoryComponent } from './components/story/story.component';
 import { ChangeDrawingNameDialogComponent } from './components/album-gallery/drawings-view/change-drawing-name-dialog/change-drawing-name-dialog.component';
 import { ChangeAlbumDialogComponent } from './components/album-gallery/drawings-view/change-album-dialog/change-album-dialog.component';
 import { DeleteDrawingDialogComponent } from './components/album-gallery/drawings-view/delete-drawing-dialog/delete-drawing-dialog.component';
+import { StampConfigComponent } from './components/editor/sidebar/stamp-config/stamp-config.component';
 
 @NgModule({
     declarations: [
@@ -130,6 +131,7 @@ import { DeleteDrawingDialogComponent } from './components/album-gallery/drawing
         ChangeDrawingNameDialogComponent,
         ChangeAlbumDialogComponent,
         DeleteDrawingDialogComponent,
+        StampConfigComponent,
     ],
     imports: [
         BrowserModule,

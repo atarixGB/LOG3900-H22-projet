@@ -20,6 +20,16 @@
             </button>
         </mat-grid-tile>
         <mat-grid-tile>
+            <button
+                [ngClass]="{ active: toolManagerService.currentToolEnum === ToolList.Stamp }"
+                mat-icon-button
+                matTooltip="Étampe (D)"
+                matTooltipPosition="above"
+                (click)="onTool(ToolList.Stamp)">
+                <mat-icon>insert_emoticon</mat-icon>
+            </button>
+        </mat-grid-tile>
+        <mat-grid-tile>
             <button [ngClass]="{ active: toolManagerService.currentToolEnum === ToolList.Selection }" mat-icon-button
                 matTooltip="Selection" matTooltipPosition="above" (click)="onTool(ToolList.Selection)">
                 <mat-icon [ngClass]="{ active: toolManagerService.currentToolEnum === ToolList.Selection }">format_shapes</mat-icon>
