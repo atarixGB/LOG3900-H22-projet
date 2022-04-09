@@ -513,7 +513,8 @@ class DrawingZoneFragment : Fragment() {
         }
 
         fun putPictureCameraOnCanvas(img:Bitmap){
-            currentDrawingBitmap = img.copy(Bitmap.Config.ARGB_8888, true)
+//            currentDrawingBitmap = img.copy(Bitmap.Config.ARGB_8888, true)
+            currentDrawingBitmap = img
 
             mCanvas!!.drawBitmap(currentDrawingBitmap!!,0F,0F,null)
 

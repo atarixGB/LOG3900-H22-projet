@@ -175,6 +175,19 @@ interface IMyService {
     @GET("/profile/stats/albums/{username}")
     fun getNbAlbumsCreated(@Path("username")username:String):Call<Any>
 
+    @GET("/profile/stats/collabs/{username}")
+    fun getNbCollab(@Path("username")username:String):Call<Any>
+
+    @GET("/profile/stats/collabs/session/{username}")
+    fun getAvgCollabDuration(@Path("username")username:String):Call<Any>
+
+    @GET("/profile/stats/collabs/total-duration/{username}")
+    fun getTotalDurationCollab(@Path("username")username:String):Call<Any>
+
+    @PUT("/profile/stats/collabs/update/{username}")
+    fun updateCollabStat(@Path("username") username: String,
+                         @Field("secondsSpentInCollab")secondsSpentInCollab:Int): Observable<Any>
+
     @DELETE("/drawing/delete/{id}")
     fun deleteDrawing(@Path("id")drawingID:String): Observable<String>
 

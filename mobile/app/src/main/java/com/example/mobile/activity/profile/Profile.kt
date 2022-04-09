@@ -32,6 +32,9 @@ class Profile : AppCompatActivity() {
     private var totalNbLikes:Int = 0
     private var totalNbDrawingCreated:Double = 0.0
     private var totalNbAlbumCreated :Double =0.0
+    private var totalDurationCollab :Double =0.0
+    private var avgDurationCollab :Double =0.0
+    private var totalNbCollab :Double =0.0
 
     private lateinit var usernameDisplayed: TextView
     private lateinit var iMyService: IMyService
@@ -149,8 +152,6 @@ class Profile : AppCompatActivity() {
                 else{
                     nbCreatedDrawings.setText("0")
                 }
-
-
             }
 
             override fun onFailure(call: Call<Any>, t: Throwable) {
@@ -175,13 +176,75 @@ class Profile : AppCompatActivity() {
                     nbPrivateAlbums.setText("0")
                }
             }
-
             override fun onFailure(call: Call<Any>, t: Throwable) {
                 Toast.makeText(this@Profile, "erreur statistique introuvable", Toast.LENGTH_SHORT).show()
             }
         })
-
     }
+
+    private fun getNbCollab(user:String) {
+        var call: Call<Any> = iMyService.getNbCollab(user)
+
+        call.enqueue(object: retrofit2.Callback<Any> {
+            override fun onResponse(call: Call<Any>, response: Response<Any>) {
+
+                if(response.body()!=null){
+                    totalNbCollab= response.body() as Double
+
+                    nbCollaboration.setText(totalNbCollab.toInt().toString())
+                }
+                else {
+                    nbCollaboration.setText("0")
+                }
+            }
+            override fun onFailure(call: Call<Any>, t: Throwable) {
+                Toast.makeText(this@Profile, "erreur statistique introuvable", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun getAvgCollabDuration(user:String) {
+        var call: Call<Any> = iMyService.getAvgCollabDuration(user)
+
+        call.enqueue(object: retrofit2.Callback<Any> {
+            override fun onResponse(call: Call<Any>, response: Response<Any>) {
+
+                if(response.body()!=null){
+                    avgDurationCollab= response.body() as Double
+
+                    avgCollabTime.setText(avgDurationCollab.toInt().toString())
+                }
+                else {
+                    avgCollabTime.setText("0")
+                }
+            }
+            override fun onFailure(call: Call<Any>, t: Throwable) {
+                Toast.makeText(this@Profile, "erreur statistique introuvable", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun getTotalDurationCollab(user:String) {
+        var call: Call<Any> = iMyService.getTotalDurationCollab(user)
+
+        call.enqueue(object: retrofit2.Callback<Any> {
+            override fun onResponse(call: Call<Any>, response: Response<Any>) {
+
+                if(response.body()!=null){
+                    totalDurationCollab= response.body() as Double
+
+                    totalCollabTime.setText(totalDurationCollab.toInt().toString())
+                }
+                else {
+                    totalCollabTime.setText("0")
+                }
+            }
+            override fun onFailure(call: Call<Any>, t: Throwable) {
+                Toast.makeText(this@Profile, "erreur statistique introuvable", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
 
     private fun displayBadges(totalNbLikes:Int){
         if (totalNbLikes in 0..5){
