@@ -43,7 +43,7 @@ export class CollabChatroomComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
       this.userName = window.localStorage.getItem("username");
-      //this.drawingName = window.localStorage.getItem("collabDrawingName");
+      this.drawingName = window.localStorage.getItem("currentDrawingName");
       this.collabChatService.joinCollabChat(window.localStorage.getItem("collabChatRoom") as string);
   }
 

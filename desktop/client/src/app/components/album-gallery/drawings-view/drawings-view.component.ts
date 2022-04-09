@@ -85,6 +85,7 @@ export class DrawingsViewComponent {
     this.albumGalleryService.currentDrawing = drawing;
     this.drawingService.setCurrentDrawing(drawing);
     this.collaborationService.joinCollab(drawing._id);
+    localStorage.setItem('currentDrawingName', drawing.name);
   }
 
   openChangeNameDialog(drawing: IDrawing): void {

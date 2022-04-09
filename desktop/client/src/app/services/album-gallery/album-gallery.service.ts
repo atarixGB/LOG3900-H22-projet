@@ -57,6 +57,7 @@ export class AlbumGalleryService {
         this.addDrawingToAlbum(this.currentDrawing, this.selectedAlbumId);
         this.drawingService.setCurrentDrawingBlanc();
         this.collaborationService.joinCollab(this.currentDrawing._id);
+        localStorage.setItem('currentDrawingName', this.currentDrawing.name);
         this.saveDrawing();
       },
       (error) => {

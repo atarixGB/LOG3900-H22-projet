@@ -2,7 +2,7 @@ const { app, BrowserWindow, ipcMain } = require('electron');
 const url = require('url');
 const path = require('path');
 
-let mainWindow, chatWindow;
+let mainWindow, chatWindow, collabChatWindow;
 const APP_ICON = path.join(__dirname, '/dist/client/assets/PolyGramLogo.png');
 
 function createAppWindows() {
@@ -158,5 +158,5 @@ ipcMain.on('open-collab-chat', (event, data) => {
 
 ipcMain.on('close-collab-chat', (event, data) => {
     console.log('ipcMain received close-collab-chat event');
-    collabChatWindow = null;
+    collabChatWindow.destroy();
 });
