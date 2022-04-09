@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { PROFILE_URL, STATS_AVERAGE_COLLAB_TIME_URL, STATS_COLLAB_COUNT_URL, STATS_TOTAL_ALBUMS_CREATED_URL, STATS_TOTAL_COLLAB_TIME_URL, STATS_TOTAL_DRAWINGS_CREATED_URL, STATS_TOTAL_LIKES_URL } from '@app/constants/api-urls'
 import { BADGES, FAVOURITE, MOST_LIKED, STATS } from '@app/constants/badges'
 import { BADGE_COUNT } from '@app/constants/constants'
@@ -20,6 +21,7 @@ export class ProfileService {
 
   isCurrentUserProfile: boolean;
   isFromChatWindow: boolean;
+  oldUrl: string;
 
   // Statistics
   totalNbrDrawings: number;
@@ -29,7 +31,7 @@ export class ProfileService {
   collabTime: string;
   collabTimeAverage: string;
 
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private router: Router) {
     this.statsImg = STATS;
     this.favoritesImg = FAVOURITE;
     this.mostLikedImg = MOST_LIKED;
@@ -120,7 +122,9 @@ export class ProfileService {
     }
   }
 
-  viewProfile(): void {
+  viewProfile(oldUrl: string): void {
+    this.oldUrl = oldUrl;
+
     const isFromChatWindow = true;
     electron.ipcRenderer.send("view-profile", isFromChatWindow);
 
@@ -128,4 +132,8 @@ export class ProfileService {
       this.isFromChatWindow = result;
     });
   }
+
+  return(): void {
+    this.router.navigate([this.oldUrl]);
+  } 
 }

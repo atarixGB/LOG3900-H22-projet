@@ -18,6 +18,7 @@ export class ChatroomUsersDialogComponent implements OnInit {
 
   getUserProfileInfos(username:string): void {
     console.log("Get info of", username);
+    this.profileService.viewProfile(this.router.url);
     this.router.navigate([`../profile/${username}`], { relativeTo: this.route });
   }
 

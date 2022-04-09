@@ -90,8 +90,12 @@ export class CollaborationService {
         });
 
         this.socket.on('readyToJoin', (room: any) => {
-            window.localStorage.setItem("collabChatRoom", this.room + 'chat');
-            setTimeout(() => {this.socket.emit('joinCollab', room);}, 200);
+            window.localStorage.setItem("collabChatRoom", this.room);
+            const data = {
+                room: room,
+                username: this.profileService.username
+            }
+            setTimeout(() => {this.socket.emit('joinCollab', data);}, 200);
         });
 
         this.socket.on('joinSuccessful', (collabData: any) => {

@@ -12,25 +12,37 @@ export class CollabChatService {
     
     newCollabMsg: Subject<any>;
     newCollabMsg$: Observable<any>;
+    updateUserList: Subject<any>;
+    updateUserList$: Observable<any>;
+
+    doOnce: boolean;
 
     constructor() { 
       this.newCollabMsg = new Subject();
       this.newCollabMsg$ = this.newCollabMsg.asObservable();
+      this.updateUserList = new Subject();
+      this.updateUserList$ = this.updateUserList.asObservable();
+
+      this.doOnce = true;
     }
 
-    connectSocketToCollabServer(): void {
-      this.socket = io.io(COLLAB_URL, { transports: ['websocket'] });
-      
-      this.socket.on('receiveCollabMessage', (msg: any) => {
-          this.newCollabMsg.next(msg);
-      });
-    }
 
-    joinCollabChat(room: string): void {
-      console.log("JOINING room: ", room);
-      this.room = room;
-      
-      this.socket.emit('joinCollabChat', room);
+    connectSocketToCollabServer(room: string): void {
+      if (this.doOnce) {
+        this.doOnce = false;
+        this.socket = io.io(COLLAB_URL, { transports: ['websocket'] });
+        
+        this.socket.on('receiveCollabMessage', (msg: any) => {
+            this.newCollabMsg.next(msg);
+        });
+
+        this.socket.on('updateUserList', (userList: string[]) => {
+          this.updateUserList.next(userList);
+        });
+
+        this.room = room;
+        this.socket.emit('joinCollabChat', room);
+      }
     }
 
     sendCollabMessage(msg: any): void {

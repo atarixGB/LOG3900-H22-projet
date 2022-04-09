@@ -141,7 +141,7 @@ export class ChatroomComponent implements AfterViewInit {
     getUserProfileInfos(username: string): void {
       if (username != PUBLIC_CHATROOM.owner) {
         console.log("Get info of", username);
-        this.profileService.viewProfile();
+        this.profileService.viewProfile(this.router.url);
         this.router.navigate([`../profile/${username}`], { relativeTo: this.route });
       }
     }
