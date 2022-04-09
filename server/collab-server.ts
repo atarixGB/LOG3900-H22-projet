@@ -79,6 +79,7 @@ ioCollab.on('connection', (socket) => {
         // Joining
         socket.join(roomName);
         ioCollab.in(roomName).emit('memberNbUpdate', roomData.members.length);
+        console.log("collabData hereeeeeeeeeeeeee " , collabData);
         socket.emit('joinSuccessfulwithID', collabData);
         socket.emit('joinSuccessful', infoOnActiveRooms.get(roomName));
 

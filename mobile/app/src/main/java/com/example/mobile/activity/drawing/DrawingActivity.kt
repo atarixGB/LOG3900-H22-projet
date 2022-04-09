@@ -44,8 +44,9 @@ class DrawingActivity : AppCompatActivity(), CreateDrawingPopUp.DialogListener, 
 
         //collaboration
         collabDrawingId = intent.getStringExtra("drawingCollabId").toString()
-        sharedViewModelToolBar.setDrawingId(collabDrawingId)
+//        sharedViewModelToolBar.setDrawingId(collabDrawingId)
         sharedViewModelToolBar.setUser(user)
+
         if (collabDrawingId == "null") {
             //Open Popup Window
             var dialog = CreateDrawingPopUp(user, isAlbumAlreadySelected)
@@ -71,6 +72,9 @@ class DrawingActivity : AppCompatActivity(), CreateDrawingPopUp.DialogListener, 
 
     override fun drawingIdPopUpListener(drawingId: String) {
         sharedViewModelToolBar.setDrawingId(drawingId)
-        DrawingSocket.socket.emit("joinCollab", drawingId)
+        var jo = JSONObject()
+        jo.put("room", drawingId)
+        jo.put("username", user)
+        DrawingSocket.socket.emit("joinCollab", jo)
     }
 }

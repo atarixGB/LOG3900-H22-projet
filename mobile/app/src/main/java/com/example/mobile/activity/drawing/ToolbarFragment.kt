@@ -23,7 +23,7 @@ class ToolbarFragment : Fragment(), AdapterView.OnItemClickListener {
     private var arrayList:ArrayList<ToolItem> ? = null
     private var toolAdapter: ToolAdapter? = null
     private lateinit var user: String
-    private lateinit var drawingId: String
+    private var drawingId: String = ""
     private lateinit var saveDrawingBtn : Button
     private lateinit var addToStoryBtn : Button
     private lateinit var backBtn : Button
@@ -71,10 +71,10 @@ class ToolbarFragment : Fragment(), AdapterView.OnItemClickListener {
 
         backBtn.setOnClickListener {
             //tell server we leavin
-            var roomData = JSONObject()
-            roomData.put("room", drawingId)
-            roomData.put("username", user)
-            DrawingSocket.socket.emit("leaveCollab", roomData)
+//            var roomData = JSONObject()
+//            roomData.put("room", drawingId)
+//            roomData.put("username", user)
+//            DrawingSocket.socket.emit("leaveCollab", roomData)
 
             //enregistrer avant de quitter
             toolChange.onClick()

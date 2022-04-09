@@ -100,7 +100,7 @@ class DrawingZoneFragment : Fragment() {
 
         sharedViewModelToolBar.collabDrawingId.observe(viewLifecycleOwner, Observer { collabDrawingId ->
             mDrawingView.setDrawingId(collabDrawingId)
-           // mDrawingView.displayDrawingCollab(collabDrawingId)
+            mDrawingView.displayDrawingCollab(collabDrawingId)
         })
 
         sharedViewModelToolBar.jsonString.observe(viewLifecycleOwner, Observer { jsonString ->
@@ -111,9 +111,9 @@ class DrawingZoneFragment : Fragment() {
             mDrawingView.saveImg()
         })
 
-//        toolModel.onStory.observe(viewLifecycleOwner, Observer { onStory ->
+        toolModel.onStory.observe(viewLifecycleOwner, Observer { onStory ->
 //            mDrawingView.putToStory()
-//        })
+        })
 
         view.findViewById<LinearLayout>(R.id.drawingView).addView(mDrawingView)
     }
@@ -192,6 +192,9 @@ class DrawingZoneFragment : Fragment() {
         private var currentDrawingBitmap: Bitmap? = null
         internal var compositeDisposable = CompositeDisposable()
         private var upComingStrokes = ArrayList<String>()
+
+        val retrofit = RetrofitClient.getInstance()
+        val myService = retrofit.create(IMyService::class.java)
 
         fun onStrokeReceive(stroke: JSONObject) {
             if (this::toolManager.isInitialized) {
@@ -446,9 +449,7 @@ class DrawingZoneFragment : Fragment() {
         }
 
         fun putToStory() {
-            val retrofit = RetrofitClient.getInstance()
-            val myService = retrofit.create(IMyService::class.java)
-            if (!this.drawingId.isNullOrEmpty()) {
+            if (!this.drawingId.isNullOrEmpty() && mBitmap != null) {
                 compositeDisposable.add(myService.addDrawingToStory(drawingId!!)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -474,9 +475,6 @@ class DrawingZoneFragment : Fragment() {
                     toolManager.selection.sendPasteSelection()
                     toolManager.selection.resetSelection()
                 }
-
-                val retrofit = RetrofitClient.getInstance()
-                val myService = retrofit.create(IMyService::class.java)
 
                 var filesDir: File = context.filesDir;
                 var file = File(filesDir, "image" + ".png")

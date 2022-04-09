@@ -91,6 +91,10 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
         val retrofit = RetrofitClient.getInstance()
         iMyService = retrofit.create(IMyService::class.java)
 
+        DrawingSocket.socket.on("readyToJoin", onReadyToJoin)
+//        DrawingSocket.socket.on("joinSuccessful", onJoinCollab)
+        DrawingSocket.socket.on("joinSuccessfulwithID", onJoinCollab)
+        DrawingSocket.socket.on("joinFailure", onJoinFailure)
 
         searchView = findViewById<SearchView>(R.id.drawingsSearchView)
         searchView.queryHint = "cherchez un dessin"
@@ -130,11 +134,6 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
 
         getAllAlbumDrawings(albumID)
 
-
-        DrawingSocket.socket.on("readyToJoin", onReadyToJoin)
-//        DrawingSocket.socket.on("joinSuccessful", onJoinCollab)
-        DrawingSocket.socket.on("joinSuccessfulwithID", onJoinCollab)
-        DrawingSocket.socket.on("joinFailure", onJoinFailure)
 
         leaveAlbumBtn.setOnClickListener {
             val intent = Intent(this, Albums::class.java)
@@ -253,7 +252,10 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
     private var onReadyToJoin = Emitter.Listener {
         val drawingId = it[0] as String
         TimeUnit.MILLISECONDS.sleep(200)
-        DrawingSocket.socket.emit("joinCollab", drawingId)
+        var jo = JSONObject()
+        jo.put("room", drawingId)
+        jo.put("username", user)
+        DrawingSocket.socket.emit("joinCollab", jo)
     }
 
     private var onJoinCollab = Emitter.Listener {
