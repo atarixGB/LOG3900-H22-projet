@@ -925,7 +925,13 @@ class  Selection(context: Context, baseCanvas: Canvas, val socket : DrawingSocke
 
             currentStroke = null
             selectedIndex = null
-            nextTool = ToolbarFragment.MenuItem.SELECTION
+//            nextTool = ToolbarFragment.MenuItem.SELECTION
+            if (!isToolSelection!!) {
+                nextTool = oldTool!!
+            } else {
+                nextTool = ToolbarFragment.MenuItem.SELECTION
+                isToolSelection = true
+            }
         }
     }
 }

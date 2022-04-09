@@ -31,6 +31,7 @@ import com.example.mobile.viewModel.ToolParameters
 import io.reactivex.disposables.CompositeDisposable
 import io.socket.emitter.Emitter
 import kotlinx.android.synthetic.main.activity_drawings_collection.view.*
+import kotlinx.android.synthetic.main.fragment_custom_tool.view.*
 import okhttp3.*
 import org.json.JSONArray
 import org.json.JSONObject
@@ -88,6 +89,11 @@ class DrawingZoneFragment : Fragment() {
         toolParameters.deleteSelection.observe(viewLifecycleOwner, Observer { deleteSelection ->
             mDrawingView.deleteSelection(deleteSelection)
         })
+
+        toolParameters.pasteSelection.observe(viewLifecycleOwner, Observer { pasteSelection ->
+            mDrawingView.pasteSelection(pasteSelection)
+        })
+
         toolModel.tool.observe(viewLifecycleOwner, Observer { tool ->
             mDrawingView.changeTool(tool)
         })
@@ -471,11 +477,11 @@ class DrawingZoneFragment : Fragment() {
             if (this::toolManager.isInitialized) {
                 this.toolManager.changeTool(tool)
                 resetPath()
-                toolManager.selection.sendPasteSelection()
-                toolManager.selection.resetSelection()
                 if (tool == ToolbarFragment.MenuItem.SELECTION) {
                     toolManager.selection.isToolSelection = true
                 }
+                toolManager.selection.sendPasteSelection()
+                toolManager.selection.resetSelection()
             }
             if (currentDrawingBitmap != null) {
                 mCanvas!!.drawBitmap(currentDrawingBitmap!!, 0F, 0F, null)
@@ -485,6 +491,16 @@ class DrawingZoneFragment : Fragment() {
         fun deleteSelection (delete: Boolean) {
             if (this::toolManager.isInitialized && delete) {
                 toolManager.selection.deleteStroke()
+            }
+            if (currentDrawingBitmap != null) {
+                mCanvas!!.drawBitmap(currentDrawingBitmap!!, 0F, 0F, null)
+            }
+        }
+
+        fun pasteSelection (paste: Boolean) {
+            if (this::toolManager.isInitialized && paste) {
+                toolManager.selection.sendPasteSelection()
+                toolManager.selection.resetSelection()
             }
             if (currentDrawingBitmap != null) {
                 mCanvas!!.drawBitmap(currentDrawingBitmap!!, 0F, 0F, null)
