@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProfileService } from './profile.service';
-import { PROFILE_UPDATE_URL } from '@app/constants/api-urls';
+import { PROFILE_UPDATE_URL, PROFILE_URL } from '@app/constants/api-urls';
 import { SoundEffectsService } from '../sound-effects/sound-effects.service';
 import { ChatTheme } from '@app/constants/chat-themes';
 
@@ -24,7 +24,6 @@ export class ProfileSettingsService {
     constructor(private httpClient: HttpClient,  private router: Router, private route: ActivatedRoute, public profileService: ProfileService, private soundEffectsService: SoundEffectsService) {
         this.getUserInfoFromProfile();
         this.setBoolsToDefault();
-        this.currentChatThemeId = ChatTheme.Default;
     }
 
     setBoolsToDefault(): void {
@@ -97,5 +96,16 @@ export class ProfileSettingsService {
                 this.isAvatarTooLarge = true;
             },
         );
+    }
+
+    getUserInfos(): void {
+      this.httpClient.get(`${PROFILE_URL}/${this.profileService.username}`).subscribe(
+        (result: any) => {
+          this.currentChatThemeId = result.chatThemeId;
+        },
+        (error) => {
+          console.log(`Impossible d'obtenir le thème de clavardage du profil de l'utilisateur ${this.profileService.username} de la base do données.\nErreur: ${error}`);
+        }
+      )
     }
 }

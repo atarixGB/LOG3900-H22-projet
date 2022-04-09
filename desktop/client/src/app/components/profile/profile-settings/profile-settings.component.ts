@@ -9,37 +9,43 @@ import { ProfileSettingsService } from '@app/services/profile/profile-settings.s
 import { SoundEffectsService } from '@app/services/sound-effects/sound-effects.service';
 
 @Component({
-    selector: 'app-profile-settings',
-    templateUrl: './profile-settings.component.html',
-    styleUrls: ['./profile-settings.component.scss'],
+  selector: 'app-profile-settings',
+  templateUrl: './profile-settings.component.html',
+  styleUrls: ['./profile-settings.component.scss'],
 })
 export class ProfileSettingsComponent implements AfterContentInit {
 
-    constructor(
-      public profileSettingsService: ProfileSettingsService,
-      public loginService: LoginService,
-      public dialog: MatDialog,
-      private router: Router,
-      private route: ActivatedRoute,
-      public soundEffectsService: SoundEffectsService) {}
+  constructor(
+    public profileSettingsService: ProfileSettingsService,
+    public loginService: LoginService,
+    public dialog: MatDialog,
+    private router: Router,
+    private route: ActivatedRoute,
+    public soundEffectsService: SoundEffectsService) {
 
-    ngAfterContentInit(): void {
-        this.profileSettingsService.getUserInfoFromProfile();
-    }
+    console.log(this.profileSettingsService.currentChatThemeId);
+    this.profileSettingsService.getUserInfos();
 
-    openAvatarSelectionModal(): void {
-        this.dialog.open(AvatarSelectionModalComponent, {});
-    }
 
-    openAvatarImportModal(): void {
-        this.dialog.open(AvatarImportModalComponent, {});
-    }
+  }
 
-    changeTheme(themeId: ChatTheme): void {
-      this.profileSettingsService.newChatThemeId = themeId;
-    }
+  ngAfterContentInit(): void {
+    this.profileSettingsService.getUserInfoFromProfile();
+  }
 
-    onCancel(): void {
-      this.router.navigate([`../profile/${this.loginService.username}`], { relativeTo: this.route });
-    }
+  openAvatarSelectionModal(): void {
+    this.dialog.open(AvatarSelectionModalComponent, {});
+  }
+
+  openAvatarImportModal(): void {
+    this.dialog.open(AvatarImportModalComponent, {});
+  }
+
+  changeTheme(themeId: ChatTheme): void {
+    this.profileSettingsService.newChatThemeId = themeId;
+  }
+
+  onCancel(): void {
+    this.router.navigate([`../profile/${this.loginService.username}`], { relativeTo: this.route });
+  }
 }
