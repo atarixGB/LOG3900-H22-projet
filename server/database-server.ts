@@ -505,6 +505,12 @@ mongoClient.connect(DATABASE_URL, { useNewUrlParser: true }, function (err, clie
         });
     });
 
+  
+
+//==========================================================================================================
+// Album Management
+//==========================================================================================================
+
 
   //get all drawings that specified user liked
   app.get("/drawings/favorite/:username", (request, response) => {

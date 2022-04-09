@@ -36,6 +36,7 @@
         <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/drawable/ic_save.xml" value="0.179" />
         <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/drawable/spinner_bg.xml" value="0.3725" />
         <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/drawable/toolbar_btn.xml" value="0.1" />
+        <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/activity_add_avatar_pop_up.xml" value="0.22" />
         <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/activity_albums.xml" value="0.1" />
         <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/activity_chat_page.xml" value="0.11484375" />
         <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/activity_chat_rooms.xml" value="0.1" />
@@ -62,7 +63,7 @@
         <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/fragment_drawing_name_modification_pop_up.xml" value="0.1859375" />
         <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/fragment_drawing_zone.xml" value="0.11484375" />
         <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/fragment_gallery_fullscreen.xml" value="0.1" />
-        <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/fragment_toolbar.xml" value="0.22" />
+        <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/fragment_toolbar.xml" value="0.1" />
         <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/fragment_toolbar_navigation.xml" value="0.2" />
         <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/image_fullscreen.xml" value="0.1" />
         <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/item_drawing.xml" value="0.3557312252964427" />

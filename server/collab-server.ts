@@ -25,6 +25,7 @@ ioCollab.on('connection', (socket) => {
       // COLLAB ROOM EVENTS
       // This event is to make sure the other collaborator's selections are pasted before a new member joins
       socket.on('prepForJoin', (data) => {
+        console.log(data)
         const roomName = data.room; // Note: The room name is the drawingID
         const userJoining = data.username;
         console.log("Prepping for join " , roomName);
@@ -46,15 +47,22 @@ ioCollab.on('connection', (socket) => {
           members: [socket.id],
           strokes: [],
         };
+
+
         if (infoOnActiveRooms.has(roomName)) {
           roomData = infoOnActiveRooms.get(roomName);
           roomData.members.push(socket.id);
         }
         infoOnActiveRooms.set(roomName, roomData);
 
+        let collabData = {
+          roomName: roomName,
+          strokes: infoOnActiveRooms.get(roomName).strokes,
+        };
         // Joining
         socket.join(roomName);
         ioCollab.in(roomName).emit('memberNbUpdate', roomData.members.length);
+        socket.emit('joinSuccessfulwithID', collabData);
         socket.emit('joinSuccessful', infoOnActiveRooms.get(roomName));
 
         // Utile pour voir l'état des rooms
@@ -82,6 +90,7 @@ ioCollab.on('connection', (socket) => {
 
       socket.on('updateCollabInfo', (collabData) => {
         console.log('updateCollabInfo');
+        console.log(collabData.strokes);
         
         let roomData = infoOnActiveRooms.get(collabData.collabDrawingId);
         roomData.strokes = collabData.strokes;
@@ -90,7 +99,7 @@ ioCollab.on('connection', (socket) => {
 
       // DRAWING EVENTS
       socket.on('broadcastStroke', (data) => {
-        console.log('broadcastStroke');
+        console.log('broadcastStroke', data);
         const roomName = data.room;
         const stroke = data.data
         socket.broadcast.to(roomName).emit('receiveStroke', stroke);
@@ -116,6 +125,7 @@ ioCollab.on('connection', (socket) => {
         console.log('broadcastSelectionSize');
         const roomName = data.room;
         const size = data.data
+        console.log(size);
         socket.broadcast.to(roomName).emit('receiveSelectionSize', size);
          
       })
@@ -127,7 +137,7 @@ ioCollab.on('connection', (socket) => {
         socket.broadcast.to(roomName).emit('receivePasteRequest', pasteReq);
          
 
-        socket.emit('fetchStrokes');
+        // socket.emit('fetchStrokes');
       })
   
       socket.on('broadcastDeleteRequest', (data) => {

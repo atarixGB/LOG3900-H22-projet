@@ -44,6 +44,7 @@ class ToolbarFragment : Fragment(), AdapterView.OnItemClickListener {
         RECTANGLE(1),
         OVAL(2),
 
+        SELECTION(3)
     }
 
     override fun onCreateView(
@@ -123,6 +124,7 @@ class ToolbarFragment : Fragment(), AdapterView.OnItemClickListener {
         arrayList.add(ToolItem(R.drawable.pencil_clicked))
         arrayList.add(ToolItem(R.drawable.rectangle))
         arrayList.add(ToolItem(R.drawable.circle))
+        arrayList.add(ToolItem(R.drawable.select))
         return arrayList
     }
 
@@ -130,6 +132,7 @@ class ToolbarFragment : Fragment(), AdapterView.OnItemClickListener {
         arrayList!!.set(MenuItem.PENCIL.position, ToolItem(R.drawable.pencil))
         arrayList!!.set(MenuItem.RECTANGLE.position, ToolItem(R.drawable.rectangle))
         arrayList!!.set(MenuItem.OVAL.position, ToolItem(R.drawable.circle))
+        arrayList!!.set(MenuItem.SELECTION.position, ToolItem(R.drawable.select))
         if(position == MenuItem.PENCIL.position){
             arrayList!!.set(MenuItem.PENCIL.position, ToolItem(R.drawable.pencil_clicked))
             toolChange.changeTool(MenuItem.PENCIL)
@@ -140,6 +143,11 @@ class ToolbarFragment : Fragment(), AdapterView.OnItemClickListener {
         } else if(position== MenuItem.OVAL.position){
             arrayList!!.set(MenuItem.OVAL.position, ToolItem(R.drawable.circle_clicked))
             toolChange.changeTool(MenuItem.OVAL)
+
+        }
+        else if(position== MenuItem.SELECTION.position){
+            arrayList!!.set(MenuItem.SELECTION.position, ToolItem(R.drawable.select_clicked))
+            toolChange.changeTool(MenuItem.SELECTION)
 
         }
         toolAdapter!!.notifyDataSetChanged()

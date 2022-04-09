@@ -21,6 +21,17 @@
             android:name=".activity.profile.visitingProfile"
             android:exported="false" />
         <activity
+            android:name=".popup.PrepForMemberLeavingPopUp"
+            android:exported="false"
+            tools:ignore="Instantiatable" />
+        <activity
+            android:name=".popup.PrepForNewMemberPopUp"
+            android:exported="false"
+            tools:ignore="Instantiatable" />
+        <activity
+            android:name=".activity.albums.DisplayAllDrawings"
+            android:exported="false" />
+        <activity
             android:name=".activity.profile.FavoriteDrawingDisplay"
             android:exported="false" />
 
@@ -32,9 +43,6 @@
             android:exported="false"
             tools:ignore="Instantiatable" />
 
-        <activity
-            android:name=".activity.albums.DisplayAllDrawings"
-            android:exported="false" />
         <activity
             android:name=".popup.AcceptMembershipRequestsPopUp"
             android:exported="false"

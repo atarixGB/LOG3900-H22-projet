@@ -145,7 +145,7 @@ class CreateDrawingPopUp(val user: String, val isAlbumAlreadySelected: Boolean) 
         }
 
         rootView.submitBtn.setOnClickListener {
-            val data: String = "79f1f79d655d1150b15224027fc3e697.png"
+            val data: String = "37a4650300b6b92238e8bab3ab265cc8.png"
             val members = ArrayList<String>()
             val likes = ArrayList<String>()
 
