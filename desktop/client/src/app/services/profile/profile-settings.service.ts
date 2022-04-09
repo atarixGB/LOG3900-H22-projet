@@ -21,7 +21,11 @@ export class ProfileSettingsService {
     currentChatThemeId: ChatTheme;
     newChatThemeId: ChatTheme;
 
-    constructor(private httpClient: HttpClient,  private router: Router, private route: ActivatedRoute, public profileService: ProfileService, private soundEffectsService: SoundEffectsService) {
+    constructor(private httpClient: HttpClient,
+      private router: Router,
+      private route: ActivatedRoute,
+      public profileService: ProfileService,
+      private soundEffectsService: SoundEffectsService) {
         this.getUserInfoFromProfile();
         this.setBoolsToDefault();
     }
@@ -67,8 +71,6 @@ export class ProfileSettingsService {
     }
 
     private sendChangesToDB(): void {
-        // POST request to update new profile info
-        console.log("sendChangesToDB()");
 
         const newInfos = {
             oldUsername: this.profileService.username,
@@ -98,13 +100,13 @@ export class ProfileSettingsService {
         );
     }
 
-    getUserInfos(): void {
+    getChatThemeId(): void {
       this.httpClient.get(`${PROFILE_URL}/${this.profileService.username}`).subscribe(
         (result: any) => {
           this.currentChatThemeId = result.chatThemeId;
         },
         (error) => {
-          console.log(`Impossible d'obtenir le thème de clavardage du profil de l'utilisateur ${this.profileService.username} de la base do données.\nErreur: ${error}`);
+          console.log(`Impossible d'obtenir le thème de clavardage du profil de l'utilisateur ${this.profileService.username} de la base de données.\nErreur: ${error}`);
         }
       )
     }

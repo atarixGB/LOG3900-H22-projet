@@ -21,13 +21,7 @@ export class ProfileSettingsComponent implements AfterContentInit {
     public dialog: MatDialog,
     private router: Router,
     private route: ActivatedRoute,
-    public soundEffectsService: SoundEffectsService) {
-
-    console.log(this.profileSettingsService.currentChatThemeId);
-    this.profileSettingsService.getUserInfos();
-
-
-  }
+    public soundEffectsService: SoundEffectsService) {}
 
   ngAfterContentInit(): void {
     this.profileSettingsService.getUserInfoFromProfile();

@@ -5,6 +5,7 @@ import { ProfileService } from '../profile/profile.service';
 import { LOGIN_URL } from '@app/constants/api-urls';
 import { SoundEffectsService } from '../sound-effects/sound-effects.service';
 import { CollaborationService } from '../collaboration/collaboration.service';
+import { ProfileSettingsService } from '../profile/profile-settings.service';
 
 @Injectable({
     providedIn: 'root',
@@ -18,7 +19,14 @@ export class LoginService {
     isValidEmail: boolean;
     isValidPW: boolean;
 
-    constructor(private httpClient: HttpClient, private router: Router, private route: ActivatedRoute, private profileService: ProfileService, private soundEffectsService: SoundEffectsService, private collaborationService: CollaborationService) {
+    constructor(
+      private httpClient: HttpClient,
+      private router: Router,
+      private route: ActivatedRoute,
+      private profileService: ProfileService,
+      private soundEffectsService: SoundEffectsService,
+      private collaborationService: CollaborationService,
+      private profileServiceSettings: ProfileSettingsService) {
         this.email = '';
         this.password = '';
     }
@@ -26,7 +34,7 @@ export class LoginService {
     setBoolsToDefault(): void {
         this.isValidEmail = true;
         this.isValidPW = true;
-    } 
+    }
 
     connect(): void {
         const userCredentials = {
@@ -37,7 +45,6 @@ export class LoginService {
         this.httpClient.post(LOGIN_URL, userCredentials).subscribe(
             (result) => {
                 if (result == 200) {
-                  console.log(result, "Login sucess")
                   this.router.navigate(['../menu'], { relativeTo: this.route });
                   this.fetchUserInfo();
                   this.collaborationService.enterCollaboration();
@@ -58,10 +65,10 @@ export class LoginService {
     fetchUserInfo(): void {
         this.httpClient.get(LOGIN_URL + '/' + this.email).subscribe(
             (result) => {
+                console.log("Current user:", result);
                 this.username = result.toString();
                 this.profileService.setUsername(this.username);
-                console.log(result, ' got name');
-                
+                this.profileServiceSettings.getChatThemeId();
             },
             (error) => {
                 console.log('Error: ', error);

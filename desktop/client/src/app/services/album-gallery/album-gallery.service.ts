@@ -38,8 +38,6 @@ export class AlbumGalleryService {
       creationDate: ""
     }
 
-    console.log("LOGIN USERNAME:", loginService.username)
-
     this.favoriteDrawingsData = [];
     this.topDrawingsData = [];
   }
@@ -289,7 +287,7 @@ export class AlbumGalleryService {
     const url = ALBUM_URL + `/${album._id}`;
 
     if (album.owner != this.loginService.username && album.name != "album public") {
-      const updateData = { memberToRemove: this.loginService.username }; // TODO Set new ownwer, may be in another function
+      const updateData = { memberToRemove: this.loginService.username };
       this.httpClient.put<string>(url, updateData).subscribe(
         (result) => {
           console.log("Résultat du serveur:", result);
@@ -386,14 +384,6 @@ export class AlbumGalleryService {
     });
 
     console.log(this.fetchedDrawings);
-  }
-
-  fetchAllPublicDrawings(): void {
-    console.log("Fetching all public drawings from server...");
-    // this.httpClient.get(url).subscribe(
-    //   (result) => {},
-    //   (error) => {}
-    // )
   }
 
   // All drawings that current user liked
