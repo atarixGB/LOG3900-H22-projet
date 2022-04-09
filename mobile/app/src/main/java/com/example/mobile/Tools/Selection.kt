@@ -59,7 +59,7 @@ class  Selection(context: Context, baseCanvas: Canvas, val socket : DrawingSocke
 
     override fun touchMove() {
         if (currentStroke != null) {
-            if (isInResizingPoints(currentStroke!!.boundingPoints, IVec2(mx, my))) {
+            if (isResizing) {
                 var oldWidth = (currentStroke!!.boundingPoints[1].x - currentStroke!!.boundingPoints[0].x)
                 var oldHeight = (currentStroke!!.boundingPoints[1].y - currentStroke!!.boundingPoints[0].y)
 
@@ -68,37 +68,33 @@ class  Selection(context: Context, baseCanvas: Canvas, val socket : DrawingSocke
 
                 when(currentCpIndex) {
                     0 -> {
-                        if (mx - currentStroke!!.boundingPoints[1].x > 2F) {
-                            newWidth = (mx - currentStroke!!.boundingPoints[1].x)
-                            currentStroke!!.boundingPoints[0] = IVec2(mx,my)
+                        if (currentStroke!!.boundingPoints[1].x - mx > 2F) {
+                            newWidth = (currentStroke!!.boundingPoints[1].x - mx)
+                            currentStroke!!.boundingPoints[0].x = mx
                         }
-                        if (my - currentStroke!!.boundingPoints[1].y > 2F) {
-                            newHeight = (my - currentStroke!!.boundingPoints[1].y)
-                            currentStroke!!.boundingPoints[0] = IVec2(mx,my)
+                        if (currentStroke!!.boundingPoints[1].y - my> 2F) {
+                            newHeight = (currentStroke!!.boundingPoints[1].y - my)
+                            currentStroke!!.boundingPoints[0].y = my
                         }
                     }
                     1 -> {
                         if (mx - currentStroke!!.boundingPoints[0].x > 2F) {
                             newWidth = (mx - currentStroke!!.boundingPoints[0].x)
-                            currentStroke!!.boundingPoints[0].y = my
                             currentStroke!!.boundingPoints[1].x = mx
                         }
                         if (currentStroke!!.boundingPoints[1].y - my > 2F) {
                             newHeight = (currentStroke!!.boundingPoints[1].y - my)
                             currentStroke!!.boundingPoints[0].y = my
-                            currentStroke!!.boundingPoints[1].x = mx
                         }
                     }
                     2 -> {
                         if (currentStroke!!.boundingPoints[1].x - mx > 2F) {
                             newWidth = (currentStroke!!.boundingPoints[1].x - mx)
                             currentStroke!!.boundingPoints[0].x = mx
-                            currentStroke!!.boundingPoints[1].y = my
                         }
 
                         if(my - currentStroke!!.boundingPoints[0].y > 2F) {
                             newHeight = (my - currentStroke!!.boundingPoints[0].y)
-                            currentStroke!!.boundingPoints[0].x = mx
                             currentStroke!!.boundingPoints[1].y = my
                         }
 
@@ -106,11 +102,72 @@ class  Selection(context: Context, baseCanvas: Canvas, val socket : DrawingSocke
                     3 -> {
                         if (mx - currentStroke!!.boundingPoints[0].x > 2F) {
                             newWidth = (mx - currentStroke!!.boundingPoints[0].x)
-                            currentStroke!!.boundingPoints[1] = IVec2(mx,my)
+                            currentStroke!!.boundingPoints[1].x = mx
                         }
                         if (my - currentStroke!!.boundingPoints[0].y > 2F) {
                             newHeight = (my - currentStroke!!.boundingPoints[0].y)
-                            currentStroke!!.boundingPoints[1] = IVec2(mx,my)
+                            currentStroke!!.boundingPoints[1].y = my
+                        }
+
+                    }
+                }
+
+                var scale = IVec2(newWidth/oldWidth, newHeight/oldHeight)
+
+                currentStroke!!.rescale(scale)
+                selectionCanvas!!.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR)
+                createSelectionCanvas(currentStroke!!)
+                currentStroke!!.drawStroke(selectionCanvas!!)
+                drawStrokesOnBaseCanvas(currentStroke!!)
+                oldMousePosition = IVec2(mx, my)
+            } else if (isInResizingPoints(currentStroke!!.boundingPoints, IVec2(mx, my)) && !isMoving) {
+                var oldWidth = (currentStroke!!.boundingPoints[1].x - currentStroke!!.boundingPoints[0].x)
+                var oldHeight = (currentStroke!!.boundingPoints[1].y - currentStroke!!.boundingPoints[0].y)
+
+                var newWidth = oldWidth
+                var newHeight = oldHeight
+
+                when(currentCpIndex) {
+                    0 -> {
+                        if (currentStroke!!.boundingPoints[1].x - mx > 2F) {
+                            newWidth = (currentStroke!!.boundingPoints[1].x - mx)
+                            currentStroke!!.boundingPoints[0].x = mx
+                        }
+                        if (currentStroke!!.boundingPoints[1].y - my> 2F) {
+                            newHeight = (currentStroke!!.boundingPoints[1].y - my)
+                            currentStroke!!.boundingPoints[0].y = my
+                        }
+                    }
+                    1 -> {
+                        if (mx - currentStroke!!.boundingPoints[0].x > 2F) {
+                            newWidth = (mx - currentStroke!!.boundingPoints[0].x)
+                            currentStroke!!.boundingPoints[1].x = mx
+                        }
+                        if (currentStroke!!.boundingPoints[1].y - my > 2F) {
+                            newHeight = (currentStroke!!.boundingPoints[1].y - my)
+                            currentStroke!!.boundingPoints[0].y = my
+                        }
+                    }
+                    2 -> {
+                        if (currentStroke!!.boundingPoints[1].x - mx > 2F) {
+                            newWidth = (currentStroke!!.boundingPoints[1].x - mx)
+                            currentStroke!!.boundingPoints[0].x = mx
+                        }
+
+                        if(my - currentStroke!!.boundingPoints[0].y > 2F) {
+                            newHeight = (my - currentStroke!!.boundingPoints[0].y)
+                            currentStroke!!.boundingPoints[1].y = my
+                        }
+
+                    }
+                    3 -> {
+                        if (mx - currentStroke!!.boundingPoints[0].x > 2F) {
+                            newWidth = (mx - currentStroke!!.boundingPoints[0].x)
+                            currentStroke!!.boundingPoints[1].x = mx
+                        }
+                        if (my - currentStroke!!.boundingPoints[0].y > 2F) {
+                            newHeight = (my - currentStroke!!.boundingPoints[0].y)
+                            currentStroke!!.boundingPoints[1].y = my
                         }
 
                     }
@@ -125,7 +182,7 @@ class  Selection(context: Context, baseCanvas: Canvas, val socket : DrawingSocke
                 drawStrokesOnBaseCanvas(currentStroke!!)
                 oldMousePosition = IVec2(mx, my)
                 isResizing = true
-            } else {
+            } else if (!isResizing){
                 currentStroke!!.moveStroke(IVec2(mx - oldMousePosition.x, my - oldMousePosition.y))
                 drawStrokesOnBaseCanvas(currentStroke!!)
                 oldMousePosition = IVec2(mx, my)
@@ -206,7 +263,7 @@ class  Selection(context: Context, baseCanvas: Canvas, val socket : DrawingSocke
     private fun createSelectionCanvas(stroke: Stroke) {
         val width = (stroke.boundingPoints[1].x - stroke.boundingPoints[0].x).toInt()
         val height = (stroke.boundingPoints[1].y - stroke.boundingPoints[0].y).toInt()
-        selectionBitmap = Bitmap.createBitmap(width + 20, height + 20, Bitmap.Config.ARGB_8888)
+        selectionBitmap = Bitmap.createBitmap(width + 15, height + 15, Bitmap.Config.ARGB_8888)
         selectionCanvas = Canvas(selectionBitmap!!)
         val borderPaint = Paint().apply {
             color = ResourcesCompat.getColor(context.resources, R.color.red, null)
@@ -217,43 +274,29 @@ class  Selection(context: Context, baseCanvas: Canvas, val socket : DrawingSocke
             strokeCap = Paint.Cap.SQUARE
             strokeWidth = 10f
         }
-        selectionCanvas!!.drawRect(0f, 0f, width.toFloat(), height.toFloat(), borderPaint)
+        selectionCanvas!!.drawRect(15f, 15f, width.toFloat(), height.toFloat(), borderPaint)
 
         //bounding box :
-//        val boundingPointPaint = Paint().apply {
-//            color = ResourcesCompat.getColor(context.resources, R.color.blue, null)
-//            isAntiAlias = true
-//            isDither = true
-//            style = Paint.Style.STROKE
-//            strokeJoin = Paint.Join.MITER
-//            strokeCap = Paint.Cap.SQUARE
-//            strokeWidth = 18f
-//        }
-//
-//        selectionCanvas!!.drawRect(
-//            (stroke.boundingPoints[1].x - 20F),
-//            (stroke.boundingPoints[1].y - 20F),
-//            (stroke.boundingPoints[1].x + 20F), (stroke.boundingPoints[1].x + 20F), boundingPointPaint)
-//
-//        baseCanvas!!.drawRect(
-//            (stroke.boundingPoints[1].x - 20F),
-//            (stroke.boundingPoints[0].y - 20F),
-//            40F, 40F, boundingPointPaint)
-//
-//        baseCanvas!!.drawRect(
-//            (stroke.boundingPoints[0].x + 20F),
-//            (stroke.boundingPoints[1].y + 20F),
-//            40F, 40F, boundingPointPaint)
-//
-//        baseCanvas!!.drawRect(
-//            (stroke.boundingPoints[1].x + 20F),
-//            (stroke.boundingPoints[1].y + 20F),
-//            40F, 40F, boundingPointPaint)
+        val boundingPointPaint = Paint().apply {
+            color = ResourcesCompat.getColor(context.resources, R.color.red, null)
+            isAntiAlias = true
+            isDither = true
+            style = Paint.Style.FILL
+            strokeJoin = Paint.Join.MITER
+            strokeCap = Paint.Cap.SQUARE
+            strokeWidth = 1f
+        }
+
+        selectionCanvas!!.drawRect(0f, 0F, 30F, 30F, boundingPointPaint)
+        selectionCanvas!!.drawRect(width.toFloat()-15F, height.toFloat()-15F, width.toFloat()+15F, height.toFloat() + 15F, boundingPointPaint)
+        selectionCanvas!!.drawRect(0f, height.toFloat()-15F, 30F, height.toFloat() + 15F, boundingPointPaint)
+        selectionCanvas!!.drawRect(width.toFloat()-15F, 0F, width.toFloat()+15F, 30F, boundingPointPaint)
+
 
     }
 
     private fun drawStrokeOnSelectionCanvas(stroke: Stroke, canvas: Canvas) {
-        if (!isMoving) {
+        if (!isMoving && !isResizing) {
             stroke.prepForSelection()
         }
         stroke.drawStroke(canvas)
@@ -296,8 +339,6 @@ class  Selection(context: Context, baseCanvas: Canvas, val socket : DrawingSocke
             )
             i++
         }
-
-
     }
 
     private fun drawOtherSelectedStrokesOnBaseCanvas(
@@ -343,25 +384,34 @@ class  Selection(context: Context, baseCanvas: Canvas, val socket : DrawingSocke
         val topLeftBound = bounds[0];
         val bottomRightBound = bounds[1];
 
-        if ((pointToCheck.x >= topLeftBound.x - 100F) && (pointToCheck.x <= topLeftBound.x + 100F) &&
-            (pointToCheck.y >= topLeftBound.y - 100F) && (pointToCheck.y <= topLeftBound.y + 100F)
+        if ((pointToCheck.x >= topLeftBound.x - 50F) && (pointToCheck.x <= topLeftBound.x + 50F) &&
+            (pointToCheck.y >= topLeftBound.y - 50F) && (pointToCheck.y <= topLeftBound.y + 50F)
         ) {
-            currentCpIndex = 0
+            if (!isResizing) {
+                currentCpIndex = 0
+            }
             return true
-        } else if ((pointToCheck.x >= bottomRightBound.x - 100F) && (pointToCheck.x <= bottomRightBound.x + 100F) &&
-            (pointToCheck.y >= topLeftBound.y - 100F) && (pointToCheck.y <= topLeftBound.y + 100F)
+        } else if ((pointToCheck.x >= bottomRightBound.x - 50F) && (pointToCheck.x <= bottomRightBound.x + 50F) &&
+            (pointToCheck.y >= topLeftBound.y - 50F) && (pointToCheck.y <= topLeftBound.y + 50F)
         ) {
-            currentCpIndex = 1
+            if (!isResizing) {
+                currentCpIndex = 1
+            }
             return true
-        } else if ((pointToCheck.x >= topLeftBound.x - 100F) && (pointToCheck.x <= topLeftBound.x + 100F) &&
-            (pointToCheck.y >= bottomRightBound.y - 100F) && (pointToCheck.y <= bottomRightBound.y + 100F)
+        } else if ((pointToCheck.x >= topLeftBound.x - 50F) && (pointToCheck.x <= topLeftBound.x + 50F) &&
+            (pointToCheck.y >= bottomRightBound.y - 50F) && (pointToCheck.y <= bottomRightBound.y + 50F)
         ) {
-            currentCpIndex = 2
+            if (!isResizing) {
+                currentCpIndex = 2
+            }
             return true
-        } else if ((pointToCheck.x >= bottomRightBound.x - 100F) && (pointToCheck.x <= bottomRightBound.x + 100F) &&
-            (pointToCheck.y >= bottomRightBound.y - 100F) && (pointToCheck.y <= bottomRightBound.y + 100F)
+
+        } else if ((pointToCheck.x >= bottomRightBound.x - 50F) && (pointToCheck.x <= bottomRightBound.x + 50F) &&
+            (pointToCheck.y >= bottomRightBound.y - 50F) && (pointToCheck.y <= bottomRightBound.y + 50F)
         ) {
-            currentCpIndex = 3
+            if (!isResizing) {
+                currentCpIndex = 3
+            }
             return true
         }
         return false
@@ -740,7 +790,7 @@ class  Selection(context: Context, baseCanvas: Canvas, val socket : DrawingSocke
     fun onResizeRequest(sender: String, strokeIndex: Int, newPos: IVec2, newDimensions: IVec2, scale: IVec2) {
         strokes[strokeIndex].rescale(scale)
         strokes[strokeIndex].boundingPoints[0] = newPos
-        strokes[strokeIndex].boundingPoints[1] = IVec2(newDimensions.x + strokes[strokeIndex].boundingPoints[0].x, newDimensions.y + strokes[strokeIndex].boundingPoints[0].y)
+        strokes[strokeIndex].boundingPoints[1] = IVec2(newDimensions.x + newPos.x, newDimensions.y + newPos.y)
 
         if (otherSelectionCanvas != null) {
             otherSelectionCanvas!!.drawColor(

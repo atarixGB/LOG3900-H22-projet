@@ -5,9 +5,12 @@ import android.graphics.*
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.Button
+import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.activityViewModels
@@ -25,9 +28,9 @@ import com.example.mobile.popup.PrepForNewMemberPopUp
 import com.example.mobile.viewModel.SharedViewModelToolBar
 import com.example.mobile.viewModel.ToolModel
 import com.example.mobile.viewModel.ToolParameters
-import com.google.gson.Gson
 import io.reactivex.disposables.CompositeDisposable
 import io.socket.emitter.Emitter
+import kotlinx.android.synthetic.main.activity_drawings_collection.view.*
 import okhttp3.*
 import org.json.JSONArray
 import org.json.JSONObject
@@ -93,10 +96,12 @@ class DrawingZoneFragment : Fragment() {
             mDrawingView.setDrawingId(drawingId)
         })
 
-        sharedViewModelToolBar.collabDrawingId.observe(viewLifecycleOwner, Observer { collabDrawingId ->
-            mDrawingView.setDrawingId(collabDrawingId)
-            mDrawingView.displayDrawingCollab(collabDrawingId)
-        })
+        sharedViewModelToolBar.collabDrawingId.observe(
+            viewLifecycleOwner,
+            Observer { collabDrawingId ->
+                mDrawingView.setDrawingId(collabDrawingId)
+                mDrawingView.displayDrawingCollab(collabDrawingId)
+            })
 
         sharedViewModelToolBar.jsonString.observe(viewLifecycleOwner, Observer { jsonString ->
             mDrawingView.onLoadCurrentStrokeData(jsonString)
@@ -362,12 +367,25 @@ class DrawingZoneFragment : Fragment() {
             }
             mCanvas!!.drawRect(0f,0f, w.toFloat(), h.toFloat(),borderPaint )
             toolManager = ToolManager(context, mCanvas!!, this.socket, drawingId)
+
         }
+
 
         override fun onDraw(canvas: Canvas) {
             super.onDraw(canvas)
             canvas.drawBitmap(mBitmap!!, 0f, 0f, mPaint)
             //var mediaPlayerDrawing: MediaPlayer = MediaPlayer.create(context,R.raw.draw)
+
+            //selection bounding box button
+//            val button1 = Button(context)
+//            button1.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+//
+//            button1.setBackgroundColor(Color.RED)
+//            button1.setText("hiiii")
+//
+//            val lay = findViewById<LinearLayout>(R.id.drawingView)
+//            lay.addView(button1)
+
 
             if (isDrawing) {
                 toolManager.currentTool.onDraw(canvas)
