@@ -164,5 +164,7 @@ ipcMain.on('open-collab-chat', (event, data) => {
 
 ipcMain.on('close-collab-chat', (event, data) => {
     console.log('ipcMain received close-collab-chat event');
-    collabChatWindow.destroy();
+    if (collabChatWindow) {
+      collabChatWindow.destroy();
+    }
 });
