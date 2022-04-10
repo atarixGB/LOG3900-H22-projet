@@ -58,7 +58,6 @@ export class EllipseService extends ShapeService {
         this.computeSize();
         this.findMouseDirection();
         if (!this.isShiftShape) {
-            this.rectangle.drawRectangle(ctx, true);
             this.drawEllipse(ctx);
         } else {
             this.rectangle.drawSquare(ctx, true);
