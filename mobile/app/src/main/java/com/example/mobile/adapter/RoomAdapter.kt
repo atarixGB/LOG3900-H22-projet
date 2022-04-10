@@ -52,6 +52,12 @@ class RoomAdapter (val context : Context, var IRooms: ArrayList<IRoom>, val owne
         IRooms.add(IRoom)
     }
 
+    fun deleteRoom(removedRoom: IRoom)  : Int{
+        val index = IRooms.indexOf(removedRoom)
+        IRooms.remove(removedRoom)
+        return index
+    }
+
     fun searchArrayList (list: ArrayList<IRoom>) {
         IRooms = list
         notifyDataSetChanged()

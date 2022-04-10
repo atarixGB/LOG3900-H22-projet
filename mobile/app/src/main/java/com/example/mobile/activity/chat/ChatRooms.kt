@@ -68,6 +68,7 @@ class ChatRooms : AppCompatActivity(), CreateRoomPopUp.DialogListener, RoomAdapt
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat_rooms)
 
+        Log.i("chatRooms", "onCreate")
         create_room_btn = findViewById(R.id.create_room_btn)
         join_room_btn = findViewById(R.id.join_room_btn)
         principal_room_btn = findViewById(R.id.principal_room_btn)
@@ -159,6 +160,7 @@ class ChatRooms : AppCompatActivity(), CreateRoomPopUp.DialogListener, RoomAdapt
         socket.on("userLeftChatPage") { args ->
             if (args[0] != null) {
                 openedChatPageName = ""
+                getRooms()
             }
         }
     }
@@ -199,7 +201,7 @@ class ChatRooms : AppCompatActivity(), CreateRoomPopUp.DialogListener, RoomAdapt
 
     override fun roomAdapterListener(roomName: String) {
         this.roomName = roomName
-        var roomData : JSONObject = JSONObject()
+        var roomData  = JSONObject()
         roomData.put("userName", user)
         roomData.put("room", roomName)
         socket.emit("joinRoom", roomData)
@@ -228,22 +230,63 @@ class ChatRooms : AppCompatActivity(), CreateRoomPopUp.DialogListener, RoomAdapt
     private fun getRooms() {
         var call: Call<List<IRoom>> = iMyService.getAllRooms()
         call.enqueue(object: retrofit2.Callback<List<IRoom>> {
-
             override fun onResponse(call: Call<List<IRoom>>, response: Response<List<IRoom>>) {
-                for (room in response.body()!!) {
+                var roomInDB = response.body()!!
+                var userRooms = ArrayList<IRoom>()
+                // check userRooms
+                for (room in roomInDB) {
                     if (room.usersList.contains(user)) {
-                        roomAdapter.addRoom(room)
-                        roomAdapter.notifyItemInserted((rvOutputRooms.adapter as RoomAdapter).itemCount)
+                        userRooms.add(room)
+                    }
+                }
+
+                // case where we add or remove a room
+                if (roomAdapter.IRooms.size > 0) {
+                    // we want to keep the room who had notifications
+                    var pastRooms = roomAdapter.IRooms.clone() as ArrayList<IRoom>
+                    if (userRooms.size != pastRooms.size) {
+                        if(userRooms.size > pastRooms.size){
+                            roomAdapter.addRoom(findAddedRoom(pastRooms, userRooms))
+                            roomAdapter.notifyItemInserted((rvOutputRooms.adapter as RoomAdapter).itemCount)
+                        }else{
+                            var indexRemoved = roomAdapter.deleteRoom(findAddedRoom(userRooms, pastRooms))
+                            roomAdapter.notifyItemRemoved(indexRemoved)
+                            roomAdapter.notifyDataSetChanged()
+                            roomAdapter.notifyItemChanged(indexRemoved)
+                            roomAdapter.notifyItemRangeRemoved(indexRemoved, 1)
+                        }
+                    }
+                } else {
+                    // no room in RecyclerView right now
+                    for (room in userRooms) {
+                        if (room.usersList.contains(user)) {
+                            roomAdapter.addRoom(room)
+                            roomAdapter.notifyItemInserted((rvOutputRooms.adapter as RoomAdapter).itemCount)
+                        }
                     }
                 }
             }
-
             override fun onFailure(call: Call<List<IRoom>>, t: Throwable) {
                 Log.d("ChatRooms", "onFailure" +t.message )
             }
-
         })
 
+    }
+
+    private fun findAddedRoom(pastRooms : ArrayList<IRoom>, currentRooms : ArrayList<IRoom>): IRoom{
+        val entryMap = HashMap<IRoom, Boolean>()
+        for(room in currentRooms){
+            entryMap.put(room, false)
+        }
+        for (i in currentRooms.indices) {
+            for(j in pastRooms.indices){
+                if(currentRooms[i].roomName == pastRooms[j].roomName){
+                    entryMap[currentRooms[i]] = true
+                }
+            }
+        }
+        var differentRoom = entryMap.filterValues { it == false }.keys
+        return differentRoom.elementAt(0)
     }
     private fun colorMessageRoom(obj : JSONObject, user : String){
         var room = obj.getString("room")
