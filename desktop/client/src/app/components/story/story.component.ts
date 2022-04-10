@@ -5,6 +5,7 @@ import { IProgressBar } from '@app/interfaces-enums/IProgress-bar';
 import { interval, Observable, Subscription } from 'rxjs';
 import { MatDialogRef } from '@angular/material/dialog';
 import { StoryService } from '@app/services/story/story.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 const DURATION = 5;
 const INTERVAL_MS = 100;
@@ -23,7 +24,7 @@ export class StoryComponent {
   sub: Subscription;
   timer$: Observable<number>
 
-  constructor(private dialogRef: MatDialogRef<StoryComponent>, public storyService: StoryService) {
+  constructor(private dialogRef: MatDialogRef<StoryComponent>, public storyService: StoryService, private router: Router, private route: ActivatedRoute) {
     this.progressBars = [];
     this.user = this.storyService.selectedUser;
     this.stories = this.storyService.userStories.get(this.user) as IDrawing[];
@@ -36,7 +37,7 @@ export class StoryComponent {
   }
 
   changeStory(increment: number): void {
-    
+
     this.sub.unsubscribe();
     this.progressBars.forEach(bar => {
       bar.progress = 0;
@@ -48,7 +49,7 @@ export class StoryComponent {
         this.currentStoryIndex == 0 && increment > 0 ||
         this.currentStoryIndex == this.stories.length - 1 && increment < 0) {
       this.currentStoryIndex = this.currentStoryIndex + increment;
-      this.startTimer(); 
+      this.startTimer();
     }
   }
 
@@ -61,6 +62,11 @@ export class StoryComponent {
         this.changeStory(1);
       }
     });
+  }
+
+  getUserProfileInfos(username: string): void {
+    this.dialogRef.close();
+    this.router.navigate([`../profile/${username}`], { relativeTo: this.route });
   }
 
 }

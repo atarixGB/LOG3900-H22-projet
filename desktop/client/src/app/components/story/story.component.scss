@@ -1,6 +1,6 @@
 :host {
    height: 100%;
-} 
+}
 
 ::ng-deep .mat-dialog-container {
    padding: 0;
@@ -21,6 +21,15 @@
       color: white;
       text-shadow: 0px 0px 1px white;
    }
+}
+
+#username {
+  cursor: pointer;
+  font-weight: bold;
+}
+
+#username:hover {
+  color: #A8D08C;
 }
 
 #dialog {
