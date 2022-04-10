@@ -30,6 +30,7 @@ class ToolbarFragment : Fragment(), AdapterView.OnItemClickListener {
     private var toolAdapter: ToolAdapter? = null
 //    private var cameraPictureBitmap:Bitmap? = null
     private lateinit var user: String
+    private var drawingId: String = ""
     private lateinit var saveDrawingBtn : Button
     private lateinit var addToStoryBtn : Button
     private lateinit var takePictureBtn : Button

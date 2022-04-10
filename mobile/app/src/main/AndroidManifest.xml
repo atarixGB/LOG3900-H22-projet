@@ -17,9 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Mobile"
         android:usesCleartextTraffic="true">
-        <activity
-            android:name=".activity.profile.visitingProfile"
-            android:exported="false" />
+
         <activity
             android:name=".popup.PrepForMemberLeavingPopUp"
             android:exported="false"
@@ -30,6 +28,9 @@
             tools:ignore="Instantiatable" />
         <activity
             android:name=".activity.albums.DisplayAllDrawings"
+            android:exported="false" />
+        <activity
+            android:name=".activity.profile.visitingProfile"
             android:exported="false" />
         <activity
             android:name=".activity.profile.FavoriteDrawingDisplay"
@@ -89,6 +90,7 @@
             tools:ignore="Instantiatable" />
         <activity
             android:name=".activity.chat.ChatRooms"
+            android:launchMode="singleTask"
             android:exported="false" />
         <activity android:name=".activity.drawing.DrawingActivity" />
         <activity

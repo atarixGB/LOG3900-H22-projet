@@ -1,6 +1,8 @@
 package com.example.mobile.adapter
 
 import android.content.Context
+import android.graphics.Color
+import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,8 +31,19 @@ class RoomAdapter (val context : Context, var IRooms: ArrayList<IRoom>, val owne
 
         holder.itemView.apply {
             item_room_name.text = currentRoom.roomName
+            if(currentRoom.isNotified){
+                item_room_name.setTextColor(Color.BLUE)
+            }else{
+                item_room_name.setTextColor(Color.BLACK)
+            }
             item_room_name.setOnClickListener {
+                // when we click on room notified, we mark is on not notified anymore
+                if(currentRoom.isNotified){
+                    currentRoom.isNotified = false
+                    notifyDataSetChanged()
+                }
                 listener.roomAdapterListener(item_room_name.text.toString())
+
             }
         }
     }

@@ -72,7 +72,6 @@ class Profile : AppCompatActivity() {
         //changing the avatar with what was stored in the db
         getUserFromDB(user)
 
-
         showMostLiked.setOnClickListener(){
             val intent = Intent(this, TopDrawingDisplay::class.java)
             intent.putExtra("userName",user)

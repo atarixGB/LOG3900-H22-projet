@@ -254,7 +254,10 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
     private var onReadyToJoin = Emitter.Listener {
         val drawingId = it[0] as String
         TimeUnit.MILLISECONDS.sleep(200)
-        DrawingSocket.socket.emit("joinCollab", drawingId)
+        var jo = JSONObject()
+        jo.put("room", drawingId)
+        jo.put("username", user)
+        DrawingSocket.socket.emit("joinCollab", jo)
     }
 
     private var onJoinCollab = Emitter.Listener {

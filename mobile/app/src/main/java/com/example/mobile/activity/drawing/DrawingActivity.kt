@@ -82,7 +82,9 @@ class DrawingActivity : AppCompatActivity(), CreateDrawingPopUp.DialogListener, 
 
     override fun drawingIdPopUpListener(drawingId: String) {
         sharedViewModelToolBar.setDrawingId(drawingId)
-        DrawingSocket.socket.emit("joinCollab", drawingId)
-//        DrawingSocket.prepForJoin(collabDrawingId, user)
+        var jo = JSONObject()
+        jo.put("room", drawingId)
+        jo.put("username", user)
+        DrawingSocket.socket.emit("joinCollab", jo)
     }
 }

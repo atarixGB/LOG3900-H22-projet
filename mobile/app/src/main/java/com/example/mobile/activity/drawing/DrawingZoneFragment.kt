@@ -22,16 +22,14 @@ import com.example.mobile.bitmapDecoder
 import com.example.mobile.convertBitmapToByteArray
 import com.example.mobile.popup.PrepForMemberLeavingPopUp
 import com.example.mobile.popup.PrepForNewMemberPopUp
-import com.example.mobile.viewModel.SharedViewModelToolBar
 import com.example.mobile.viewModel.ToolModel
 import com.example.mobile.viewModel.ToolParameters
-
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import com.google.gson.Gson
-
 import io.socket.emitter.Emitter
+import com.example.mobile.viewModel.SharedViewModelToolBar
 import okhttp3.*
 import org.json.JSONArray
 import org.json.JSONObject
@@ -214,6 +212,9 @@ class DrawingZoneFragment : Fragment() {
         private var currentDrawingBitmap: Bitmap? = null
         internal var compositeDisposable = CompositeDisposable()
 
+        val retrofit = RetrofitClient.getInstance()
+        val myService = retrofit.create(IMyService::class.java)
+
         fun onStrokeReceive(stroke: JSONObject) {
             if (this::toolManager.isInitialized) {
                 if (stroke.getInt("toolType") == 0) {
@@ -381,8 +382,6 @@ class DrawingZoneFragment : Fragment() {
             super.onDraw(canvas)
             canvas.drawBitmap(mBitmap!!, 0f, 0f, mPaint)
 
-            //var mediaPlayerDrawing: MediaPlayer = MediaPlayer.create(context,R.raw.draw)
-
             if (isDrawing) {
                 toolManager.currentTool.onDraw(canvas)
             }
@@ -492,9 +491,7 @@ class DrawingZoneFragment : Fragment() {
         }
 
         fun putToStory() {
-            val retrofit = RetrofitClient.getInstance()
-            val myService = retrofit.create(IMyService::class.java)
-            if (!this.drawingId.isNullOrEmpty()) {
+            if (!this.drawingId.isNullOrEmpty() && mBitmap != null) {
                 compositeDisposable.add(myService.addDrawingToStory(drawingId!!)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -528,9 +525,6 @@ class DrawingZoneFragment : Fragment() {
                     toolManager.selection.sendPasteSelection()
                     toolManager.selection.resetSelection()
                 }
-
-                val retrofit = RetrofitClient.getInstance()
-                val myService = retrofit.create(IMyService::class.java)
 
                 var filesDir: File = context.filesDir;
                 var file = File(filesDir, "image" + ".png")

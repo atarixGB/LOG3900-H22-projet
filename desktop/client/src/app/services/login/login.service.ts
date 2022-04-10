@@ -26,7 +26,7 @@ export class LoginService {
     setBoolsToDefault(): void {
         this.isValidEmail = true;
         this.isValidPW = true;
-    } 
+    }
 
     connect(): void {
         const userCredentials = {
@@ -59,9 +59,10 @@ export class LoginService {
         this.httpClient.get(LOGIN_URL + '/' + this.email).subscribe(
             (result) => {
                 this.username = result.toString();
+                window.localStorage.setItem("username", this.username);
                 this.profileService.setUsername(this.username);
                 console.log(result, ' got name');
-                
+
             },
             (error) => {
                 console.log('Error: ', error);
