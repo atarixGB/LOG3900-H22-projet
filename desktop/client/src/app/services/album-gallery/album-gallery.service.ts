@@ -3,9 +3,10 @@ import { Injectable } from '@angular/core';
 import { IAlbum } from '@app/interfaces-enums/IAlbum'
 import { IDrawing } from '@app/interfaces-enums/IDrawing'
 import { LoginService } from '@app/services/login/login.service';
-import { ALBUM_URL, CREATE_DRAWING_URL, JOIN_ALBUM_URL, DECLINE_MEMBERSHIP_REQUEST_URL, ACCEPT_MEMBERSHIP_REQUEST_URL, UPDATE_ALBUM_PARAMETERS_URL, ADD_DRAWING_TO_ALBUM_URL, GET_DRAWING_URL, SAVE_DRAWING_URL, LIKE_DRAWING_URL, GET_USER_FAVORITE_DRAWINGS_URL, GET_USER_TOP_X_DRAWINGS_URL } from '@app/constants/api-urls';
+import { ALBUM_URL, CREATE_DRAWING_URL, JOIN_ALBUM_URL, DECLINE_MEMBERSHIP_REQUEST_URL, ACCEPT_MEMBERSHIP_REQUEST_URL, UPDATE_ALBUM_PARAMETERS_URL, ADD_DRAWING_TO_ALBUM_URL, GET_DRAWING_URL, SAVE_DRAWING_URL, LIKE_DRAWING_URL, GET_USER_FAVORITE_DRAWINGS_URL, GET_USER_TOP_X_DRAWINGS_URL, CHANGE_DRAWING_NAME_URL, DELETE_DRAWING_URL, REMOVE_DRAWING_FROM_ALBUM_URL } from '@app/constants/api-urls';
 import { PUBLIC_ALBUM } from '@app/constants/constants';
 import { DrawingService } from '../editor/drawing/drawing.service';
+import { formatDate } from '@angular/common';
 import { CollaborationService } from '../collaboration/collaboration.service';
 
 @Injectable({
@@ -14,26 +15,27 @@ import { CollaborationService } from '../collaboration/collaboration.service';
 export class AlbumGalleryService {
   publicAlbums: IAlbum[];
   myAlbums: IAlbum[];
-
   currentAlbum: IAlbum;
+
+  selectedAlbumId: string;
+  selectedAlbumName: string;
+
   currentDrawing: IDrawing;
-
-  selectedAlbumId: string | void;
-  selectedAlbumName: string | void;
-
-  drawings: IDrawing[];
+  fetchedDrawings: IDrawing[];
   favoriteDrawingsData: IDrawing[];
   topDrawingsData: IDrawing[];
 
   constructor(private httpClient: HttpClient, private loginService: LoginService, private drawingService: DrawingService, private collaborationService: CollaborationService) {
     this.publicAlbums = [];
     this.myAlbums = [];
-    this.drawings = [];
+    this.fetchedDrawings = [];
 
     this.currentDrawing = {
       _id: null,
       name: "",
       owner: this.loginService.username,
+      isStory: false,
+      creationDate: ""
     }
 
     this.favoriteDrawingsData = [];
@@ -41,9 +43,11 @@ export class AlbumGalleryService {
   }
 
   createDrawing(drawingName: string): void {
-    this.currentDrawing.name = drawingName;
     this.currentDrawing._id = null;
-
+    this.currentDrawing.owner = this.loginService.username;
+    this.currentDrawing.isStory = false;
+    this.currentDrawing.name = drawingName;
+    this.currentDrawing.creationDate = formatDate(new Date(), 'hh:mm:ss a', 'en-US');
     console.log(this.currentDrawing)
 
     this.httpClient.post(CREATE_DRAWING_URL, this.currentDrawing).subscribe(
@@ -53,6 +57,7 @@ export class AlbumGalleryService {
         this.addDrawingToAlbum(this.currentDrawing, this.selectedAlbumId); // Should be ID not name but we did it with the name
         this.drawingService.setCurrentDrawingBlanc();
         this.collaborationService.joinCollab(this.currentDrawing._id);
+        localStorage.setItem('currentDrawingName', this.currentDrawing.name);
         this.saveDrawing();
       },
       (error) => {
@@ -65,7 +70,6 @@ export class AlbumGalleryService {
     const data = {
       drawing: drawing._id,
     };
-
     this.httpClient.put(ADD_DRAWING_TO_ALBUM_URL + `/${albumId}`, data).subscribe(
       (result) => {
         console.log("Résultat du serveur:", result);
@@ -115,6 +119,51 @@ export class AlbumGalleryService {
     )
   }
 
+  changeDrawingName(drawing: IDrawing, newDrawingName: string): void {
+    const url = `${CHANGE_DRAWING_NAME_URL}`;
+    const body = {
+      drawingID: drawing._id,
+      newDrawingName:  newDrawingName,
+    }
+    this.httpClient.post(url, body).subscribe(
+      (result) => {
+        console.log("Résultat du serveur:", result)
+      },
+      (error) => {
+        console.log(`Impossible de changer le nom du dessin "${drawing.name}" à "${newDrawingName}".\nErreur: ${error}`);
+      }
+    )
+  }
+
+  deleteDrawing(drawing: IDrawing): void {
+    const url = `${DELETE_DRAWING_URL}/${drawing._id}`;
+
+    const body = {
+      albumID: this.currentAlbum._id,
+      drawingID: drawing._id,
+    }
+
+    this.httpClient.delete(url).subscribe(
+      (result) => {
+        console.log("Résultat du serveur:", result)
+
+
+        this.httpClient.post(REMOVE_DRAWING_FROM_ALBUM_URL, body).subscribe(
+          (result) => {
+            console.log("Résultat du serveur:", result)
+          },
+          (error) => {
+            console.log(`Impossible de retirer le dessin "${drawing.name}" de l'album "${this.currentAlbum.name}".\nErreur: ${error}`);
+          }
+        )
+
+      },
+      (error) => {
+        console.log(`Impossible de supprimer le dessin "${drawing.name}".\nErreur: ${error}`);
+      }
+    )
+  }
+
   createAlbum(name: string, description: string): void {
     const newAlbum: IAlbum = {
       name: name,
@@ -134,6 +183,24 @@ export class AlbumGalleryService {
       }
     )
 
+  }
+
+  changeAlbum(drawing: IDrawing, newAlbumId: string): void {
+    this.addDrawingToAlbum(drawing, newAlbumId);
+
+    const body = {
+      albumID: this.currentAlbum._id,
+      drawingID: drawing._id,
+    }
+
+    this.httpClient.post(REMOVE_DRAWING_FROM_ALBUM_URL, body).subscribe(
+      (result) => {
+        console.log("Résultat du serveur:", result)
+      },
+      (error) => {
+        console.log(`Impossible de retirer le dessin "${drawing.name}" de l'album "${this.currentAlbum.name}".\nErreur: ${error}`);
+      }
+    )
   }
 
   addUserToPublicAlbum(username: string): void {
@@ -221,7 +288,7 @@ export class AlbumGalleryService {
     const url = ALBUM_URL + `/${album._id}`;
 
     if (album.owner != this.loginService.username && album.name != "album public") {
-      const updateData = { memberToRemove: this.loginService.username }; // TODO Set new ownwer, may be in another function
+      const updateData = { memberToRemove: this.loginService.username };
       this.httpClient.put<string>(url, updateData).subscribe(
         (result) => {
           console.log("Résultat du serveur:", result);
@@ -264,11 +331,15 @@ export class AlbumGalleryService {
   }
 
   fetchMyAlbumsFromDatabase(): void {
+    this.myAlbums = [];
+    console.log("FETCHING MY ALBUMS")
     this.httpClient.get<IAlbum[]>(ALBUM_URL).subscribe(
       (albums: IAlbum[]) => {
+        console.log("ALBUMS",albums)
         for (let i = 0; i < albums.length; i++) {
           if (albums[i].members.includes(this.loginService.username)) {
             this.myAlbums.push(albums[i]);
+            console.log(this.myAlbums[i])
           }
         }
       },
@@ -301,11 +372,11 @@ export class AlbumGalleryService {
   fetchDrawingsFromSelectedAlbum(album: IAlbum): void {
     console.log("Fetching drawings from album: " + album.name);
 
-    this.drawings = [];
+    this.fetchedDrawings = [];
     album.drawingIDs.forEach(id => {
       this.httpClient.get(`${GET_DRAWING_URL}/${id}`).subscribe(
         (result: IDrawing) => {
-          this.drawings.push(result);
+          this.fetchedDrawings.push(result);
         },
         (error) => {
           console.log(`Erreur en allant chercher un dessin.\nErreur: ${error}`);
@@ -313,7 +384,7 @@ export class AlbumGalleryService {
       );
     });
 
-    console.log(this.drawings);
+    console.log(this.fetchedDrawings);
   }
 
   fetchAllPublicDrawings(): void {

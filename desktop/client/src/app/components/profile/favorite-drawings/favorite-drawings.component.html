@@ -27,7 +27,7 @@
             <img height="150px" src="data:image/png;base64,{{ drawing.data }}">
             <mat-card-content>
               <p>
-                Propriétaire: {{drawing.owner}}
+                Propriétaire: <span id="username" class="bold" (click)="this.getUserProfileInfos(drawing.owner)">{{drawing.owner}}</span>
               </p>
             </mat-card-content>
           </mat-card>

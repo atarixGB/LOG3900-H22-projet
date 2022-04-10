@@ -14,12 +14,12 @@
   color: #A8D08C;
 }
 
-#username {
+.username {
   font-weight: bold;
   cursor: pointer;
 }
 
-#username:hover {
+.username:hover {
   color:#A8D08C;
 }
 
@@ -87,6 +87,10 @@ img:hover {
 
 .bold {
   font-weight: bold;
+}
+
+#more-option-button {
+  float:right;
 }
 
 

@@ -1,8 +1,14 @@
 <div fxLayout="row" fxLayoutAlign="center stretch" fxFlex="100">
-  <app-side-menu fxLayout="column" fxLayoutAlign="start stretch" fxFlex="15%"></app-side-menu>
+
+  <div>
+    <button mat-icon-button disableRipple="true" (click)="this.chatService.closeChat();">
+      <mat-icon>close</mat-icon> Fermer le clavardage
+    </button>
+  </div>
 
   <div fxLayout="column" fxLayoutAlign="space-evenly stretch" fxFlex="auto">
     <div fxFlex="20"></div>
+
 
     <div fxLayout="row" fxLayoutAlign="space-evenly center">
       <button mat-raised-button color="primary" (click)="onCreateNewChatroom()">Créer une conversation</button>

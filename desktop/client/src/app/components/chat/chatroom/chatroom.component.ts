@@ -5,7 +5,6 @@ import { IChatroom } from '@app/interfaces-enums/IChatroom';
 import { IMessage } from '@app/interfaces-enums/IMessage';
 import { ChatService } from '@app/services/chat/chat.service';
 import { SoundEffectsService } from '@app/services/sound-effects/sound-effects.service';
-import { LoginService } from '@app/services/login/login.service';
 import { ChatroomUsersDialogComponent } from './chatroom-users-dialog/chatroom-users-dialog.component';
 import { DeleteRoomDialogComponent } from './delete-room-dialog/delete-room-dialog.component';
 import { LeaveRoomDialogComponent } from './leave-room-dialog/leave-room-dialog.component';
@@ -19,7 +18,7 @@ import { PUBLIC_CHATROOM } from '@app/constants/constants';
     styleUrls: ['./chatroom.component.scss'],
 })
 export class ChatroomComponent implements AfterViewInit {
-    userName: string;
+    userName: string | null;
     message: string;
     timestamp: any;
     messageList: IMessage[];
@@ -32,25 +31,25 @@ export class ChatroomComponent implements AfterViewInit {
 
     constructor(
       public chatService: ChatService,
-      public loginService: LoginService,
       public profileService: ProfileService,
       public dialog: MatDialog,
       private soundEffectsService: SoundEffectsService,
       private router: Router,
-      private route: ActivatedRoute) {
+      private route: ActivatedRoute
+      ) {
         this.userName = '';
         this.message = '';
         this.messageList = [];
         this.userList = [];
         this.socket = this.chatService.socket;
         this.currentRoom = this.chatService.currentRoom;
-        this.isCurrentChatroomMine = this.chatService.currentRoom.identifier == loginService.username;
+        this.isCurrentChatroomMine = this.chatService.currentRoom.identifier == window.localStorage.getItem("username");
         this.isPublicChatroom = this.currentRoom.roomName == 'default-public-room';
 
     }
 
     ngAfterViewInit(): void {
-        this.userName = this.chatService.username;
+        this.userName = window.localStorage.getItem("username");;
         this.onNewMessage();
     }
 
@@ -142,6 +141,7 @@ export class ChatroomComponent implements AfterViewInit {
     getUserProfileInfos(username: string): void {
       if (username != PUBLIC_CHATROOM.owner) {
         console.log("Get info of", username);
+        this.profileService.viewProfile(this.router.url);
         this.router.navigate([`../profile/${username}`], { relativeTo: this.route });
       }
     }

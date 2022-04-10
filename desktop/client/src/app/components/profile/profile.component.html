@@ -1,6 +1,13 @@
 <div fxLayout="row" fxLayoutAlign="center stretch" fxFlex="100">
-  <!-- Side Menu -->
-  <app-side-menu fxLayout="column" fxLayoutAlign="start stretch" fxFlex="15%"></app-side-menu>
+  <!-- Side Menu : Disabled when displaeyed in chat window -->
+  <app-side-menu fxLayout="column" fxLayoutAlign="start stretch" fxFlex="15%" *ngIf="!this.profileService.isFromChatWindow"></app-side-menu>
+
+  <!-- Back button : Activated when displayed in chat window -->
+  <div *ngIf="this.profileService.isFromChatWindow">
+    <button mat-icon-button disableRipple="true" (click)="this.profileService.return()">
+      <mat-icon id="back-btn">keyboard_arrow_left</mat-icon> Retour
+    </button>
+  </div>
 
   <!-- Profil page -->
   <div fxLayout="column" fxLayoutAlign="start stretch" fxFlex="auto">
@@ -66,24 +73,28 @@
         <div fxLayout="column" fxLayoutAlign="center center" fxFlex="56%">
           <span class="sectionTitle">Statistiques:</span>
           <div fxLayout="row" fxLayoutAlign="start start">
-            <span>Nombre de collaborations : </span>
-            <span>69</span>
+            <span>Nombre de collaborations :&nbsp;</span>
+            <span class="bold">{{this.profileService.collabCount}}</span>
           </div>
           <div fxLayout="row" fxLayoutAlign="start start">
-            <span>Nombre de dessins créés : </span>
-            <span>420</span>
+            <span>Nombre de dessins créés :&nbsp;</span>
+            <span class="bold">{{this.profileService.totalNbrDrawings}}</span>
           </div>
           <div fxLayout="row" fxLayoutAlign="start start">
-            <span>Nombre d'albums privés : </span>
-            <span>69420</span>
+            <span>Nombre total de mentions "J'aime" :&nbsp;</span>
+            <span class="bold">{{this.profileService.totalNbrLikes}}</span>
           </div>
           <div fxLayout="row" fxLayoutAlign="start start">
-            <span>Temps moyen des séances de collaboration : </span>
-            <span>Couple hours</span>
+            <span>Nombre d'albums privés :&nbsp;</span>
+            <span class="bold">{{this.profileService.totalNbrAlbums}}</span>
           </div>
           <div fxLayout="row" fxLayoutAlign="start start">
-            <span>Temps total de collaboration : </span>
-            <span>Un billion de temps</span>
+            <span>Temps moyen des séances de collaboration :&nbsp;</span>
+            <span class="bold">{{this.profileService.collabTimeAverage}}</span>
+          </div>
+          <div fxLayout="row" fxLayoutAlign="start start">
+            <span>Temps total de collaboration :&nbsp;</span>
+            <span class="bold">{{this.profileService.collabTime}}</span>
           </div>
         </div>
 

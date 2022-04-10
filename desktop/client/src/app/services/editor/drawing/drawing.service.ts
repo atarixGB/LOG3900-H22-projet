@@ -15,6 +15,8 @@ export class DrawingService {
 
     currentDrawing: HTMLImageElement; 
 
+    constructor() {}
+
     clearCanvas(context: CanvasRenderingContext2D): void {
         context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }
@@ -36,6 +38,10 @@ export class DrawingService {
     setCurrentDrawing(drawing: IDrawing): void {
         this.currentDrawing = new Image();
         this.currentDrawing.src = 'data:image/png;base64,' + drawing.data;
+    }
+
+    setCurrentDrawingToBaseData(): void {
+        this.currentDrawing.src = this.canvas.toDataURL();
     }
 
     loadCurrentDrawing(): void {

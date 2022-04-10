@@ -13,8 +13,20 @@ button {
     padding: 0;
 }
 
-button:hover {
-    color: rgb(255, 255, 255);
+#storyBtn:hover {
+    > button {
+        color: rgb(255, 255, 255);
+    }
+
+    > span {
+        color: rgb(255, 255, 255);
+    }
+
+    cursor: pointer;
+}
+
+span {
+    color: black;
 }
 
 h3 {

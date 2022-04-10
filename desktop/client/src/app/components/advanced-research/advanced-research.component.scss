@@ -1,0 +1,46 @@
+:host {
+  height: 100%;
+}
+
+button {
+  margin: 2px;
+  height: 4em;
+}
+
+mat-form-field {
+  margin: 2px;
+}
+
+#search-bar {
+  width: 40%;
+}
+
+#result-div {
+  border: solid 2px;
+  border-radius: 5px;
+  height: 100%;
+  overflow-y: auto;
+  margin-top: 1em;
+}
+
+#result-row {
+  height: 100%;
+}
+
+.warning {
+  color: red;
+  font-size: small;
+}
+
+.label {
+  margin-top: 1em;
+}
+
+mat-icon {
+  transform: scale(4);
+  color: #A8D08C;
+}
+
+#user-avatar {
+  height: 100%;
+}

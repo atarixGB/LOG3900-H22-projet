@@ -6,13 +6,26 @@
   text-decoration: underline;
 }
 
+#username {
+  cursor: pointer;
+}
+
+#username:hover {
+  color:#A8D08C;
+}
+
 mat-icon {
   transform: scale(2);
   color: #A8D08C;
 }
 
+.bold {
+  font-weight: bold;
+}
+
 .content {
   overflow-y: scroll;
+  height: 100%;
 }
 
 ::-webkit-scrollbar {

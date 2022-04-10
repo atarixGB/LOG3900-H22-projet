@@ -9,12 +9,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import android.widget.SearchView
 import android.widget.Toast
+import androidx.activity.viewModels
+import androidx.recyclerview.widget.GridLayoutManager
 import com.example.mobile.IRoom
 import com.example.mobile.R
 import com.example.mobile.Retrofit.IMyService
 import com.example.mobile.Retrofit.RetrofitClient
 import com.example.mobile.SocketHandler
 import com.example.mobile.adapter.RoomAdapter
+import com.example.mobile.viewModel.SharedViewModelToolBar
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -35,6 +38,7 @@ class joinRoom : AppCompatActivity(), RoomAdapter.RoomAdapterListener{
     private lateinit var leaveChatBtn: ImageButton
     private lateinit var searchArrayList: ArrayList<IRoom>
     private lateinit var socket: Socket
+    private val sharedViewModel: SharedViewModelToolBar by viewModels()
 
     private lateinit var iMyService: IMyService
     internal var compositeDisposable = CompositeDisposable()
@@ -52,7 +56,7 @@ class joinRoom : AppCompatActivity(), RoomAdapter.RoomAdapterListener{
         searchView.queryHint = "cherchez une conversation"
         user = intent.getStringExtra("userName").toString()
 
-
+        sharedViewModel.setUser(user)
         rvOutputRooms = findViewById(R.id.rvOutputRooms)
         IRooms = ArrayList()
         searchArrayList = ArrayList()
@@ -62,7 +66,7 @@ class joinRoom : AppCompatActivity(), RoomAdapter.RoomAdapterListener{
 
         //Recycler View of rooms
         rvOutputRooms.adapter = roomAdapter
-        rvOutputRooms.layoutManager = LinearLayoutManager(this)
+        rvOutputRooms.layoutManager = GridLayoutManager(this,2)
 
         getRooms()
 
@@ -102,6 +106,8 @@ class joinRoom : AppCompatActivity(), RoomAdapter.RoomAdapterListener{
         leaveChatBtn.setOnClickListener {
             leaveChat()
         }
+
+
     }
 
 
@@ -154,7 +160,7 @@ class joinRoom : AppCompatActivity(), RoomAdapter.RoomAdapterListener{
 
             override fun onResponse(call: Call<List<IRoom>>, response: Response<List<IRoom>>) {
                 for (room in response.body()!!) {
-                    if (!room.usersList?.contains(user)) {
+                    if (!room.usersList?.contains(user)!!) {
                         roomAdapter.addRoom(room)
                         roomAdapter.notifyItemInserted((rvOutputRooms.adapter as RoomAdapter).itemCount)
                     }

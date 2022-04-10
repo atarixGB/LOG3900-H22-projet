@@ -25,6 +25,10 @@ import com.example.mobile.activity.drawing.DrawingSocket
 import com.example.mobile.adapter.AlbumAdapter
 import com.example.mobile.adapter.DrawingAdapter
 import com.example.mobile.adapter.UserAdapter
+import com.example.mobile.popup.AcceptMembershipRequestsPopUp
+import com.example.mobile.popup.AlbumAttributeModificationPopUp
+import com.example.mobile.popup.UsersListPopUp
+import com.example.mobile.viewModel.SharedViewModelToolBar
 import com.example.mobile.popup.*
 import com.example.mobile.viewModel.SharedViewModelCreateDrawingPopUp
 import com.google.gson.Gson
@@ -63,10 +67,8 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
     private lateinit var dialogAcceptMembershipRequest: AcceptMembershipRequestsPopUp
     private lateinit var dialogEditAlbumAttributes: AlbumAttributeModificationPopUp
 
+    private val sharedViewModelToolBar: SharedViewModelToolBar by viewModels()
     private val sharedViewModelCreateDrawingPopUp: SharedViewModelCreateDrawingPopUp by viewModels()
-
-
-
     private lateinit var iMyService: IMyService
     internal var compositeDisposable = CompositeDisposable()
 
@@ -101,6 +103,8 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
 
 
         albumName = intent.getStringExtra("albumName").toString()
+
+        sharedViewModelToolBar.setUser(user)
         if(albumName!="album public"){
             albumID=intent.getStringExtra("albumID").toString()
         }
@@ -124,9 +128,12 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
         rvOutputDrawings.adapter = drawingAdapter
         rvOutputDrawings.layoutManager = GridLayoutManager(this, 3)
 
+
+
         albumNameTextView.text = albumName
 
         getAllAlbumDrawings(albumID)
+
 
         leaveAlbumBtn.setOnClickListener {
             val intent = Intent(this, Albums::class.java)
@@ -137,7 +144,7 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
         membersListButton.setOnClickListener {
             //ouvrir le popup window des utilisateurs
             //getAlbumParameters(albumName) //pour avoir les parametres d'album a jour
-            var dialog = UsersListPopUp(albumName, currentAlbum.members)
+            var dialog = UsersListPopUp(albumName, currentAlbum.members, user)
             dialog.show(supportFragmentManager, "customDialog")
         }
 
@@ -245,7 +252,10 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
     private var onReadyToJoin = Emitter.Listener {
         val drawingId = it[0] as String
         TimeUnit.MILLISECONDS.sleep(200)
-        DrawingSocket.socket.emit("joinCollab", drawingId)
+        var jo = JSONObject()
+        jo.put("room", drawingId)
+        jo.put("username", user)
+        DrawingSocket.socket.emit("joinCollab", jo)
     }
 
     private var onJoinCollab = Emitter.Listener {
@@ -262,10 +272,6 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
         for (i in 0 until jsonStrokes.length()) {
             jsonStrings.add(jsonStrokes[i].toString())
         }
-
-//        var gson = Gson()
-//        var jsonString = gson.toJson(jsonStrokes)
-
         val intent = Intent(this, DrawingActivity::class.java)
         var bundle: Bundle = Bundle()
         bundle.putStringArrayList("jsonString", jsonStrings)
@@ -450,7 +456,8 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
         if (!searchText.isEmpty()) {
             drawings.forEach {
                 if ((it.name!!.lowercase(Locale.getDefault()).contains(searchText)) ||
-                    (it.owner!!.lowercase(Locale.getDefault()).contains(searchText))
+                    (it.owner!!.lowercase(Locale.getDefault()).contains(searchText)) ||
+                    (it.creationDate!!.lowercase(Locale.getDefault()).contains(searchText))
                 ){
                     searchArrayList.add(it)
                 }

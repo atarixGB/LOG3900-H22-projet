@@ -2,11 +2,15 @@ import { Injectable } from '@angular/core';
 import { DrawingService } from '@app/services/editor/drawing/drawing.service';
 import * as io from 'socket.io-client';
 import { Observable, Subject } from 'rxjs';
-import { COLLAB_URL } from '@app/constants/api-urls';
+import { COLLAB_URL, STATS_COLLAB_UPDATE_URL } from '@app/constants/api-urls';
 import { MatDialog } from '@angular/material/dialog';
 import { ProfileService } from '../profile/profile.service';
 import { MemberJoinedDialogComponent } from '@app/components/editor/member-joined-dialog/member-joined-dialog.component';
 import { MemberLeftDialogComponent } from '@app/components/editor/member-left-dialog/member-left-dialog.component';
+import { HttpClient } from '@angular/common/http';
+import { StampService } from '../editor/tools/stamp/stamp.service';
+
+const electron = (<any>window).require('electron');
 
 @Injectable({
     providedIn: 'root',
@@ -15,6 +19,8 @@ export class CollaborationService {
     socket: any;
     room: string;
     nbMembersInCollab: number;
+
+    collabStartTime: number;
 
     newStroke: Subject<any>;
     newStroke$: Observable<any>;
@@ -42,7 +48,7 @@ export class CollaborationService {
     fetchRequest: Subject<any>;
     fetchRequest$: Observable<any>;
 
-    constructor(public dialog: MatDialog, public drawingService: DrawingService, private profileService: ProfileService) { 
+    constructor(public dialog: MatDialog, public drawingService: DrawingService, private stampService: StampService, private profileService: ProfileService, private httpClient: HttpClient) { 
         this.nbMembersInCollab = 0;
 
         this.newStroke = new Subject();
@@ -85,11 +91,19 @@ export class CollaborationService {
         });
 
         this.socket.on('readyToJoin', (room: any) => {
-            setTimeout(() => {this.socket.emit('joinCollab', room);}, 200);
+            window.localStorage.setItem("collabChatRoom", this.room);
+            const data = {
+                room: room,
+                username: this.profileService.username
+            }
+            setTimeout(() => {this.socket.emit('joinCollab', data);}, 200);
         });
 
         this.socket.on('joinSuccessful', (collabData: any) => {
             this.newCollabData.next(collabData);
+            this.collabStartTime = new Date().getTime();
+
+            electron.ipcRenderer.send("open-collab-chat", null);
         });
 
         this.socket.on('memberNbUpdate', (nbMembersRemaining: any) => {
@@ -149,12 +163,16 @@ export class CollaborationService {
 
     // -------------------Room emits
     joinCollab(drawingId: any): void {
-        this.room = drawingId.replaceAll(/"/g, '');
-        const data = {
-            username: this.profileService.username,
-            room: this.room
+        this.stampService.isEnabled = false;
+        if (!this.stampService.isEnabled) {
+            this.room = drawingId.replaceAll(/"/g, '');
+                const data = {
+                username: this.profileService.username,
+                room: this.room
+            }
+            this.socket.emit('prepForJoin', data);
         }
-        this.socket.emit('prepForJoin', data);
+        
     }
 
     leaveCollab(): void {
@@ -163,6 +181,9 @@ export class CollaborationService {
             room: this.room
         }
         this.socket.emit('leaveCollab', data);
+        this.updateCollabStats(new Date().getTime());
+
+        electron.ipcRenderer.send("close-collab-chat", null);
     }
 
     /* collabData:
@@ -170,19 +191,23 @@ export class CollaborationService {
         strokes: Strokes[]
     */
     updateCollabInfo(collabData: any): void {
-        collabData.collabDrawingId = this.room;
-        this.socket.emit('updateCollabInfo', collabData);
+        if (!this.stampService.isEnabled) {
+            collabData.collabDrawingId = this.room;
+            this.socket.emit('updateCollabInfo', collabData);
+        }
     }
 
     // -------------------Editor emits
     // Un stroke: voir les classes Stroke, StrokePencil, StrokeRectangle et StrokeEllipse
     broadcastStroke(stroke: any): void {
-        stroke.sender = this.socket.id;
-        const data = {
-            room: this.room,
-            data: stroke
+        if (!this.stampService.isEnabled) {
+            stroke.sender = this.socket.id;
+            const data = {
+                room: this.room,
+                data: stroke
+            }
+            this.socket.emit('broadcastStroke', data);
         }
-        this.socket.emit('broadcastStroke', data);
     }
 
     /* selection:
@@ -191,12 +216,14 @@ export class CollaborationService {
       strokeIndex: number,
     }*/
     broadcastSelection(selection: any): void {
-        selection.sender = this.socket.id;
-        const data = {
-            room: this.room,
-            data: selection
+        if (!this.stampService.isEnabled) {
+            selection.sender = this.socket.id;
+            const data = {
+                room: this.room,
+                data: selection
+            }
+            this.socket.emit('broadcastSelection', data);
         }
-        this.socket.emit('broadcastSelection', data);
     }
 
     /* selectionPos:
@@ -205,12 +232,14 @@ export class CollaborationService {
         pos: Vec2,
     }*/
     broadcastSelectionPos(selectionPos: any): void {
-        selectionPos.sender = this.socket.id;
-        const data = {
-            room: this.room,
-            data: selectionPos
+        if (!this.stampService.isEnabled) {
+            selectionPos.sender = this.socket.id;
+            const data = {
+                room: this.room,
+                data: selectionPos
+            }
+            this.socket.emit('broadcastSelectionPos', data);
         }
-        this.socket.emit('broadcastSelectionPos', data);
     }
 
     /* selectionSize:
@@ -222,12 +251,14 @@ export class CollaborationService {
         scale: Vec2,
     }*/
     broadcastSelectionSize(selectionSize: any): void {
-        selectionSize.sender = this.socket.id;
-        const data = {
-            room: this.room,
-            data: selectionSize
+        if (!this.stampService.isEnabled) {
+            selectionSize.sender = this.socket.id;
+            const data = {
+                room: this.room,
+                data: selectionSize
+            }
+            this.socket.emit('broadcastSelectionSize', data);
         }
-        this.socket.emit('broadcastSelectionSize', data);
     }
 
     /* pasteData:
@@ -236,12 +267,14 @@ export class CollaborationService {
       strokeIndex: number,
     }*/
     broadcastPasteRequest(pasteData: any): void {
-        pasteData.sender = this.socket.id;
-        const data = {
-            room: this.room,
-            data: pasteData
+        if (!this.stampService.isEnabled) {
+            pasteData.sender = this.socket.id;
+            const data = {
+                room: this.room,
+                data: pasteData
+            }
+            this.socket.emit('broadcastPasteRequest', data);
         }
-        this.socket.emit('broadcastPasteRequest', data);
     }
 
     /* delData:
@@ -250,12 +283,14 @@ export class CollaborationService {
       strokeIndex: number,
     }*/
     broadcastDeleteRequest(delData: any): void {
-        delData.sender = this.socket.id;
-        const data = {
-            room: this.room,
-            data: delData
+        if (!this.stampService.isEnabled) {
+            delData.sender = this.socket.id;
+            const data = {
+                room: this.room,
+                data: delData
+            }
+            this.socket.emit('broadcastDeleteRequest', data);
         }
-        this.socket.emit('broadcastDeleteRequest', data);
     }
 
     /* width:
@@ -265,12 +300,14 @@ export class CollaborationService {
       value: number,
     }*/
     broadcastNewStrokeWidth(width: any): void {
-        width.sender = this.socket.id;
-        const data = {
-            room: this.room,
-            data: width
+        if (!this.stampService.isEnabled) {
+            width.sender = this.socket.id;
+            const data = {
+                room: this.room,
+                data: width
+            }
+            this.socket.emit('broadcastNewStrokeWidth', data);   
         }
-        this.socket.emit('broadcastNewStrokeWidth', data);
     }
 
     /* color:
@@ -280,12 +317,14 @@ export class CollaborationService {
       color: string, (genre rgb(0, 0, 0))
     }*/
     broadcastNewPrimaryColor(color: any): void {
-        color.sender = this.socket.id;
-        const data = {
-            room: this.room,
-            data: color
+        if (!this.stampService.isEnabled) {
+            color.sender = this.socket.id;
+            const data = {
+                room: this.room,
+                data: color
+            }
+            this.socket.emit('broadcastNewPrimaryColor', data);
         }
-        this.socket.emit('broadcastNewPrimaryColor', data);
     }
 
      /* color:
@@ -295,11 +334,30 @@ export class CollaborationService {
       color: string, (genre rgb(0, 0, 0))
     }*/
     broadcastNewSecondaryColor(color: any): void {
-        color.sender = this.socket.id;
-        const data = {
-            room: this.room,
-            data: color
+        if (!this.stampService.isEnabled) {
+            color.sender = this.socket.id;
+            const data = {
+                room: this.room,
+                data: color
+            }
+            this.socket.emit('broadcastNewSecondaryColor', data);
         }
-        this.socket.emit('broadcastNewSecondaryColor', data);
+        
+    }
+
+    // BD
+    updateCollabStats(now: number): void {
+        if (!this.stampService.isEnabled) {
+            const data = {
+                secondsSpentInCollab: Math.round((now - this.collabStartTime) / 1000),
+            };
+            this.httpClient.put(STATS_COLLAB_UPDATE_URL + `/${this.profileService.username}`, data).subscribe(
+                (result) => {
+                  console.log("Résultat du serveur:", result);
+                },
+                (error) => {
+                  console.log(`Impossible d'update les stats de collaboration.\nErreur: ${error}`);
+            });
+        }
     }
 }

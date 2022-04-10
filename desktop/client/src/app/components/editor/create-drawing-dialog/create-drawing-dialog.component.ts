@@ -3,9 +3,8 @@ import { AlbumGalleryService } from '@app/services/album-gallery/album-gallery.s
 import { IAlbum } from '@app/interfaces-enums/IAlbum'
 import { MatDialogRef } from '@angular/material/dialog';
 import { LoginService } from '@app/services/login/login.service';
-import { PUBLIC_ALBUM } from '@app/constants/constants';
+import { NAME_MAX_LENGTH, PUBLIC_ALBUM } from '@app/constants/constants';
 
-const MAX_NAME_LENGTH = 40;
 @Component({
   selector: 'app-create-drawing-dialog',
   templateUrl: './create-drawing-dialog.component.html',
@@ -16,7 +15,7 @@ export class CreateDrawingDialogComponent implements OnInit {
   isPrivate: boolean;
 
   constructor(public albumGalleryService: AlbumGalleryService, public loginService: LoginService, private currentDialogRef: MatDialogRef<CreateDrawingDialogComponent>) {
-    this.name = "Mon dessin";
+    this.name = "";
     this.isPrivate = false;
     this.albumGalleryService.selectedAlbumName = PUBLIC_ALBUM.name;
     this.albumGalleryService.selectedAlbumId = PUBLIC_ALBUM.id;
@@ -44,13 +43,12 @@ export class CreateDrawingDialogComponent implements OnInit {
   createDrawingButton(): void {
     console.log("createDrawingButton\n",this.name, this.albumGalleryService.selectedAlbumName, this.albumGalleryService.selectedAlbumId);
 
-    if (this.isValidInput(this.name) && this.name.length <= MAX_NAME_LENGTH) {
+    if (this.isValidInput(this.name) && this.name.length <= NAME_MAX_LENGTH) {
       this.albumGalleryService.createDrawing(this.name);
       this.currentDialogRef.close();
     } else {
-      // TODO: UI feedback
-      console.log("Le dessin doit avoir un nom ou doit avoir moins de 40 caractères.");
-      console.log("nb de char:", this.name.length);
+      // TODO: UI feedback. Following line is temporary
+      alert("Le dessin doit avoir un nom et posséder moins de 40 caractères.");
     }
   }
 

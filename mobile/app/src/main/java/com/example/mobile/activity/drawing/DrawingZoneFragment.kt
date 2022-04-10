@@ -25,13 +25,20 @@ import com.example.mobile.bitmapDecoder
 import com.example.mobile.convertBitmapToByteArray
 import com.example.mobile.popup.PrepForMemberLeavingPopUp
 import com.example.mobile.popup.PrepForNewMemberPopUp
-import com.example.mobile.viewModel.SharedViewModelToolBar
+
 import com.example.mobile.viewModel.ToolModel
 import com.example.mobile.viewModel.ToolParameters
 import io.reactivex.disposables.CompositeDisposable
 import io.socket.emitter.Emitter
 import kotlinx.android.synthetic.main.activity_drawings_collection.view.*
 import kotlinx.android.synthetic.main.fragment_custom_tool.view.*
+import com.google.gson.Gson
+
+import io.socket.emitter.Emitter
+import com.example.mobile.viewModel.SharedViewModelToolBar
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import okhttp3.*
 import org.json.JSONArray
 import org.json.JSONObject
@@ -47,6 +54,7 @@ class DrawingZoneFragment : Fragment() {
     private val toolModel: ToolModel by activityViewModels()
     private val sharedViewModelToolBar: SharedViewModelToolBar by activityViewModels()
 
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -59,6 +67,8 @@ class DrawingZoneFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         mDrawingView = DrawingView(requireContext(), DrawingSocket)
+//        view.findViewById<LinearLayout>(R.id.drawingView).addView(mDrawingView)
+
         DrawingSocket.socket.on("receiveStroke", onReceiveStroke)
         DrawingSocket.socket.on("receiveSelection", onReceiveSelection)
         DrawingSocket.socket.on("receiveStrokeWidth", onReceiveStrokeWidth)
@@ -71,10 +81,9 @@ class DrawingZoneFragment : Fragment() {
         DrawingSocket.socket.on("prepForNewMember", onPrepForNewMember)
         DrawingSocket.socket.on("fetchStrokes", onFetchStrokes)
 
-//        DrawingSocket.socket.on("joinSuccessful", onLoadCurrentSessionData)
-
         DrawingSocket.socket.on("memberLeft", onMemberLeaving)
 
+        val sharedViewModelToolBar: SharedViewModelToolBar by activityViewModels()
 
         toolParameters.weight.observe(viewLifecycleOwner, Observer { weight ->
             mDrawingView.changeWeight(weight)
@@ -115,6 +124,10 @@ class DrawingZoneFragment : Fragment() {
 
         toolModel.onClick.observe(viewLifecycleOwner, Observer { onClick ->
             mDrawingView.saveImg()
+        })
+
+        toolModel.onStory.observe(viewLifecycleOwner, Observer { onStory ->
+            mDrawingView.putToStory()
         })
 
         view.findViewById<LinearLayout>(R.id.drawingView).addView(mDrawingView)
@@ -178,19 +191,6 @@ class DrawingZoneFragment : Fragment() {
         mDrawingView.updateCollabInfos()
     }
 
-//    private var onLoadCurrentSessionData= Emitter.Listener {
-//        /* let roomData = {
-//          members: [socket.id],
-//          strokes: [],
-//        };*/
-//        val joinEvent = it[0] as JSONObject
-//        val jsonStrokes = joinEvent["strokes"] as JSONArray
-//        for (i in 0 until jsonStrokes.length()) {
-//            val obj = jsonStrokes[i] as JSONObject
-//            mDrawingView.onStrokeReceive(obj)
-//        }
-//    }
-
     private var onMemberLeaving = Emitter.Listener {
         val userLeft = it[0] as String
         //Open Popup Window
@@ -211,6 +211,10 @@ class DrawingZoneFragment : Fragment() {
         private var drawingId: String = ""
         private var currentDrawingBitmap: Bitmap? = null
         internal var compositeDisposable = CompositeDisposable()
+        private var upComingStrokes = ArrayList<String>()
+
+        val retrofit = RetrofitClient.getInstance()
+        val myService = retrofit.create(IMyService::class.java)
 
         fun onStrokeReceive(stroke: JSONObject) {
             if (this::toolManager.isInitialized) {
@@ -229,20 +233,7 @@ class DrawingZoneFragment : Fragment() {
         }
 
         fun onLoadCurrentStrokeData(jsonString: ArrayList<String>) {
-
-
-
-            jsonString.forEachIndexed{ i, it ->
-                var obj = JSONObject(jsonString[i])
-                this.onStrokeReceive(obj)
-            }
-
-//            for (i in 0 until jsonStrokes.length()) {
-//                val obj = jsonStrokes[0.toString()]
-////                val obj2 = gson.toJsonTree(obj)
-//                val b =false
-////                this.onStrokeReceive(obj2)
-//            }
+            this.upComingStrokes = jsonString
         }
 
         fun onSelectionReceive(stroke: JSONObject){
@@ -374,13 +365,19 @@ class DrawingZoneFragment : Fragment() {
             mCanvas!!.drawRect(0f,0f, w.toFloat(), h.toFloat(),borderPaint )
             toolManager = ToolManager(context, mCanvas!!, this.socket, drawingId)
 
+            //draw upcoming strokes
+            if(this.upComingStrokes.size >0){
+                this.upComingStrokes.forEachIndexed{ i, it ->
+                    var obj = JSONObject(this.upComingStrokes[i])
+                    this.onStrokeReceive(obj)
+                }
+            }
         }
 
 
         override fun onDraw(canvas: Canvas) {
             super.onDraw(canvas)
             canvas.drawBitmap(mBitmap!!, 0f, 0f, mPaint)
-            //var mediaPlayerDrawing: MediaPlayer = MediaPlayer.create(context,R.raw.draw)
 
             //selection bounding box button
 //            val button1 = Button(context)
@@ -431,7 +428,7 @@ class DrawingZoneFragment : Fragment() {
                         mCanvas!!.drawBitmap(currentDrawingBitmap!!, 0F, 0F, null)
                     }
                     invalidate()
-//                    mediaPlayerDrawing.stop()
+
                 }
                 MotionEvent.ACTION_UP -> {
                     isDrawing = false
@@ -442,7 +439,7 @@ class DrawingZoneFragment : Fragment() {
                         mCanvas!!.drawBitmap(currentDrawingBitmap!!, 0F, 0F, null)
                     }
                     invalidate()
-//                    mediaPlayerDrawing.stop()
+
                 }
             }
             return true
@@ -511,6 +508,25 @@ class DrawingZoneFragment : Fragment() {
             this.drawingId = drawingId
         }
 
+        fun putToStory() {
+            if (!this.drawingId.isNullOrEmpty() && mBitmap != null) {
+                compositeDisposable.add(myService.addDrawingToStory(drawingId!!)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe { result ->
+                        if (result == "201") {
+                            Toast.makeText(
+                                context,
+                                "Story ajoute avec succes",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        } else {
+                            Toast.makeText(context, "erreur", Toast.LENGTH_SHORT).show()
+                        }
+                    })
+            }
+        }
+
         fun saveImg() {
 
             if (mBitmap != null) {
@@ -519,9 +535,6 @@ class DrawingZoneFragment : Fragment() {
                     toolManager.selection.sendPasteSelection()
                     toolManager.selection.resetSelection()
                 }
-
-                val retrofit = RetrofitClient.getInstance()
-                val myService = retrofit.create(IMyService::class.java)
 
                 var filesDir: File = context.filesDir;
                 var file = File(filesDir, "image" + ".png")
@@ -541,7 +554,7 @@ class DrawingZoneFragment : Fragment() {
 
                 var name: RequestBody = RequestBody.create(MediaType.parse("text/plain"), "upload");
 
-                var call = myService.saveDrawing(drawingId, body, name)
+                var call = myService.saveDrawing(drawingId!!, body, name)
                 call.enqueue(object : retrofit2.Callback<ResponseBody> {
                     override fun onResponse(
                         call: Call<ResponseBody>,
