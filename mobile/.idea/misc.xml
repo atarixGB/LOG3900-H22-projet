@@ -24,7 +24,9 @@
         <entry key="..\:/Users/15149/Desktop/git clone final/log3900-203/mobile/app/src/main/res/layout/fragment_create_album_pop_up.xml" value="0.18" />
         <entry key="..\:/Users/15149/Desktop/git clone final/log3900-203/mobile/app/src/main/res/layout/fragment_toolbar_navigation.xml" value="0.1" />
         <entry key="..\:/Users/15149/Desktop/git clone final/log3900-203/mobile/app/src/main/res/layout/item_room.xml" value="0.1" />
+        <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/drawable/bg_btn.xml" value="0.2525" />
         <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/drawable/camera.xml" value="0.2155" />
+        <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/drawable/custom_border.xml" value="0.1" />
         <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/drawable/ic_baseline_create_new_folder_24.xml" value="0.2545" />
         <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/drawable/ic_baseline_delete_forever_24.xml" value="0.1505" />
         <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/drawable/ic_baseline_directions_run_24.xml" value="0.1505" />
@@ -49,7 +51,7 @@
         <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/activity_dashboard.xml" value="0.25" />
         <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/activity_display_all_drawings.xml" value="0.1" />
         <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/activity_display_public_albums.xml" value="0.18" />
-        <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/activity_drawing.xml" value="0.11484375" />
+        <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/activity_drawing.xml" value="0.1" />
         <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/activity_drawings_collection.xml" value="0.1" />
         <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/activity_favorite_drawing_display.xml" value="0.1" />
         <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/activity_join_room.xml" value="0.1" />
