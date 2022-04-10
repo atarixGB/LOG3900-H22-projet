@@ -25,16 +25,12 @@ import com.example.mobile.bitmapDecoder
 import com.example.mobile.convertBitmapToByteArray
 import com.example.mobile.popup.PrepForMemberLeavingPopUp
 import com.example.mobile.popup.PrepForNewMemberPopUp
-
 import com.example.mobile.viewModel.ToolModel
 import com.example.mobile.viewModel.ToolParameters
-import io.reactivex.disposables.CompositeDisposable
 import io.socket.emitter.Emitter
 import kotlinx.android.synthetic.main.activity_drawings_collection.view.*
 import kotlinx.android.synthetic.main.fragment_custom_tool.view.*
 import com.google.gson.Gson
-
-import io.socket.emitter.Emitter
 import com.example.mobile.viewModel.SharedViewModelToolBar
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
