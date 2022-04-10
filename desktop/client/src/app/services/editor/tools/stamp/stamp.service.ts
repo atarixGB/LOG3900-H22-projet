@@ -3,7 +3,6 @@ import { Tool } from '@app/classes/tool';
 import { Vec2 } from '@app/classes/vec2';
 import { MOST_LIKED } from '@app/constants/badges';
 import { MouseButton } from '@app/constants/constants';
-import { StampList } from '@app/interfaces-enums/stamp-list';
 import { DrawingService } from '@app/services/editor/drawing/drawing.service';
 import { Subject } from 'rxjs';
 
@@ -19,7 +18,6 @@ export class StampService extends Tool {
 
     imageCoords: Vec2;
     currentStamp: string;
-    selectStamp: StampList;
     img: HTMLImageElement;
     size: number;
     resizeFactor: number;
@@ -28,7 +26,6 @@ export class StampService extends Tool {
     isKeyAltDown: boolean;
     mouseEvent: MouseEvent;
 
-    stampBindings: Map<StampList, string>;
     srcBinding: Map<string, string>;
 
     private angleObservable: Subject<number> = new Subject<number>();
@@ -64,12 +61,6 @@ export class StampService extends Tool {
         this.changeAngle(this.angle - (event.deltaY / Math.abs(event.deltaY)) * rotationStep);
         this.drawingService.clearCanvas(this.drawingService.previewCtx);
         this.previewCursor(this.getPositionFromMouse(event));
-    }
-
-    changeStamp(): void {
-        if (this.stampBindings.has(this.selectStamp)) {
-            this.currentStamp = this.stampBindings.get(this.selectStamp)!;
-        }
     }
 
     private changeAngle(newAngle: number): void {
