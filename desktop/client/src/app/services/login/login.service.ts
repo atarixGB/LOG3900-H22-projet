@@ -18,7 +18,13 @@ export class LoginService {
     isValidEmail: boolean;
     isValidPW: boolean;
 
-    constructor(private httpClient: HttpClient, private router: Router, private route: ActivatedRoute, private profileService: ProfileService, private soundEffectsService: SoundEffectsService, private collaborationService: CollaborationService) {
+    constructor(
+      private httpClient: HttpClient,
+      private router: Router,
+      private route: ActivatedRoute,
+      private profileService: ProfileService,
+      private soundEffectsService: SoundEffectsService,
+      private collaborationService: CollaborationService) {
         this.email = '';
         this.password = '';
     }
@@ -37,7 +43,6 @@ export class LoginService {
         this.httpClient.post(LOGIN_URL, userCredentials).subscribe(
             (result) => {
                 if (result == 200) {
-                  console.log(result, "Login sucess")
                   this.router.navigate(['../menu'], { relativeTo: this.route });
                   this.fetchUserInfo();
                   this.collaborationService.enterCollaboration();
@@ -58,11 +63,10 @@ export class LoginService {
     fetchUserInfo(): void {
         this.httpClient.get(LOGIN_URL + '/' + this.email).subscribe(
             (result) => {
+                console.log("Current user:", result);
                 this.username = result.toString();
                 window.localStorage.setItem("username", this.username);
                 this.profileService.setUsername(this.username);
-                console.log(result, ' got name');
-
             },
             (error) => {
                 console.log('Error: ', error);

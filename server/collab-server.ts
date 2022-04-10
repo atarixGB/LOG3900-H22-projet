@@ -117,7 +117,7 @@ ioCollab.on('connection', (socket) => {
 
       // DRAWING EVENTS
       socket.on('broadcastStroke', (data) => {
-        console.log('broadcastStroke');
+        console.log('broadcastStroke', data);
         const roomName = data.room;
         const stroke = data.data
         socket.broadcast.to(roomName).emit('receiveStroke', stroke);
@@ -143,6 +143,7 @@ ioCollab.on('connection', (socket) => {
         console.log('broadcastSelectionSize');
         const roomName = data.room;
         const size = data.data
+        console.log(size);
         socket.broadcast.to(roomName).emit('receiveSelectionSize', size);
          
       })

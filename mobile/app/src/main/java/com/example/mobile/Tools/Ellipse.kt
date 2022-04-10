@@ -116,7 +116,7 @@ class  Ellipse(context: Context, baseCanvas: Canvas, val socket : DrawingSocket,
         }
 
         var jo = JSONObject()
-        jo.put("boundingPoints", bounding) //TODO
+        jo.put("boundingPoints", bounding)
         jo.put("toolType", 2) //number of the ellipse
         jo.put("primaryColor", toRBGColor(strokePaint.color))
         jo.put("secondaryColor", toRGBAColor(fillPaint.color))
@@ -138,7 +138,7 @@ class  Ellipse(context: Context, baseCanvas: Canvas, val socket : DrawingSocket,
         data.put("room", drawingId)
         data.put("data", jo)
 
-        socket.socket.emit("broadcastStroke", jo )
+        socket.socket.emit("broadcastStroke", data )
     }
 
     private fun draw(stroke: IEllipseStroke) {
