@@ -25,7 +25,6 @@ export class FavoriteDrawingsComponent implements OnInit {
   }
 
   getUserProfileInfos(username: string): void {
-    console.log("Get info of", username);
     this.router.navigate([`../profile/${username}`], { relativeTo: this.route });
   }
 

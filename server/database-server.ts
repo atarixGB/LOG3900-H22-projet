@@ -463,9 +463,9 @@ mongoClient.connect(process.env.POLYGRAM_APP_DATABASE_URL, { useNewUrlParser: tr
     DB.collection("drawings")
     .findOne({ _id: mongoose.Types.ObjectId(req.params.drawingId.replace(/"/g, '')) }, function (err, result) {
       if (err) throw err
-      else {
-        const file = result.data;
 
+      if (result != null) {
+        const file = result.data;
         if (fs.existsSync(__dirname + "/uploads/" + file, {encoding: 'base64'})) {
           var img = fs.readFileSync(__dirname + "/uploads/" + file, {encoding: 'base64'});
           var returnedJson = {
@@ -479,15 +479,14 @@ mongoClient.connect(process.env.POLYGRAM_APP_DATABASE_URL, { useNewUrlParser: tr
             albumName:result.albumName
           };
           res.json(returnedJson)
-          console.log("GotDrawing");
-
-        }
-
-        else{
+        } else{
           console.log(`File ${file} does not exist on server`);
         }
-
       }
+
+
+
+
     });
   });
 
@@ -652,7 +651,7 @@ mongoClient.connect(process.env.POLYGRAM_APP_DATABASE_URL, { useNewUrlParser: tr
 
     //add one like to a drawing
     app.put("/drawings/addLike/:drawingId", (request, response, next) => {
-      let drawingId = request.params.drawingId.replaceAll(/"/g, '');
+      let drawingId = request.params.drawingId.replace(/"/g, '');
       let user = request.body.user
 
       DB.collection("drawings").findOneAndUpdate({ _id: mongoose.Types.ObjectId(drawingId) }, { $push: { likes: user } }, { returnDocument: 'after' }, (err, res) => {
@@ -663,7 +662,7 @@ mongoClient.connect(process.env.POLYGRAM_APP_DATABASE_URL, { useNewUrlParser: tr
 
     //add drawing to a story
     app.put("/drawings/addDrawingToStory/:drawingId", (request, response, next) => {
-      let drawingId = request.params.drawingId.replaceAll(/"/g, '');
+      let drawingId = request.params.drawingId.replace(/"/g, '');
 
       DB.collection("drawings").findOneAndUpdate({ _id: mongoose.Types.ObjectId(drawingId) }, { $set: { isStory: true } }, { returnDocument: 'after' }, (err, res) => {
         response.json(201)
