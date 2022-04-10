@@ -8,6 +8,7 @@ import { ProfileService } from '../profile/profile.service';
 import { MemberJoinedDialogComponent } from '@app/components/editor/member-joined-dialog/member-joined-dialog.component';
 import { MemberLeftDialogComponent } from '@app/components/editor/member-left-dialog/member-left-dialog.component';
 import { HttpClient } from '@angular/common/http';
+import { StampService } from '../editor/tools/stamp/stamp.service';
 
 @Injectable({
     providedIn: 'root',
@@ -45,7 +46,7 @@ export class CollaborationService {
     fetchRequest: Subject<any>;
     fetchRequest$: Observable<any>;
 
-    constructor(public dialog: MatDialog, public drawingService: DrawingService, private profileService: ProfileService, private httpClient: HttpClient) { 
+    constructor(public dialog: MatDialog, public drawingService: DrawingService, private stampService: StampService, private profileService: ProfileService, private httpClient: HttpClient) { 
         this.nbMembersInCollab = 0;
 
         this.newStroke = new Subject();
@@ -153,6 +154,7 @@ export class CollaborationService {
 
     // -------------------Room emits
     joinCollab(drawingId: any): void {
+        this.stampService.isEnabled = false;
         this.room = drawingId.replaceAll(/"/g, '');
         const data = {
             username: this.profileService.username,

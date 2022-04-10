@@ -1,39 +1,29 @@
 <div class="container">
     <h3>Outils</h3>
-    <mat-grid-list cols="2">
-        <mat-grid-tile>
+    <div fxLayout="column" fxLayoutAlign="start center" >
             <button [ngClass]="{ active: toolManagerService.currentToolEnum === ToolList.Pencil }" mat-icon-button
                 matTooltip="Crayon" matTooltipPosition="above" (click)="onTool(ToolList.Pencil)">
                 <mat-icon [ngClass]="{ active: toolManagerService.currentToolEnum === ToolList.Pencil }">create</mat-icon>
             </button>
-        </mat-grid-tile>
-        <mat-grid-tile>
             <button [ngClass]="{ active: toolManagerService.currentToolEnum === ToolList.Rectangle }" mat-icon-button
                 matTooltip="Rectangle" matTooltipPosition="above" (click)="onTool(ToolList.Rectangle)">
                 <mat-icon [ngClass]="{ active: toolManagerService.currentToolEnum === ToolList.Rectangle }">check_box_outline_blank</mat-icon>
             </button>
-        </mat-grid-tile>
-        <mat-grid-tile>
             <button [ngClass]="{ active: toolManagerService.currentToolEnum === ToolList.Ellipse }" mat-icon-button
                 matTooltip="Ellipse" matTooltipPosition="above" (click)="onTool(ToolList.Ellipse)">
                 <mat-icon [ngClass]="{ active: toolManagerService.currentToolEnum === ToolList.Ellipse }">radio_button_unchecked</mat-icon>
             </button>
-        </mat-grid-tile>
-        <mat-grid-tile>
-            <button
+            <button *ngIf="this.stampService.isEnabled"
                 [ngClass]="{ active: toolManagerService.currentToolEnum === ToolList.Stamp }"
                 mat-icon-button
-                matTooltip="Étampe (D)"
+                matTooltip="Étampe"
                 matTooltipPosition="above"
                 (click)="onTool(ToolList.Stamp)">
                 <mat-icon>insert_emoticon</mat-icon>
             </button>
-        </mat-grid-tile>
-        <mat-grid-tile>
             <button [ngClass]="{ active: toolManagerService.currentToolEnum === ToolList.Selection }" mat-icon-button
                 matTooltip="Selection" matTooltipPosition="above" (click)="onTool(ToolList.Selection)">
                 <mat-icon [ngClass]="{ active: toolManagerService.currentToolEnum === ToolList.Selection }">format_shapes</mat-icon>
             </button>
-        </mat-grid-tile>
-    </mat-grid-list>
+    </div>
 </div>

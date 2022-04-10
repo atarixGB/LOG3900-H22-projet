@@ -15,6 +15,8 @@ const SIZE_STAMP = 24;
     providedIn: 'root',
 })
 export class StampService extends Tool {
+    isEnabled: boolean;
+
     imageCoords: Vec2;
     currentStamp: string;
     selectStamp: StampList;
@@ -39,6 +41,7 @@ export class StampService extends Tool {
         this.size = SIZE_STAMP;
         this.angle = 0;
         this.resizeFactor = SCALE_FACTOR_STAMP;
+        this.isEnabled = false;
     }
 
     onMouseDown(event: MouseEvent): void {
