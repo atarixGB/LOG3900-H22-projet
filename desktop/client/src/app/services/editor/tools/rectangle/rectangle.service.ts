@@ -41,26 +41,35 @@ export class RectangleService extends ShapeService {
         }
     }
 
-    onMouseUp(): void {
-        this.drawingService.clearCanvas(this.drawingService.previewCtx);
-
-        if (!this.isShiftShape) {
-            this.drawRectangle(this.drawingService.baseCtx, false);
-            this.width = this.pathData[this.pathData.length - 1].x - this.pathData[0].x;
-            this.height = this.pathData[this.pathData.length - 1].y - this.pathData[0].y;
-
-            this.sendRectangleStroke();
-        } else {
-            this.drawSquare(this.drawingService.baseCtx, false);
-            this.isShiftShape = false;
-            this.width = this.shortestSide;
-            this.height = this.shortestSide;
-        }
-
+    onMouseLeave(event: MouseEvent): void {
         if (this.mouseDown) {
+            this.drawingService.clearCanvas(this.drawingService.previewCtx);
+            this.clearPath();
             this.mouseDown = false;
             this.soundEffectsService.stopDrawSound();
         }
+    }
+
+    onMouseUp(): void {
+        this.drawingService.clearCanvas(this.drawingService.previewCtx);
+
+        if (this.mouseDown) {
+            if (!this.isShiftShape) {
+                this.drawRectangle(this.drawingService.baseCtx, false);
+                this.width = this.pathData[this.pathData.length - 1].x - this.pathData[0].x;
+                this.height = this.pathData[this.pathData.length - 1].y - this.pathData[0].y;
+
+                this.sendRectangleStroke();
+            } else {
+                this.drawSquare(this.drawingService.baseCtx, false);
+                this.isShiftShape = false;
+                this.width = this.shortestSide;
+                this.height = this.shortestSide;
+            }
+        }
+
+        this.mouseDown = false;
+        this.soundEffectsService.stopDrawSound();
 
         this.clearPath();
     }
