@@ -122,8 +122,7 @@ export class SelectionService extends Tool {
     this.collaborationService.broadcastSelection({
       sender: '',
       strokeIndex: this.selectedIndex,
-    });
-     
+    });     
   }
 
   getPositionFromMouse(event: MouseEvent): Vec2 {

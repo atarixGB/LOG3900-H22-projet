@@ -461,6 +461,7 @@ class  Selection(context: Context, baseCanvas: Canvas, val socket : DrawingSocke
             //send
             var jo = JSONObject()
             jo.put("strokeIndex", selectedIndex)
+
             jo.put("color", toRBGColor(color))
             jo.put("sender", socket.socket.id())
 
@@ -517,7 +518,7 @@ class  Selection(context: Context, baseCanvas: Canvas, val socket : DrawingSocke
                     )
                     i++
                 } else {
-                    strokesSelectedBitmap.remove(sender)
+//                    strokesSelectedBitmap.remove(sender)
                     strokesSelected[i] = currentStroke
                     createOtherSelectionCanvas(sender, currentStroke)
                 }
@@ -571,7 +572,7 @@ class  Selection(context: Context, baseCanvas: Canvas, val socket : DrawingSocke
                     )
                     i++
                 } else {
-                    strokesSelectedBitmap.remove(sender)
+//                    strokesSelectedBitmap.remove(sender)
                     strokesSelected[i] = currentStroke
                     createOtherSelectionCanvas(sender, currentStroke)
                 }
@@ -608,22 +609,24 @@ class  Selection(context: Context, baseCanvas: Canvas, val socket : DrawingSocke
     private fun createOtherSelectionCanvas(sender: String?, stroke: Stroke) {
         val width = (stroke.boundingPoints[1].x - stroke.boundingPoints[0].x).toInt()
         val height = (stroke.boundingPoints[1].y - stroke.boundingPoints[0].y).toInt()
-        val otherSelectionBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
-        val otherSelectionCanvas = Canvas(otherSelectionBitmap!!)
-        val borderPaint = Paint().apply {
-            color = ResourcesCompat.getColor(context.resources, R.color.blue, null)
-            isAntiAlias = true
-            isDither = true
-            style = Paint.Style.STROKE
-            strokeJoin = Paint.Join.MITER
-            strokeCap = Paint.Cap.SQUARE
-            strokeWidth = 10f
-        }
-        otherSelectionCanvas!!.drawRect(0f, 0f, width.toFloat(), height.toFloat(), borderPaint)
+        if (width != 0 && height !=0) {
+            val otherSelectionBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+            val otherSelectionCanvas = Canvas(otherSelectionBitmap!!)
+            val borderPaint = Paint().apply {
+                color = ResourcesCompat.getColor(context.resources, R.color.blue, null)
+                isAntiAlias = true
+                isDither = true
+                style = Paint.Style.STROKE
+                strokeJoin = Paint.Join.MITER
+                strokeCap = Paint.Cap.SQUARE
+                strokeWidth = 10f
+            }
+            otherSelectionCanvas!!.drawRect(0f, 0f, width.toFloat(), height.toFloat(), borderPaint)
 
-        drawStrokeOnOtherSelectionCanvas(stroke, otherSelectionCanvas!!)
-        drawOtherSelectedStrokesOnBaseCanvas(stroke, otherSelectionBitmap)
-        strokesSelectedBitmap.put(sender!!, otherSelectionBitmap)
+            drawStrokeOnOtherSelectionCanvas(stroke, otherSelectionCanvas!!)
+            drawOtherSelectedStrokesOnBaseCanvas(stroke, otherSelectionBitmap)
+            strokesSelectedBitmap[sender!!] = otherSelectionBitmap
+        }
     }
 
     fun onPasteRequest(sender: String, strokeIndex: Int) {
@@ -832,7 +835,7 @@ class  Selection(context: Context, baseCanvas: Canvas, val socket : DrawingSocke
                 )
                 i++
             } else {
-                strokesSelectedBitmap.remove(sender)
+//                strokesSelectedBitmap.remove(sender)
                 strokesSelected[i] = strokes[strokeIndex]
                 createOtherSelectionCanvas(sender, strokes[strokeIndex])
             }
@@ -854,12 +857,12 @@ class  Selection(context: Context, baseCanvas: Canvas, val socket : DrawingSocke
         strokes[index].updateMove(pos)
 
         strokes[index].boundingPoints[1] = IVec2(
-            pos.x - strokesSelected[0].boundingPoints[0].x + strokesSelected[0].boundingPoints[1].x,
-            pos.y - strokesSelected[0].boundingPoints[0].y + strokesSelected[0].boundingPoints[1].y
+            pos.x - strokes[index].boundingPoints[0].x + strokes[index].boundingPoints[1].x,
+            pos.y - strokes[index].boundingPoints[0].y + strokes[index].boundingPoints[1].y
         )
         strokes[index].boundingPoints[0] = IVec2(pos.x, pos.y)
 
-        strokesSelected[0] = strokes[index] //TODO de i au lieu de 0?
+        strokesSelected[i] = strokes[index] //TODO de i au lieu de 0?
 
 
 
@@ -881,12 +884,26 @@ class  Selection(context: Context, baseCanvas: Canvas, val socket : DrawingSocke
             strokes[selectedIndex!!] = currentStroke!!
         }
 
-        baseCanvas.drawBitmap(
-            strokesSelectedBitmap[sender]!!,
-            pos.x,
-            pos.y,
-            null
-        ) //dessiner la forme selectionner sur le base
+
+        var j = 0
+        strokesSelectedBitmap.forEach {
+            if (it.key != sender) {
+                baseCanvas.drawBitmap(
+                    it.value, //hereeeeeeeeeeeeeeeeeeeeeeeeeeeee
+                    strokesSelected[j].boundingPoints[0].x,
+                    strokesSelected[j].boundingPoints[0].y,
+                    null
+                )
+                j++
+            } else {
+                baseCanvas.drawBitmap(
+                    strokesSelectedBitmap[sender]!!,
+                    pos.x,
+                    pos.y,
+                    null
+                )
+            }
+        }
     }
 
     fun resetSelection() {
