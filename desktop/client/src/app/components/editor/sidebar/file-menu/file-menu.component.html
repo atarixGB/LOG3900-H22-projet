@@ -1,12 +1,7 @@
-<mat-grid-list cols="2">
-    <mat-grid-tile>
-        <button mat-icon-button>
-            <mat-icon>perm_media</mat-icon>
-        </button>
-    </mat-grid-tile>
-    <mat-grid-tile *ngIf="this.albumGalleryService.currentDrawing.owner == this.profileService.username">
-        <button mat-icon-button matTooltip="Ajouter aux dessins du jour" (click)="this.storyService.addToStory()" matTooltipPosition="above">
-            <mat-icon>add_circle_outline</mat-icon>
-        </button>
-    </mat-grid-tile>
-</mat-grid-list>
+<div id="storyBtn" *ngIf="this.albumGalleryService.currentDrawing.owner == this.profileService.username" fxLayout="row" fxLayoutAlign="center center"  matTooltip="Ajouter aux dessins du jour" (click)="this.storyService.addToStory()" matTooltipPosition="above">
+    <button  mat-icon-button>
+        <mat-icon>add_circle_outline</mat-icon>
+    </button>
+    <span>Dessin du jour</span>
+</div> 
+       

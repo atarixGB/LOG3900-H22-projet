@@ -76,23 +76,25 @@ export class EllipseService extends ShapeService {
 
     onMouseUp(): void {
         this.drawingService.clearCanvas(this.drawingService.previewCtx);
-        if (!this.isShiftShape) {
-            this.drawEllipse(this.drawingService.baseCtx);
-            this.width = this.size.x / 2;
-            this.height = this.size.y / 2;
+        if (this.pathData.length > 1) {
+            if (!this.isShiftShape) {
+                this.drawEllipse(this.drawingService.baseCtx);
+                this.width = this.size.x / 2;
+                this.height = this.size.y / 2;
 
-            this.sendEllipseStroke();
-        } else {
-            this.drawCircle(this.drawingService.baseCtx);
-            this.width = this.radius;
-            this.height = this.radius;
-            this.isShiftShape = false;
+                this.sendEllipseStroke();
+            } else {
+                this.drawCircle(this.drawingService.baseCtx);
+                this.width = this.radius;
+                this.height = this.radius;
+                this.isShiftShape = false;
+            }
         }
+        
         if (this.mouseDown) {
             this.mouseDown = false;
             this.soundEffectsService.stopDrawSound();
         }
-
         this.clearPath();
     }
     

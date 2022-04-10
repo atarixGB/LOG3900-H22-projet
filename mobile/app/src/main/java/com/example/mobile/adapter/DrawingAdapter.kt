@@ -64,6 +64,7 @@ class DrawingAdapter (val context: Context?, var drawings: ArrayList<IDrawing>, 
         holder.itemView.apply {
             drawingName.text = currentDrawing.name
             owner.text = currentDrawing.owner
+            creationDate.text = currentDrawing.creationDate
 
             var likes = arrayListOf<String>()
             var incrementNbrOfLikes = 0

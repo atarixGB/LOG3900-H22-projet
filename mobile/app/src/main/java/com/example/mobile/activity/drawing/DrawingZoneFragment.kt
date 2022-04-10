@@ -5,9 +5,12 @@ import android.graphics.*
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.Button
+import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.activityViewModels
@@ -22,12 +25,12 @@ import com.example.mobile.bitmapDecoder
 import com.example.mobile.convertBitmapToByteArray
 import com.example.mobile.popup.PrepForMemberLeavingPopUp
 import com.example.mobile.popup.PrepForNewMemberPopUp
-
 import com.example.mobile.viewModel.ToolModel
 import com.example.mobile.viewModel.ToolParameters
-import com.google.gson.Gson
-
 import io.socket.emitter.Emitter
+import kotlinx.android.synthetic.main.activity_drawings_collection.view.*
+import kotlinx.android.synthetic.main.fragment_custom_tool.view.*
+import com.google.gson.Gson
 import com.example.mobile.viewModel.SharedViewModelToolBar
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -69,6 +72,7 @@ class DrawingZoneFragment : Fragment() {
         DrawingSocket.socket.on("receivePasteRequest", onPasteRequest)
         DrawingSocket.socket.on("receiveDeleteRequest", onDeleteRequest)
         DrawingSocket.socket.on("receiveSelectionPos", onMoveRequest)
+        DrawingSocket.socket.on("receiveSelectionSize", onResizeRequest)
 
         DrawingSocket.socket.on("prepForNewMember", onPrepForNewMember)
         DrawingSocket.socket.on("fetchStrokes", onFetchStrokes)
@@ -90,6 +94,11 @@ class DrawingZoneFragment : Fragment() {
         toolParameters.deleteSelection.observe(viewLifecycleOwner, Observer { deleteSelection ->
             mDrawingView.deleteSelection(deleteSelection)
         })
+
+        toolParameters.pasteSelection.observe(viewLifecycleOwner, Observer { pasteSelection ->
+            mDrawingView.pasteSelection(pasteSelection)
+        })
+
         toolModel.tool.observe(viewLifecycleOwner, Observer { tool ->
             mDrawingView.changeTool(tool)
         })
@@ -98,10 +107,12 @@ class DrawingZoneFragment : Fragment() {
             mDrawingView.setDrawingId(drawingId)
         })
 
-        sharedViewModelToolBar.collabDrawingId.observe(viewLifecycleOwner, Observer { collabDrawingId ->
-            mDrawingView.setDrawingId(collabDrawingId)
-            mDrawingView.displayDrawingCollab(collabDrawingId)
-        })
+        sharedViewModelToolBar.collabDrawingId.observe(
+            viewLifecycleOwner,
+            Observer { collabDrawingId ->
+                mDrawingView.setDrawingId(collabDrawingId)
+                mDrawingView.displayDrawingCollab(collabDrawingId)
+            })
 
         sharedViewModelToolBar.jsonString.observe(viewLifecycleOwner, Observer { jsonString ->
             mDrawingView.onLoadCurrentStrokeData(jsonString)
@@ -154,6 +165,11 @@ class DrawingZoneFragment : Fragment() {
     private var onMoveRequest = Emitter.Listener {
         val drawEvent = it[0] as JSONObject
         mDrawingView.onMoveRequest (drawEvent)
+    }
+
+    private var onResizeRequest = Emitter.Listener {
+        val drawEvent = it[0] as JSONObject
+        mDrawingView.onResizeRequest (drawEvent)
     }
 
     private var onPrepForNewMember = Emitter.Listener {
@@ -284,6 +300,24 @@ class DrawingZoneFragment : Fragment() {
             }
         }
 
+        fun onResizeRequest(stroke: JSONObject) {
+            val sender = stroke["sender"] as String
+            val strokeIndex = stroke["strokeIndex"] as Int
+            val newPosObj = stroke["newPos"] as JSONObject
+            val newDimensionsObj = stroke["newDimensions"] as JSONObject
+            val scaleObj = stroke["scale"] as JSONObject
+
+            var newPos = IVec2(newPosObj.getDouble("x").toFloat(), newPosObj.getDouble("y").toFloat())
+            var newDimensions = IVec2(newDimensionsObj.getDouble("x").toFloat(), newDimensionsObj.getDouble("y").toFloat())
+            var scale = IVec2(scaleObj.getDouble("x").toFloat(), scaleObj.getDouble("y").toFloat())
+
+            toolManager.selection.onResizeRequest(sender, strokeIndex, newPos, newDimensions, scale)
+            if (currentDrawingBitmap != null) {
+                mCanvas!!.drawBitmap(currentDrawingBitmap!!, 0F, 0F, null)
+            }
+            invalidate()
+        }
+
         fun onPrepForNewMember(){
             if (this::toolManager.isInitialized) {
                 resetPath()
@@ -336,9 +370,21 @@ class DrawingZoneFragment : Fragment() {
             }
         }
 
+
         override fun onDraw(canvas: Canvas) {
             super.onDraw(canvas)
             canvas.drawBitmap(mBitmap!!, 0f, 0f, mPaint)
+
+            //selection bounding box button
+//            val button1 = Button(context)
+//            button1.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+//
+//            button1.setBackgroundColor(Color.RED)
+//            button1.setText("hiiii")
+//
+//            val lay = findViewById<LinearLayout>(R.id.drawingView)
+//            lay.addView(button1)
+
 
             if (isDrawing) {
                 toolManager.currentTool.onDraw(canvas)
@@ -424,11 +470,11 @@ class DrawingZoneFragment : Fragment() {
             if (this::toolManager.isInitialized) {
                 this.toolManager.changeTool(tool)
                 resetPath()
-                toolManager.selection.sendPasteSelection()
-                toolManager.selection.resetSelection()
                 if (tool == ToolbarFragment.MenuItem.SELECTION) {
                     toolManager.selection.isToolSelection = true
                 }
+                toolManager.selection.sendPasteSelection()
+                toolManager.selection.resetSelection()
             }
             if (currentDrawingBitmap != null) {
                 mCanvas!!.drawBitmap(currentDrawingBitmap!!, 0F, 0F, null)
@@ -438,6 +484,16 @@ class DrawingZoneFragment : Fragment() {
         fun deleteSelection (delete: Boolean) {
             if (this::toolManager.isInitialized && delete) {
                 toolManager.selection.deleteStroke()
+            }
+            if (currentDrawingBitmap != null) {
+                mCanvas!!.drawBitmap(currentDrawingBitmap!!, 0F, 0F, null)
+            }
+        }
+
+        fun pasteSelection (paste: Boolean) {
+            if (this::toolManager.isInitialized && paste) {
+                toolManager.selection.sendPasteSelection()
+                toolManager.selection.resetSelection()
             }
             if (currentDrawingBitmap != null) {
                 mCanvas!!.drawBitmap(currentDrawingBitmap!!, 0F, 0F, null)

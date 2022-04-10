@@ -40,6 +40,10 @@ export class DrawingService {
         this.currentDrawing.src = 'data:image/png;base64,' + drawing.data;
     }
 
+    setCurrentDrawingToBaseData(): void {
+        this.currentDrawing.src = this.canvas.toDataURL();
+    }
+
     loadCurrentDrawing(): void {
         this.clearCanvas(this.baseCtx);
         this.baseCtx.drawImage(this.currentDrawing, 0, 0);
