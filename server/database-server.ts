@@ -476,7 +476,8 @@ mongoClient.connect(process.env.POLYGRAM_APP_DATABASE_URL, { useNewUrlParser: tr
             data: img,
             members: result.members,
             likes: result.likes,
-            albumName:result.albumName
+            albumName:result.albumName,
+            creationDate:result.creationDate
           };
           res.json(returnedJson)
           console.log("GotDrawing");
@@ -853,6 +854,9 @@ mongoClient.connect(process.env.POLYGRAM_APP_DATABASE_URL, { useNewUrlParser: tr
                 "description": description
               },
             }).then(result => {
+              // DB.collection("drawings").findOneAndUpdate({ owner: oldUsername }, { $set: { owner: newUsername } }, { returnDocument: 'after' }, (err, res) => {})
+              // DB.collection("albums").findOneAndUpdate({ owner: oldUsername }, { $set: { owner: newUsername } }, { returnDocument: 'after' }, (err, res) => {})
+              // DB.collection("albums").findOneAndUpdate({ identifier: oldUsername }, { $set: { identifier: newUsername } }, { returnDocument: 'after' }, (err, res) => {})
               response.json(200);
             });
           }
