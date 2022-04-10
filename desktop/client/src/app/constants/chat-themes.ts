@@ -60,7 +60,7 @@ export const MINECRAFT_THEME: IChatTheme = {
   font: "Arial",
   textColor: "black",
   backgroundColor: "none",
-  backgroundImage: "url('../../../../assets/minecraft.jpg')",
+  backgroundImage: "url('assets/minecraft.jpg')",
   backgroundColorMainMessageContainer: "#a4cd49",
   backgroundColorSecondMessageContainer: "white",
   opacityMainContainer: "90%",
