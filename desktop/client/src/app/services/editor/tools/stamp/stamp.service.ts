@@ -51,6 +51,10 @@ export class StampService extends Tool {
         }
     }
 
+    onMouseLeave(event: MouseEvent): void {
+        this.drawingService.clearCanvas(this.drawingService.previewCtx);
+    }
+
     onMouseMove(event: MouseEvent): void {
         this.imageCoords = this.getPositionFromMouse(event);
         this.drawingService.clearCanvas(this.drawingService.previewCtx);
