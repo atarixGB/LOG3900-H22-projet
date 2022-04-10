@@ -3,10 +3,15 @@ package com.example.mobile.activity.drawing
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.icu.text.SimpleDateFormat
+import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.provider.MediaStore
 import android.view.*
 import android.widget.*
+import androidx.core.content.FileProvider
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -21,6 +26,10 @@ import com.example.mobile.viewModel.SharedViewModelToolBar
 import com.example.mobile.viewModel.ToolModel
 import kotlinx.android.synthetic.main.activity_registration.*
 import kotlinx.android.synthetic.main.fragment_toolbar.*
+import java.io.File
+import java.io.IOException
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class ToolbarFragment : Fragment(), AdapterView.OnItemClickListener {
@@ -37,6 +46,8 @@ class ToolbarFragment : Fragment(), AdapterView.OnItemClickListener {
     private lateinit var addToStoryText :TextView
     private lateinit var backBtn : Button
     private lateinit var _img: Bitmap
+//    var photoFile: File? = createImageFile()
+    lateinit var currentPhotoPath: String
     private val toolChange: ToolModel by activityViewModels()
     private val sharedViewModel: SharedViewModelToolBar by activityViewModels()
 
@@ -103,7 +114,13 @@ class ToolbarFragment : Fragment(), AdapterView.OnItemClickListener {
 
             takePictureBtn.setOnClickListener{
                 val cInt = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+//                if(photoFile!=null){
+//                    cInt.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile))
+
                 startActivityForResult(cInt, REQUEST_IMAGE_CAMERA)
+//                }
+//                dispatchTakePictureIntent()
+
             }
 
         }
@@ -113,6 +130,10 @@ class ToolbarFragment : Fragment(), AdapterView.OnItemClickListener {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_IMAGE_CAMERA && resultCode == Activity.RESULT_OK && data != null) {
+
+//           var filePath= photoFile?.path
+//            var bitmap=BitmapFactory.decodeFile(filePath)
+//            _img=bitmap
             _img=data.extras?.get("data") as Bitmap
             toolChange.changeImg(_img)
         } else if(resultCode==Activity.RESULT_CANCELED){
@@ -120,6 +141,45 @@ class ToolbarFragment : Fragment(), AdapterView.OnItemClickListener {
         }
     }
 
+//    private fun dispatchTakePictureIntent() {
+//        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
+//            // Ensure that there's a camera activity to handle the intent
+//            takePictureIntent.resolveActivity(requireActivity().packageManager).also {
+//                // Create the File where the photo should go
+//                val photoFile: File? = try {
+//                    createImageFile()
+//                } catch (ex: IOException) {
+//                    // Error occurred while creating the File
+//                    null
+//                }
+//                // Continue only if the File was successfully created
+//                photoFile?.also {
+//                    val photoURI: Uri = FileProvider.getUriForFile(
+//                        requireContext(),
+//                        "com.example.mobile.fileprovider",
+//                        it
+//                    )
+//                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+//                    startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAMERA)
+//                }
+//            }
+//        }
+//    }
+
+    @Throws(IOException::class)
+    private fun createImageFile(): File {
+        // Create an image file name
+        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        val storageDir: File? = context?.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        return File.createTempFile(
+            "JPEG_${timeStamp}_", /* prefix */
+            ".jpg", /* suffix */
+            storageDir /* directory */
+        ).apply {
+            // Save a file: path for use with ACTION_VIEW intents
+            currentPhotoPath = absolutePath
+        }
+    }
     private fun setDataList():ArrayList<ToolItem>{
         val arrayList:ArrayList<ToolItem> = ArrayList()
         arrayList.add(ToolItem(R.drawable.pencil_clicked))

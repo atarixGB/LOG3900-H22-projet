@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="300dp"
     android:id="@+id/containerImg"
     android:layout_height="wrap_content"
     android:paddingStart="8dp"
@@ -21,8 +21,8 @@
 
     <ImageView
         android:id="@+id/drawingViewOptions"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:background="@color/white"
         android:src="@drawable/ic_baseline_more_vert_24"
         android:layout_marginRight="2dp"
@@ -68,12 +68,11 @@
         app:layout_constraintTop_toBottomOf="@+id/imgDrawing" />
 
     <ImageView
+        android:id="@+id/modifDrawing"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:id="@+id/modifDrawing"
         android:src="@drawable/ic_baseline_edit_24"
-        app:layout_constraintEnd_toEndOf="@+id/owner"
-        app:layout_constraintTop_toBottomOf="@+id/imgDrawing"
-        app:layout_constraintEnd_toStartOf="@+id/nbrOfLikes"/>
+        app:layout_constraintEnd_toStartOf="@+id/drawingViewOptions"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
