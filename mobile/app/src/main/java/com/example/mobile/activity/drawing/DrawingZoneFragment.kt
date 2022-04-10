@@ -112,7 +112,7 @@ class DrawingZoneFragment : Fragment() {
         })
 
         toolModel.onStory.observe(viewLifecycleOwner, Observer { onStory ->
-//            mDrawingView.putToStory()
+            mDrawingView.putToStory()
         })
 
         view.findViewById<LinearLayout>(R.id.drawingView).addView(mDrawingView)
