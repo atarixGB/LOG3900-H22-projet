@@ -97,7 +97,8 @@ class DisplayAllDrawings : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
         if (!searchText.isEmpty()) {
             drawings.forEach {
                 if ((it.name!!.lowercase(Locale.getDefault()).contains(searchText)) ||
-                    (it.owner!!.lowercase(Locale.getDefault()).contains(searchText))
+                    (it.owner!!.lowercase(Locale.getDefault()).contains(searchText)) ||
+                    (it.creationDate!!.lowercase(Locale.getDefault()).contains(searchText))
                 ){
                     searchArrayList.add(it)
                 }

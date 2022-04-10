@@ -1,123 +1,149 @@
 <div fxLayout="row" fxLayoutAlign="center stretch" fxFlex="100">
-   <!-- Side Menu -->
-   <app-side-menu fxLayout="column" fxLayoutAlign="start stretch" fxFlex="15"></app-side-menu>
+  <!-- Side Menu -->
+  <app-side-menu fxLayout="column" fxLayoutAlign="start stretch" fxFlex="15"></app-side-menu>
 
-   <!-- Profil settings page -->
-   <div fxLayout="column" fxLayoutAlign="start stretch" fxFlex="auto">
-      <div fxFlex="5"></div>
+  <!-- Profil settings page -->
+  <div fxLayout="column" fxLayoutAlign="start stretch" fxFlex="auto">
+    <div fxFlex="5"></div>
 
-      <!-- Header -->
-      <div fxLayout="row" fxLayoutAlign="center center" >
-         <h1 id="title">Paramètres du profil</h1>
-      </div>
-      <div fxFlex="2"></div>
+    <!-- Header -->
+    <div fxLayout="row" fxLayoutAlign="center center">
+      <h1 id="title">Paramètres du profil</h1>
+    </div>
+    <div fxFlex="2"></div>
 
-      <!-- Settings -->
-      <div fxLayout="row" fxLayoutAlign="center center">
-         <div fxLayout="column" fxLayoutAlign="start stretch" fxFlex="50">
+    <!-- Settings -->
+    <div fxLayout="row" fxLayoutAlign="center center">
+      <div fxLayout="column" fxLayoutAlign="start stretch" fxFlex="50">
 
-            <!-- Avatar settings -->
-            <div class="topPadding" fxLayout="row" fxLayoutAlign="space-evenly stretch">
-               <div id="avatarDisplay" fxLayoutAlign="center center" class="animate__animated" [ngClass]="{animate__headShake: this.profileSettingsService.isAvatarTooLarge}">
-                  <img id="avatarImg" src="data:image/png;base64,{{this.profileSettingsService.newAvatarSrc}}">
-               </div>
-               <div fxLayout="column" fxLayoutAlign="space-evenly center" >
-                  <div fxLayout="row" fxLayoutAlign="center center" fxFlex="20%" (click)="this.openAvatarSelectionModal()">
-                     <div fxLayoutAlign="center center" id="avatarBtnDiv">
-                        <mat-icon id="pencil">photo_library</mat-icon>
-                        <div fxFlex="5%"></div>
-                        <span id="modifierProfil">Choisir un nouvel avatar</span>
-                     </div>
-                  </div>
-                  <div fxLayout="row" fxLayoutAlign="center center" fxFlex="20%" (click)="this.openAvatarImportModal()">
-                     <div fxLayoutAlign="center center" id="avatarBtnDiv">
-                        <mat-icon id="pencil">add_photo_alternate</mat-icon>
-                        <div fxFlex="5%"></div>
-                        <span id="modifierProfil">Importer un nouvel avatar</span>
-                     </div>
-                  </div>
-               </div>
+        <!-- Avatar settings -->
+        <div class="topPadding" fxLayout="row" fxLayoutAlign="space-evenly stretch">
+          <div id="avatarDisplay" fxLayoutAlign="center center" class="animate__animated"
+            [ngClass]="{animate__headShake: this.profileSettingsService.isAvatarTooLarge}">
+            <img id="avatarImg" src="data:image/png;base64,{{this.profileSettingsService.newAvatarSrc}}">
+          </div>
+          <div fxLayout="column" fxLayoutAlign="space-evenly center">
+            <div fxLayout="row" fxLayoutAlign="center center" fxFlex="20%" (click)="this.openAvatarSelectionModal()">
+              <div fxLayoutAlign="center center" id="avatarBtnDiv">
+                <mat-icon id="pencil">photo_library</mat-icon>
+                <div fxFlex="5%"></div>
+                <span id="modifierProfil">Choisir un nouvel avatar</span>
+              </div>
             </div>
-            <div class="topPadding" fxLayout="row" fxLayoutAlign="center center">
-               <p *ngIf="this.profileSettingsService.isAvatarTooLarge" class="error">^ <u>L'avatar importé est trop volumineux</u> ^</p>
+            <div fxLayout="row" fxLayoutAlign="center center" fxFlex="20%" (click)="this.openAvatarImportModal()">
+              <div fxLayoutAlign="center center" id="avatarBtnDiv">
+                <mat-icon id="pencil">add_photo_alternate</mat-icon>
+                <div fxFlex="5%"></div>
+                <span id="modifierProfil">Importer un nouvel avatar</span>
+              </div>
             </div>
-
-            <!-- Username settings -->
-            <div class="sectionTitleContainer" fxLayout="row" fxLayoutAlign="start center">
-               <mat-icon fxFlex="5%">person</mat-icon>
-               <span class="bold">Nom d'utilisateur</span>
-            </div>
-            <div id="usernameChangeDiv" fxLayout="row" fxLayoutAlign="space-evenly center">
-               <div fxLayout="column" fxLayoutAlign="center center">
-                  <mat-form-field id="nameInput" class="animate__animated" [ngClass]="{animate__headShake: this.profileSettingsService.isExistingUsername || !this.profileSettingsService.isValidUsername}" appearance="outline">
-                     <mat-label>Entrez un nouveau nom</mat-label>
-                     <input matInput [(ngModel)]="this.profileSettingsService.newUsername">
-                  </mat-form-field>
-                  <p *ngIf="this.profileSettingsService.isExistingUsername" class="error">^ <u>Ce pseudonyme n'est pas disponible</u> ^</p>
-                  <p *ngIf="!this.profileSettingsService.isValidUsername" class="error">^ <u>Le pseudonyme doit être composé de lettres et/ou de chiffres uniquement</u> ^</p>
-               </div>
-            </div>
-
-            <!-- Description settings -->
-            <div class="sectionTitleContainer" fxLayout="row" fxLayoutAlign="start center">
-               <mat-icon fxFlex="5%">email</mat-icon>
-               <span class="bold">Description</span>
-            </div>
-            <mat-form-field class="topPadding" appearance="outline">
-               <mat-label>Modifiez votre description!</mat-label>
-               <textarea id="descriptionInput" matInput [(ngModel)]="this.profileSettingsService.newDescription"></textarea>
-            </mat-form-field>
-
-            <!-- Sound settings -->
-            <div class="sectionTitleContainer" fxLayout="row" fxLayoutAlign="start center">
-               <mat-icon fxFlex="5%">library_music</mat-icon>
-               <span class="bold">Sons</span>
-            </div>
-            <div class="topPadding" fxLayout="row" fxLayoutAlign="center center">
-               <div fxLayout="column" fxLayoutAlign="center start">
-                  <span>Effets sonores</span>
-                  <mat-form-field class="soundField" appearance="fill">
-                     <mat-select [(ngModel)]="this.soundEffectsService.isSoundEnabled">
-                       <mat-option [value]="true">Activés</mat-option>
-                       <mat-option [value]="false">Désactivés</mat-option>
-                     </mat-select>
-                   </mat-form-field>
-               </div>
-               <div fxFlex="20%"></div>
-               <div fxLayout="column" fxLayoutAlign="center start">
-                  <span>Musique</span>
-                  <mat-form-field class="soundField" appearance="fill">
-                     <mat-select [(ngModel)]="this.soundEffectsService.songChoice" (selectionChange)="this.soundEffectsService.startMusic()">
-                       <mat-option [value]="0">Désactivé</mat-option>
-                       <mat-option [value]="1">Lofi 1</mat-option>
-                       <mat-option [value]="2">Lofi 2</mat-option>
-                       <mat-option [value]="3">Minecraft</mat-option>
-                       <mat-option [value]="4">Kahoot</mat-option>
-                     </mat-select>
-                   </mat-form-field>
-               </div>
-            </div>
-         </div>
-      </div>
-
-      <!-- Confirmation btn -->
-      <div fxFlex="5"></div>
-
-      <div class="topPadding" fxLayout="row" fxLayoutAlign="center center" (click)="this.profileSettingsService.saveChanges()">
-         <div fxLayoutAlign="center center" id="saveBtnDiv">
-            <mat-icon id="pencil">save</mat-icon>
-            <div fxFlex="10%"></div>
-            <span id="modifierProfil">Sauvegarder</span>
-         </div>
-      </div>
-      <div class="topPadding" fxLayout="row" fxLayoutAlign="center center" (click)="onCancel()">
-        <div fxLayoutAlign="center center" id="saveBtnDiv">
-           <mat-icon>cancel</mat-icon>
-           <div fxFlex="10%"></div>
-           <span>Annuler</span>
+          </div>
         </div>
-     </div>
+        <div class="topPadding" fxLayout="row" fxLayoutAlign="center center">
+          <p *ngIf="this.profileSettingsService.isAvatarTooLarge" class="error">^ <u>L'avatar importé est trop
+              volumineux</u> ^</p>
+        </div>
 
-   </div>
+        <!-- Username settings -->
+        <div class="sectionTitleContainer" fxLayout="row" fxLayoutAlign="start center">
+          <mat-icon fxFlex="5%">person</mat-icon>
+          <span class="bold">Nom d'utilisateur</span>
+        </div>
+        <div id="usernameChangeDiv" fxLayout="row" fxLayoutAlign="space-evenly center">
+          <div fxLayout="column" fxLayoutAlign="center center">
+            <mat-form-field id="nameInput" class="animate__animated"
+              [ngClass]="{animate__headShake: this.profileSettingsService.isExistingUsername || !this.profileSettingsService.isValidUsername}"
+              appearance="outline">
+              <mat-label>Entrez un nouveau nom</mat-label>
+              <input matInput [(ngModel)]="this.profileSettingsService.newUsername">
+            </mat-form-field>
+            <p *ngIf="this.profileSettingsService.isExistingUsername" class="error">^ <u>Ce pseudonyme n'est pas
+                disponible</u> ^</p>
+            <p *ngIf="!this.profileSettingsService.isValidUsername" class="error">^ <u>Le pseudonyme doit être composé
+                de lettres et/ou de chiffres uniquement</u> ^</p>
+          </div>
+        </div>
+
+        <!-- Description settings -->
+        <div class="sectionTitleContainer" fxLayout="row" fxLayoutAlign="start center">
+          <mat-icon fxFlex="5%">email</mat-icon>
+          <span class="bold">Description</span>
+        </div>
+        <mat-form-field class="topPadding" appearance="outline">
+          <mat-label>Modifiez votre description!</mat-label>
+          <textarea id="descriptionInput" matInput [(ngModel)]="this.profileSettingsService.newDescription"></textarea>
+        </mat-form-field>
+
+        <!-- Sound settings -->
+        <div class="sectionTitleContainer" fxLayout="row" fxLayoutAlign="start center">
+          <mat-icon fxFlex="5%">library_music</mat-icon>
+          <span class="bold">Sons</span>
+        </div>
+        <div class="topPadding" fxLayout="row" fxLayoutAlign="center center">
+          <div fxLayout="column" fxLayoutAlign="center start">
+            <span>Effets sonores</span>
+            <mat-form-field class="soundField" appearance="outline">
+              <mat-select [(ngModel)]="this.soundEffectsService.isSoundEnabled">
+                <mat-option [value]="true">Activés</mat-option>
+                <mat-option [value]="false">Désactivés</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div fxFlex="20%"></div>
+          <div fxLayout="column" fxLayoutAlign="center start">
+            <span>Musique</span>
+            <mat-form-field class="soundField" appearance="outline">
+              <mat-select [(ngModel)]="this.soundEffectsService.songChoice"
+                (selectionChange)="this.soundEffectsService.startMusic()">
+                <mat-option [value]="0">Désactivé</mat-option>
+                <mat-option [value]="1">Lofi 1</mat-option>
+                <mat-option [value]="2">Lofi 2</mat-option>
+                <mat-option [value]="3">Minecraft</mat-option>
+                <mat-option [value]="4">Kahoot</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <!-- Sound settings -->
+        <div class="sectionTitleContainer" fxLayout="row" fxLayoutAlign="start center">
+          <mat-icon fxFlex="5%">chat</mat-icon>
+          <span class="bold">Clavardage</span>
+        </div>
+        <div class="topPadding" fxLayout="row" fxLayoutAlign="center center">
+          <div fxLayout="column" fxLayoutAlign="center start">
+            <span>Thème</span>
+            <mat-form-field class="soundField" appearance="outline">
+              <mat-select [value]="this.profileSettingsService.currentChatThemeId" (valueChange)="changeTheme($event)">
+                <mat-option [value]="0">Clair (défaut)</mat-option>
+                <mat-option [value]="1">Sombre</mat-option>
+                <mat-option [value]="2">Minecraft</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Confirmation btn -->
+    <div fxFlex="5"></div>
+
+    <div class="topPadding" fxLayout="row" fxLayoutAlign="center center"
+      (click)="this.profileSettingsService.saveChanges()">
+      <div fxLayoutAlign="center center" id="saveBtnDiv">
+        <mat-icon id="pencil">save</mat-icon>
+        <div fxFlex="10%"></div>
+        <span id="modifierProfil">Sauvegarder</span>
+      </div>
+    </div>
+    <div class="topPadding" fxLayout="row" fxLayoutAlign="center center" (click)="onCancel()">
+      <div fxLayoutAlign="center center" id="saveBtnDiv">
+        <mat-icon>cancel</mat-icon>
+        <div fxFlex="10%"></div>
+        <span>Annuler</span>
+      </div>
+    </div>
+
+  </div>
 </div>
-

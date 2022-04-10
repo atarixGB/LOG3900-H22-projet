@@ -13,6 +13,7 @@ import { AdvancedResearchService } from '@app/services/advanced-research/advance
   styleUrls: ['./chatroom-users-dialog.component.scss']
 })
 export class ChatroomUsersDialogComponent implements OnInit {
+  displayedRoomName: string;
   isPublicChatroom: boolean;
   usersInPublicChatroom: string[];
 
@@ -26,7 +27,7 @@ export class ChatroomUsersDialogComponent implements OnInit {
     private route: ActivatedRoute) {
     this.isPublicChatroom = this.chatService.currentRoom.roomName == PUBLIC_CHATROOM.name;
     this.usersInPublicChatroom = [];
-    console.log(this.isPublicChatroom)
+    this.displayedRoomName = this.data.roomName == PUBLIC_CHATROOM.name ? "Canal public" : this.data.roomName;
   }
 
   ngOnInit(): void {

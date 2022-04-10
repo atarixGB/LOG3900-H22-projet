@@ -99,7 +99,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_marginLeft="10dp"
-                android:text="Nom d'utilisateur"
+                android:text="Nom d'utilisateur*"
                 android:textColor="@android:color/background_dark"
                 android:textSize="18dp"
                 android:textStyle="bold" />
@@ -214,10 +214,10 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/buttonLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/bloc_profil"
-        android:layout_alignParentBottom="true"
         android:layout_centerVertical="true"
         android:layout_marginLeft="650dp"
         android:layout_marginTop="220dp"
@@ -339,6 +339,19 @@
         </LinearLayout>
 
     </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/buttonLayout"
+        android:layout_alignParentBottom="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="260dp"
+        android:layout_marginTop="40dp"
+        android:text="* Si vous changez votre nom d'utilisateur, vous n'aurez plus d'accès a tous les albums, dessins et canaux liés a ce nom"
+        android:textColor="@android:color/background_dark"
+        android:textSize="18dp"
+        android:textStyle="bold" />
 
 
 </RelativeLayout>

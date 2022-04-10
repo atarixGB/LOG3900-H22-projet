@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ProfileSettingsService } from '@app/services/profile/profile-settings.service';
 
 @Component({
   selector: 'app-menu',
@@ -6,9 +7,6 @@ import { Component } from '@angular/core';
   styleUrls: ['./menu.component.scss']
 })
 export class MenuComponent {
-  page: string;
 
-  constructor() { 
-    this.page = 'dashboard';
-  }
+  constructor(public profileSettingsService: ProfileSettingsService) {}
 }

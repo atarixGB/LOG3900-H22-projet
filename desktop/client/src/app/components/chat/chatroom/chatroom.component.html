@@ -1,14 +1,17 @@
-<div fxLayout="column" fxLayoutAlign="center stretch" fxFlex="100">
+<div id="custom-wrapper" fxLayout="column" fxLayoutAlign="center stretch" fxFlex="100">
 
   <div>
     <button mat-icon-button disableRipple="true" routerLink="/chatmenu">
-      <mat-icon id="back-btn">keyboard_arrow_left</mat-icon> Retour
+      <mat-icon id="back-btn">keyboard_arrow_left</mat-icon>
+      <span class="custom-font">
+        Retour
+      </span>
     </button>
   </div>
 
   <div class="center">
-    <h1> Conversation "{{this.chatService.currentRoom.roomName}}" </h1>
-    <h3>créée par <span class="username-link" (click)="this.getUserProfileInfos(this.chatService.currentRoom.identifier)">{{this.chatService.currentRoom.identifier}}</span></h3>
+    <h1 class="custom-font"> Conversation "{{ this.displayedRoomName }}" </h1>
+    <h3 class="custom-font">créée par <span class="username-link" (click)="this.getUserProfileInfos(this.chatService.currentRoom.identifier)">{{this.chatService.currentRoom.identifier}}</span></h3>
   </div>
 
   <!-- Encadré du chat -->
@@ -19,9 +22,9 @@
       <div id="more-vert-btn">
         <button mat-button matIcon [matMenuTriggerFor]="menu" #menuTrigger><mat-icon>more_vert</mat-icon></button>
         <mat-menu #menu="matMenu">
-          <button mat-menu-item (click)="viewUsers()">Voir la liste des membres présents</button>
-          <button mat-menu-item (click)="leaveChatroom()" *ngIf="!this.isCurrentChatroomMine && !this.isPublicChatroom">Quitter la conversation</button>
-          <button mat-menu-item (click)="deleteChatroom()" *ngIf="this.isCurrentChatroomMine && !this.isPublicChatroom">Supprimer la conversation</button>
+          <button mat-menu-item (click)="viewUsers()"><span class="custom-font">Voir la liste des membres présents</span></button>
+          <button mat-menu-item (click)="leaveChatroom()" *ngIf="!this.isCurrentChatroomMine && !this.isPublicChatroom"><span class="custom-font">Quitter la conversation</span></button>
+          <button mat-menu-item (click)="deleteChatroom()" *ngIf="this.isCurrentChatroomMine && !this.isPublicChatroom"><span class="custom-font">Supprimer la conversation</span></button>
         </mat-menu>
 
       </div>
@@ -42,10 +45,12 @@
                 <div fxFlex="47" fxLayout="column" fxLayoutAlign="center end">
 
                   <div class="username">
-                    <span class="username-link" (click)="this.getUserProfileInfos(message.userName)">{{message.userName}}</span> - <span class="timestamp">{{ this.timestamp }}</span>
+                    <span class="username-link custom-font" (click)="this.getUserProfileInfos(message.userName)">{{message.userName}}</span> - <span class="timestamp">{{ this.timestamp }}</span>
                   </div>
-                  <div class="message mine">
-                    {{message.message}}
+                  <div id="custom-msg-mine" class="message mine">
+                    <span class="custom-font">
+                      {{message.message}}
+                    </span>
                   </div>
 
                 </div>
@@ -58,10 +63,12 @@
                 <div fxFlex="47" fxLayout="column" fxLayoutAlign="center start">
 
                   <div class="username">
-                    <span class="username-link" (click)="this.getUserProfileInfos(message.userName)">{{message.userName}}</span> - <span class="timestamp">{{ this.timestamp }}</span>
+                    <span class="username-link custom-font" (click)="this.getUserProfileInfos(message.userName)">{{message.userName}}</span> - <span class="timestamp">{{ this.timestamp }}</span>
                   </div>
-                  <div class="message yours">
-                    {{message.message}}
+                  <div id="custom-msg-yours" class="message yours">
+                    <span class="custom-font">
+                      {{message.message}}
+                    </span>
                   </div>
 
                 </div>
@@ -77,9 +84,9 @@
         <!-- Input et Boutton -->
         <div id="user-input-wrapper" fxLayout="row" fxLayoutAlign="center stretch">
           <div fxFlex="5"></div>
-          <input id="msgInput" class="bordered" fxFlex="70" matInput placeholder="Écris ton message ici!" type="text"
+          <input id="msgInput" class="bordered custom-font" fxFlex="70" matInput placeholder="Écris ton message ici!" type="text"
             [(ngModel)]="this.message">
-          <button fxFlex="20" mat-raised-button color="primary" (click)="sendMessage()">Envoyer</button>
+          <button fxFlex="20" mat-raised-button color="primary" (click)="sendMessage()"><span class="custom-font">Envoyer</span></button>
           <div fxFlex="5"></div>
         </div>
 

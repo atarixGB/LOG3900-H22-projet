@@ -14,7 +14,7 @@ data class IEllipseStroke (
     override var currentStrokeWidth: Float,
     override var isSelected: Boolean,
     var center: IVec2,
-    val radius: IVec2):Stroke(boundingPoints,currentStrokeColor,currentStrokeWidth, isSelected,
+    var radius: IVec2):Stroke(boundingPoints,currentStrokeColor,currentStrokeWidth, isSelected,
     ToolbarFragment.MenuItem.OVAL) {
 
     override fun drawStroke(canvas: Canvas) {
@@ -44,11 +44,12 @@ data class IEllipseStroke (
     }
 
     override fun updateMove(pos: IVec2) {
-        center = IVec2(center.x + pos.x, center.y +pos.y)
+        center = IVec2(center.x + pos.x - boundingPoints[0].x, center.y + pos.y - boundingPoints[0].y)
     }
 
     override fun rescale(scale: IVec2) {
-        TODO("Not yet implemented")
+        center = IVec2( center.x * scale.x, center.y * scale.y )
+        radius = IVec2( radius.x * scale.x, radius.y * scale.y )
     }
 
     override fun convertToObject(): JSONObject {
@@ -79,9 +80,4 @@ data class IEllipseStroke (
 
         return jo
     }
-//
-//    override fun moveStroke(newPosition: IVec2) {
-//        TODO("Not yet implemented")
-//    }
-
 }
