@@ -52,6 +52,12 @@
         <h1><u>{{this.albumGalleryService.currentAlbum.name }}</u></h1>
       </div>
     </div>
+
+    <!-- Date de creation -->
+    <div fxFlex="5%" fxLayout="row" fxLayoutAlign="center center">
+      <h3>Date de création:&nbsp;{{ this.albumGalleryService.currentAlbum.creationDate != undefined ? this.albumGalleryService.currentAlbum.creationDate : "n/d" }}</h3>
+    </div>
+
     <div *ngIf="!this.isPublicAlbum" fxLayout="row" fxLayoutAlign="center">
       Propriétaire:&nbsp;<span class="username"
         (click)="this.getUserProfileInfos(this.albumGalleryService.currentAlbum.owner)">{{this.albumGalleryService.currentAlbum.owner}}</span>
@@ -98,6 +104,9 @@
               <mat-card-content>
                 <p>
                   Propriétaire: <span class="username" (click)="this.getUserProfileInfos(drawing.owner)">{{drawing.owner}}</span>
+                </p>
+                <p>
+                  Date de création: <span class="creationDate">{{drawing.creationDate}}</span>
                 </p>
               </mat-card-content>
 

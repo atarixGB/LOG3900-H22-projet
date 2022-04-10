@@ -45,8 +45,6 @@ export class CreateDrawingDialogComponent implements OnInit {
   }
 
   createDrawingButton(): void {
-    console.log("createDrawingButton\n",this.name, this.albumGalleryService.selectedAlbumName, this.albumGalleryService.selectedAlbumId);
-
     if (this.isValidInput(this.name)) {
       this.albumGalleryService.createDrawing(this.name);
       this.currentDialogRef.close();
@@ -65,7 +63,6 @@ export class CreateDrawingDialogComponent implements OnInit {
   private isValidInput(str: string): boolean {
     this.isEmpty = (str === null || str.match(/^ *$/) !== null);
     this.isValidLength = str.length <= NAME_MAX_LENGTH;
-    console.log(this.isEmpty, this.isValidLength);
     return !this.isEmpty && this.isValidLength;
 }
 

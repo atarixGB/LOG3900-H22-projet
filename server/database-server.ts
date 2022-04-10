@@ -211,12 +211,7 @@ mongoClient.connect(process.env.POLYGRAM_APP_DATABASE_URL, { useNewUrlParser: tr
 
       if (typeof usersList === 'string' || usersList instanceof String) {
         usersList = [post_data.usersList];
-        console.log("apress", request.body.usersList);
       }
-
-      console.log("USER", identifier);
-      console.log("ROOM NAME", roomName);
-      console.log("USERS LIST", usersList);
 
       var insertJson = {
         identifier: identifier,
@@ -252,7 +247,7 @@ mongoClient.connect(process.env.POLYGRAM_APP_DATABASE_URL, { useNewUrlParser: tr
             response.status(400).send("Error fetching rooms");
           } else {
             response.json(result)
-            console.log(result, "add succes");
+            console.log("add succes");
           }
         });
     });
@@ -361,7 +356,6 @@ mongoClient.connect(process.env.POLYGRAM_APP_DATABASE_URL, { useNewUrlParser: tr
     app.get("/chat/users", (request, response) => {
       DB.collection("users").aggregate([{ $project: { identifier: 1 } }]).toArray((err, res) => {
         if (err) throw err;
-        console.log(res.length)
         response.json(res);
       })
     })
@@ -384,7 +378,7 @@ mongoClient.connect(process.env.POLYGRAM_APP_DATABASE_URL, { useNewUrlParser: tr
     app.get("/getDrawingParameters/:drawingId", (request, response, next) => {
 
       var post_data = request.params;
-      var drawingId = post_data.drawingId.replaceAll(/"/g, ''); //? pour enlever les "" 
+      var drawingId = post_data.drawingId.replace(/"/g, ''); //? pour enlever les "" 
 
       DB.collection("drawings")
         .findOne({ _id: mongoose.Types.ObjectId(drawingId) }, function (err, result) {
@@ -404,8 +398,6 @@ mongoClient.connect(process.env.POLYGRAM_APP_DATABASE_URL, { useNewUrlParser: tr
 
       var user = request.params.user.replace(/"/g, '');
       // var user = request.params.user.replaceAll(/"/g, '');
-
-      console.log(user);
 
       DB.collection("drawings")
 
@@ -430,7 +422,6 @@ mongoClient.connect(process.env.POLYGRAM_APP_DATABASE_URL, { useNewUrlParser: tr
       let drawingId = request.params.drawingId;
       let drawingName = request.body.name;
       let owner = request.body.owner;
-      console.log(`DRAWING NAME:${drawingName}\nOWNER:${owner}`);
 
       DB.collection("drawings").findOneAndUpdate({ _id: mongoose.Types.ObjectId(drawingId) }, { $set: { data: `${drawingId}.png` } }, { returnDocument: 'after' }, (err, res) => {
         response.json("Metadata sauvegardé")
@@ -464,7 +455,6 @@ mongoClient.connect(process.env.POLYGRAM_APP_DATABASE_URL, { useNewUrlParser: tr
     .findOne({ _id: mongoose.Types.ObjectId(req.params.drawingId.replace(/"/g, '')) }, function (err, result) {
       if (err) throw err
 
-      if (result != null) {
         const file = result.data;
         if (fs.existsSync(__dirname + "/uploads/" + file, {encoding: 'base64'})) {
           var img = fs.readFileSync(__dirname + "/uploads/" + file, {encoding: 'base64'});
@@ -483,10 +473,6 @@ mongoClient.connect(process.env.POLYGRAM_APP_DATABASE_URL, { useNewUrlParser: tr
         } else{
           console.log(`File ${file} does not exist on server`);
         }
-      }
-
-
-
 
     });
   });
@@ -533,9 +519,7 @@ mongoClient.connect(process.env.POLYGRAM_APP_DATABASE_URL, { useNewUrlParser: tr
       let username = request.params.username;
       DB.collection("drawings").find({ likes: { $all: [username] } }).toArray(function (error, result) {
         if (error) throw error;
-
         response.json(result);
-        console.log(result)
       })
     })
 
@@ -548,7 +532,6 @@ mongoClient.connect(process.env.POLYGRAM_APP_DATABASE_URL, { useNewUrlParser: tr
 
           result.sort((a, b) => a.likes.length < b.likes.length ? 1 : a.likes.length > b.likes.length ? -1 : 0);
           response.json(result);
-          console.log(result)
         })
     })
 
@@ -562,7 +545,7 @@ mongoClient.connect(process.env.POLYGRAM_APP_DATABASE_URL, { useNewUrlParser: tr
     //delete drawing with specific id from collection
     app.delete("/drawing/delete/:id", (request, response, next) => {
       let drawingId = request.params.id;
-      console.log("DRAWING ID", drawingId)
+
       // Remove drawing from collection 'drawings'
       DB.collection("drawings").findOneAndDelete({ _id: mongoose.Types.ObjectId(drawingId) }, (err, res) => {
 
@@ -582,7 +565,6 @@ mongoClient.connect(process.env.POLYGRAM_APP_DATABASE_URL, { useNewUrlParser: tr
       var post_data = request.body;
       var drawingID = post_data.drawingID
       var newDrawingName = post_data.newDrawingName;
-      console.log(newDrawingName);
 
       DB.collection("drawings").findOneAndUpdate({ _id: mongoose.Types.ObjectId(drawingID) }, { $set: { "name": newDrawingName } }, { returnDocument: 'after' }, (err, res) => {
         response.json(201)
@@ -676,7 +658,7 @@ mongoClient.connect(process.env.POLYGRAM_APP_DATABASE_URL, { useNewUrlParser: tr
     app.put("/albums/sendRequest/:albumName", (request, response, next) => {
       let albumName = request.params.albumName;
       let usertoAdd = request.body.identifier;
-      console.log("USER TO ADD", usertoAdd);
+
       DB.collection("albums").find({ name: albumName }).toArray(function (err, res) {
         console.log(res[0].membershipRequests);
         if (res[0].membershipRequests != undefined && res[0].membershipRequests.includes(usertoAdd)) {
@@ -720,7 +702,7 @@ mongoClient.connect(process.env.POLYGRAM_APP_DATABASE_URL, { useNewUrlParser: tr
         let albumOwner = res.value.owner
         res.value.drawingIDs.forEach(element => {
           DB.collection("drawings").findOneAndUpdate({ _id: mongoose.Types.ObjectId(element.replaceAll(/"/g, '')), owner: memberToRemove }, { $set: { owner: albumOwner } }, { returnDocument: 'after' }, (err, res) => {
-            //console.log(albumOwner, "is the new owner of", res.value.name);
+            console.log(albumOwner, "is the new owner of", res.value.name);
           });
         });
         console.log(memberToRemove, "has left album ", albumId);
@@ -767,8 +749,6 @@ mongoClient.connect(process.env.POLYGRAM_APP_DATABASE_URL, { useNewUrlParser: tr
 
       var post_data = request.query;
       var albumName = post_data.albumName;
-
-      console.log(albumName);
 
       DB.collection("albums")
         .findOne({ name: albumName }, function (err, result) {
@@ -942,7 +922,7 @@ mongoClient.connect(process.env.POLYGRAM_APP_DATABASE_URL, { useNewUrlParser: tr
 
       DB.collection("drawings").find({ owner: username }).toArray((error, result) => {
         if (error) throw error;
-        console.log(result);
+
         const totalNbrOfDrawingsCreated = result.length;
         response.json(totalNbrOfDrawingsCreated)
       })
@@ -970,7 +950,6 @@ mongoClient.connect(process.env.POLYGRAM_APP_DATABASE_URL, { useNewUrlParser: tr
 
       DB.collection("albums").find({ owner: username }).toArray((error, result) => {
         if (error) throw error;
-        console.log(result);
         const totalNbrOfAlbumsCreated = result.length;
         response.json(totalNbrOfAlbumsCreated);
       })
@@ -998,7 +977,6 @@ mongoClient.connect(process.env.POLYGRAM_APP_DATABASE_URL, { useNewUrlParser: tr
 
       DB.collection("albums").find({ owner: username }).toArray((error, result) => {
         if (error) throw error;
-        console.log(result);
         const totalNbrOfAlbumsCreated = result.length;
         response.json(totalNbrOfAlbumsCreated);
       })
@@ -1033,7 +1011,6 @@ mongoClient.connect(process.env.POLYGRAM_APP_DATABASE_URL, { useNewUrlParser: tr
 
         if (result) {
           uniqueCode = generateUniqueCode();
-          console.log("Generated code", uniqueCode)
 
           sendEmail(result.email, uniqueCode)
             .then(() => { console.log(`Email sent to ${result.email}`) })
@@ -1069,7 +1046,6 @@ mongoClient.connect(process.env.POLYGRAM_APP_DATABASE_URL, { useNewUrlParser: tr
         const hashData = salHashPassword(newPassword);
         const hashPassword = hashData.passwordHash;
         const salt = hashData.salt;
-        console.log(hashPassword, salt);
         DB.collection("users").update({ email: email }, { $set: { password: hashPassword, salt: salt } }, ((error, result) => {
           if (error) throw err;
           if (result) {
@@ -1116,7 +1092,6 @@ let saveImageAsPNG = function (imageData, drawingId, filepath) {
   console.log("Image succesfully saved in the server as PNG")
   const metadata = imageData.replace(/^data:image\/\w+;base64,/, '');
   const dataBuffer = Buffer.from(metadata, "base64");
-  console.log("Data buffer:", dataBuffer)
   fs.writeFile(`${filepath}/${drawingId}.png`, dataBuffer, (error) => {
     if (error) throw error;
   });
@@ -1176,7 +1151,7 @@ async function sendEmail(email, uniqueCode) {
 
   await transporter.sendMail(messageWithCode, (error, result) => {
     if (error) throw error;
-    console.log(result);
+
   });
 }
 
