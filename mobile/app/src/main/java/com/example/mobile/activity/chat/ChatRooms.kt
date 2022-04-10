@@ -149,7 +149,8 @@ class ChatRooms : AppCompatActivity(), CreateRoomPopUp.DialogListener, RoomAdapt
                 val time = messageData.get("time") as String
                 val room = messageData.get("room") as String
                 val msg = IMessage(message, user, time, room, false)
-                if (room != openedChatPageName) {
+                val page = this.openedChatPageName
+                if (room != this.openedChatPageName && msg.user != this.user ) {
                     mediaPlayerReceiveSuccess.start()
                     saveInFile(msg)
                     colorMessageRoom(messageData, user)
