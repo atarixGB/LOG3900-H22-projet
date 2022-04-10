@@ -1,7 +1,15 @@
 mat-label {
-   color: rgb(247, 247, 247);
+   color: rgb(0, 0, 0);
 }
 
 ::ng-deep .white .mat-select-value {
    color: rgb(247, 247, 247);
+}
+
+#angle {
+   margin-top: 20px;
+}
+
+#scale {
+   margin-top: 20px;
 }

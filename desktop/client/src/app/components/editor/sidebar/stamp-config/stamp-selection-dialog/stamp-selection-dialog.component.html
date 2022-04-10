@@ -1,1 +1,27 @@
-<p>stamp-selection-dialog works!</p>
+<div fxLayout="row" fxLayoutAlign="center stretch" fxFlex="100">
+
+   <div fxLayout="column" fxLayoutAlign="start stretch" fxFlex="auto">
+     <div fxFlex="5%"></div>
+     <div fxLayout="row" fxLayoutAlign="center center">
+        <h1 id="title">Sélectionnez un de vos dessins</h1>
+     </div>
+
+     <div class="content">
+       <div fxLayout="row wrap" fxLayoutGap="16px grid">
+         <div class="drawing" fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%" *ngFor="let drawing of this.drawings" (click)="this.setStamp(drawing)">
+           <mat-card class="mat-elevation-z4">
+
+           <mat-card-header>
+             <mat-card-title>{{drawing.name}}</mat-card-title>
+           </mat-card-header>
+
+           <img height="150px" src="data:image/png;base64,{{ drawing.data }}">
+
+           </mat-card>
+         </div>
+       </div>
+     </div>
+   </div>
+ 
+ </div>
+ 

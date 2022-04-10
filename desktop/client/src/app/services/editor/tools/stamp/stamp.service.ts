@@ -2,14 +2,14 @@ import { Injectable } from '@angular/core';
 import { Tool } from '@app/classes/tool';
 import { Vec2 } from '@app/classes/vec2';
 import { MOST_LIKED } from '@app/constants/badges';
-import { MouseButton } from '@app/constants/constants';
+import { CNV_HEIGTH, MouseButton } from '@app/constants/constants';
 import { DrawingService } from '@app/services/editor/drawing/drawing.service';
 import { Subject } from 'rxjs';
 
 const SCALE_FACTOR_STAMP = 1;
 const ROTATION_STEP_STAMP = 15;
 const MAX_ANGLE = 360;
-const SIZE_STAMP = 24;
+const SIZE_STAMP = CNV_HEIGTH / 10;
 @Injectable({
     providedIn: 'root',
 })
@@ -17,28 +17,24 @@ export class StampService extends Tool {
     isEnabled: boolean;
 
     imageCoords: Vec2;
-    currentStamp: string;
     img: HTMLImageElement;
     size: number;
     resizeFactor: number;
     color: string;
     angle: number;
-    isKeyAltDown: boolean;
     mouseEvent: MouseEvent;
-
-    srcBinding: Map<string, string>;
 
     private angleObservable: Subject<number> = new Subject<number>();
 
     constructor(drawingService: DrawingService) {
         super(drawingService);
-        this.img = new Image(this.size, this.size);
+        this.img = new Image(SIZE_STAMP, SIZE_STAMP);
         this.img.src = MOST_LIKED;
 
         this.size = SIZE_STAMP;
         this.angle = 0;
         this.resizeFactor = SCALE_FACTOR_STAMP;
-        this.isEnabled = false;
+        this.isEnabled = true;
     }
 
     onMouseDown(event: MouseEvent): void {
@@ -50,7 +46,6 @@ export class StampService extends Tool {
     }
 
     onMouseMove(event: MouseEvent): void {
-        this.mouseEvent = event;
         this.imageCoords = this.getPositionFromMouse(event);
         this.drawingService.clearCanvas(this.drawingService.previewCtx);
         this.previewCursor(this.getPositionFromMouse(event));
