@@ -940,8 +940,35 @@ mongoClient.connect(process.env.POLYGRAM_APP_DATABASE_URL, { useNewUrlParser: tr
         { $inc: { collaborationCount: 1, totalCollaborationTime: secondsSpentInCollab } }, { returnDocument: 'after' }, (err, res) => {
           response.json(201)
           console.log(`Updated collab stats for ${identifier}`);
+          console.log(secondsSpentInCollab);
         })
     });
+
+        // pour leger : Update collab stats incremente seulement le nombre de collab
+        app.put("/profile/stats/collabs/updateCollabCount/:username", (request, response, next) => {
+          const identifier = request.params.username;
+          
+    
+          DB.collection("users").findOneAndUpdate({ identifier: identifier },
+            { $inc: { collaborationCount: 1 } }, { returnDocument: 'after' }, (err, res) => {
+              response.json(201)
+              console.log(`Updated collab stats for ${identifier}`);
+            })
+        });
+
+        // pour leger : Update collab stats incremente seulement les secondes de collab
+        app.put("/profile/stats/collabs/updateCollabDuration/:username", (request, response, next) => {
+          const identifier = request.params.username;
+          const secondsSpentInCollab = request.body.secondsSpentInCollab;
+          
+    
+          DB.collection("users").findOneAndUpdate({ identifier: identifier },
+            { $inc: {totalCollaborationTime: secondsSpentInCollab } }, { returnDocument: 'after' }, (err, res) => {
+              response.json(201)
+              console.log(`Updated collab stats for ${identifier}`);
+              console.log(secondsSpentInCollab);
+            })
+        });
 
     // Get the total number of drawings created by username 
     app.get("/profile/stats/drawings/:username", (request, response) => {

@@ -98,6 +98,9 @@ class Profile : AppCompatActivity() {
         getNbLikes(user)
         getNbDrawings(user)
         getNbAlbumsCreated(user)
+        getNbCollab(user)
+        getAvgCollabDuration(user)
+        getTotalDurationCollab(user)
 
     }
 
@@ -188,9 +191,9 @@ class Profile : AppCompatActivity() {
             override fun onResponse(call: Call<Any>, response: Response<Any>) {
 
                 if(response.body()!=null){
-                    totalNbCollab= response.body() as Double
+                    var totalNbCollab= response.body()
 
-                    nbCollaboration.setText(totalNbCollab.toInt().toString())
+                    nbCollaboration.setText(totalNbCollab.toString())
                 }
                 else {
                     nbCollaboration.setText("0")
@@ -209,9 +212,9 @@ class Profile : AppCompatActivity() {
             override fun onResponse(call: Call<Any>, response: Response<Any>) {
 
                 if(response.body()!=null){
-                    avgDurationCollab= response.body() as Double
+                    var avgDurationCollab= response.body()
 
-                    avgCollabTime.setText(avgDurationCollab.toInt().toString())
+                    avgCollabTime.setText(avgDurationCollab.toString())
                 }
                 else {
                     avgCollabTime.setText("0")
@@ -230,9 +233,9 @@ class Profile : AppCompatActivity() {
             override fun onResponse(call: Call<Any>, response: Response<Any>) {
 
                 if(response.body()!=null){
-                    totalDurationCollab= response.body() as Double
+                    var totalDurationCollab= response.body()
 
-                    totalCollabTime.setText(totalDurationCollab.toInt().toString())
+                    totalCollabTime.setText(totalDurationCollab.toString())
                 }
                 else {
                     totalCollabTime.setText("0")

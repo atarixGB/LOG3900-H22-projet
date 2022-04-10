@@ -21,6 +21,7 @@ import org.json.JSONObject
 class DrawingActivity : AppCompatActivity(), CreateDrawingPopUp.DialogListener, AlbumAdapter.AlbumAdapterListener {
     private lateinit var user: String
     private lateinit var collabDrawingId: String
+    private  var collabStartTime:Long=0
     private lateinit var jsonString: ArrayList<String>
     private var isAlbumAlreadySelected: Boolean = false
     private lateinit var albumName: String
@@ -51,9 +52,13 @@ class DrawingActivity : AppCompatActivity(), CreateDrawingPopUp.DialogListener, 
 
         //collaboration
         collabDrawingId = intent.getStringExtra("drawingCollabId").toString()
+        collabStartTime=intent.getLongExtra("collabStartTime",collabStartTime)
+
+
 //        jsonString = intent.getStringArrayExtra("jsonString").toString()
 
         sharedViewModelToolBar.setUser(user)
+        sharedViewModelToolBar.setCollabStartTime(collabStartTime)
 
         if(!ISDRAFT){
             if (collabDrawingId == "null") {

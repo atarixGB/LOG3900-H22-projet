@@ -66,6 +66,7 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
     private lateinit var userNameAccepted: String
     private lateinit var dialogAcceptMembershipRequest: AcceptMembershipRequestsPopUp
     private lateinit var dialogEditAlbumAttributes: AlbumAttributeModificationPopUp
+    private var collabStartTime:Long =0
 
     private val sharedViewModelToolBar: SharedViewModelToolBar by viewModels()
     private val sharedViewModelCreateDrawingPopUp: SharedViewModelCreateDrawingPopUp by viewModels()
@@ -265,6 +266,7 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
           roomName: roomName,
           strokes: infoOnActiveRooms.get(roomName).strokes,
         };*/
+        collabStartTime= Date().time
         val collabData = it[0] as JSONObject
         val drawingId = collabData["roomName"] as String
 
@@ -282,6 +284,7 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
         var bundle: Bundle = Bundle()
         bundle.putStringArrayList("jsonString", jsonStrings)
         intent.putExtra("userName", user)
+        intent.putExtra("collabStartTime",collabStartTime)
         intent.putExtra("drawingCollabId", drawingId)
         intent.putExtras(bundle)
         startActivity(intent)

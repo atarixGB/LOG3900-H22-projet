@@ -18,14 +18,20 @@ import androidx.fragment.app.activityViewModels
 import com.example.mobile.ISDRAFT
 import com.example.mobile.R
 import com.example.mobile.REQUEST_IMAGE_CAMERA
+import com.example.mobile.Retrofit.IMyService
+import com.example.mobile.Retrofit.RetrofitClient
 import com.example.mobile.Tools.ToolAdapter
 import com.example.mobile.Tools.ToolItem
 import com.example.mobile.activity.Dashboard
 import com.example.mobile.activity.albums.Albums
 import com.example.mobile.viewModel.SharedViewModelToolBar
 import com.example.mobile.viewModel.ToolModel
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_registration.*
 import kotlinx.android.synthetic.main.fragment_toolbar.*
+import org.json.JSONObject
 import java.io.File
 import java.io.IOException
 import java.util.*
@@ -34,6 +40,9 @@ import kotlin.collections.ArrayList
 
 class ToolbarFragment : Fragment(), AdapterView.OnItemClickListener {
 
+    private lateinit var iMyService: IMyService
+    internal var compositeDisposable = CompositeDisposable()
+    private var collabStartTime:Long =0
     private var gridView: GridView? = null
     private var arrayList:ArrayList<ToolItem> ? = null
     private var toolAdapter: ToolAdapter? = null
@@ -78,9 +87,21 @@ class ToolbarFragment : Fragment(), AdapterView.OnItemClickListener {
         gridView?.onItemClickListener = this
 
 
+        val retrofit = RetrofitClient.getInstance()
+        iMyService = retrofit.create(IMyService::class.java)
 
+        sharedViewModel.drawingId.observe(viewLifecycleOwner) {
+            drawingId = it
+        }
+
+        sharedViewModel.collabDrawingId.observe(viewLifecycleOwner) {
+            drawingId = it
+        }
         sharedViewModel.user.observe(viewLifecycleOwner) {
             user = it
+        }
+        sharedViewModel.collabStartTime.observe(viewLifecycleOwner) {
+            collabStartTime= it
         }
 
         if (!ISDRAFT){
@@ -95,10 +116,22 @@ class ToolbarFragment : Fragment(), AdapterView.OnItemClickListener {
 
             backBtn.setOnClickListener {
                 //enregistrer avant de quitter
+                //tell server we leavin
+                var roomData = JSONObject()
+                roomData.put("room", drawingId)
+                roomData.put("username", user)
+                DrawingSocket.socket.emit("leaveCollab", roomData)
+
+                //time when we are leaving the collab
+                var leavingTime=Date().time
+
                 toolChange.onClick()
                 val intent = Intent(activity, Albums::class.java)
                 intent.putExtra("userName", user)
                 startActivity(intent)
+
+                updateCollabStat(user,leavingTime)
+                updateCollabCountStat(user)
             }
         }
         else{
@@ -166,20 +199,20 @@ class ToolbarFragment : Fragment(), AdapterView.OnItemClickListener {
 //        }
 //    }
 
-    @Throws(IOException::class)
-    private fun createImageFile(): File {
-        // Create an image file name
-        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
-        val storageDir: File? = context?.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-        return File.createTempFile(
-            "JPEG_${timeStamp}_", /* prefix */
-            ".jpg", /* suffix */
-            storageDir /* directory */
-        ).apply {
-            // Save a file: path for use with ACTION_VIEW intents
-            currentPhotoPath = absolutePath
-        }
-    }
+//    @Throws(IOException::class)
+//    private fun createImageFile(): File {
+//        // Create an image file name
+//        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+//        val storageDir: File? = context?.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+//        return File.createTempFile(
+//            "JPEG_${timeStamp}_", /* prefix */
+//            ".jpg", /* suffix */
+//            storageDir /* directory */
+//        ).apply {
+//            // Save a file: path for use with ACTION_VIEW intents
+//            currentPhotoPath = absolutePath
+//        }
+//    }
     private fun setDataList():ArrayList<ToolItem>{
         val arrayList:ArrayList<ToolItem> = ArrayList()
         arrayList.add(ToolItem(R.drawable.pencil_clicked))
@@ -212,5 +245,41 @@ class ToolbarFragment : Fragment(), AdapterView.OnItemClickListener {
 
         }
         toolAdapter!!.notifyDataSetChanged()
+    }
+
+    fun updateCollabStat(username:String, leavingTime:Long){
+        var secondsSpentInCollab = Math.round(((leavingTime-collabStartTime)/1000).toDouble())
+        compositeDisposable.add(iMyService.updateCollabDurationStat(username, secondsSpentInCollab)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { result ->
+                if (result == "201") {
+                    Toast.makeText(
+                        context,
+                        "les données de collaboration ont été mis à jour avec succès",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    Toast.makeText(context, "erreur", Toast.LENGTH_SHORT).show()
+                }
+            })
+    }
+
+    fun updateCollabCountStat(username:String){
+
+        compositeDisposable.add(iMyService.updateCollabCountStat(username)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { result ->
+                if (result == "201") {
+                    Toast.makeText(
+                        context,
+                        "les données de collaboration ont été mis à jour avec succès",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    Toast.makeText(context, "erreur", Toast.LENGTH_SHORT).show()
+                }
+            })
     }
 }
