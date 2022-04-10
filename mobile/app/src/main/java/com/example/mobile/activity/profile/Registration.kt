@@ -5,25 +5,22 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.ActivityOptions
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
-import android.location.Geocoder
-import android.location.Location
 import android.media.MediaPlayer
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
+import android.text.TextUtils
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.util.Base64
+import android.util.Patterns
 import android.view.animation.AnimationUtils
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.example.mobile.R
 import com.example.mobile.REQUEST_IMAGE_CAMERA
@@ -37,6 +34,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_registration.*
 import java.io.ByteArrayOutputStream
+
 
 class Registration : AppCompatActivity(), SelectAvatarPopUp.DialogListener {
     private lateinit var iMyService: IMyService
@@ -123,7 +121,7 @@ class Registration : AppCompatActivity(), SelectAvatarPopUp.DialogListener {
 
         registerAccountBtn.setOnClickListener {
             var mediaPlayerFail:MediaPlayer=MediaPlayer.create(this,R.raw.failure)
-            if(!identifiant.text.toString().isNullOrBlank() && !pwd.text.toString().isNullOrBlank() && !email.text.toString().isNullOrBlank()){
+            if(!identifiant.text.toString().isNullOrBlank() && !pwd.text.toString().isNullOrBlank() && !email.text.toString().isNullOrBlank() && isValidEmail(email.text.toString())){
                 idEmptyError.isVisible=false
                 mdpEmptyError.isVisible=false
                 emailEmptyError.isVisible=false
@@ -138,6 +136,9 @@ class Registration : AppCompatActivity(), SelectAvatarPopUp.DialogListener {
                 email.animation=AnimationUtils.loadAnimation(this,R.anim.shake_animation)
                 mediaPlayerFail.start()
             }
+            else if(!isValidEmail(email.text.toString())){
+                Toast.makeText(this, "Email invalide ! ", Toast.LENGTH_SHORT).show()
+            }
 
         }
 
@@ -147,6 +148,14 @@ class Registration : AppCompatActivity(), SelectAvatarPopUp.DialogListener {
             startActivity(intent,bundle)
         }
 
+    }
+
+    fun isValidEmail(target: CharSequence?): Boolean {
+        return if (TextUtils.isEmpty(target)) {
+            false
+        } else {
+            Patterns.EMAIL_ADDRESS.matcher(target).matches()
+        }
     }
 
     @SuppressLint("MissingPermission")
