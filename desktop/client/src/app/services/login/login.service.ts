@@ -5,7 +5,6 @@ import { ProfileService } from '../profile/profile.service';
 import { LOGIN_URL } from '@app/constants/api-urls';
 import { SoundEffectsService } from '../sound-effects/sound-effects.service';
 import { CollaborationService } from '../collaboration/collaboration.service';
-import { ProfileSettingsService } from '../profile/profile-settings.service';
 
 @Injectable({
     providedIn: 'root',
@@ -25,8 +24,7 @@ export class LoginService {
       private route: ActivatedRoute,
       private profileService: ProfileService,
       private soundEffectsService: SoundEffectsService,
-      private collaborationService: CollaborationService,
-      private profileServiceSettings: ProfileSettingsService) {
+      private collaborationService: CollaborationService) {
         this.email = '';
         this.password = '';
     }
@@ -69,7 +67,6 @@ export class LoginService {
                 this.username = result.toString();
                 window.localStorage.setItem("username", this.username);
                 this.profileService.setUsername(this.username);
-                this.profileServiceSettings.getChatThemeId();
             },
             (error) => {
                 console.log('Error: ', error);

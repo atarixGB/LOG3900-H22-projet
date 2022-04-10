@@ -32,10 +32,10 @@ export const DEFAULT_THEME: IChatTheme = {
   opacityMainContainer: "none",
   opacitySecondContainer: "none",
   borderColor: "none",
-  messageColorMine: "rgb(255, 184, 51)", // Orange
-  messageBackgroundMine: "blue",
-  messageColorYours: "white",
-  messageBackgroundYours: "rgb(82, 188, 250)" // Blue
+  messageColorMine: "black", // Orange
+  messageBackgroundMine: "rgb(255, 184, 51)",
+  messageColorYours: "rgb(82, 188, 250)",
+  messageBackgroundYours: "white" // Blue
 }
 
 export const DARK_THEME: IChatTheme = {
@@ -52,7 +52,7 @@ export const DARK_THEME: IChatTheme = {
   messageColorMine: "black",
   messageBackgroundMine: "white",
   messageColorYours: "black",
-  messageBackgroundYours: "#d6d6d6"
+  messageBackgroundYours: "#d6d6d6" // light grey
 }
 
 export const MINECRAFT_THEME: IChatTheme = {

@@ -14,7 +14,6 @@ import { PUBLIC_CHATROOM } from '@app/constants/constants';
 import { ChatTheme, DARK_THEME, DEFAULT_THEME, IChatTheme, MINECRAFT_THEME } from '@app/constants/chat-themes';
 import { ProfileSettingsService } from '@app/services/profile/profile-settings.service';
 import { LoginService } from '@app/services/login/login.service';
-
 @Component({
   selector: 'app-chatroom',
   templateUrl: './chatroom.component.html',
@@ -52,11 +51,11 @@ export class ChatroomComponent implements AfterViewInit {
     this.isCurrentChatroomMine = this.chatService.currentRoom.identifier == this.loginService.username;
     this.isPublicChatroom = this.currentRoom.roomName == 'default-public-room';
     this.displayedRoomName = this.currentRoom.roomName == "default-public-room" ? "Canal public" : this.currentRoom.roomName;
-    this.changeTheme(this.profileSettingsService.currentChatThemeId);
-
+    this.profileSettingsService.getChatThemeId(window.localStorage.getItem("username"));
   }
 
   ngAfterViewInit(): void {
+    this.changeTheme(this.profileSettingsService.currentChatThemeId);
     this.userName = this.chatService.username;
     this.onNewMessage();
   }
