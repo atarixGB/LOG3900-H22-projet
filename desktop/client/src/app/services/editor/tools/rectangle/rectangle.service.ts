@@ -53,7 +53,7 @@ export class RectangleService extends ShapeService {
     onMouseUp(): void {
         this.drawingService.clearCanvas(this.drawingService.previewCtx);
 
-        if (this.mouseDown) {
+        if (this.mouseDown && this.pathData.length > 1) {
             if (!this.isShiftShape) {
                 this.drawRectangle(this.drawingService.baseCtx, false);
                 this.width = this.pathData[this.pathData.length - 1].x - this.pathData[0].x;

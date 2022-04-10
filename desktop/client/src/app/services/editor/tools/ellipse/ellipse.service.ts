@@ -84,7 +84,7 @@ export class EllipseService extends ShapeService {
 
     onMouseUp(): void {
         this.drawingService.clearCanvas(this.drawingService.previewCtx);
-        if (this.mouseDown) {
+        if (this.mouseDown && this.pathData.length > 1) {
             if (!this.isShiftShape) {
                 this.drawEllipse(this.drawingService.baseCtx);
                 this.width = this.size.x / 2;
