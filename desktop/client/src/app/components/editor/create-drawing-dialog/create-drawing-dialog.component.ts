@@ -14,11 +14,15 @@ export class CreateDrawingDialogComponent implements OnInit {
   name: string;
   isPrivate: boolean;
 
+  isEmpty: boolean | undefined;
+  isValidLength: boolean | undefined;
+
   constructor(public albumGalleryService: AlbumGalleryService, public loginService: LoginService, private currentDialogRef: MatDialogRef<CreateDrawingDialogComponent>) {
-    this.name = "";
+    this.name = "Mon dessin";
     this.isPrivate = false;
     this.albumGalleryService.selectedAlbumName = PUBLIC_ALBUM.name;
     this.albumGalleryService.selectedAlbumId = PUBLIC_ALBUM.id;
+    this.isValidInput(this.name);
   }
 
   ngOnInit(): void {
@@ -43,12 +47,9 @@ export class CreateDrawingDialogComponent implements OnInit {
   createDrawingButton(): void {
     console.log("createDrawingButton\n",this.name, this.albumGalleryService.selectedAlbumName, this.albumGalleryService.selectedAlbumId);
 
-    if (this.isValidInput(this.name) && this.name.length <= NAME_MAX_LENGTH) {
+    if (this.isValidInput(this.name)) {
       this.albumGalleryService.createDrawing(this.name);
       this.currentDialogRef.close();
-    } else {
-      // TODO: UI feedback. Following line is temporary
-      alert("Le dessin doit avoir un nom et posséder moins de 40 caractères.");
     }
   }
 
@@ -62,7 +63,10 @@ export class CreateDrawingDialogComponent implements OnInit {
   }
 
   private isValidInput(str: string): boolean {
-    return !(str === null || str.match(/^ *$/) !== null);
+    this.isEmpty = (str === null || str.match(/^ *$/) !== null);
+    this.isValidLength = str.length <= NAME_MAX_LENGTH;
+    console.log(this.isEmpty, this.isValidLength);
+    return !this.isEmpty && this.isValidLength;
 }
 
 }
