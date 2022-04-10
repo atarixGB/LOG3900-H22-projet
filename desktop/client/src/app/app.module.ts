@@ -78,6 +78,7 @@ import { ChangeAlbumDialogComponent } from './components/album-gallery/drawings-
 import { DeleteDrawingDialogComponent } from './components/album-gallery/drawings-view/delete-drawing-dialog/delete-drawing-dialog.component';
 import { StampConfigComponent } from './components/editor/sidebar/stamp-config/stamp-config.component';
 import { StampSelectionDialogComponent } from './components/editor/sidebar/stamp-config/stamp-selection-dialog/stamp-selection-dialog.component';
+import { DraftDialogComponent } from './components/editor/draft-dialog/draft-dialog.component';
 
 @NgModule({
     declarations: [
@@ -134,6 +135,7 @@ import { StampSelectionDialogComponent } from './components/editor/sidebar/stamp
         DeleteDrawingDialogComponent,
         StampConfigComponent,
         StampSelectionDialogComponent,
+        DraftDialogComponent,
     ],
     imports: [
         BrowserModule,

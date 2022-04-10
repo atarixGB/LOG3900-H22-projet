@@ -9,7 +9,7 @@
             <mat-icon id="returnBtn">keyboard_arrow_left</mat-icon>
             <span>Sauvegarder et quitter</span>
           </div>
-          <div *ngIf="this.stampService.isEnabled" id="returnDiv" fxLayout="row" fxLayoutAlign="start center" routerLink="/menu">
+          <div *ngIf="this.stampService.isEnabled" id="returnDiv" fxLayout="row" fxLayoutAlign="start center" routerLink="/menu" (click)="this.returnFromDraft()">
             <mat-icon id="returnBtn">keyboard_arrow_left</mat-icon>
             <span>Retour</span>
           </div>

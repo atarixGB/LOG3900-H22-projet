@@ -27,5 +27,9 @@ export class SidebarComponent {
         }
         this.collaborationService.leaveCollab();
     }
+
+    returnFromDraft(): void {
+        this.toolManagerService.switchTool(ToolList.Pencil);
+    }
 }
 

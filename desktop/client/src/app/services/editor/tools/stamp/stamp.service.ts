@@ -4,7 +4,7 @@ import { Vec2 } from '@app/classes/vec2';
 import { MOST_LIKED } from '@app/constants/badges';
 import { CNV_HEIGTH, MouseButton } from '@app/constants/constants';
 import { DrawingService } from '@app/services/editor/drawing/drawing.service';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
 const SCALE_FACTOR_STAMP = 1;
 const ROTATION_STEP_STAMP = 15;
@@ -24,6 +24,9 @@ export class StampService extends Tool {
     angle: number;
     mouseEvent: MouseEvent;
 
+    clearSelectionStrokes: Subject<any>;
+    clearSelectionStrokes$: Observable<any>;
+
     private angleObservable: Subject<number> = new Subject<number>();
 
     constructor(drawingService: DrawingService) {
@@ -34,7 +37,10 @@ export class StampService extends Tool {
         this.size = SIZE_STAMP;
         this.angle = 0;
         this.resizeFactor = SCALE_FACTOR_STAMP;
-        this.isEnabled = true;
+        this.isEnabled = false;
+
+        this.clearSelectionStrokes = new Subject();
+        this.clearSelectionStrokes$ = this.clearSelectionStrokes.asObservable();
     }
 
     onMouseDown(event: MouseEvent): void {
@@ -90,6 +96,9 @@ export class StampService extends Tool {
             realStampHeight,
         );
         ctx.restore();
+
+        this.drawingService.setCurrentDrawingToBaseData();
+        this.clearSelectionStrokes.next();
     }
 
     private previewCursor(event: Vec2): void {
