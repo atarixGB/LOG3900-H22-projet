@@ -10,6 +10,8 @@ import { MemberLeftDialogComponent } from '@app/components/editor/member-left-di
 import { HttpClient } from '@angular/common/http';
 import { StampService } from '../editor/tools/stamp/stamp.service';
 
+const electron = (<any>window).require('electron');
+
 @Injectable({
     providedIn: 'root',
 })
@@ -89,12 +91,19 @@ export class CollaborationService {
         });
 
         this.socket.on('readyToJoin', (room: any) => {
-            setTimeout(() => {this.socket.emit('joinCollab', room);}, 200);
+            window.localStorage.setItem("collabChatRoom", this.room);
+            const data = {
+                room: room,
+                username: this.profileService.username
+            }
+            setTimeout(() => {this.socket.emit('joinCollab', data);}, 200);
         });
 
         this.socket.on('joinSuccessful', (collabData: any) => {
             this.newCollabData.next(collabData);
             this.collabStartTime = new Date().getTime();
+
+            electron.ipcRenderer.send("open-collab-chat", null);
         });
 
         this.socket.on('memberNbUpdate', (nbMembersRemaining: any) => {
@@ -173,6 +182,8 @@ export class CollaborationService {
         }
         this.socket.emit('leaveCollab', data);
         this.updateCollabStats(new Date().getTime());
+
+        electron.ipcRenderer.send("close-collab-chat", null);
     }
 
     /* collabData:

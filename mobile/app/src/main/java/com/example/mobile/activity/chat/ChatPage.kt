@@ -1,31 +1,45 @@
 package com.example.mobile.activity.chat
 
+import android.content.Context
 import android.content.Intent
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.util.Log
 import android.view.KeyEvent
 import android.widget.*
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.view.isVisible
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.mobile.*
+import com.example.mobile.IRoom
 import com.example.mobile.Interface.IMessage
+import com.example.mobile.R
 import com.example.mobile.Retrofit.IMyService
 import com.example.mobile.Retrofit.RetrofitClient
+import com.example.mobile.SOUND_EFFECT
+import com.example.mobile.SocketHandler
 import com.example.mobile.adapter.MessageAdapter
 import com.example.mobile.adapter.UserAdapter
 import com.example.mobile.popup.UsersListPopUp
+import com.example.mobile.viewModel.NotificationModel
+import com.example.mobile.viewModel.SharedViewModelToolBar
+import com.google.gson.Gson
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import io.socket.client.Socket
+import kotlinx.android.synthetic.main.activity_profile.*
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.BufferedReader
+import java.io.File
+import java.io.FileInputStream
+import java.io.InputStreamReader
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -47,11 +61,9 @@ class ChatPage : AppCompatActivity(), UserAdapter.UserAdapterListener {
     private lateinit var iMyService: IMyService
     internal var compositeDisposable = CompositeDisposable()
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat_page)
-
         val retrofit = RetrofitClient.getInstance()
         iMyService = retrofit.create(IMyService::class.java)
 
@@ -79,12 +91,15 @@ class ChatPage : AppCompatActivity(), UserAdapter.UserAdapterListener {
         rvOutputMsgs.adapter = msgAdapter
         rvOutputMsgs.layoutManager = LinearLayoutManager(this)
 
+        if(checkFileExist("$roomName.txt") && !checkIfFileEmpty("$roomName.txt")){
+            readAllMessagesFromFile("$roomName.txt")
+        }
+        var mediaPlayerReceiveSuccess: MediaPlayer = MediaPlayer.create(baseContext,R.raw.receive)
 
         //Connect to the Server
         SocketHandler.setSocket()
         socket = SocketHandler.getSocket()
         socket.connect()
-        var jo :JSONObject = JSONObject()
 
         var mediaPlayerHello:MediaPlayer = MediaPlayer.create(this,R.raw.hello)
         btnSend.setOnClickListener{
@@ -99,19 +114,16 @@ class ChatPage : AppCompatActivity(), UserAdapter.UserAdapterListener {
         socket.on("message"){ args ->
 
             if(args[0] != null){
-                var messageData : JSONObject = JSONObject()
+                var messageData = JSONObject()
                 messageData = args[0] as JSONObject
                 val message = messageData.get("message") as String
                 val user = messageData.get("userName") as String
                 val time = messageData.get("time") as String
                 val room = messageData.get("room") as String
-                runOnUiThread{
-                    val msg = IMessage(message, user, time, room, false)
-                    msgAdapter.addMsg(msg)
-                    msgAdapter.notifyItemInserted((rvOutputMsgs.adapter as MessageAdapter).itemCount)
-                    rvOutputMsgs.scrollToPosition((rvOutputMsgs.adapter as MessageAdapter).itemCount-1)
-                    messageText.text.clear()
-                }
+                val msg = IMessage(message, user, time, room, false)
+                mediaPlayerReceiveSuccess.start()
+                saveInFile(msg)
+                printMessagesOnUI(msg)
             }
         }
 
@@ -122,7 +134,7 @@ class ChatPage : AppCompatActivity(), UserAdapter.UserAdapterListener {
                 val user = messageData.get("userName") as String
                 val room = messageData.get("room") as String
                 runOnUiThread{
-                   val msg = IMessage("$user has joined $room", user, null, room, true)
+                   val msg = IMessage("$user has joined $room", user, "", room, true)
                     msgAdapter.addMsg(msg)
                     msgAdapter.notifyItemInserted((rvOutputMsgs.adapter as MessageAdapter).itemCount)
                     rvOutputMsgs.scrollToPosition((rvOutputMsgs.adapter as MessageAdapter).itemCount-1)
@@ -142,7 +154,7 @@ class ChatPage : AppCompatActivity(), UserAdapter.UserAdapterListener {
                 val user = messageData.get("userName") as String
                 val room = messageData.get("room") as String
                 runOnUiThread{
-                    val msg = IMessage("$user has left $room", user, null, room, true)
+                    val msg = IMessage("$user has left $room", user, "", room, true)
                     msgAdapter.addMsg(msg)
                     msgAdapter.notifyItemInserted((rvOutputMsgs.adapter as MessageAdapter).itemCount)
                     rvOutputMsgs.scrollToPosition((rvOutputMsgs.adapter as MessageAdapter).itemCount-1)
@@ -215,6 +227,66 @@ class ChatPage : AppCompatActivity(), UserAdapter.UserAdapterListener {
         }
     }
 
+    private fun printMessagesOnUI(msg: IMessage) {
+        runOnUiThread {
+            msgAdapter.addMsg(msg)
+            msgAdapter.notifyItemInserted((rvOutputMsgs.adapter as MessageAdapter).itemCount)
+            rvOutputMsgs.scrollToPosition((rvOutputMsgs.adapter as MessageAdapter).itemCount - 1)
+            messageText.text.clear()
+        }
+    }
+
+    private fun checkFileExist(fileName: String): Boolean{
+        val path = baseContext.getFilesDir().getParentFile().toString()+"/files/"+fileName
+        var fileDisk = File(path)
+        return fileDisk.exists()
+    }
+    private fun checkIfFileEmpty(fileName: String): Boolean{
+        val fis: FileInputStream = baseContext.openFileInput(fileName)
+        val isr = InputStreamReader(fis)
+        val bufferedReader = BufferedReader(isr)
+        var line: String?
+        bufferedReader.readLine().also {
+            line = it
+            return line == ""
+        }
+    }
+
+    private fun readAllMessagesFromFile(fileName : String) {
+        val fis: FileInputStream = baseContext.openFileInput(fileName)
+        val isr = InputStreamReader(fis)
+        val bufferedReader = BufferedReader(isr)
+        val sb = StringBuilder()
+        var line: String?
+        while (bufferedReader.readLine().also { line = it } != null) {
+            sb.append(line)
+        }
+        val file = sb.toString()
+        val split = file.split("//")
+        for (message in split) {
+            if (message.toString() != "") {
+                val gson = Gson()
+                var message = gson.fromJson(message, IMessage::class.java)
+                Log.i("ChatPage", message.msgText)
+                printMessagesOnUI(message)
+            }
+        }
+
+    }
+
+    private fun saveInFile(msg: IMessage) {
+        try{
+            var gson = Gson()
+            var jsonString = gson.toJson(msg)
+            baseContext.openFileOutput("$roomName.txt", Context.MODE_APPEND).use {
+                it.write(jsonString.toByteArray())
+                it.write(("//").toByteArray())
+            }
+        }catch (e:Exception){
+            Log.d("ChatPage", "Erreur dans l'ecriture du fichier")
+        }
+    }
+
     private fun sendTextMessage() {
         if (messageText.text.isNotEmpty()) {
             if (!messageText.text.isNullOrBlank()) {
@@ -227,15 +299,14 @@ class ChatPage : AppCompatActivity(), UserAdapter.UserAdapterListener {
                 messageData.put("time", formatted)
                 messageData.put("room", roomName)
                 socket.emit("message", messageData)
-    //                    mediaPlayerSendSuccess.start()
             }
         }
     }
 
     fun leaveChat(){
-        val intent = Intent(this, ChatRooms::class.java)
-        intent.putExtra("userName", user)
-        startActivity(intent)
+        socket.emit("userLeftChatPage", roomName)
+        socket.disconnect()
+        onBackPressed()
     }
 
     fun userLeftChat () {
@@ -309,5 +380,9 @@ class ChatPage : AppCompatActivity(), UserAdapter.UserAdapterListener {
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.i("tag", "destroy")
+    }
 }
 

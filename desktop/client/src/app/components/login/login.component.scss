@@ -1,9 +1,19 @@
 :host {
-    height: 100%;
+  height: 100%;
+}
+
+#reset-password-link {
+  margin: 1em;
+  font-size: small;
+  cursor: pointer;
+}
+
+#reset-password-link:hover {
+  color: #3f51b5;
 }
 
 .error {
-    color: red;
-    font-size: 12px;
-    margin-top: -10px;
+  color: red;
+  font-size: 12px;
+  margin-top: -10px;
 }

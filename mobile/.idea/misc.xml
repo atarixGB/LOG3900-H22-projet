@@ -18,46 +18,6 @@
         <entry key="..\:/Users/15149/Desktop/git clone final/log3900-203/mobile/app/src/main/res/layout/fragment_create_album_pop_up.xml" value="0.18" />
         <entry key="..\:/Users/15149/Desktop/git clone final/log3900-203/mobile/app/src/main/res/layout/fragment_toolbar_navigation.xml" value="0.1" />
         <entry key="..\:/Users/15149/Desktop/git clone final/log3900-203/mobile/app/src/main/res/layout/item_room.xml" value="0.1" />
-        <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/drawable/ic_baseline_delete_forever_24.xml" value="0.1505" />
-        <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/drawable/ic_baseline_directions_run_24.xml" value="0.1505" />
-        <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/drawable/ic_baseline_edit_24.xml" value="0.228" />
-        <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/drawable/ic_baseline_edit_note_24.xml" value="0.228" />
-        <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/drawable/ic_baseline_library_music_24.xml" value="0.3725" />
-        <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/drawable/ic_baseline_more_vert_24.xml" value="0.228" />
-        <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/drawable/ic_baseline_person_24.xml" value="0.3725" />
-        <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/drawable/ic_save.xml" value="0.179" />
-        <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/drawable/spinner_bg.xml" value="0.3725" />
-        <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/drawable/toolbar_btn.xml" value="0.1" />
-        <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/activity_albums.xml" value="0.1" />
-        <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/activity_chat_page.xml" value="0.11484375" />
-        <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/activity_chat_rooms.xml" value="0.1" />
-        <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/activity_create_drawing_pop_up.xml" value="0.3015625" />
-        <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/activity_create_room_pop_up.xml" value="0.15911458333333334" />
-        <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/activity_display_all_drawings.xml" value="0.1" />
-        <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/activity_display_public_albums.xml" value="0.1" />
-        <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/activity_drawings_collection.xml" value="0.1" />
-        <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/activity_favorite_drawing_display.xml" value="0.1" />
-        <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/activity_join_room.xml" value="0.1" />
-        <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/activity_main.xml" value="0.2971014492753623" />
-        <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/activity_profile.xml" value="0.1" />
-        <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/activity_profile_modification.xml" value="0.15" />
-        <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/activity_registration.xml" value="0.3370064279155188" />
-        <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/activity_top_dessin.xml" value="0.18" />
-        <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/activity_visiting_profile.xml" value="0.1" />
-        <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/change_album_pop_up.xml" value="0.13802083333333334" />
-        <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/fragment_album_attribute_modification_pop_up.xml" value="0.1859375" />
-        <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/fragment_create_album_pop_up.xml" value="0.21" />
-        <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/fragment_drawing_name_modification_pop_up.xml" value="0.1859375" />
-        <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/fragment_gallery_fullscreen.xml" value="0.1" />
-        <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/fragment_toolbar_navigation.xml" value="0.2" />
-        <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/image_fullscreen.xml" value="0.1" />
-        <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/item_drawing.xml" value="0.3557312252964427" />
-        <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/item_gallery_image.xml" value="0.1" />
-        <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/item_top_drawing.xml" value="0.1" />
-        <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/item_user.xml" value="0.1" />
-        <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/layout/sentmessage.xml" value="0.1" />
-        <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/menu/drawing_options_menu.xml" value="0.1859375" />
-        <entry key="..\:/Users/15149/Desktop/log3900-203/mobile/app/src/main/res/menu/drawingscollection_options_menu.xml" value="0.1859375" />
         <entry key="..\:/Users/15149/Desktop/prototype_clone/prototype_leger/ChatRoomMobile/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1505" />
         <entry key="..\:/Users/15149/Desktop/prototype_clone/prototype_leger/ChatRoomMobile/app/src/main/res/drawable/ic_baseline_launch_24.xml" value="0.1505" />
         <entry key="..\:/Users/15149/Desktop/prototype_clone/prototype_leger/ChatRoomMobile/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1505" />
@@ -89,6 +49,8 @@
         <entry key="..\:/Users/chaim/log3900-203/mobile/app/src/main/res/layout/activity_drawings_collection.xml" value="0.1" />
         <entry key="..\:/Users/chaim/log3900-203/mobile/app/src/main/res/layout/activity_join_album_pop_up.xml" value="0.1" />
         <entry key="..\:/Users/chaim/log3900-203/mobile/app/src/main/res/layout/activity_join_room.xml" value="0.1" />
+        <entry key="..\:/Users/chaim/log3900-203/mobile/app/src/main/res/layout/activity_prep_for_member_leaving_pop_up.xml" value="0.18151041666666667" />
+        <entry key="..\:/Users/chaim/log3900-203/mobile/app/src/main/res/layout/activity_prep_for_new_member_pop_up.xml" value="0.18151041666666667" />
         <entry key="..\:/Users/chaim/log3900-203/mobile/app/src/main/res/layout/activity_users_list_pop_up.xml" value="0.18151041666666667" />
         <entry key="..\:/Users/chaim/log3900-203/mobile/app/src/main/res/layout/fragment_create_album_pop_up.xml" value="0.13634488448844884" />
         <entry key="..\:/Users/chaim/log3900-203/mobile/app/src/main/res/layout/fragment_custom_tool.xml" value="0.1" />
@@ -105,7 +67,7 @@
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

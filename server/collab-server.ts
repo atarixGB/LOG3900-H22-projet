@@ -15,6 +15,7 @@ console.log('Server is running');
   key: roomName (drawingId)
   roomData:  {
             members -> array of socket.Ids
+            usernames -> array of names
             strokes -> array of strokes
           }
 */// vvvvvvvvvvvvvv
@@ -23,8 +24,21 @@ let infoOnActiveRooms = new Map();
 ioCollab.on('connection', (socket) => {
 
       // COLLAB ROOM EVENTS
+      // Messaging
+      socket.on('collabMessage', (msg) => {
+        const roomName = msg.room + 'chat';
+        ioCollab.to(roomName).emit('receiveCollabMessage', msg);
+      })
+
+      socket.on('joinCollabChat', (room) => {
+        const roomName = room + 'chat';
+        socket.join(roomName);
+        ioCollab.to(roomName).emit('updateUserList', infoOnActiveRooms.get(room).usernames);
+      })
+
       // This event is to make sure the other collaborator's selections are pasted before a new member joins
       socket.on('prepForJoin', (data) => {
+        console.log(data)
         const roomName = data.room; // Note: The room name is the drawingID
         const userJoining = data.username;
         console.log("Prepping for join " , roomName);
@@ -38,23 +52,35 @@ ioCollab.on('connection', (socket) => {
         socket.emit('readyToJoin', roomName);
       })
 
-      socket.on('joinCollab', (roomName) => {
+      socket.on('joinCollab', (data) => {
+        const roomName = data.room; // Note: The room name is the drawingID
+        const userJoining = data.username;
         console.log("Joining drawing: " , roomName);
 
         // Updating collabRoom info by either creating initial room data or adding the member to the room
         let roomData = {
           members: [socket.id],
+          usernames: [userJoining],
           strokes: [],
         };
+
+
         if (infoOnActiveRooms.has(roomName)) {
           roomData = infoOnActiveRooms.get(roomName);
+          roomData.usernames.push(userJoining);
           roomData.members.push(socket.id);
         }
         infoOnActiveRooms.set(roomName, roomData);
 
+        let collabData = {
+          roomName: roomName,
+          strokes: infoOnActiveRooms.get(roomName).strokes,
+        };
         // Joining
         socket.join(roomName);
         ioCollab.in(roomName).emit('memberNbUpdate', roomData.members.length);
+        console.log("collabData hereeeeeeeeeeeeee " , collabData);
+        socket.emit('joinSuccessfulwithID', collabData);
         socket.emit('joinSuccessful', infoOnActiveRooms.get(roomName));
 
         // Utile pour voir l'état des rooms
@@ -82,6 +108,7 @@ ioCollab.on('connection', (socket) => {
 
       socket.on('updateCollabInfo', (collabData) => {
         console.log('updateCollabInfo');
+        console.log(collabData.strokes);
         
         let roomData = infoOnActiveRooms.get(collabData.collabDrawingId);
         roomData.strokes = collabData.strokes;
@@ -127,7 +154,7 @@ ioCollab.on('connection', (socket) => {
         socket.broadcast.to(roomName).emit('receivePasteRequest', pasteReq);
          
 
-        socket.emit('fetchStrokes');
+        // socket.emit('fetchStrokes');
       })
   
       socket.on('broadcastDeleteRequest', (data) => {

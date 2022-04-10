@@ -18,6 +18,12 @@
         android:theme="@style/Theme.Mobile"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".popup.PrepForMemberLeavingPopUp"
+            android:exported="false" />
+        <activity
+            android:name=".popup.PrepForNewMemberPopUp"
+            android:exported="false" />
+        <activity
             android:name=".activity.profile.visitingProfile"
             android:exported="false" />
         <activity
@@ -81,6 +87,7 @@
             tools:ignore="Instantiatable" />
         <activity
             android:name=".activity.chat.ChatRooms"
+            android:launchMode="singleTask"
             android:exported="false" />
         <activity android:name=".activity.drawing.DrawingActivity" />
         <activity

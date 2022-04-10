@@ -1,9 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { PROFILE_URL, STATS_AVERAGE_COLLAB_TIME_URL, STATS_COLLAB_COUNT_URL, STATS_TOTAL_ALBUMS_CREATED_URL, STATS_TOTAL_COLLAB_TIME_URL, STATS_TOTAL_DRAWINGS_CREATED_URL, STATS_TOTAL_LIKES_URL } from '@app/constants/api-urls'
 import { BADGES, FAVOURITE, MOST_LIKED, STATS } from '@app/constants/badges'
 import { BADGE_COUNT } from '@app/constants/constants'
-
+const electron = (<any>window).require('electron');
 @Injectable({
   providedIn: 'root',
 })
@@ -12,13 +13,15 @@ export class ProfileService {
   avatarSrc: string;
   email: string;
   description: string;
-  
+
   currentBadge: string;
   statsImg: string;
   favoritesImg: string;
   mostLikedImg: string;
 
   isCurrentUserProfile: boolean;
+  isFromChatWindow: boolean;
+  oldUrl: string;
 
   // Statistics
   totalNbrDrawings: number;
@@ -28,10 +31,11 @@ export class ProfileService {
   collabTime: string;
   collabTimeAverage: string;
 
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private router: Router) {
     this.statsImg = STATS;
     this.favoritesImg = FAVOURITE;
     this.mostLikedImg = MOST_LIKED;
+    this.isFromChatWindow = false;
   }
 
   setUsername(name: string): void {
@@ -117,4 +121,19 @@ export class ProfileService {
       this.currentBadge = BADGES.ARTIST;
     }
   }
+
+  viewProfile(oldUrl: string): void {
+    this.oldUrl = oldUrl;
+
+    const isFromChatWindow = true;
+    electron.ipcRenderer.send("view-profile", isFromChatWindow);
+
+    electron.ipcRenderer.on("view-profile-reply", (event : any, result : boolean) => {
+      this.isFromChatWindow = result;
+    });
+  }
+
+  return(): void {
+    this.router.navigate([this.oldUrl]);
+  } 
 }

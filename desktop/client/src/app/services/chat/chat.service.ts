@@ -1,27 +1,29 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as io from 'socket.io-client';
-import { CHAT_URL, JOIN_ROOM_URL, LEAVE_ROOM_URL } from '@app/constants/api-urls';
+import { ALL_PUBLIC_CHATROOM_USERS_URL, CHAT_URL, JOIN_ROOM_URL, LEAVE_ROOM_URL } from '@app/constants/api-urls';
 import { HttpClient } from '@angular/common/http';
 import { CREATE_ROOM_URL, ALL_ROOMS_URL, DELETE_ROOM_URL } from '@app/constants/api-urls';
-import { LoginService } from '../login/login.service';
 import { IChatroom } from '@app/interfaces-enums/IChatroom'
+
+const electron = (<any>window).require('electron');
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChatService {
   socket: any;
-  username: string;
+  username: string | null;
   publicRooms: IChatroom[];
   myRooms: IChatroom[];
   currentRoom: IChatroom;
+  publicUsersList: any;
 
   filteredRooms: IChatroom[];
   filterActivated: boolean;
 
-  constructor(private loginService: LoginService, private httpClient: HttpClient, private router: Router, private route: ActivatedRoute) {
-    this.username = '';
+  constructor( private httpClient: HttpClient, private router: Router, private route: ActivatedRoute) {
+    this.username = window.localStorage.getItem("username");
     this.currentRoom = {
       identifier: '',
       roomName: '',
@@ -29,6 +31,8 @@ export class ChatService {
     };
     this.publicRooms = [];
     this.myRooms = [];
+
+    this.publicUsersList = [];
 
     this.filteredRooms = [];
     this.filterActivated = false;
@@ -40,7 +44,6 @@ export class ChatService {
       room: roomName,
     }
 
-    // this.socket = io.io('https://polygram-app.herokuapp.com/', { transports: ['websocket'] });
     this.socket = io.io(CHAT_URL, { transports: ['websocket'] });
 
     this.socket.emit('newUser', data);
@@ -56,7 +59,7 @@ export class ChatService {
 
   addRoomToMyList(roomName: IChatroom): void {
     const body = {
-      user: this.loginService.username,
+      user: window.localStorage.getItem("username"),
       roomName: roomName.roomName
     }
 
@@ -72,8 +75,8 @@ export class ChatService {
   createRoom(roomName: string): void {
     const chatroomData = {
       roomName: roomName,
-      identifier: this.loginService.username,
-      usersList: [this.loginService.username]
+      identifier: window.localStorage.getItem("username"),
+      usersList: [window.localStorage.getItem("username")]
     }
 
     this.httpClient.post(CREATE_ROOM_URL, chatroomData).subscribe(
@@ -82,8 +85,8 @@ export class ChatService {
 
         const data = {
           room: roomName,
-          userName: this.loginService.username,
-          usersList: [this.loginService.username]
+          userName: window.localStorage.getItem("username"),
+          usersList: [window.localStorage.getItem("username")]
         }
 
         this.socket = io.io(CHAT_URL, { transports: ['websocket'] });
@@ -104,11 +107,11 @@ export class ChatService {
 
           // Filter current user's chatroom only (SUGGESTION: we should do the filtering on the server side)
           if (mineOnly) {
-            if (chatrooms[i].usersList.includes(this.loginService.username)) {
+            if (chatrooms[i].usersList.includes(window.localStorage.getItem("username") as string)) {
               this.myRooms.push(chatrooms[i]);
             }
           } else {
-            if (!chatrooms[i].usersList.includes(this.loginService.username)) {
+            if (!chatrooms[i].usersList.includes(window.localStorage.getItem("username") as string)) {
               this.publicRooms.push(chatrooms[i]);
             }
           }
@@ -152,16 +155,16 @@ export class ChatService {
 
   leaveRoom(roomName: string): void {
     const body = {
-      user: this.loginService.username,
+      user: window.localStorage.getItem("username"),
       roomName: roomName
     }
 
     this.httpClient.post(LEAVE_ROOM_URL, body).subscribe(
       (result) => {
         if (result == 201) {
-          console.log(`L'utilisateur ${this.loginService.username} a quitté la conversation "${roomName}" avec succès! Code:`, result);
+          console.log(`L'utilisateur ${window.localStorage.getItem("username")} a quitté la conversation "${roomName}" avec succès! Code:`, result);
         } else {
-          console.log(`L'utilisateur ${this.loginService.username} n'a pas pu quitter la conversation "${roomName}. Code:`, result);
+          console.log(`L'utilisateur ${window.localStorage.getItem("username")} n'a pas pu quitter la conversation "${roomName}. Code:`, result);
         }
       },
       (error) => {
@@ -169,8 +172,31 @@ export class ChatService {
       })
   }
 
+  openChat(): any {
+    electron.ipcRenderer.send("open-chat", null);
+  }
+
+  closeChat(): any {
+    electron.ipcRenderer.send("close-chat", null);
+  }
+  
+  getAllUsers(): void {
+    const url = ALL_PUBLIC_CHATROOM_USERS_URL;
+    this.httpClient.get(url).subscribe(
+      (result) => {
+        console.log("Résultat du serveur", result);
+        this.publicUsersList = result;
+
+      },
+      (error) => {
+        console.log("Impossible de récupérer la liste des membres dans le canal public.\nErreur:", error)
+      }
+    )
+  }
+
   disconnect(): void {
     this.socket.emit('disconnectUser', this.username);
+    window.localStorage.removeItem("username");
     this.socket.disconnect();
   }
 
