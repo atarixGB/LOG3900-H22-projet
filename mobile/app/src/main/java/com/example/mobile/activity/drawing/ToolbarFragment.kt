@@ -254,7 +254,7 @@ class ToolbarFragment : Fragment(), AdapterView.OnItemClickListener {
 
     fun updateCollabStat(username:String, leavingTime:Long){
         var secondsSpentInCollab = Math.round(((leavingTime-collabStartTime)/1000).toDouble())
-        getTotalDurationCollabUnformated(user)
+//        getTotalDurationCollabUnformated(user)
         totalCollabDuration+=secondsSpentInCollab
         compositeDisposable.add(iMyService.updateCollabDurationStat(username, totalCollabDuration)
             .subscribeOn(Schedulers.io())
@@ -290,26 +290,26 @@ class ToolbarFragment : Fragment(), AdapterView.OnItemClickListener {
             })
     }
 
-    private fun getTotalDurationCollabUnformated(username:String){
-        var call: Call<Any> = iMyService.getTotalDurationCollabUnformated(username)
-
-        call.enqueue(object: retrofit2.Callback<Any> {
-            override fun onResponse(call: Call<Any>, response: Response<Any>) {
-
-                if(response.body()!=null){
-                    totalCollabDuration= response.body() as Long
-
-
-                }
-                else {
-                    totalCollabDuration=0
-                }
-            }
-            override fun onFailure(call: Call<Any>, t: Throwable) {
-                Toast.makeText(context, "erreur duree total introuvable", Toast.LENGTH_SHORT).show()
-            }
-        })
-    }
+//    private fun getTotalDurationCollabUnformated(username:String){
+//        var call: Call<Any> = iMyService.getTotalDurationCollabUnformated(username)
+//
+//        call.enqueue(object: retrofit2.Callback<Any> {
+//            override fun onResponse(call: Call<Any>, response: Response<Any>) {
+//
+//                if(response.body()!=null){
+//                    totalCollabDuration= response.body() as Long
+//
+//
+//                }
+//                else {
+//                    totalCollabDuration=0
+//                }
+//            }
+//            override fun onFailure(call: Call<Any>, t: Throwable) {
+//                Toast.makeText(context, "erreur duree total introuvable", Toast.LENGTH_SHORT).show()
+//            }
+//        })
+//    }
 
 
 }
