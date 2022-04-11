@@ -31,6 +31,7 @@ export class CreateDrawingDialogComponent implements OnInit {
 
   ngOnDestroy(): void {
     this.albumGalleryService.myAlbums = [];
+    this.albumGalleryService.myAlbumsWithoutPublic = [];
   }
 
   changeAccess(value: number): void {

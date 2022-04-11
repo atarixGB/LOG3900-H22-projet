@@ -32,7 +32,6 @@ export class CreateAlbumDialogComponent {
   private isValidInput(str: string): boolean {
     this.isEmpty = (str === null || str.match(/^ *$/) !== null);
     this.isValidLength = str.length <= NAME_MAX_LENGTH;
-    console.log(this.isEmpty, this.isValidLength);
     return !this.isEmpty && this.isValidLength;
 }
 

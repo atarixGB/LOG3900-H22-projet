@@ -14,6 +14,7 @@ import { CollaborationService } from '../collaboration/collaboration.service';
 export class AlbumGalleryService {
   publicAlbums: IAlbum[];
   myAlbums: IAlbum[];
+  myAlbumsWithoutPublic: IAlbum[];
   currentAlbum: IAlbum;
 
   selectedAlbumId: string;
@@ -30,6 +31,7 @@ export class AlbumGalleryService {
   constructor(private httpClient: HttpClient, private loginService: LoginService, private drawingService: DrawingService, private collaborationService: CollaborationService) {
     this.publicAlbums = [];
     this.myAlbums = [];
+    this.myAlbumsWithoutPublic = [];
     this.fetchedDrawings = [];
 
     this.currentDrawing = {
@@ -354,14 +356,18 @@ export class AlbumGalleryService {
 
   fetchMyAlbumsFromDatabase(): void {
     this.myAlbums = [];
-    console.log("FETCHING MY ALBUMS")
+    this.myAlbumsWithoutPublic = [];
     this.httpClient.get<IAlbum[]>(ALBUM_URL).subscribe(
       (albums: IAlbum[]) => {
-        console.log("ALBUMS",albums)
         for (let i = 0; i < albums.length; i++) {
+
           if (albums[i].members.includes(this.loginService.username)) {
             this.myAlbums.push(albums[i]);
-            console.log(this.myAlbums[i])
+          }
+
+          if (albums[i].members.includes(this.loginService.username) && albums[i].name != PUBLIC_ALBUM.name) {
+            this.myAlbumsWithoutPublic.push(albums[i]);
+            console.log(this.myAlbumsWithoutPublic[i]);
           }
         }
       },

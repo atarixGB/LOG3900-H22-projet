@@ -14,23 +14,21 @@
     Attention, le nom du dessin doit être composé de 40 caractères et moins.
   </div>
 
-  <br>
-
   <mat-form-field appearance="fill">
     <mat-label>Accessibilité</mat-label>
     <mat-select (valueChange)="this.changeAccess($event)" value="0">
       <mat-option value="0">Public</mat-option>
-      <mat-option value="1" *ngIf="this.albumGalleryService.myAlbums.length != 0">Privé</mat-option>
+      <mat-option value="1" *ngIf="this.albumGalleryService.myAlbumsWithoutPublic.length != 0">Privé</mat-option>
     </mat-select>
   </mat-form-field>
 
   <div class="albums-container-view" *ngIf="this.isPrivate">
-    <mat-grid-list cols="3
-    ">
-      <mat-grid-tile *ngFor="let album of this.albumGalleryService.myAlbums" (click)="onAlbumClick(album)">
-        <button mat-icon-button disableRipple="true" matTooltip="{{album.name}}">
+    <mat-grid-list cols="3">
+      <mat-grid-tile *ngFor="let album of this.albumGalleryService.myAlbumsWithoutPublic" (click)="onAlbumClick(album)">
+        <button mat-icon-button disableRipple="true">
           <div>
-            <mat-icon>folder</mat-icon>
+            <mat-icon class="folder-icon">folder</mat-icon>
+            <br>
             {{album.name}}
           </div>
         </button>
