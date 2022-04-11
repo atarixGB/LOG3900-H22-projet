@@ -51,8 +51,8 @@ class DrawingActivity : AppCompatActivity(), CreateDrawingPopUp.DialogListener, 
             //Open Popup Window
             var dialog = CreateDrawingPopUp(user, isAlbumAlreadySelected)
             dialog.show(supportFragmentManager, "customDialog")
-        } else {
-            // drawing already exists
+        } else {//room already exists
+            DrawingSocket.socket.emit("joinCollabChat", collabDrawingId)
             sharedViewModelToolBar.setCollabDrawingId(collabDrawingId)
             val bundle = intent.extras
             jsonString = bundle!!.getStringArrayList("jsonString") as ArrayList<String>

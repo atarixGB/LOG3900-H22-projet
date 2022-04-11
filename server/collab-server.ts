@@ -26,6 +26,7 @@ ioCollab.on('connection', (socket) => {
       // COLLAB ROOM EVENTS
       // Messaging
       socket.on('collabMessage', (msg) => {
+        console.log(msg)
         const roomName = msg.room + 'chat';
         ioCollab.to(roomName).emit('receiveCollabMessage', msg);
       })

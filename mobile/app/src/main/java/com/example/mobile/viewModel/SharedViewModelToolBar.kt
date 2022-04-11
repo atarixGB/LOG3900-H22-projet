@@ -20,6 +20,9 @@ class SharedViewModelToolBar: ViewModel() {
     private val _jsonString = MutableLiveData<ArrayList<String>>()
     val jsonString: LiveData<ArrayList<String>> = _jsonString
 
+    private val _onEnterPressed = MutableLiveData<Boolean>(false)
+    val onEnterPressed: LiveData<Boolean> = _onEnterPressed
+
     fun setUser(newUser: String) {
         _user.value = newUser
     }
@@ -38,5 +41,9 @@ class SharedViewModelToolBar: ViewModel() {
 
     fun setJsonString(newJsonString: ArrayList<String>) {
         _jsonString.value = newJsonString
+    }
+
+    fun setOnEnterPressed(){
+        _onEnterPressed.value = true
     }
 }
