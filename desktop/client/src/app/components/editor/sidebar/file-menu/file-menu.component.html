@@ -5,7 +5,7 @@
     <span>Dessin du jour</span>
 </div> 
 
-<div id="storyBtn" *ngIf="this.storyAdded" fxLayout="row" fxLayoutAlign="center center">
+<div id="storyBtn" *ngIf="this.albumGalleryService.currentDrawing.owner == this.profileService.username && this.storyAdded" fxLayout="row" fxLayoutAlign="center center">
     <span>Ajouté avec succès</span>
 </div> 
        

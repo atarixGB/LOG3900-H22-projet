@@ -31,6 +31,8 @@ export class SideMenuComponent implements OnInit {
     this.stampService.isEnabled = true;
     this.router.navigate([`../editor`]);
     this.dialog.open(DraftDialogComponent, {
+      width: '500px',
+      height: '200px',
       disableClose: true
     });
   }
