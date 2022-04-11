@@ -89,7 +89,7 @@ class Dashboard : AppCompatActivity(), StoryAdapter.StoryAdapterListener {
             override fun onResponse(call: Call<List<IUser>>, response: Response<List<IUser>>) {
                 if (response.body() != null) {
                     for (userElement in response.body()!!) {
-                        if (userElement.identifier != user && !userElement.avatar.isNullOrEmpty()) {
+                        if (!userElement.avatar.isNullOrEmpty()) {
                             getAllUserDrawings(userElement.identifier!!, userElement.avatar!!)
                         }
                     }
