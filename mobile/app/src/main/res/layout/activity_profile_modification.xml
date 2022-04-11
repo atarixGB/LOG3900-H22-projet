@@ -7,19 +7,24 @@
     android:screenOrientation="landscape"
     tools:context=".activity.profile.Profile_modification">
 
+    <fragment
+        android:id="@+id/toolbarNavigation"
+        android:name="com.example.mobile.ToolbarNavigationFragment"
+        android:layout_width="250dp"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <RelativeLayout
-        android:layout_width="match_parent"
+        android:id="@+id/header_menu"
+        android:layout_width="800dp"
         android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="110dp"
         android:padding="10dp"
-        android:id="@+id/header_menu">
-
-        <ImageView
-            android:id="@+id/back_btn_modification"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_alignParentLeft="true"
-            android:src="@drawable/ic_baseline_arrow_back_24" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/toolbarNavigation">
 
         <TextView
             android:layout_width="wrap_content"
@@ -37,6 +42,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
+        android:layout_marginLeft="250dp"
         android:layout_below="@+id/header_menu"
         android:layout_marginBottom="49dp"
         android:background="@color/purple_500" />
@@ -51,15 +57,17 @@
 
         <com.mikhaellopez.circularimageview.CircularImageView
             android:id="@+id/userAvatarModif"
-            android:layout_width="120dp"
-            android:layout_height="120dp"/>
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:src="@drawable/monster1" />
 
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_below="@+id/header_menu"
-            android:layout_marginTop="10dp"
+            android:layout_marginLeft="166dp"
+            android:layout_marginTop="38dp"
             android:background="@color/purple_500" />
 
     </LinearLayout>
@@ -68,6 +76,7 @@
         android:id="@+id/bloc_profil"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="250dp"
         android:layout_marginTop="9dp"
         android:orientation="vertical">
 
@@ -90,7 +99,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_marginLeft="10dp"
-                android:text="Nom d'utilisateur"
+                android:text="Nom d'utilisateur*"
                 android:textColor="@android:color/background_dark"
                 android:textSize="18dp"
                 android:textStyle="bold" />
@@ -114,49 +123,6 @@
             android:layout_marginRight="15dp"
             android:background="@color/purple_200" />
 
-        <LinearLayout
-            android:id="@+id/email_bloc"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/username_bloc"
-            android:layout_marginTop="5dp"
-            android:orientation="horizontal"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp">
-
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/ic_baseline_email_24" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_marginLeft="10dp"
-                android:text="Adresse courriel"
-                android:textColor="@android:color/background_dark"
-                android:textSize="18dp"
-                android:textStyle="bold" />
-
-            <EditText
-                android:id="@+id/user_email"
-                android:layout_width="300dp"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_marginLeft="20dp"
-                android:textColor="@color/grey"
-                android:textSize="18dp"
-                android:textStyle="normal" />
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_below="@+id/email_bloc"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:background="@color/purple_200" />
 
         <LinearLayout
             android:id="@+id/description_bloc"
@@ -184,8 +150,8 @@
                 android:textStyle="bold" />
 
             <EditText
-                android:layout_width="600dp"
                 android:id="@+id/edt_description"
+                android:layout_width="600dp"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_gravity="end"
@@ -199,15 +165,16 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/bloc_modif"
         android:gravity="center"
         android:orientation="vertical"
         android:layout_marginTop="90dp"
+        android:layout_marginLeft="800dp"
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
-        android:layout_below="@+id/bloc_profil">
+        >
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -244,29 +211,147 @@
         />
 
 
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/buttonLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/bloc_profil"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="650dp"
+        android:layout_marginTop="220dp"
+        android:orientation="vertical">
+
         <TextView
+            android:id="@+id/modify_label"
             android:layout_width="180dp"
             android:layout_height="50dp"
             android:layout_marginTop="25dp"
             android:background="@drawable/bg_btn"
-            android:id="@+id/modify_label"
             android:drawableLeft="@drawable/ic_save"
             android:gravity="center"
             android:paddingLeft="10dp"
             android:text="Sauvegarder"
             android:textColor="@color/teal_700"
             android:textSize="20dp"
-            android:textStyle="bold"
-        />
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/discard_label"
+            android:layout_width="180dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="25dp"
+            android:background="@drawable/bg_btn"
+            android:drawableLeft="@drawable/ic_baseline_cancel"
+            android:gravity="center"
+            android:paddingLeft="10dp"
+            android:text="Annuler"
+            android:textColor="@color/teal_700"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+
     </LinearLayout>
-
-
 
 
     <View
         android:layout_width="match_parent"
+        android:layout_marginLeft="250dp"
+        android:id="@+id/seperationToSound"
         android:layout_height="1.5dp"
         android:background="@color/purple_500"
         android:layout_marginTop="5dp"
         android:layout_below="@id/bloc_profil"/>
+
+    <LinearLayout
+        android:id="@+id/sound_bloc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="250dp"
+        android:layout_marginTop="30dp"
+        android:orientation="horizontal"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:layout_below="@+id/seperationToSound">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_baseline_library_music_24" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="10dp"
+            android:text="Sons"
+            android:textColor="@android:color/background_dark"
+            android:textSize="18dp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginLeft="150dp"
+            android:layout_marginTop="70dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="10dp"
+                android:text="Effets sonores"
+                android:textColor="@android:color/background_dark"
+                android:textSize="18dp"
+                android:textStyle="bold" />
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/soundControl"
+                android:layout_marginLeft="12dp"
+                android:layout_width="130dp"
+                android:layout_height="40dp"
+                android:background="@drawable/spinner_bg"
+                android:spinnerMode="dropdown"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginLeft="200dp"
+            android:layout_marginTop="70dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="3dp"
+                android:text="Musique"
+                android:textColor="@android:color/background_dark"
+                android:textSize="18dp"
+                android:textStyle="bold" />
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/musicPicker"
+                android:layout_width="140dp"
+                android:layout_height="40dp"
+                android:background="@drawable/spinner_bg"
+                android:spinnerMode="dropdown"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/buttonLayout"
+        android:layout_alignParentBottom="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="260dp"
+        android:layout_marginTop="40dp"
+        android:text="* Si vous changez votre nom d'utilisateur, vous n'aurez plus d'accès a tous les albums, dessins et canaux liés a ce nom"
+        android:textColor="@android:color/background_dark"
+        android:textSize="18dp"
+        android:textStyle="bold" />
+
+
 </RelativeLayout>

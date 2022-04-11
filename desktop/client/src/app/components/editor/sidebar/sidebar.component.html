@@ -5,12 +5,16 @@
           {{ this.albumGalleryService.currentDrawing.name }}
         </h2>
       </div>
-          <div id="returnDiv" fxLayout="row" fxLayoutAlign="start center" routerLink="/menu" (click)="this.saveAndLeave()">
+          <div *ngIf="!this.stampService.isEnabled" id="returnDiv" fxLayout="row" fxLayoutAlign="start center" routerLink="/menu" (click)="this.saveAndLeave()">
             <mat-icon id="returnBtn">keyboard_arrow_left</mat-icon>
             <span>Sauvegarder et quitter</span>
           </div>
+          <div *ngIf="this.stampService.isEnabled" id="returnDiv" fxLayout="row" fxLayoutAlign="start center" routerLink="/menu" (click)="this.returnFromDraft()">
+            <mat-icon id="returnBtn">keyboard_arrow_left</mat-icon>
+            <span>Retour</span>
+          </div>
         <app-tools-list></app-tools-list>
-        <hr />
-        <app-file-menu></app-file-menu>
+        <hr *ngIf="!this.stampService.isEnabled"/>
+        <app-file-menu *ngIf="!this.stampService.isEnabled"></app-file-menu>
     </mat-sidenav-content>
 </mat-sidenav-container>

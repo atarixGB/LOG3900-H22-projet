@@ -6,6 +6,16 @@
     android:layout_height="match_parent"
     tools:context=".activity.chat.joinRoom">
 
+    <fragment
+        android:id="@+id/toolbarNavigation"
+        android:name="com.example.mobile.ToolbarNavigationFragment"
+        android:layout_width="250dp"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
     <ImageButton
         android:id="@+id/leaveChatBtn"
         android:layout_width="wrap_content"
@@ -17,11 +27,37 @@
         app:tint= "@color/black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:id="@+id/favoriteDessin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Les canaux disponibles"
+        android:layout_marginLeft="250dp"
+        android:textColor="@color/black"
+        android:textSize="50sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/descriptionTopDessin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Voila les canaux que tu peux joindre! "
+        android:textColor="@color/greenOnClick"
+        android:textStyle="italic"
+        android:textSize="25sp"
+        android:layout_marginTop="80dp"
+        android:layout_marginLeft="250dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
     <SearchView
         android:id="@+id/newRoomsSearchView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="250dp"
+        android:layout_marginTop="100dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:iconifiedByDefault="false"
@@ -31,7 +67,8 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvOutputRooms"
         android:layout_width="500dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginLeft="270dp"
         android:background="@drawable/message_input_box"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

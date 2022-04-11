@@ -16,6 +16,43 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <LinearLayout
+        android:layout_width="900dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toEndOf="@+id/toolbarNavigation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/imgAddAlbum"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="50dp"
+            android:src="@drawable/ic_baseline_create_new_folder_24"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <ImageView
+            android:id="@+id/listAllAlbums"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="300dp"
+            android:src="@drawable/ic_baseline_list_alt_24"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <ImageView
+            android:id="@+id/searchDrawings"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="330dp"
+            android:src="@drawable/ic_baseline_image_search_24"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+    </LinearLayout>
+
     <Button
         android:id="@+id/create_album_btn"
         android:layout_width="wrap_content"
@@ -41,45 +78,65 @@
         android:minHeight="50dp"
         android:text="Voir tous les albums disponibles"
         android:textColor="@color/white"
-        app:layout_constraintEnd_toStartOf="@+id/drawing_gallery_btn"
+        app:layout_constraintEnd_toStartOf="@+id/display_all_drawings_btn"
         app:layout_constraintHorizontal_bias="0.358"
         app:layout_constraintStart_toEndOf="@+id/create_album_btn"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/drawing_gallery_btn"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="52dp"
-        android:layout_marginEnd="94dp"
-        android:background="@drawable/message_input_box"
-        android:minHeight="50dp"
-        android:text="Voir l'album public"
-        android:textColor="@color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:id="@+id/publicAlbum"
+        android:orientation="vertical"
+        android:layout_marginTop="15dp"
+        app:layout_constraintEnd_toStartOf="@+id/display_all_drawings_btn"
+        app:layout_constraintStart_toEndOf="@+id/create_album_btn"
+        app:layout_constraintTop_toBottomOf="@+id/display_albums_btn"
+        android:layout_centerHorizontal="true"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/imgAlbum"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:src="@drawable/ic_baseline_folder_24"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+        <Button
+            android:id="@+id/drawing_gallery_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/message_input_box"
+            android:minHeight="50dp"
+            android:text="Voir l'album public"
+            android:textColor="@color/white"
+            />
+
+    </LinearLayout>
+
 
     <Button
         android:id="@+id/display_all_drawings_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="52dp"
         android:background="@drawable/message_input_box"
-        android:text="Voir tous les dessins disponibles"
+        android:text="Voir et filtrer tous les dessins disponibles"
         android:textColor="@color/white"
-        app:layout_constraintEnd_toStartOf="@+id/drawing_gallery_btn"
-        app:layout_constraintStart_toEndOf="@+id/create_album_btn"
-        app:layout_constraintTop_toBottomOf="@+id/display_albums_btn" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvOutputAlbums"
-        android:layout_width="888dp"
-        android:layout_height="500dp"
-        android:layout_marginTop="100dp"
+        android:layout_width="988dp"
+        android:layout_height="400dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="70dp"
         android:background="@drawable/message_input_box"
-        app:layout_constraintEnd_toEndOf="@+id/drawing_gallery_btn"
-        app:layout_constraintStart_toStartOf="@+id/create_album_btn"
-        app:layout_constraintTop_toBottomOf="@+id/display_all_drawings_btn" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/toolbarNavigation"
+        app:layout_constraintTop_toBottomOf="@+id/publicAlbum"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

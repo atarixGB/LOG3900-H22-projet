@@ -1,5 +1,5 @@
 :host {
-    height: 100%;
+  height: 100%;
 }
 
 .center {
@@ -7,35 +7,36 @@
 }
 
 .mine {
-    background-color: rgb(255, 184, 51);
-    border-radius: 5px;
-    padding: 10px;
+  background-color: rgb(255, 184, 51);
+  border-radius: 5px;
+  padding: 10px;
 }
 
 .yours {
-    background-color: rgb(82, 188, 250);
-    border-radius: 5px;
-    padding: 10px;
+  background-color: rgb(82, 188, 250);
+  border-radius: 5px;
+  padding: 10px;
 }
 
 .bordered {
-    border-style: solid;
-    border-width: 1px;
-    border-color: rgb(214, 214, 214);
-    border-radius: 5px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: rgb(214, 214, 214);
+  border-radius: 5px;
 }
 
+
 .fullHeight {
-    height: 100%;
+  height: 100%;
 }
 
 .scrollable {
-    overflow: auto;
+  overflow: auto;
 }
 
 .message {
-    max-width: 100%;
-    word-wrap: break-word;
+  max-width: 100%;
+  word-wrap: break-word;
 }
 
 .username-link {
@@ -59,20 +60,66 @@ input {
   text-align: end;
 }
 
-#disconnectDiv {
-    border-style: solid;
-    border-width: 1px;
-    border-color: darkslateblue;
-    border-radius: 5px;
+#main-wrapper {
+  margin-bottom: 2em;
 }
 
-#disconnectDiv:hover {
-    cursor: pointer;
-    background-color: rgba(187, 81, 236, 0.13);
+#user-input-wrapper {
+  margin-bottom: 1em;
 }
-
 
 mat-icon {
   transform: scale(0.75);
   cursor: pointer;
+}
+
+// ****** Classes to customize chat theme ******
+
+:host {
+  --font: none;
+  --textColor: none;
+  --backgroundColor: none;
+  --backgroundImage: none;
+  --backgroundColorMainMessageContainer: none;
+  --backgroundColorSecondMessageContainer: none;
+  --opacityMainContainer: none;
+  --opacitySecondContainer: none;
+  --borderColor: none;
+  --messageColorMine: none;
+  --messageBackgroundMine: none;
+  --messageColorYours: none;
+  --messageBackgroundYours: none;
+
+  #custom-wrapper {
+    background-color: var(--backgroundColor);
+    color: var(--textColor);
+    background-image: var(--backgroundImage);
+  }
+
+  .custom-font {
+    font-family: var(--font);
+  }
+
+  #custom-msg-mine {
+    color: var(--messageColorMine);
+    background-color: var(--messageBackgroundMine);
+  }
+
+  #custom-msg-yours {
+    color: var(--messageColorYours);
+    background-color: var(--messageBackgroundYours);
+  }
+
+  // Main chat container
+  div .bordered {
+    border-color: var(--borderColor);
+    background-color: var(--backgroundColorMainMessageContainer);
+    opacity: var(--opacityMainContainer);
+  }
+
+  // Second chat container
+  div #messagesContainer {
+    background-color: var(--backgroundColorSecondMessageContainer);
+    opacity: var(--opacitySecondContainer);
+  }
 }

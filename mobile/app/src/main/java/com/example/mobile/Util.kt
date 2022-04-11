@@ -7,8 +7,23 @@ import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
 import android.util.Base64
 import android.util.DisplayMetrics
+import android.util.Log
+import com.example.mobile.Interface.IMessage
+import com.google.gson.Gson
 import com.mikhaellopez.circularimageview.CircularImageView
+import org.json.JSONObject
 import java.io.ByteArrayOutputStream
+val REQUEST_IMAGE_CAMERA = 142
+
+var ISDRAFT=false
+var SOUND_EFFECT=true
+
+enum class MUSIC{
+    Lofi1 , Lofi2,Kahoot,Minecraft,Desactiver
+}
+
+var MUSIC_TRACK = 0
+
 
 var CURRENT_ALBUM_ID :String = ""
 fun convertToByteArray(imageView: CircularImageView): ByteArray {
@@ -50,6 +65,17 @@ fun convertPixelsToDp(px: Float, context: Context?): Float {
         px / (metrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
     }
 
-
+fun saveMessageInFile(msg : IMessage, context: Context, roomName : String){
+    try{
+        var gson = Gson()
+        var jsonString = gson.toJson(msg)
+        context.openFileOutput(roomName+".txt", Context.MODE_APPEND).use {
+            it.write(jsonString.toByteArray())
+            it.write(("//").toByteArray())
+        }
+    }catch (e:Exception){
+        Log.d("ChatPage", "Erreur dans l'ecriture du fichier")
+    }
+}
 
 }

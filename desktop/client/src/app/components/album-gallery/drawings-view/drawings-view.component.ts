@@ -31,7 +31,7 @@ export class DrawingsViewComponent {
     private route: ActivatedRoute,
     public collaborationService: CollaborationService,
     private drawingService: DrawingService) {
-    this.isCurrentAlbumMine = this.loginService.username == albumGalleryService.currentAlbum.owner;
+    this.isCurrentAlbumMine = window.localStorage.getItem("username") == albumGalleryService.currentAlbum.owner;
     this.isPublicAlbum = albumGalleryService.currentAlbum.name == PUBLIC_ALBUM.name;
   }
 
@@ -85,6 +85,7 @@ export class DrawingsViewComponent {
     this.albumGalleryService.currentDrawing = drawing;
     this.drawingService.setCurrentDrawing(drawing);
     this.collaborationService.joinCollab(drawing._id);
+    localStorage.setItem('currentDrawingName', drawing.name);
   }
 
   openChangeNameDialog(drawing: IDrawing): void {

@@ -7,6 +7,7 @@ import android.util.Log
 import android.widget.ImageButton
 import android.widget.SearchView
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mobile.Interface.IAlbum
@@ -14,7 +15,9 @@ import com.example.mobile.Interface.IDrawing
 import com.example.mobile.R
 import com.example.mobile.Retrofit.IMyService
 import com.example.mobile.Retrofit.RetrofitClient
+import com.example.mobile.activity.drawing.DrawingActivity
 import com.example.mobile.adapter.DrawingAdapter
+import com.example.mobile.viewModel.SharedViewModelToolBar
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -31,6 +34,8 @@ class DisplayAllDrawings : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
     private lateinit var drawingAdapter: DrawingAdapter
     private lateinit var drawings: ArrayList<IDrawing>
     private lateinit var searchArrayList: ArrayList<IDrawing>
+    private val sharedViewModelToolBar: SharedViewModelToolBar by viewModels()
+
 
     private lateinit var iMyService: IMyService
     internal var compositeDisposable = CompositeDisposable()
@@ -54,6 +59,7 @@ class DisplayAllDrawings : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
         searchView.queryHint = "cherchez un dessin"
 
         user = intent.getStringExtra("userName").toString()
+        sharedViewModelToolBar.setUser(user)
 
         drawings = java.util.ArrayList()
         searchArrayList = ArrayList()
@@ -91,7 +97,8 @@ class DisplayAllDrawings : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
         if (!searchText.isEmpty()) {
             drawings.forEach {
                 if ((it.name!!.lowercase(Locale.getDefault()).contains(searchText)) ||
-                    (it.owner!!.lowercase(Locale.getDefault()).contains(searchText))
+                    (it.owner!!.lowercase(Locale.getDefault()).contains(searchText)) ||
+                    (it.creationDate!!.lowercase(Locale.getDefault()).contains(searchText))
                 ){
                     searchArrayList.add(it)
                 }
@@ -150,6 +157,11 @@ class DisplayAllDrawings : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
     override fun addLikeToDrawingAdapterListener(drawingId: String) {
         addLikeToDrawing(drawingId)
     }
+
+    override fun emitJoinDrawingListener(drawingId: String) {
+        TODO("Not yet implemented")
+    }
+
 
     private fun addLikeToDrawing(drawingId: String) {
         compositeDisposable.add(iMyService.addLikeToDrawing(drawingId, user)

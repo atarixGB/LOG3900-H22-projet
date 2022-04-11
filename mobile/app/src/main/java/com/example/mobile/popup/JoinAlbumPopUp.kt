@@ -12,6 +12,7 @@ import androidx.fragment.app.DialogFragment
 import com.example.mobile.R
 import com.example.mobile.Retrofit.IMyService
 import com.example.mobile.Retrofit.RetrofitClient
+import com.example.mobile.SOUND_EFFECT
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -66,7 +67,10 @@ class JoinAlbumPopUp(val albumName: String, val user: String) : DialogFragment()
                 requestSent = result == "201"
                 if (result == "201") {
                     Toast.makeText(context, "demande envoyée", Toast.LENGTH_SHORT).show()
-                    mediaPlayerRequest.start()
+                    if(SOUND_EFFECT){
+                        mediaPlayerRequest.start()
+                    }
+
                 } else {
                     Toast.makeText(context, "Vous avez deja soumis une demande", Toast.LENGTH_SHORT).show()
                 }

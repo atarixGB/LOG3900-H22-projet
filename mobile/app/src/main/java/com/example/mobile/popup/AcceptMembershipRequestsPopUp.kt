@@ -29,7 +29,7 @@ class AcceptMembershipRequestsPopUp(val albumName: String, val usersList: ArrayL
         rootView.albumName.text = "Accepter les demandes de ${albumName}"
         users = ArrayList()
 
-        userAdapter = UserAdapter(requireContext(), users, true)
+        userAdapter = UserAdapter(requireContext(), currentUser, users, true)
         //Recycler View of rooms
         rootView.rvUsersList.adapter = userAdapter
         rootView.rvUsersList.layoutManager = LinearLayoutManager(requireContext())

@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.ImageButton
+import androidx.activity.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mobile.Interface.IAlbum
@@ -13,6 +14,7 @@ import com.example.mobile.Retrofit.IMyService
 import com.example.mobile.Retrofit.RetrofitClient
 import com.example.mobile.adapter.AlbumAdapter
 import com.example.mobile.popup.JoinAlbumPopUp
+import com.example.mobile.viewModel.SharedViewModelToolBar
 import io.reactivex.disposables.CompositeDisposable
 import retrofit2.Call
 import retrofit2.Response
@@ -28,6 +30,7 @@ class DisplayPublicAlbums : AppCompatActivity(), AlbumAdapter.AlbumAdapterListen
     private lateinit var albumName: String
     private lateinit var leaveBtn: ImageButton
     internal var compositeDisposable = CompositeDisposable()
+    private val sharedViewModelToolBar: SharedViewModelToolBar by viewModels()
 
     override fun onStop() {
         compositeDisposable.clear()
@@ -46,6 +49,7 @@ class DisplayPublicAlbums : AppCompatActivity(), AlbumAdapter.AlbumAdapterListen
 
         albums = ArrayList()
         user = intent.getStringExtra("userName").toString()
+        sharedViewModelToolBar.setUser(user)
 
         albumAdapter = AlbumAdapter(this, albums)
 
@@ -67,7 +71,7 @@ class DisplayPublicAlbums : AppCompatActivity(), AlbumAdapter.AlbumAdapterListen
 
             override fun onResponse(call: Call<List<IAlbum>>, response: Response<List<IAlbum>>) {
                 for (album in response.body()!!) {
-                    if(album._id!="622f77abc04d88938c916084"){
+                    if(album._id!="623e5f7cbd233e887bcb6034"){
                         if (!album.members.contains(user)) {
                             albumAdapter.addAlbum(album)
                             albumAdapter.notifyItemInserted((rvOutputAlbums.adapter as AlbumAdapter).itemCount)
