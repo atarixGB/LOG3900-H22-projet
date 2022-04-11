@@ -56,8 +56,7 @@ h3 {
 }
 
 mat-icon {
-  transform: scale(0.75);
-  color: #A8D08C;
+  color: #000000;
 }
 
 img:hover {
@@ -91,6 +90,10 @@ img:hover {
 
 #more-option-button {
   float:right;
+}
+
+#smoll {
+  transform: scale(0.75);
 }
 
 
