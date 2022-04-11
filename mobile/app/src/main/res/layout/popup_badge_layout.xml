@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".popup.BadgePopUp">
+
+    <LinearLayout
+        android:layout_width="1300dp"
+        android:layout_height="500dp"
+        android:orientation="horizontal"
+        android:id="@+id/mesBadges"
+        tools:ignore="MissingConstraints">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_width="300dp"
+                android:layout_height="300dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="90dp"
+                android:background="@drawable/custom_border"
+                android:src="@drawable/debutant"/>
+            <TextView
+                android:layout_width="300dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="25dp"
+                android:background="@drawable/bg_btn"
+                android:drawableLeft="@drawable/ic_baseline_favorite_24"
+                android:gravity="center"
+                android:paddingLeft="10dp"
+                android:text="Badge débutant: entre 5 et 25 like!"
+                android:textColor="@color/teal_700"
+                android:textSize="18dp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_width="300dp"
+                android:layout_height="300dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="90dp"
+                android:background="@drawable/custom_border"
+                android:src="@drawable/intermediaire"/>
+            <TextView
+                android:layout_width="300dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="25dp"
+                android:background="@drawable/bg_btn"
+                android:drawableLeft="@drawable/ic_baseline_favorite_24"
+                android:gravity="center"
+                android:paddingLeft="10dp"
+                android:text="Badge intermédiaire: entre 5 et 25 like!"
+                android:textColor="@color/teal_700"
+                android:textSize="18dp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_width="300dp"
+                android:layout_height="300dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="90dp"
+                android:background="@drawable/custom_border"
+                android:src="@drawable/expert"/>
+            <TextView
+                android:layout_width="300dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="25dp"
+                android:background="@drawable/bg_btn"
+                android:drawableLeft="@drawable/ic_baseline_favorite_24"
+                android:gravity="center"
+                android:paddingLeft="10dp"
+                android:text="Badge expert: entre 25 et 50 like!"
+                android:textColor="@color/teal_700"
+                android:textSize="18dp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_width="300dp"
+                android:layout_height="300dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="90dp"
+                android:background="@drawable/custom_border"
+                android:src="@drawable/artiste"/>
+            <TextView
+                android:layout_width="300dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="25dp"
+                android:background="@drawable/bg_btn"
+                android:drawableLeft="@drawable/ic_baseline_favorite_24"
+                android:gravity="center"
+                android:paddingLeft="10dp"
+                android:text="Badge artiste: sup 50 like!"
+                android:textColor="@color/teal_700"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/retour"
+        app:layout_constraintTop_toBottomOf="@+id/mesBadges"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="Retour au profil"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

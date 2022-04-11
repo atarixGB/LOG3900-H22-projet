@@ -16,6 +16,8 @@ import com.example.mobile.Retrofit.IMyService
 import com.example.mobile.Retrofit.RetrofitClient
 import com.example.mobile.activity.MainActivity
 import com.example.mobile.bitmapDecoder
+import com.example.mobile.popup.BadgePopUp
+import com.example.mobile.popup.CreateAlbumPopUp
 import com.example.mobile.viewModel.SharedViewModelToolBar
 import com.mikhaellopez.circularimageview.CircularImageView
 import io.reactivex.disposables.CompositeDisposable
@@ -27,6 +29,7 @@ import retrofit2.Response
 class Profile : AppCompatActivity() {
 
     private lateinit var modifyProfile: TextView
+
     private lateinit var avatar: CircularImageView
     private lateinit var user: String
     private var totalNbLikes:Int = 0
@@ -55,6 +58,7 @@ class Profile : AppCompatActivity() {
         setContentView(R.layout.activity_profile)
 
         usernameDisplayed= findViewById(R.id.username)
+
         avatar = findViewById(R.id.userAvatar)
         modifyProfile=findViewById(R.id.modify_label)
         user = intent.getStringExtra("userName").toString()
@@ -72,6 +76,10 @@ class Profile : AppCompatActivity() {
         //changing the avatar with what was stored in the db
         getUserFromDB(user)
 
+        view_badges.setOnClickListener{
+            var dialog= BadgePopUp()
+            dialog.show(supportFragmentManager,"customDialog")
+        }
         showMostLiked.setOnClickListener(){
             val intent = Intent(this, TopDrawingDisplay::class.java)
             intent.putExtra("userName",user)
