@@ -21,7 +21,7 @@ import org.json.JSONObject
 class DrawingActivity : AppCompatActivity(), CreateDrawingPopUp.DialogListener, AlbumAdapter.AlbumAdapterListener {
     private lateinit var user: String
     private lateinit var collabDrawingId: String
-    private  var collabStartTime:Long=0
+    private var collabStartTime: Long = 0
     private lateinit var jsonString: ArrayList<String>
     private var isAlbumAlreadySelected: Boolean = false
     private lateinit var albumName: String
@@ -47,7 +47,7 @@ class DrawingActivity : AppCompatActivity(), CreateDrawingPopUp.DialogListener, 
 
         //collaboration
         collabDrawingId = intent.getStringExtra("drawingCollabId").toString()
-        collabStartTime=intent.getLongExtra("collabStartTime",collabStartTime)
+        collabStartTime = intent.getLongExtra("collabStartTime", collabStartTime)
 
 
 //        jsonString = intent.getStringArrayExtra("jsonString").toString()
@@ -55,20 +55,21 @@ class DrawingActivity : AppCompatActivity(), CreateDrawingPopUp.DialogListener, 
         sharedViewModelToolBar.setUser(user)
         sharedViewModelToolBar.setCollabStartTime(collabStartTime)
 
-if(!ISDRAFT){
-        if (collabDrawingId == "null") {
-            //Open Popup Window
-            var dialog = CreateDrawingPopUp(user, isAlbumAlreadySelected)
-            dialog.show(supportFragmentManager, "customDialog")
-        } else {//room already exists
-            DrawingSocket.socket.emit("joinCollabChat", collabDrawingId)
-            sharedViewModelToolBar.setCollabDrawingId(collabDrawingId)
-            val bundle = intent.extras
-            jsonString = bundle!!.getStringArrayList("jsonString") as ArrayList<String>
-            sharedViewModelToolBar.setJsonString(jsonString)
+        if (!ISDRAFT) {
+            if (collabDrawingId == "null") {
+                //Open Popup Window
+                var dialog = CreateDrawingPopUp(user, isAlbumAlreadySelected)
+                dialog.show(supportFragmentManager, "customDialog")
+            } else {//room already exists
+                DrawingSocket.socket.emit("joinCollabChat", collabDrawingId)
+                sharedViewModelToolBar.setCollabDrawingId(collabDrawingId)
+                val bundle = intent.extras
+                jsonString = bundle!!.getStringArrayList("jsonString") as ArrayList<String>
+                sharedViewModelToolBar.setJsonString(jsonString)
+            }
         }
     }
-    
+
     override fun albumAdapterListener(albumName: String, albumID: String) {
         this.albumName = albumName
         sharedViewModelCreateDrawingPopUp.setAlbum(albumName, albumID)
