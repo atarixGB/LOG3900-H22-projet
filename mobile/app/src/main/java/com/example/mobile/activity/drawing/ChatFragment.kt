@@ -9,11 +9,13 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import androidx.activity.viewModels
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.mobile.ISDRAFT
 import com.example.mobile.Interface.IMessage
 import com.example.mobile.R
 import com.example.mobile.SocketHandler
@@ -81,6 +83,12 @@ class ChatFragment : Fragment() {
         rvOutputMsgs = rootView.findViewById(R.id.rvOutputMsgs)
         messageText = rootView.findViewById(R.id.msgText)
         btnSend = rootView.findViewById(R.id.btnSend)
+
+        if (ISDRAFT) {
+            rvOutputMsgs.isVisible = false
+            messageText.isVisible = false
+            btnSend.isVisible = false
+        }
         return rootView
     }
 
