@@ -19,6 +19,10 @@ export class LeaveRoomDialogComponent implements OnInit {
   onLeaveChatroom() : void {
     this.chatService.leaveRoom(this.data.roomName);
     this.router.navigate(['../chatmenu'], { relativeTo: this.route });
+    setTimeout(() => {
+      this.chatService.myRooms = [];
+      this.chatService.getAllRooms(true);
+    }, 200);
   }
 
 }

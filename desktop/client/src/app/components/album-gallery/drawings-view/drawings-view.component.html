@@ -10,16 +10,12 @@
       <button mat-icon-button disableRipple="true" routerLink="/my-albums">
         <mat-icon id="back-btn">keyboard_arrow_left</mat-icon> Retour vers Mes Albums
       </button>
-      <div fxFlex="70%"></div>
+      <div fxFlex="75%"></div>
 
       <!-- Options -->
       <button fxFlex="5%" mat-icon-button disableRipple="true" (click)="viewMembersList()"
         matTooltip="Afficher la liste des membres">
         <mat-icon>group</mat-icon>
-      </button>
-      <button fxFlex="5%" mat-icon-button disableRipple="true" *ngIf="this.isCurrentAlbumMine"
-        matTooltip="Créer un dessin pour cet album">
-        <mat-icon>add_photo_alternate</mat-icon>
       </button>
       <button fxFlex="5%" mat-icon-button [matMenuTriggerFor]="menu" *ngIf="!this.isPublicAlbum">
         <mat-icon>more_vert</mat-icon>
@@ -52,6 +48,12 @@
         <h1><u>{{this.albumGalleryService.currentAlbum.name }}</u></h1>
       </div>
     </div>
+
+    <!-- Date de creation -->
+    <div fxFlex="5%" fxLayout="row" fxLayoutAlign="center center">
+      <h3>Date de création:&nbsp;{{ this.albumGalleryService.currentAlbum.creationDate != undefined ? this.albumGalleryService.currentAlbum.creationDate : "n/d" }}</h3>
+    </div>
+
     <div *ngIf="!this.isPublicAlbum" fxLayout="row" fxLayoutAlign="center">
       Propriétaire:&nbsp;<span class="username"
         (click)="this.getUserProfileInfos(this.albumGalleryService.currentAlbum.owner)">{{this.albumGalleryService.currentAlbum.owner}}</span>
@@ -71,20 +73,20 @@
 
               <mat-card-header>
                 <mat-card-title>{{drawing.name}}</mat-card-title>
-                <div *ngIf="this.isCurrentAlbumMine">
+                <div *ngIf="drawingIsMine(drawing)">
                   <button mat-icon-button [matMenuTriggerFor]="menu" id="more-option-btn">
                     <mat-icon>more_vert</mat-icon>
                   </button>
                   <mat-menu #menu="matMenu">
-                    <button *ngIf="this.isCurrentAlbumMine" (click)="openChangeNameDialog(drawing)" mat-menu-item>
+                    <button (click)="openChangeNameDialog(drawing)" mat-menu-item>
                       <mat-icon>edit_note</mat-icon>
                       <span>Modifier le nom du dessin</span>
                     </button>
-                    <button *ngIf="this.isCurrentAlbumMine" (click)="openChangeAlbumDialog(drawing)" mat-menu-item>
+                    <button (click)="openChangeAlbumDialog(drawing)" mat-menu-item>
                       <mat-icon>edit_note</mat-icon>
                       <span>Changer le dessin d'album</span>
                     </button>
-                    <button *ngIf="this.isCurrentAlbumMine" (click)="openDeleteConfirmationDialog(drawing)" mat-menu-item>
+                    <button (click)="openDeleteConfirmationDialog(drawing)" mat-menu-item>
                       <mat-icon>directions_run</mat-icon>
                       <span>Supprimer le dessin</span>
                     </button>
@@ -99,15 +101,17 @@
                 <p>
                   Propriétaire: <span class="username" (click)="this.getUserProfileInfos(drawing.owner)">{{drawing.owner}}</span>
                 </p>
+                <p>
+                  Date de création: <span class="creationDate">{{drawing.creationDate}}</span>
+                </p>
               </mat-card-content>
 
               <mat-card-actions>
-                <button mat-button id="like-btn" (click)="onLikeBtn(drawing)">
-                  J'aime <mat-icon>favorite</mat-icon>
-                  <span class="likes-counter">{{drawing.likes?.length == 0 || drawing.likes?.length == null ? "" : "(" +
-                    drawing.likes?.length + ")"}}</span>
+                <button mat-button (click)="onLikeBtn(drawing)">
+                  J'aime <mat-icon id="like-btn">favorite</mat-icon>
+                  <span class="likes-counter">{{drawing.likes?.length == 0 || drawing.likes?.length == null ? "" : "(" + drawing.likes?.length + ")"}}</span>
                 </button>
-                <button mat-button id="share-btn" (click)="onShareBtn(drawing)">Partager <mat-icon>share</mat-icon></button>
+                <!-- <button mat-button id="share-btn" (click)="onShareBtn(drawing)">Partager <mat-icon>share</mat-icon></button> -->
               </mat-card-actions>
 
             </mat-card>

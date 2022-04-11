@@ -7,6 +7,13 @@
     <input matInput [(ngModel)]="this.name">
   </mat-form-field>
 
+  <div class="warning" *ngIf="this.isEmpty">
+    Attention, le nom du dessin ne doit pas être vide.
+  </div>
+  <div class="warning" *ngIf="!this.isValidLength">
+    Attention, le nom du dessin doit être composé de 40 caractères et moins.
+  </div>
+
   <br>
 
   <mat-form-field appearance="fill">
@@ -24,5 +31,5 @@
 
 <mat-dialog-actions>
   <button mat-button mat-dialog-close>Annuler</button>
-  <button mat-button [mat-dialog-close]="true" cdkFocusInitial (click)="createAlbumButton()">Créer</button>
+  <button mat-button cdkFocusInitial (click)="createAlbumButton()">Créer</button>
 </mat-dialog-actions>

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { MatDialogRef } from '@angular/material/dialog';
 import { NAME_MAX_LENGTH } from '@app/constants/constants';
 import { AlbumGalleryService } from '@app/services/album-gallery/album-gallery.service';
 
@@ -12,22 +13,26 @@ export class CreateAlbumDialogComponent {
   description: string;
   isPrivate: boolean;
 
-  constructor(public albumGalleryService: AlbumGalleryService) {
-    this.name = "";
+  isEmpty: boolean;
+  isValidLength: boolean;
+
+  constructor(public albumGalleryService: AlbumGalleryService, private currentDialogRef: MatDialogRef<CreateAlbumDialogComponent>) {
+    this.name = "Mon album";
     this.description = "";
+    this.isValidInput(this.name);
   }
 
   createAlbumButton(): void {
-    if (this.isValidInput(this.name) && this.name.length < NAME_MAX_LENGTH) {
+    if (this.isValidInput(this.name)) {
       this.albumGalleryService.createAlbum(this.name, this.description);
-    } else {
-      // TODO: UI feedback. Following line is temporary
-      alert("L'album doit avoir un nom et posséder moins de 40 caractères.");
+      this.currentDialogRef.close();
     }
   }
 
   private isValidInput(str: string): boolean {
-    return !(str === null || str.match(/^ *$/) !== null);
-  }
+    this.isEmpty = (str === null || str.match(/^ *$/) !== null);
+    this.isValidLength = str.length <= NAME_MAX_LENGTH;
+    return !this.isEmpty && this.isValidLength;
+}
 
 }

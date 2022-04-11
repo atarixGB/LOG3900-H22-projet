@@ -3,6 +3,11 @@
   <!-- Side Menu -->
   <app-side-menu fxLayout="column" fxLayoutAlign="start stretch" fxFlex="15%"></app-side-menu>
 
+  <!-- Back button -->
+  <button mat-icon-button disableRipple="true" (click)="backToProfil(this.profileService.username)">
+    <mat-icon id="back-btn">keyboard_arrow_left</mat-icon> Retour
+  </button>
+
   <div fxLayout="column" fxLayoutAlign="start stretch" fxFlex="auto">
     <div fxFlex="5%"></div>
 
@@ -11,10 +16,6 @@
       <h1 id="title">Mes dessins favoris</h1>
     </div>
 
-    <!-- Back button -->
-    <button mat-icon-button disableRipple="true" (click)="backToProfil(this.profileService.username)">
-      <mat-icon id="back-btn">keyboard_arrow_left</mat-icon> Retour
-    </button>
 
     <div class="content">
       <div fxLayout="row wrap" fxLayoutGap="16px grid">

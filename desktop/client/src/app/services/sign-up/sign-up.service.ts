@@ -39,7 +39,8 @@ export class SignUpService {
             email: this.email,
             description: "Accédez aux paramètres du profil pour ajouter une description!",
             collaborationCount: 0,
-            totalCollaborationTime: 0
+            totalCollaborationTime: 0,
+            isActive: false,
         };
 
         this.httpClient.post(SIGN_UP_URL, userInfos).subscribe(
@@ -49,9 +50,6 @@ export class SignUpService {
                     this.albumGalleryService.addUserToPublicAlbum(this.identifier);
                     this.router.navigate(['../home'], { relativeTo: this.route });
                     this.soundEffectsService.playSuccessSound();
-                } else if (result == 406) {
-                    this.isExistingUsername = true;
-                    this.soundEffectsService.playFailureSound();
                 } else if (result == 406) {
                     this.isUsedEmail = true;
                     this.soundEffectsService.playFailureSound();

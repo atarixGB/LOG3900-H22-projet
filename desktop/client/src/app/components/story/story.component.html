@@ -10,7 +10,7 @@
          <div id="avatarDiv">
             <img id="avatarImg" src="data:image/png;base64,{{this.user.avatar}}">
          </div>
-         <span>{{this.user.identifier}}</span>
+         <span id="username" (click)="this.getUserProfileInfos(this.user.identifier)">{{this.user.identifier}}</span>
       </div>
 
       <!-- Story -->

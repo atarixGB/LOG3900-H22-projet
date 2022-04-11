@@ -10,8 +10,8 @@
   font-weight: bold;
 }
 
-.likes-counter {
-  color: #A8D08C;
+#like-btn {
+  color:red;
 }
 
 .username {
@@ -23,8 +23,8 @@
   color:#A8D08C;
 }
 
-mat-icon {
-  color: rgb(52, 52, 52);
+.creationDate {
+  font-weight: bold;
 }
 
 h3 {
@@ -36,28 +36,12 @@ h3 {
   overflow-y: scroll;
 }
 
-::-webkit-scrollbar {
-  width: 12px;
-  height: 12px;
-  }
-
-  ::-webkit-scrollbar-track {
-  border: 1px solid #A8D08C;
-  border-radius: 10px;
-  }
-
-  ::-webkit-scrollbar-thumb {
-  background: #A8D08C;
-  border-radius: 10px;
-  }
-
 #back-btn {
   transform: scale(2);
 }
 
 mat-icon {
-  transform: scale(0.75);
-  color: #A8D08C;
+  color: #000000;
 }
 
 img:hover {
@@ -91,6 +75,10 @@ img:hover {
 
 #more-option-button {
   float:right;
+}
+
+#smoll {
+  transform: scale(0.75);
 }
 
 

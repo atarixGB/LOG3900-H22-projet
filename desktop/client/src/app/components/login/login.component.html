@@ -1,31 +1,44 @@
-<div fxLayout="column" fxLayoutAlign="space-evenly center"  fxFlex="auto" class="login-container">
-   <img src="./assets/PolyGramLogo.png" alt="Logo" fxFlex="40%">
+<div id="draggable-zone" fxLayout="row" fxLayoutAlign="start stretch">
+  <mat-icon id="back-btn">drag_indicator</mat-icon>
+</div>
 
-   <div fxLayout="column" fxLayoutAlign="start center">
-      <h1>Application de dessin collaborative</h1>
-      <form>
-         <mat-form-field class="animate__animated" [ngClass]="{animate__headShake: !this.isValidFields || !this.loginService.isValidEmail}" appearance="outline">
-           <mat-label>Courriel</mat-label>
-           <input matInput placeholder="Entrez votre courriel" [(ngModel)]="this.email" name="email">
-         </mat-form-field>
-      </form>
-      <p *ngIf="!this.loginService.isValidEmail" class="error">^ <u>Aucun compte n'a été créé avec ce courriel</u> ^</p>
+<button id="quit-btn" mat-icon-button disableRipple="true" (click)="quitApp()" fxLayout="row"
+  fxLayoutAlign="start center">
+  <mat-icon id="back-btn">directions_run</mat-icon> Quitter l'application
+</button>
 
-      <form>
-         <mat-form-field class="animate__animated" [ngClass]="{animate__headShake: !this.isValidFields || !this.loginService.isValidPW}" appearance="outline">
-           <mat-label>Mot de passe</mat-label>
-           <input matInput placeholder="Entrez votre mot de passe" type="password" [(ngModel)]="this.password" name="password">
-         </mat-form-field>
-      </form>
-      <p *ngIf="!this.loginService.isValidPW" class="error">^ <u>Mot de passe invalide</u> ^</p>
-      <p *ngIf="!this.isValidFields" class="error">* <u>Les champs ne peuvent pas être vides</u> *</p>
 
-      <button mat-raised-button color="primary" (click)="this.connect()">SE CONNECTER</button>
-      <p routerLink="/forgot-password" id="reset-password-link">Mot de passe oublié ?</p>
-   </div>
+<div fxLayout="column" fxLayoutAlign="space-evenly center" fxFlex="auto" class="login-container">
+  <img src="./assets/PolyGramLogo.png" alt="Logo" fxFlex="40%">
 
-   <div fxLayout="column" fxLayoutAlign="start center">
-      <h2>Vous n'avez pas de compte? Inscrivez-vous maintenant!</h2>
-      <button mat-raised-button color="primary" routerLink="/signup">CRÉER UN COMPTE</button>
-   </div>
+  <div fxLayout="column" fxLayoutAlign="start center">
+    <h1>Application de dessin collaborative</h1>
+    <form>
+      <mat-form-field class="animate__animated"
+        [ngClass]="{animate__headShake: !this.isValidFields || !this.loginService.isValidEmail}" appearance="outline">
+        <mat-label>Courriel</mat-label>
+        <input matInput placeholder="Entrez votre courriel" [(ngModel)]="this.email" name="email">
+      </mat-form-field>
+    </form>
+    <p *ngIf="!this.loginService.isValidEmail" class="error">^ <u>Aucun compte n'a été créé avec ce courriel</u> ^</p>
+
+    <form>
+      <mat-form-field class="animate__animated"
+        [ngClass]="{animate__headShake: !this.isValidFields || !this.loginService.isValidPW}" appearance="outline">
+        <mat-label>Mot de passe</mat-label>
+        <input matInput placeholder="Entrez votre mot de passe" type="password" [(ngModel)]="this.password"
+          name="password">
+      </mat-form-field>
+    </form>
+    <p *ngIf="!this.loginService.isValidPW" class="error">^ <u>Mot de passe invalide</u> ^</p>
+    <p *ngIf="!this.isValidFields" class="error">* <u>Les champs ne peuvent pas être vides</u> *</p>
+
+    <button mat-raised-button color="primary" (click)="this.connect()">SE CONNECTER</button>
+    <p routerLink="/forgot-password" id="reset-password-link">Mot de passe oublié ?</p>
+  </div>
+
+  <div fxLayout="column" fxLayoutAlign="start center">
+    <h2>Vous n'avez pas de compte? Inscrivez-vous maintenant!</h2>
+    <button mat-raised-button color="primary" routerLink="/signup">CRÉER UN COMPTE</button>
+  </div>
 </div>

@@ -10,6 +10,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import com.example.mobile.Retrofit.IMyService
+import com.example.mobile.Retrofit.RetrofitClient
 import com.example.mobile.activity.Dashboard
 import com.example.mobile.activity.MainActivity
 import com.example.mobile.activity.drawing.DrawingActivity
@@ -17,6 +19,9 @@ import com.example.mobile.activity.albums.Albums
 import com.example.mobile.activity.chat.ChatRooms
 import com.example.mobile.activity.profile.Profile
 import com.example.mobile.viewModel.SharedViewModelToolBar
+import io.reactivex.disposables.CompositeDisposable
+import retrofit2.Call
+import retrofit2.Response
 
 class ToolbarNavigationFragment: Fragment() {
     private lateinit var dashbord: TextView
@@ -30,6 +35,14 @@ class ToolbarNavigationFragment: Fragment() {
     private lateinit var user: String
     private val sharedViewModel: SharedViewModelToolBar by activityViewModels()
     private var mediaPlayerSong: MediaPlayer? = null
+
+    private lateinit var iMyService: IMyService
+    internal var compositeDisposable = CompositeDisposable()
+
+    override fun onStop() {
+        compositeDisposable.clear()
+        super.onStop()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,6 +64,10 @@ class ToolbarNavigationFragment: Fragment() {
         draft=rootView.findViewById(R.id.draft)
         displayUser=rootView.findViewById(R.id.displayUser)
 
+
+        //init api
+        val retrofit = RetrofitClient.getInstance()
+        iMyService = retrofit.create(IMyService::class.java)
 
 
         logout = rootView.findViewById(R.id.logout)
@@ -124,6 +141,7 @@ class ToolbarNavigationFragment: Fragment() {
             startActivity(intent)
         }
         logout.setOnClickListener{
+            disconnectUser(user)
             logout.setBackgroundResource(R.color.greenOnClick)
             Toast.makeText(context, "Déconnexion", Toast.LENGTH_SHORT).show()
             val intent = Intent(activity, MainActivity::class.java)
@@ -132,6 +150,22 @@ class ToolbarNavigationFragment: Fragment() {
 
 
         return rootView
+    }
+
+    private fun disconnectUser(user:String) {
+        var call: Call<Any> = iMyService.disconnectUser(user)
+
+        call.enqueue(object: retrofit2.Callback<Any> {
+            override fun onResponse(call: Call<Any>, response: Response<Any>) {
+
+                if(response.body()==201){
+                    Toast.makeText(context, "Déconnexion", Toast.LENGTH_SHORT).show()
+                }
+            }
+            override fun onFailure(call: Call<Any>, t: Throwable) {
+                Toast.makeText(context, "erreur", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
     override fun onResume() {

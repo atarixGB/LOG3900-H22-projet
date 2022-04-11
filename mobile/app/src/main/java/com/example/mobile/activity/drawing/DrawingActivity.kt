@@ -3,11 +3,16 @@ package com.example.mobile.activity.drawing
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.DialogInterface
+import android.content.Intent
+import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
+import android.provider.MediaStore
 import androidx.activity.viewModels
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.example.mobile.ISDRAFT
 import androidx.fragment.app.DialogFragment
 import com.example.mobile.Interface.IDrawing
@@ -93,6 +98,15 @@ class DrawingActivity : AppCompatActivity(), CreateDrawingPopUp.DialogListener, 
                 jsonString = bundle!!.getStringArrayList("jsonString") as ArrayList<String>
                 sharedViewModelToolBar.setJsonString(jsonString)
             }
+        } else {
+            val builder = androidx.appcompat.app.AlertDialog.Builder(this)
+            builder.setTitle("Bienvenue dans le mode brouillon!")
+            builder.setMessage("Dans ce mode, rien n'est sauvegardé et il n'y a pas de collaboration.")
+            builder.setNegativeButton("Continuer") { dialog, which ->
+                dialog.dismiss()
+            }
+            val dialog: androidx.appcompat.app.AlertDialog = builder.create()
+            dialog.show()
         }
     }
 

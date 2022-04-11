@@ -3,10 +3,9 @@ import { Injectable } from '@angular/core';
 import { IAlbum } from '@app/interfaces-enums/IAlbum'
 import { IDrawing } from '@app/interfaces-enums/IDrawing'
 import { LoginService } from '@app/services/login/login.service';
-import { ALBUM_URL, CREATE_DRAWING_URL, JOIN_ALBUM_URL, DECLINE_MEMBERSHIP_REQUEST_URL, ACCEPT_MEMBERSHIP_REQUEST_URL, UPDATE_ALBUM_PARAMETERS_URL, ADD_DRAWING_TO_ALBUM_URL, GET_DRAWING_URL, SAVE_DRAWING_URL, LIKE_DRAWING_URL, GET_USER_FAVORITE_DRAWINGS_URL, GET_USER_TOP_X_DRAWINGS_URL, CHANGE_DRAWING_NAME_URL, DELETE_DRAWING_URL, REMOVE_DRAWING_FROM_ALBUM_URL } from '@app/constants/api-urls';
+import { ALBUM_URL, CREATE_DRAWING_URL, JOIN_ALBUM_URL, DECLINE_MEMBERSHIP_REQUEST_URL, ACCEPT_MEMBERSHIP_REQUEST_URL, UPDATE_ALBUM_PARAMETERS_URL, ADD_DRAWING_TO_ALBUM_URL, GET_DRAWING_URL, SAVE_DRAWING_URL, LIKE_DRAWING_URL, GET_USER_FAVORITE_DRAWINGS_URL, GET_USER_TOP_X_DRAWINGS_URL, CHANGE_DRAWING_NAME_URL, DELETE_DRAWING_URL, REMOVE_DRAWING_FROM_ALBUM_URL, GET_LIKE_DRAWING_URL } from '@app/constants/api-urls';
 import { PUBLIC_ALBUM } from '@app/constants/constants';
 import { DrawingService } from '../editor/drawing/drawing.service';
-import { formatDate } from '@angular/common';
 import { CollaborationService } from '../collaboration/collaboration.service';
 
 @Injectable({
@@ -15,6 +14,7 @@ import { CollaborationService } from '../collaboration/collaboration.service';
 export class AlbumGalleryService {
   publicAlbums: IAlbum[];
   myAlbums: IAlbum[];
+  myAlbumsWithoutPublic: IAlbum[];
   currentAlbum: IAlbum;
 
   selectedAlbumId: string;
@@ -25,9 +25,13 @@ export class AlbumGalleryService {
   favoriteDrawingsData: IDrawing[];
   topDrawingsData: IDrawing[];
 
+  likes: string[];
+  isAlreadyLike: boolean;
+
   constructor(private httpClient: HttpClient, private loginService: LoginService, private drawingService: DrawingService, private collaborationService: CollaborationService) {
     this.publicAlbums = [];
     this.myAlbums = [];
+    this.myAlbumsWithoutPublic = [];
     this.fetchedDrawings = [];
 
     this.currentDrawing = {
@@ -47,7 +51,7 @@ export class AlbumGalleryService {
     this.currentDrawing.owner = this.loginService.username;
     this.currentDrawing.isStory = false;
     this.currentDrawing.name = drawingName;
-    this.currentDrawing.creationDate = formatDate(new Date(), 'hh:mm:ss a', 'en-US');
+    this.currentDrawing.creationDate = new Date().toLocaleString('fr-FR', {day: 'numeric', month: 'long', year : 'numeric'} );
     console.log(this.currentDrawing)
 
     this.httpClient.post(CREATE_DRAWING_URL, this.currentDrawing).subscribe(
@@ -119,6 +123,25 @@ export class AlbumGalleryService {
     )
   }
 
+  updateLikes(drawing: IDrawing): void {
+    this.httpClient.get(`${GET_LIKE_DRAWING_URL}/${drawing._id}`).subscribe(
+      (result: any[]) => {
+        console.log("Résultat du serveur:", result)
+        this.likes = result;
+
+        if (!result.includes(this.loginService.username)) {
+          this.likeDrawing(drawing);
+          this.isAlreadyLike = false;
+        } else {
+          this.isAlreadyLike = true;
+        }
+      },
+      (error) => {
+        console.log(`Impossible d'aimer le dessin "${drawing.name}".\nErreur: ${error}`);
+      }
+    )
+  }
+
   changeDrawingName(drawing: IDrawing, newDrawingName: string): void {
     const url = `${CHANGE_DRAWING_NAME_URL}`;
     const body = {
@@ -171,7 +194,8 @@ export class AlbumGalleryService {
       description: description,
       drawingIDs: [],
       members: [this.loginService.username],
-      membershipRequests: []
+      membershipRequests: [],
+      creationDate: new Date().toLocaleString('fr-FR', {day: 'numeric', month: 'long', year : 'numeric'} ),
     }
 
     this.httpClient.post(ALBUM_URL, newAlbum).subscribe(
@@ -332,14 +356,18 @@ export class AlbumGalleryService {
 
   fetchMyAlbumsFromDatabase(): void {
     this.myAlbums = [];
-    console.log("FETCHING MY ALBUMS")
+    this.myAlbumsWithoutPublic = [];
     this.httpClient.get<IAlbum[]>(ALBUM_URL).subscribe(
       (albums: IAlbum[]) => {
-        console.log("ALBUMS",albums)
         for (let i = 0; i < albums.length; i++) {
+
           if (albums[i].members.includes(this.loginService.username)) {
             this.myAlbums.push(albums[i]);
-            console.log(this.myAlbums[i])
+          }
+
+          if (albums[i].members.includes(this.loginService.username) && albums[i].name != PUBLIC_ALBUM.name) {
+            this.myAlbumsWithoutPublic.push(albums[i]);
+            console.log(this.myAlbumsWithoutPublic[i]);
           }
         }
       },

@@ -6,4 +6,5 @@ export interface IAlbum {
   drawingIDs: string[];
   members: string[];
   membershipRequests: string[];
+  creationDate: any;
 }

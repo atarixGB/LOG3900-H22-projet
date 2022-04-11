@@ -66,7 +66,7 @@
     </div>
 
     <!-- Result container -->
-    <div fxFlex="65%">
+    <div fxFlex="65%" *ngIf="this.advancedResearchService.isAlbum || this.advancedResearchService.isUser">
       <div id="result-row" fxLayout="row" fxLayoutAlign="center stretch">
         <div id="result-div" fxFlex="85%">
 
@@ -81,15 +81,6 @@
             </mat-grid-tile>
           </mat-grid-list>
 
-          <mat-grid-list cols="4" *ngIf="this.advancedResearchService.isDrawing">
-            <mat-grid-tile *ngFor="let drawing of this.advancedResearchService.result">
-              <button mat-icon-button disableRipple="true" (click)="this.onDrawingClick(drawing)">
-                <img id="drawing-preview" src="data:image/png;base64,{{ drawing.data }}">
-                <div class="label">{{drawing.name}}</div>
-              </button>
-            </mat-grid-tile>
-          </mat-grid-list>
-
           <mat-grid-list cols="4" *ngIf="this.advancedResearchService.isUser">
             <mat-grid-tile *ngFor="let user of this.advancedResearchService.result">
               <button mat-icon-button disableRipple="true" (click)="this.onUserClick(user)">
@@ -99,6 +90,30 @@
             </mat-grid-tile>
           </mat-grid-list>
 
+        </div>
+      </div>
+    </div>
+
+    <div fxFlex="65%" id="drawingRow" fxLayout="row" fxLayoutAlign="center stretch" *ngIf="this.advancedResearchService.isDrawing">
+      <div id="drawingsDiv" fxFlex="85%">
+        <div fxLayout="row wrap" fxLayoutGap="16px grid">
+          <div fxFlex="25%" fxFlex.xs="90%" fxFlex.sm="33%" *ngFor="let drawing of this.advancedResearchService.result">
+            <mat-card class="mat-elevation-z4">
+              <mat-card-header>
+                <mat-card-title>{{drawing.name}}</mat-card-title>
+              </mat-card-header>
+
+              <img routerLink="/editor" (click)="this.enterCollab(drawing)" mat-card-image
+                src="data:image/png;base64,{{ drawing.data }}">
+
+              <mat-card-content>
+                <p>
+                  Propriétaire: <span class="username" (click)="this.getUserProfileInfos(drawing.owner)">{{drawing.owner}}</span>
+                </p>
+              </mat-card-content>
+
+            </mat-card>
+          </div>
         </div>
       </div>
     </div>

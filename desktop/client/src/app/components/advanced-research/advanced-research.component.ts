@@ -79,12 +79,12 @@ export class AdvancedResearchComponent {
     }
   }
 
-  onDrawingClick(drawing: IDrawing) : void {
+  /*onDrawingClick(drawing: IDrawing) : void {
     // Join corresponding collab session
     this.albumGalleryService.currentDrawing = drawing;
     this.drawingService.setCurrentDrawing(drawing);
     this.collaborationService.joinCollab(drawing._id);
-  }
+  }*/
 
   onUserClick(user: IUser) : void {
     // Redirect to corresponding user profile page
@@ -95,5 +95,17 @@ export class AdvancedResearchComponent {
   private isOneKeywordOnly(input: string): boolean {
     this.isValidInput = !(/\s/).test(input);
     return this.isValidInput;
+  }
+
+  enterCollab(drawing: IDrawing): void {
+    this.albumGalleryService.currentDrawing = drawing;
+    this.drawingService.setCurrentDrawing(drawing);
+    this.collaborationService.joinCollab(drawing._id);
+    localStorage.setItem('currentDrawingName', drawing.name);
+  }
+
+  getUserProfileInfos(username: string): void {
+    console.log("Get info of", username);
+    this.router.navigate([`../profile/${username}`], { relativeTo: this.route });
   }
 }

@@ -83,6 +83,7 @@ import { CollabChatroomComponent } from './components/chat/collab-chatroom/colla
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { PasswordSnackbarComponent } from './components/reset-password/password-snackbar/password-snackbar.component';
+import { LikeSnackbarComponent } from './components/album-gallery/drawings-view/like-snackbar/like-snackbar.component';
 
 @NgModule({
     declarations: [
@@ -144,6 +145,7 @@ import { PasswordSnackbarComponent } from './components/reset-password/password-
         ForgotPasswordComponent,
         PasswordSnackbarComponent,
         StoryComponent,
+        LikeSnackbarComponent,
     ],
     imports: [
         BrowserModule,

@@ -6,19 +6,6 @@
   text-decoration: underline;
 }
 
-#username {
-  cursor: pointer;
-}
-
-#username:hover {
-  color:#A8D08C;
-}
-
-mat-icon {
-  transform: scale(2);
-  color: #A8D08C;
-}
-
 .bold {
   font-weight: bold;
 }
@@ -27,18 +14,3 @@ mat-icon {
   overflow-y: scroll;
   height: 100%;
 }
-
-::-webkit-scrollbar {
-  width: 12px;
-  height: 12px;
-  }
-
-  ::-webkit-scrollbar-track {
-  border: 1px solid #A8D08C;
-  border-radius: 10px;
-  }
-
-  ::-webkit-scrollbar-thumb {
-  background: #A8D08C;
-  border-radius: 10px;
-  }

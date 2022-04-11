@@ -18,6 +18,7 @@ export const CREATE_DRAWING_URL = `${DATABASE_URL}/drawing/create`;
 export const SAVE_DRAWING_URL = `${DATABASE_URL}/drawing/save`;
 export const GET_DRAWING_URL = `${DATABASE_URL}/drawings`;
 export const LIKE_DRAWING_URL = `${DATABASE_URL}/drawings/addLike`;
+export const GET_LIKE_DRAWING_URL = `${DATABASE_URL}/drawings/getLikes`;
 export const GET_USER_FAVORITE_DRAWINGS_URL = `${DATABASE_URL}/drawings/favorite`;
 export const GET_USER_TOP_X_DRAWINGS_URL = `${DATABASE_URL}/drawings/top`;
 export const CHANGE_DRAWING_NAME_URL = `${DATABASE_URL}/drawingUpdate`;
@@ -25,7 +26,8 @@ export const DELETE_DRAWING_URL = `${DATABASE_URL}/drawing/delete`;
 export const REMOVE_DRAWING_FROM_ALBUM_URL = `${DATABASE_URL}/removeDrawing`;
 
 export const ADD_DRAWING_TO_STORY_URL = `${DATABASE_URL}/drawings/addDrawingToStory`;
-export const GET_ALL_USERS_URL = `${DATABASE_URL}/getAllUsers`
+export const GET_ALL_USERS_URL = `${DATABASE_URL}/getAllUsers`;
+export const GET_USER_INFOS_URL = `${DATABASE_URL}/users`;
 export const GET_ALL_USER_DRAWINGS_URL = `${DATABASE_URL}/getAllUserDrawings`
 
 export const PROFILE_UPDATE_URL = `${DATABASE_URL}/profileUpdate`;
@@ -40,6 +42,7 @@ export const STATS_COLLAB_UPDATE_URL = `${DATABASE_URL}/profile/stats/collabs/up
 
 export const SIGN_UP_URL = `${DATABASE_URL}/register`;
 export const LOGIN_URL = `${DATABASE_URL}/login`;
+export const DISCONNECT_URL = `${DATABASE_URL}/disconnect`;
 
 export const CREATE_ROOM_URL = `${DATABASE_URL}/createRoom`;
 export const JOIN_ROOM_URL = `${DATABASE_URL}/joinRoom`;

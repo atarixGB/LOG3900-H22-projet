@@ -1,7 +1,11 @@
-<div id="storyBtn" *ngIf="this.albumGalleryService.currentDrawing.owner == this.profileService.username" fxLayout="row" fxLayoutAlign="center center"  matTooltip="Ajouter aux dessins du jour" (click)="this.storyService.addToStory()" matTooltipPosition="above">
+<div id="storyBtn" *ngIf="this.albumGalleryService.currentDrawing.owner == this.profileService.username && !this.storyAdded" fxLayout="row" fxLayoutAlign="center center"  matTooltip="Ajouter aux dessins du jour" (click)="this.addToStory()" matTooltipPosition="above">
     <button  mat-icon-button>
         <mat-icon>add_circle_outline</mat-icon>
     </button>
     <span>Dessin du jour</span>
+</div> 
+
+<div id="storyBtn" *ngIf="this.albumGalleryService.currentDrawing.owner == this.profileService.username && this.storyAdded" fxLayout="row" fxLayoutAlign="center center">
+    <span>Ajouté avec succès</span>
 </div> 
        

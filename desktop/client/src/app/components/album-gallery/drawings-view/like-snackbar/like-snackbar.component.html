@@ -1,0 +1,7 @@
+<span *ngIf="this.data.isAlreadyLiked ;else elseBlock">
+  Tu as déjà aimé le dessin <span class="bold">{{this.data.drawingName}}</span> ! Tu ne peux aimé un dessin plusieurs fois... ;)
+</span>
+
+<ng-template #elseBlock>
+  Le dessin <span class="bold">{{this.data.drawingName}}</span> a été aimé avec succès!
+</ng-template>

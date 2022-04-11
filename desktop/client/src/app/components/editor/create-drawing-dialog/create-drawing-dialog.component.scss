@@ -5,8 +5,40 @@
 .albums-container-view {
   border-color: black;
   border-radius: 4px;
+  overflow: auto;
+  max-height: 500px;
+  margin-bottom: 1em;
 }
 
 mat-icon {
-  color: lightgreen;
+  color: #A8D08C;
+}
+
+mat-form-field {
+  margin: 1em;
+}
+
+.folder-icon {
+  transform: scale(3);
+}
+
+
+.warning {
+  font-size: small;
+  color: red;
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  border: 1px solid #A8D08C;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #A8D08C;
+  border-radius: 10px;
 }

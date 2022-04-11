@@ -36,6 +36,10 @@
     height: 150px;
 }
 
+#badge:hover {
+    cursor: help;
+}
+
 #favoritesImg {
     width: 150px;
     height: 150px;
@@ -66,6 +70,10 @@
 #settingsBtnDiv:hover {
     cursor: pointer;
     color: rgb(78, 78, 78);
+}
+
+#size {
+    font-size: 12px;
 }
 
 .sectionTitle {

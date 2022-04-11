@@ -41,6 +41,10 @@ export class LoginComponent {
         }
     }
 
+    quitApp(): void {
+      this.loginService.quitApp();
+    }
+
     private isValidInput(str: string): boolean {
         return !(str === null || str.match(/^ *$/) !== null);
     }
