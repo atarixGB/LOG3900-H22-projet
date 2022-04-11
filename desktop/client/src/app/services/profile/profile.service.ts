@@ -23,6 +23,8 @@ export class ProfileService {
   isFromChatWindow: boolean;
   oldUrl: string;
 
+  nextBadgeCount: number;
+
   // Statistics
   totalNbrDrawings: number;
   totalNbrLikes: number;
@@ -36,6 +38,7 @@ export class ProfileService {
     this.favoritesImg = FAVOURITE;
     this.mostLikedImg = MOST_LIKED;
     this.isFromChatWindow = false;
+    this.nextBadgeCount = 1;
   }
 
   setUsername(name: string): void {
@@ -113,11 +116,15 @@ export class ProfileService {
   setBadge(): void {
     if (this.totalNbrLikes <= BADGE_COUNT.BEGINNER) {
       this.currentBadge = BADGES.BEGINNER;
+      this.nextBadgeCount = BADGE_COUNT.BEGINNER - this.totalNbrLikes + 1;
     } else if (this.totalNbrLikes <= BADGE_COUNT.INTERMIDIATE) {
       this.currentBadge = BADGES.INTERMEDIATE;
+      this.nextBadgeCount = BADGE_COUNT.INTERMIDIATE - this.totalNbrLikes + 1;
     } else if (this.totalNbrLikes <= BADGE_COUNT.EXPERT) {
+      this.nextBadgeCount = BADGE_COUNT.EXPERT - this.totalNbrLikes + 1;
       this.currentBadge = BADGES.EXPERT;
     } else {
+      this.nextBadgeCount = 0;
       this.currentBadge = BADGES.ARTIST;
     }
   }
