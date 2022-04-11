@@ -73,28 +73,38 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingTop="70dp"
         android:layout_marginLeft="680dp"
-        >
+        android:orientation="horizontal"
+        android:paddingTop="70dp">
 
         <com.mikhaellopez.circularimageview.CircularImageView
-            android:layout_width="160dp"
-            android:layout_height="200dp"
             android:id="@+id/userAvatar"
-            />
+            android:layout_width="160dp"
+            android:layout_height="200dp" />
 
         <ImageView
+            android:id="@+id/badge"
             android:layout_width="130dp"
             android:layout_height="130dp"
-            android:id="@+id/badge"
-            android:src="@drawable/debutant"
             android:layout_marginLeft="200dp"
-            />
+            android:src="@drawable/debutant" />
 
 
     </LinearLayout>
-
+    <TextView
+        android:id="@+id/view_badges"
+        android:layout_width="150dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="1030dp"
+        android:layout_marginBottom="-100dp"
+        android:background="@drawable/bg_btn"
+        android:gravity="center"
+        android:paddingLeft="10dp"
+        android:text="voir les badges"
+        android:textColor="@color/design_default_color_primary_dark"
+        android:textSize="15dp"
+        android:textStyle="normal" />
     <LinearLayout
         android:id="@+id/bloc_profil"
         android:layout_width="wrap_content"
