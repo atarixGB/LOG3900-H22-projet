@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ADVANCED_SEARCH_URL, GET_DRAWING_URL } from '@app/constants/api-urls';
+import { ADVANCED_SEARCH_URL, ALBUM_URL, GET_DRAWING_URL } from '@app/constants/api-urls';
 import { PUBLIC_ALBUM } from '@app/constants/constants';
+import { IAlbum } from '@app/interfaces-enums/IAlbum';
 import { LoginService } from '../login/login.service';
 
 @Injectable({
@@ -38,14 +39,35 @@ export class AdvancedResearchService {
             }
           }
         } else if (this.isDrawing) {
-          for (let drawing of result) {
-            this.httpClient.get(`${GET_DRAWING_URL}/${drawing._id}`).subscribe(
-              (res: any) => {
-                drawing.data = res.data;
-                this.result.push(drawing);
+          this.httpClient.get(ALBUM_URL).subscribe(
+            (albums: IAlbum[]) => {
+              console.log("Got all albums");
+              for (let album of albums) {
+                if (album.members.includes(this.loginService.username)) {
+                  for (let drawingID of album.drawingIDs) {
+                    for (let drawing of result) {
+                      if (drawing._id == drawingID) {
+                        this.httpClient.get(`${GET_DRAWING_URL}/${drawing._id}`).subscribe(
+                          (res: any) => {
+                            drawing.data = res.data;
+                            this.result.push(drawing);
+                          }
+                        );
+                      }
+                    }
+                  }
+                }
               }
-            );
-          }
+            });
+
+          // for (let drawing of result) {
+          //   this.httpClient.get(`${GET_DRAWING_URL}/${drawing._id}`).subscribe(
+          //     (res: any) => {
+          //       drawing.data = res.data;
+          //       this.result.push(drawing);
+          //     }
+          //   );
+          // }
         } else {
           this.result = result;
         }

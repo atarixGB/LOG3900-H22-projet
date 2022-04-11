@@ -39,3 +39,18 @@ button {
   border-color: rgb(233, 64, 233);
   color: rgb(78, 78, 78);
 }
+
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+  }
+
+  ::-webkit-scrollbar-track {
+  border: 1px solid #A8D08C;
+  border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+  background: #A8D08C;
+  border-radius: 10px;
+  }
