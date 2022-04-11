@@ -13,7 +13,7 @@ import org.json.JSONObject
 import java.util.*
 import kotlin.math.abs
 
-class Rectangle (context: Context, baseCanvas: Canvas, val socket : DrawingSocket, val selection: Selection, val drawingId: String) : Tool(context, baseCanvas, socket) {
+class Rectangle (context: Context, baseCanvas: Canvas, val socket : DrawingSocket, val selection: Selection, var drawingId: String) : Tool(context, baseCanvas, socket) {
 
     var top = 0F
     var right = 0F

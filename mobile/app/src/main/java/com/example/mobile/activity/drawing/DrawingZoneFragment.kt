@@ -528,7 +528,9 @@ class DrawingZoneFragment : Fragment() {
             this.drawingId = drawingId
             if (this::toolManager.isInitialized) {
                 this.toolManager.drawingId = drawingId
-                toolManager.initialiseTools()
+                toolManager.pencil.drawingId = drawingId
+                toolManager.ellipse.drawingId = drawingId
+                toolManager.rectangle.drawingId = drawingId
             }
         }
 
