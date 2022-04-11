@@ -103,4 +103,9 @@ export class AdvancedResearchComponent {
     this.collaborationService.joinCollab(drawing._id);
     localStorage.setItem('currentDrawingName', drawing.name);
   }
+
+  getUserProfileInfos(username: string): void {
+    console.log("Get info of", username);
+    this.router.navigate([`../profile/${username}`], { relativeTo: this.route });
+  }
 }

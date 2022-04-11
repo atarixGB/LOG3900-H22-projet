@@ -108,7 +108,7 @@
 
               <mat-card-content>
                 <p>
-                  Propriétaire: <span class="username">{{drawing.owner}}</span>
+                  Propriétaire: <span class="username" (click)="this.getUserProfileInfos(drawing.owner)">{{drawing.owner}}</span>
                 </p>
               </mat-card-content>
 
