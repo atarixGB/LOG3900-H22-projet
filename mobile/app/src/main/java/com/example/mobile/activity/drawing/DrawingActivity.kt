@@ -5,19 +5,28 @@ import android.app.Dialog
 import android.content.DialogInterface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.TextView
 import androidx.activity.viewModels
 import com.example.mobile.ISDRAFT
 import androidx.fragment.app.DialogFragment
+import com.example.mobile.Interface.IDrawing
 import com.example.mobile.R
+import com.example.mobile.Retrofit.IMyService
+import com.example.mobile.Retrofit.RetrofitClient
 import com.example.mobile.adapter.AlbumAdapter
+import com.example.mobile.adapter.DrawingAdapter
 import com.example.mobile.popup.CreateDrawingPopUp
 import com.example.mobile.popup.PrepForMemberLeavingPopUp
 import com.example.mobile.popup.PrepForNewMemberPopUp
 import com.example.mobile.viewModel.SharedViewModelCreateDrawingPopUp
 import com.example.mobile.viewModel.SharedViewModelToolBar
+import io.reactivex.disposables.CompositeDisposable
 import io.socket.emitter.Emitter
+import kotlinx.android.synthetic.main.activity_drawing.*
 import org.json.JSONObject
+import retrofit2.Call
+import retrofit2.Response
 
 class DrawingActivity : AppCompatActivity(), CreateDrawingPopUp.DialogListener, AlbumAdapter.AlbumAdapterListener {
     private lateinit var user: String
@@ -31,6 +40,9 @@ class DrawingActivity : AppCompatActivity(), CreateDrawingPopUp.DialogListener, 
     private lateinit var location: TextView
     private val sharedViewModelToolBar: SharedViewModelToolBar by viewModels()
     private val sharedViewModelCreateDrawingPopUp: SharedViewModelCreateDrawingPopUp by viewModels()
+
+    private lateinit var iMyService: IMyService
+    internal var compositeDisposable = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,11 +65,19 @@ class DrawingActivity : AppCompatActivity(), CreateDrawingPopUp.DialogListener, 
         collabDrawingId = intent.getStringExtra("drawingCollabId").toString()
         collabStartTime=intent.getLongExtra("collabStartTime",collabStartTime)
 
+        //location of drawing
+        locationText.text = intent.getStringExtra("drawingLocation").toString()
+
 
 //        jsonString = intent.getStringArrayExtra("jsonString").toString()
 
         sharedViewModelToolBar.setUser(user)
         sharedViewModelToolBar.setCollabStartTime(collabStartTime)
+
+
+        val retrofit = RetrofitClient.getInstance()
+        iMyService = retrofit.create(IMyService::class.java)
+
 
         if(!ISDRAFT){
             if (collabDrawingId == "null") {
@@ -67,6 +87,7 @@ class DrawingActivity : AppCompatActivity(), CreateDrawingPopUp.DialogListener, 
             } else {
                 // drawing already exists
                 sharedViewModelToolBar.setCollabDrawingId(collabDrawingId)
+                getDrawingLocation(collabDrawingId)
                 val bundle = intent.extras
                 jsonString = bundle!!.getStringArrayList("jsonString") as ArrayList<String>
                 sharedViewModelToolBar.setJsonString(jsonString)
@@ -91,5 +112,23 @@ class DrawingActivity : AppCompatActivity(), CreateDrawingPopUp.DialogListener, 
         jo.put("room", drawingId)
         jo.put("username", user)
         DrawingSocket.socket.emit("joinCollab", jo)
+    }
+
+    private fun getDrawingLocation(drawingId: String) {
+        var call: Call<IDrawing> = iMyService.getDrawingData(drawingId)
+        call.enqueue(object: retrofit2.Callback<IDrawing> {
+
+            override fun onResponse(call: Call<IDrawing>, response: Response<IDrawing>) {
+                val currentDrawing = response.body()
+                if(currentDrawing!!.location != "")
+                    locationText.text = currentDrawing!!.location
+                else
+                    locationText.text = "Localisation non disponible"
+            }
+
+            override fun onFailure(call: Call<IDrawing>, t: Throwable) {
+                Log.d("Albums", "onFailure" +t.message )
+            }
+        })
     }
 }

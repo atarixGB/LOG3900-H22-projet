@@ -71,8 +71,6 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
     private val sharedViewModelToolBar: SharedViewModelToolBar by viewModels()
     private val sharedViewModelCreateDrawingPopUp: SharedViewModelCreateDrawingPopUp by viewModels()
 
-
-
     private lateinit var iMyService: IMyService
     internal var compositeDisposable = CompositeDisposable()
 
@@ -280,6 +278,7 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
 //        var gson = Gson()
 //        var jsonString = gson.toJson(jsonStrokes)
 
+        // open DrawingActivity
         val intent = Intent(this, DrawingActivity::class.java)
         var bundle: Bundle = Bundle()
         bundle.putStringArrayList("jsonString", jsonStrings)
@@ -417,7 +416,6 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
 
             override fun onResponse(call: Call<IDrawing>, response: Response<IDrawing>) {
                 val currentDrawing = response.body()
-
                 drawingAdapter.addDrawing(currentDrawing!!)
                 drawingAdapter.notifyItemInserted((rvOutputDrawings.adapter as DrawingAdapter).itemCount)
             }

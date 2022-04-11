@@ -511,6 +511,7 @@ mongoClient.connect(process.env.POLYGRAM_APP_DATABASE_URL, { useNewUrlParser: tr
                 members: result.members,
                 likes: result.likes,
                 albumName: result.albumName,
+                location : result.location
               };
               res.json(returnedJson)
               console.log("GotDrawing");

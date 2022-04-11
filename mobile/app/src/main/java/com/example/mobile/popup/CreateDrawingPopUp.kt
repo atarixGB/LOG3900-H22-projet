@@ -175,7 +175,7 @@ class CreateDrawingPopUp(val user: String, val isAlbumAlreadySelected: Boolean) 
                         mediaPlayerMagic.start()
                     }
 
-                    listener.popUpListener(albumName, drawingName.text.toString(), drawingId)
+                    listener.popUpListener(albumName, drawingName.text.toString(), drawingId, location)
                     dismiss()
                 } else if (rb.text.toString().equals("privé")) {
                     //add drawing to private album
@@ -190,7 +190,7 @@ class CreateDrawingPopUp(val user: String, val isAlbumAlreadySelected: Boolean) 
                             if(SOUND_EFFECT){
                                 mediaPlayerMagic.start()
                             }
-                            listener.popUpListener(albumName, drawingName.text.toString(), drawingId)
+                            listener.popUpListener(albumName, drawingName.text.toString(), drawingId, location)
                             dismiss()
                         } else {
                             // s'il n'a pas choisi un album sors une erreur
@@ -206,7 +206,7 @@ class CreateDrawingPopUp(val user: String, val isAlbumAlreadySelected: Boolean) 
                     if(SOUND_EFFECT){
                         mediaPlayerMagic.start()
                     }
-                    listener.popUpListener(albumName, drawingName.text.toString(), drawingId)
+                    listener.popUpListener(albumName, drawingName.text.toString(), drawingId, location)
                     dismiss()
                 }
             } else {
