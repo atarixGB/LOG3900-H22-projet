@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ADVANCED_SEARCH_URL } from '@app/constants/api-urls';
+import { ADVANCED_SEARCH_URL, GET_DRAWING_URL } from '@app/constants/api-urls';
 import { PUBLIC_ALBUM } from '@app/constants/constants';
 import { LoginService } from '../login/login.service';
 
@@ -36,6 +36,15 @@ export class AdvancedResearchService {
             if (album.owner != this.loginService.username && album.name != PUBLIC_ALBUM.name) {
               this.result.push(album)
             }
+          }
+        } else if (this.isDrawing) {
+          for (let drawing of result) {
+            this.httpClient.get(`${GET_DRAWING_URL}/${drawing._id}`).subscribe(
+              (res: any) => {
+                drawing.data = res.data;
+                this.result.push(drawing);
+              }
+            );
           }
         } else {
           this.result = result;

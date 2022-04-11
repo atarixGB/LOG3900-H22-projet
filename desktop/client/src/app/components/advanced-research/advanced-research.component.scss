@@ -44,3 +44,93 @@ mat-icon {
 #user-avatar {
   height: 100%;
 }
+
+// ---------------------------------------
+:host {
+  height: 100vh;
+}
+
+.italic {
+  font-style: italic;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.likes-counter {
+  color: #A8D08C;
+}
+
+.username {
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.username:hover {
+  color:#A8D08C;
+}
+
+h3 {
+  margin-top: 10px;
+}
+
+.content {
+  margin: 16px;
+  overflow-y: scroll;
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+  }
+
+  ::-webkit-scrollbar-track {
+  border: 1px solid #A8D08C;
+  border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+  background: #A8D08C;
+  border-radius: 10px;
+  }
+
+#back-btn {
+  transform: scale(2);
+}
+
+img:hover {
+  cursor: pointer;
+}
+
+#drawingsDiv {
+  border: solid 2px;
+  border-radius: 5px;
+  height: 100%;
+  margin: 16px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+#drawingRow {
+  height: 100%;
+}
+
+:host {
+  height: 100vh;
+}
+
+.italic {
+  font-style: italic;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+#more-option-button {
+  float:right;
+}
+
+
+
