@@ -5,8 +5,8 @@ import io.socket.client.IO
 import org.json.JSONObject
 
 object DrawingSocket {
-    //    val port = "http://10.0.2.2:3002/"
-    val port = "https://polygram-app.herokuapp.com/"
+        val port = "http://10.0.2.2:3002/"
+//    val port = "https://polygram-app.herokuapp.com/"
     var socket = IO.socket(port)
 
     init {

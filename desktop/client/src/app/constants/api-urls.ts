@@ -1,9 +1,9 @@
-// export const COLLAB_URL = `http://localhost:3002`;
-// export const DATABASE_URL = `http://localhost:3001`;
-// export const CHAT_URL = `http://localhost:3000`;
-export const COLLAB_URL = `https://polygram-app.herokuapp.com/`;
-export const DATABASE_URL = `https://polygram-app.herokuapp.com`;
-export const CHAT_URL = `https://polygram-app.herokuapp.com/`;
+export const COLLAB_URL = `http://localhost:3002`;
+export const DATABASE_URL = `http://localhost:3001`;
+export const CHAT_URL = `http://localhost:3000`;
+// export const COLLAB_URL = `https://polygram-app.herokuapp.com/`;
+// export const DATABASE_URL = `https://polygram-app.herokuapp.com`;
+// export const CHAT_URL = `https://polygram-app.herokuapp.com/`;
 
 
 export const ALBUM_URL = `${DATABASE_URL}/albums`;
