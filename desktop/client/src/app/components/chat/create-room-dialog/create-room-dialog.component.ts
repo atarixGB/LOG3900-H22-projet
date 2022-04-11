@@ -16,7 +16,7 @@ export class CreateRoomDialogComponent {
 
   createChatroom(): void {
 
-    if (this.isValidInput(this.chatroomName) && this.chatroomName.length < NAME_MAX_LENGTH) {
+    if (this.isValidInput(this.chatroomName) && this.chatroomName.length < NAME_MAX_LENGTH && this.isNotInDb(str)) {
       this.chatService.createRoom(this.chatroomName);
       setTimeout(() => {
         this.chatService.myRooms = [];
@@ -25,12 +25,23 @@ export class CreateRoomDialogComponent {
       
     } else {
       // TODO: UI feedback. Following line is temporary
-      alert("Le nom de la conversation doit avoir un nom et posséder moins de 40 caractères.");
+      alert("Le nom de la conversation doit avoir un nom et posséder moins de 40 caractères. Aussi, assurez-vous qu'aucune room existe déjà avec ce nom.");
     }
+  }
+
+  private isNotInDb(str: string): boolean {
+    for (let room of this.chatService.myRooms) {
+      if (str == room.roomName) {
+        return false;
+      }
+    }
+    return true;
   }
 
   private isValidInput(str: string): boolean {
     return !(str === null || str.match(/^ *$/) !== null);
   }
+
+
 
 }
