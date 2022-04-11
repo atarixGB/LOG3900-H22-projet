@@ -419,6 +419,7 @@ class DrawingZoneFragment : Fragment() {
 
         }
 
+
         override fun onTouchEvent(event: MotionEvent): Boolean {
             toolManager.currentTool.mx = event.x
             toolManager.currentTool.my = event.y
@@ -525,6 +526,12 @@ class DrawingZoneFragment : Fragment() {
 
         fun setDrawingId(drawingId: String) {
             this.drawingId = drawingId
+            if (this::toolManager.isInitialized) {
+                this.toolManager.drawingId = drawingId
+                toolManager.pencil.drawingId = drawingId
+                toolManager.ellipse.drawingId = drawingId
+                toolManager.rectangle.drawingId = drawingId
+            }
         }
 
         fun putToStory() {

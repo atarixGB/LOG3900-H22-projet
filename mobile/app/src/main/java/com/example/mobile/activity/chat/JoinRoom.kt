@@ -136,6 +136,7 @@ class joinRoom : AppCompatActivity(), RoomAdapter.RoomAdapterListener{
         roomData.put("userName", user)
         roomData.put("room", roomName)
         socket.emit("newUserToChatRoom", roomData)
+        //Open chat from JoinRoom
         openChat()
     }
 

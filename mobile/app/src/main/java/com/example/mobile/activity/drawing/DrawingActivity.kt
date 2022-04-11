@@ -31,7 +31,7 @@ import retrofit2.Response
 class DrawingActivity : AppCompatActivity(), CreateDrawingPopUp.DialogListener, AlbumAdapter.AlbumAdapterListener {
     private lateinit var user: String
     private lateinit var collabDrawingId: String
-    private  var collabStartTime:Long=0
+    private var collabStartTime: Long = 0
     private lateinit var jsonString: ArrayList<String>
     private var isAlbumAlreadySelected: Boolean = false
     private lateinit var albumName: String
@@ -63,7 +63,7 @@ class DrawingActivity : AppCompatActivity(), CreateDrawingPopUp.DialogListener, 
 
         //collaboration
         collabDrawingId = intent.getStringExtra("drawingCollabId").toString()
-        collabStartTime=intent.getLongExtra("collabStartTime",collabStartTime)
+        collabStartTime = intent.getLongExtra("collabStartTime", collabStartTime)
 
         //location of drawing
         locationText.text = intent.getStringExtra("drawingLocation").toString()
@@ -84,8 +84,8 @@ class DrawingActivity : AppCompatActivity(), CreateDrawingPopUp.DialogListener, 
                 //Open Popup Window
                 var dialog = CreateDrawingPopUp(user, isAlbumAlreadySelected)
                 dialog.show(supportFragmentManager, "customDialog")
-            } else {
-                // drawing already exists
+            } else {//room already exists
+                DrawingSocket.socket.emit("joinCollabChat", collabDrawingId)
                 sharedViewModelToolBar.setCollabDrawingId(collabDrawingId)
                 getDrawingLocation(collabDrawingId)
                 val bundle = intent.extras

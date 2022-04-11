@@ -13,7 +13,7 @@ import org.json.JSONObject
 import java.util.*
 import kotlin.math.abs
 
-class Rectangle (context: Context, baseCanvas: Canvas, val socket : DrawingSocket, val selection: Selection, val drawingId: String) : Tool(context, baseCanvas, socket) {
+class Rectangle (context: Context, baseCanvas: Canvas, val socket : DrawingSocket, val selection: Selection, var drawingId: String) : Tool(context, baseCanvas, socket) {
 
     var top = 0F
     var right = 0F
@@ -39,7 +39,7 @@ class Rectangle (context: Context, baseCanvas: Canvas, val socket : DrawingSocke
             val iRectangleStroke = IRectangleStroke(
                 getBoundingPoints(),
                 getPaintParameters().color,
-                Color.WHITE, //to change
+                getFillColor().color, //to change
                 getPaintParameters().strokeWidth,
                 false,
                 getRectWidthAndHeight().x,
@@ -61,6 +61,12 @@ class Rectangle (context: Context, baseCanvas: Canvas, val socket : DrawingSocke
     private fun getRectWidthAndHeight(): IVec2{
         val point = IVec2(abs(left-right), abs(top-bottom))
         return point
+    }
+
+    private fun getFillColor(): Paint {
+        val paint = Paint()
+        paint.color = this.fillPaint.color
+        return paint
     }
 
     private fun getTopLeftCorner(): IVec2{

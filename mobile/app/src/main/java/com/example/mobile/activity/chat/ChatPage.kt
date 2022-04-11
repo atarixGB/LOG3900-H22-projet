@@ -165,9 +165,7 @@ class ChatPage : AppCompatActivity(), UserAdapter.UserAdapterListener {
 
         socket.on("userDeletedChatRoom"){ args ->
             if(args[0] != null){
-                val intent = Intent(this, ChatRooms::class.java)
-                intent.putExtra("userName", user)
-                startActivity(intent)
+                leaveChat()
             }
         }
 
@@ -278,7 +276,7 @@ class ChatPage : AppCompatActivity(), UserAdapter.UserAdapterListener {
         try{
             var gson = Gson()
             var jsonString = gson.toJson(msg)
-            baseContext.openFileOutput("$roomName.txt", Context.MODE_APPEND).use {
+            baseContext.openFileOutput(msg.room+".txt", Context.MODE_APPEND).use {
                 it.write(jsonString.toByteArray())
                 it.write(("//").toByteArray())
             }
@@ -306,7 +304,9 @@ class ChatPage : AppCompatActivity(), UserAdapter.UserAdapterListener {
     fun leaveChat(){
         socket.emit("userLeftChatPage", roomName)
         socket.disconnect()
-        onBackPressed()
+        val intent = Intent(this, ChatRooms::class.java)
+        intent.putExtra("userName",user)
+        startActivity(intent)
     }
 
     fun userLeftChat () {
@@ -315,7 +315,7 @@ class ChatPage : AppCompatActivity(), UserAdapter.UserAdapterListener {
         roomData.put("room", roomName)
         socket.emit("leaveRoom", roomData)
         updateRooms(user, roomName)
-        leaveChat()
+
     }
 
     private fun updateRooms(user: String, roomName: String) {
@@ -325,6 +325,7 @@ class ChatPage : AppCompatActivity(), UserAdapter.UserAdapterListener {
             .subscribe { result ->
                 if (result == "201") {
                     Toast.makeText(this, "bye", Toast.LENGTH_SHORT).show()
+                    leaveChat()
                 } else {
                     Toast.makeText(this, "erreur", Toast.LENGTH_SHORT).show()
                 }
@@ -332,7 +333,7 @@ class ChatPage : AppCompatActivity(), UserAdapter.UserAdapterListener {
     }
 
     private fun deleteChat() {
-        var roomData : JSONObject = JSONObject()
+        var roomData = JSONObject()
         roomData.put("userName", user)
         roomData.put("room", roomName)
         socket.emit("deleteRoom", roomData)

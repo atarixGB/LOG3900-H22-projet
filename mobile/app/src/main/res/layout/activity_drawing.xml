@@ -25,8 +25,8 @@
     <fragment
         android:id="@+id/canvaFragment"
         android:name="com.example.mobile.activity.drawing.DrawingZoneFragment"
-        android:layout_width="1200px"
-        android:layout_height="1000px"
+        android:layout_width="950px"
+        android:layout_height="750px"
         android:layout_marginStart="28dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/customToolFragment"
@@ -56,5 +56,14 @@
         android:textColor="@color/black"
         app:layout_constraintStart_toEndOf="@+id/canvaFragment"
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
+    <fragment
+        android:id="@+id/chatFragment"
+        android:name="com.example.mobile.activity.drawing.ChatFragment"
+        android:layout_width="379dp"
+        android:layout_height="757dp"
+        android:layout_marginStart="28dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/canvaFragment"
+        app:layout_constraintTop_toTopOf="parent"></fragment>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
