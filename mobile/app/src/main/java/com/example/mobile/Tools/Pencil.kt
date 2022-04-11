@@ -11,7 +11,7 @@ import org.json.JSONObject
 import java.util.*
 import kotlin.math.abs
 
-class Pencil(context: Context, baseCanvas: Canvas, val socket : DrawingSocket, val selection: Selection, val drawingId: String) : Tool(context, baseCanvas, socket){
+class Pencil(context: Context, baseCanvas: Canvas, val socket : DrawingSocket, val selection: Selection, var drawingId: String) : Tool(context, baseCanvas, socket){
     var leftestCoord: Float = 0F;
     var rightestCoord: Float = 0F;
     var lowestCoord: Float = 0F;

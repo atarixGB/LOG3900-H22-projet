@@ -172,7 +172,6 @@ class DrawingAdapter (val context: Context?, var drawings: ArrayList<IDrawing>, 
 
             modifDrawing.setOnClickListener {
                 DrawingSocket.prepForJoin(currentDrawing._id!!, user)
-//                DrawingSocket.socket.emit("joinCollab", currentDrawing._id!!)
             }
         }
     }
