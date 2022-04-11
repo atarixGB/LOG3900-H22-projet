@@ -1,3 +1,7 @@
+<div id="draggable-zone" fxLayout="row" fxLayoutAlign="start stretch">
+  <mat-icon id="drag-btn">drag_indicator</mat-icon>
+</div>
+
 <div class="green" fxFlex="100">
    <div fxLayout="row" fxLayoutAlign="space-between stretch" >
       <div fxFlex></div>
@@ -17,31 +21,31 @@
       <div fxLayout="row" fxLayoutAlign="center center" class="margin btn" routerLink="/menu">
          <mat-icon fxLayoutAlign="center center" fxFlex="30"> home </mat-icon>
          <span fxFlex="auto"> Tableau de bord </span>
-      </div> 
+      </div>
       <div fxLayout="row" fxLayoutAlign="center center" class="margin btn" (click)="this.chatService.openChat()">
          <mat-icon fxLayoutAlign="center center" fxFlex="30"> chat_bubble </mat-icon>
          <span fxFlex="auto"> Clavardage </span>
-      </div> 
+      </div>
       <div fxLayout="row" fxLayoutAlign="center center" class="margin btn" routerLink="/my-albums">
          <mat-icon fxLayoutAlign="center center" fxFlex="30"> photo_library </mat-icon>
          <span fxFlex="auto"> Albums </span>
-      </div> 
+      </div>
       <div fxLayout="row" fxLayoutAlign="center center" class="margin btn" (click)="onMyProfileBtn()">
          <mat-icon fxLayoutAlign="center center" fxFlex="30"> person </mat-icon>
          <span fxFlex="auto"> Mon profil </span>
-      </div> 
+      </div>
       <div fxLayout="row" fxLayoutAlign="center center" class="margin btn" routerLink="/advanced-search">
          <mat-icon fxLayoutAlign="center center" fxFlex="30"> search </mat-icon>
          <span fxFlex="auto"> Recherche avancée </span>
-      </div> 
+      </div>
       <div fxLayout="row" fxLayoutAlign="center center" class="margin btn" (click)="onDraftBnt()">
          <mat-icon fxLayoutAlign="center center" fxFlex="30"> create </mat-icon>
          <span fxFlex="auto"> Brouillon </span>
-      </div> 
+      </div>
       <div fxLayout="row" fxLayoutAlign="center center" class="margin btn" routerLink="/home" (click)="this.chatService.disconnect()">
          <mat-icon fxLayoutAlign="center center" fxFlex="30"> logout </mat-icon>
          <span fxFlex="auto"> Déconnexion </span>
-      </div> 
+      </div>
 
    </div>
 </div>
