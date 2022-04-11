@@ -196,10 +196,10 @@ class Registration : AppCompatActivity(), SelectAvatarPopUp.DialogListener {
         var mediaPlayerSuccess:MediaPlayer=MediaPlayer.create(this,R.raw.success)
         var mediaPlayerFail:MediaPlayer=MediaPlayer.create(this,R.raw.failure)
 
-        var registeredUser = myUser(identifier, password,avatar_str,email,description,collaborationCount,totalCollaborationTime)
+//        var registeredUser = myUser(identifier, password,avatar_str,email,description,collaborationCount,totalCollaborationTime)
 
-//        compositeDisposable.add(iMyService.registerUser(identifier, password,avatar_str,email,description,collaborationCount,totalCollaborationTime)
-        compositeDisposable.add(iMyService.registerUser(registeredUser)
+        compositeDisposable.add(iMyService.registerUser(identifier, password,avatar_str,email,description,collaborationCount,totalCollaborationTime, false)
+//        compositeDisposable.add(iMyService.registerUser(registeredUser)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { result->

@@ -160,7 +160,7 @@ mongoClient.connect(process.env.POLYGRAM_APP_DATABASE_URL, { useNewUrlParser: tr
 
                 if (hashed_password == encrypted_password) {
                   // check if user is already online
-                  if (isActive) {
+                  if (isActive == true || isActive == "true") {
                     response.json(-1);
                     console.log("already connected")
                   } else { // if user not online
@@ -222,6 +222,20 @@ mongoClient.connect(process.env.POLYGRAM_APP_DATABASE_URL, { useNewUrlParser: tr
         if (error) throw error;
         response.json(201);
         console.log(`${email} has been disconnected from app successfully`);
+      }
+    );
+
+    })
+
+    app.get("/disconnectUser/:username", (request, response) => {
+      const identifier = request.params.username;
+
+      console.log("identifier", identifier);
+      DB.collection("users").findOneAndUpdate({ identifier: identifier }, { $set: { isActive: false } },
+      function (error, result) {
+        if (error) throw error;
+        response.json(201);
+        console.log(`${identifier} has been disconnected from app successfully`);
       }
     );
 

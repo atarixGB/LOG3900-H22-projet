@@ -15,21 +15,22 @@ import retrofit2.http.*
 import retrofit2.Call
 
 interface IMyService {
-//    @POST("register")
-//    @FormUrlEncoded
-//    fun registerUser(
-//        @Field("identifier") identifier: String,
-//        @Field("password") password: String,
-//        @Field("avatar") avatar: String,
-//        @Field("email") email: String,
-//        @Field("description") description:String,
-//        @Field("collaborationCount") collaborationCount:Int,
-//        @Field("totalCollaborationTime") totalCollaborationTime:Int
-//    ): Observable<String>
-
     @POST("register")
-    fun registerUser(@Body user:myUser
+    @FormUrlEncoded
+    fun registerUser(
+        @Field("identifier") identifier: String,
+        @Field("password") password: String,
+        @Field("avatar") avatar: String,
+        @Field("email") email: String,
+        @Field("description") description:String,
+        @Field("collaborationCount") collaborationCount:Int,
+        @Field("totalCollaborationTime") totalCollaborationTime:Int,
+        @Field("isActive") isActive:Any
     ): Observable<String>
+
+//    @POST("register")
+//    fun registerUser(@Body user:myUser
+//    ): Observable<String>
 
 
     @POST("login")
@@ -194,6 +195,10 @@ interface IMyService {
 
     @GET("/profile/stats/collabs/duration/{username}")
     fun getTotalDurationCollabUnformated(@Path("username")username:String):Call<Any>
+
+
+    @GET("disconnectUser/{username}")
+    fun disconnectUser(@Path("username")username:String):Call<Any>
 
     @PUT("/profile/stats/collabs/updateCollabDuration/{username}")
     @FormUrlEncoded
