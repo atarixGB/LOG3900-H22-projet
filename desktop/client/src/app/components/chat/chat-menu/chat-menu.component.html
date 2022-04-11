@@ -22,7 +22,9 @@
     </div>
 
     <div fxFlex="10" fxLayout="row" fxLayoutAlign="space-evenly center">
-      <button mat-raised-button color="accent" (click)="onOpenDefaultPublicRoom()" routerLink="/chatroom">Canal public</button>
+      <div fxLayoutAlign="center center" id="settingsBtnDiv" (click)="this.onOpenDefaultPublicRoom()" routerLink="/chatroom">
+        <span>Canal public</span>
+      </div>
     </div>
 
     
@@ -32,13 +34,6 @@
         <div id="albumsDiv" fxFlex="85%">
           <mat-grid-list cols="2" rowHeight="5:1">
             <mat-grid-tile *ngFor="let room of this.chatService.myRooms">
-      
-              <!-- <div class="roomname-container" mat-raised-button color="primary">
-                  {{room.roomName}}
-              </div>
-              <button mat-raised-button color="accent" (click)="this.onOpenChatroom(room)" routerLink="/chatroom">
-                Ouvrir
-              </button> -->
 
               <div fxLayoutAlign="center center" id="settingsBtnDiv" (click)="this.onOpenChatroom(room)" routerLink="/chatroom">
                 <span>{{room.roomName}}</span>
