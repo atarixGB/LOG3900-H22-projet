@@ -78,6 +78,7 @@ class Dashboard : AppCompatActivity(), StoryAdapter.StoryAdapterListener {
 
     private fun openSoloDrawing() {
         val intent = Intent(this, DrawingActivity::class.java)
+        intent.putExtra("userName", user)
         var bundle:Bundle = ActivityOptions.makeSceneTransitionAnimation(this).toBundle()
         startActivity(intent,bundle)
     }
