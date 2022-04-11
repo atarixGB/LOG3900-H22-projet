@@ -84,6 +84,7 @@ import { ResetPasswordComponent } from './components/reset-password/reset-passwo
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { PasswordSnackbarComponent } from './components/reset-password/password-snackbar/password-snackbar.component';
 import { LikeSnackbarComponent } from './components/album-gallery/drawings-view/like-snackbar/like-snackbar.component';
+import { NewRoomErrorSnackbarComponent } from './components/chat/create-room-dialog/new-room-error-snackbar/new-room-error-snackbar.component';
 
 @NgModule({
     declarations: [
@@ -146,6 +147,7 @@ import { LikeSnackbarComponent } from './components/album-gallery/drawings-view/
         PasswordSnackbarComponent,
         StoryComponent,
         LikeSnackbarComponent,
+        NewRoomErrorSnackbarComponent,
     ],
     imports: [
         BrowserModule,

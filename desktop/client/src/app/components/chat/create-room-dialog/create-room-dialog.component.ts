@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { NAME_MAX_LENGTH } from '@app/constants/constants';
 import { ChatService } from '@app/services/chat/chat.service';
+import { NewRoomErrorSnackbarComponent } from './new-room-error-snackbar/new-room-error-snackbar.component';
 
 @Component({
   selector: 'app-create-room-dialog',
@@ -10,7 +12,7 @@ import { ChatService } from '@app/services/chat/chat.service';
 export class CreateRoomDialogComponent {
   chatroomName: string;
 
-  constructor(public chatService: ChatService) {
+  constructor(public chatService: ChatService, private snackbar: MatSnackBar,) {
     this.chatroomName = "";
    }
 
@@ -24,8 +26,9 @@ export class CreateRoomDialogComponent {
       }, 200);
       
     } else {
-      // TODO: UI feedback. Following line is temporary
-      alert("Le nom de la conversation doit avoir un nom et posséder moins de 40 caractères. Aussi, assurez-vous qu'aucune room existe déjà avec ce nom.");
+      this.snackbar.openFromComponent( NewRoomErrorSnackbarComponent,{
+        duration: 5 * 1000,
+      })
     }
   }
 
