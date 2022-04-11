@@ -16,7 +16,7 @@ export class CreateRoomDialogComponent {
 
   createChatroom(): void {
 
-    if (this.isValidInput(this.chatroomName) && this.chatroomName.length < NAME_MAX_LENGTH && this.isNotInDb(str)) {
+    if (this.isValidInput(this.chatroomName) && this.chatroomName.length < NAME_MAX_LENGTH && this.isNotInDb(this.chatroomName)) {
       this.chatService.createRoom(this.chatroomName);
       setTimeout(() => {
         this.chatService.myRooms = [];
