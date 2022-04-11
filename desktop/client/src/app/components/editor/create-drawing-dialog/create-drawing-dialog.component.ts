@@ -37,8 +37,8 @@ export class CreateDrawingDialogComponent implements OnInit {
   changeAccess(value: number): void {
     this.isPrivate = value == 1;
     if (this.isPrivate) {
-      this.albumGalleryService.selectedAlbumName = this.albumGalleryService.myAlbums[0].name;
-      this.albumGalleryService.selectedAlbumId = this.albumGalleryService.myAlbums[0]._id;
+      this.albumGalleryService.selectedAlbumName = this.albumGalleryService.myAlbumsWithoutPublic[0].name;
+      this.albumGalleryService.selectedAlbumId = this.albumGalleryService.myAlbumsWithoutPublic[0]._id;
     } else {
       this.albumGalleryService.selectedAlbumName = PUBLIC_ALBUM.name;
       this.albumGalleryService.selectedAlbumId = PUBLIC_ALBUM.id;
