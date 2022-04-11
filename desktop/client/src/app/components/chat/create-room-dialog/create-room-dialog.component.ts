@@ -18,6 +18,11 @@ export class CreateRoomDialogComponent {
 
     if (this.isValidInput(this.chatroomName) && this.chatroomName.length < NAME_MAX_LENGTH) {
       this.chatService.createRoom(this.chatroomName);
+      setTimeout(() => {
+        this.chatService.myRooms = [];
+        this.chatService.getAllRooms(true);
+      }, 200);
+      
     } else {
       // TODO: UI feedback. Following line is temporary
       alert("Le nom de la conversation doit avoir un nom et posséder moins de 40 caractères.");

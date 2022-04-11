@@ -18,5 +18,9 @@ export class JoinRoomDialogComponent implements OnInit {
   onJoinChatroom(): void {
     this.chatService.addRoomToMyList(this.data);
     this.router.navigate(['../chatmenu'], { relativeTo: this.route });
+    setTimeout(() => {
+      this.chatService.myRooms = [];
+      this.chatService.getAllRooms(true);
+    }, 200);
   }
 }

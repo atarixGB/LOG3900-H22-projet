@@ -39,7 +39,7 @@ export class AlbumGalleryComponent implements OnInit {
   }
 
   viewAllPublicAlbums(): void {
-    this.albumGalleryService.fetchAllAlbumsFromDatabase();
+    this.albumGalleryService.fetchAllAlbumsFromDatabase();    
   }
 
   viewMyAlbums(): void {
