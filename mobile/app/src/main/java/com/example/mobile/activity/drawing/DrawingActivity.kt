@@ -67,6 +67,7 @@ class DrawingActivity : AppCompatActivity(), CreateDrawingPopUp.DialogListener, 
 
         //location of drawing
         locationText.text = intent.getStringExtra("drawingLocation").toString()
+//        locationText.text="rien a dire"
 
 
 //        jsonString = intent.getStringArrayExtra("jsonString").toString()
