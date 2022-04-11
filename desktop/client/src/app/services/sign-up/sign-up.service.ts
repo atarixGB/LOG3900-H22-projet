@@ -50,9 +50,6 @@ export class SignUpService {
                     this.router.navigate(['../home'], { relativeTo: this.route });
                     this.soundEffectsService.playSuccessSound();
                 } else if (result == 406) {
-                    this.isExistingUsername = true;
-                    this.soundEffectsService.playFailureSound();
-                } else if (result == 406) {
                     this.isUsedEmail = true;
                     this.soundEffectsService.playFailureSound();
                 }

@@ -18,10 +18,28 @@
 
         <!-- Avatar settings -->
         <div class="topPadding" fxLayout="row" fxLayoutAlign="space-evenly stretch">
+          <div fxLayout="column" fxLayoutAlign="space-evenly center">
+            <div fxLayout="row" fxLayoutAlign="center center" (click)="this.profileSettingsService.saveChanges()">
+              <div fxLayoutAlign="center center" id="avatarBtnDiv">
+                <mat-icon id="pencil">save</mat-icon>
+                <div fxFlex="5%"></div>
+                <span id="modifierProfil">Sauvegarder</span>
+              </div>
+              </div>
+              <div  fxLayout="row" fxLayoutAlign="center center" (click)="onCancel()">
+                <div fxLayoutAlign="center center" id="avatarBtnDiv">
+                  <mat-icon>cancel</mat-icon>
+                  <div fxFlex="5%"></div>
+                  <span>Annuler</span>
+                </div>
+              </div>
+          </div>
+
           <div id="avatarDisplay" fxLayoutAlign="center center" class="animate__animated"
             [ngClass]="{animate__headShake: this.profileSettingsService.isAvatarTooLarge}">
             <img id="avatarImg" src="data:image/png;base64,{{this.profileSettingsService.newAvatarSrc}}">
           </div>
+
           <div fxLayout="column" fxLayoutAlign="space-evenly center">
             <div fxLayout="row" fxLayoutAlign="center center" fxFlex="20%" (click)="this.openAvatarSelectionModal()">
               <div fxLayoutAlign="center center" id="avatarBtnDiv">
@@ -47,7 +65,7 @@
         <!-- Username settings -->
         <div class="sectionTitleContainer" fxLayout="row" fxLayoutAlign="start center">
           <mat-icon fxFlex="5%">person</mat-icon>
-          <span class="bold">Nom d'utilisateur</span>
+          <span class="bold">Nom d'utilisateur*</span>
         </div>
         <div id="usernameChangeDiv" fxLayout="row" fxLayoutAlign="space-evenly center">
           <div fxLayout="column" fxLayoutAlign="center center">
@@ -62,6 +80,9 @@
             <p *ngIf="!this.profileSettingsService.isValidUsername" class="error">^ <u>Le pseudonyme doit être composé
                 de lettres et/ou de chiffres uniquement</u> ^</p>
           </div>
+        </div>
+        <div  fxLayout="row" fxLayoutAlign="center center" >
+          <span id="note">*Si vous changez votre nom d'utilisateur, vous n'aurez plus accès à tous les albums, dessins et canaux liés à ce nom</span>
         </div>
 
         <!-- Description settings -->
@@ -129,21 +150,6 @@
     <!-- Confirmation btn -->
     <div fxFlex="5"></div>
 
-    <div class="topPadding" fxLayout="row" fxLayoutAlign="center center"
-      (click)="this.profileSettingsService.saveChanges()">
-      <div fxLayoutAlign="center center" id="saveBtnDiv">
-        <mat-icon id="pencil">save</mat-icon>
-        <div fxFlex="10%"></div>
-        <span id="modifierProfil">Sauvegarder</span>
-      </div>
-    </div>
-    <div class="topPadding" fxLayout="row" fxLayoutAlign="center center" (click)="onCancel()">
-      <div fxLayoutAlign="center center" id="saveBtnDiv">
-        <mat-icon>cancel</mat-icon>
-        <div fxFlex="10%"></div>
-        <span>Annuler</span>
-      </div>
-    </div>
-
+    
   </div>
 </div>

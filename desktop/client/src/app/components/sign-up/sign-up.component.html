@@ -18,7 +18,6 @@
         <input matInput placeholder="Entrez votre nom" [(ngModel)]="this.username" name="username">
       </mat-form-field>
     </form>
-    <p *ngIf="this.signUpService.isExistingUsername" class="error">^ <u>Cet identifiant n'est pas disponible</u> ^</p>
     <p *ngIf="!this.isValidUsername" class="error errorMargin">^ <u>L'identifiant doit être composé de lettres et/ou de
         chiffres uniquement</u> ^</p>
     <form>
@@ -46,7 +45,7 @@
         <input matInput placeholder="Entrez votre courriel" [(ngModel)]="this.email" name="email">
       </mat-form-field>
     </form>
-    <p *ngIf="this.signUpService.isUsedEmail" class="error">^ <u>Ce courriel est déjà assigné à un autre compte</u> ^
+    <p *ngIf="this.signUpService.isUsedEmail" class="error">^ <u>Un compte a déjà été créé avec cet identifiant ou ce courriel</u> ^
     </p>
     <p *ngIf="!this.isValidEmail" class="error errorMargin">^ <u>Le courriel doit être de la forme
         'name@mail.ca/com'</u> ^</p>
