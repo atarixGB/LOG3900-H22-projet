@@ -101,7 +101,7 @@ class visitingProfile : AppCompatActivity() {
 
         call.enqueue(object: retrofit2.Callback<IUser> {
             override fun onResponse(call: Call<IUser>, response: Response<IUser>) {
-                Toast.makeText(this@visitingProfile, "Bienvenu sur le profil de $user!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@visitingProfile, "Bienvenu sur le profil de $visitingUser!", Toast.LENGTH_SHORT).show()
                 userAvatar.setImageBitmap(bitmapDecoder(response.body()?.avatar))
 //                username.setText(response.body()?.username)
                 user_email.setText(response.body()?.email)

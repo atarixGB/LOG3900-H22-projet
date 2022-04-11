@@ -76,6 +76,9 @@ import { StoryComponent } from './components/story/story.component';
 import { ChangeDrawingNameDialogComponent } from './components/album-gallery/drawings-view/change-drawing-name-dialog/change-drawing-name-dialog.component';
 import { ChangeAlbumDialogComponent } from './components/album-gallery/drawings-view/change-album-dialog/change-album-dialog.component';
 import { DeleteDrawingDialogComponent } from './components/album-gallery/drawings-view/delete-drawing-dialog/delete-drawing-dialog.component';
+import { StampConfigComponent } from './components/editor/sidebar/stamp-config/stamp-config.component';
+import { StampSelectionDialogComponent } from './components/editor/sidebar/stamp-config/stamp-selection-dialog/stamp-selection-dialog.component';
+import { DraftDialogComponent } from './components/editor/draft-dialog/draft-dialog.component';
 import { CollabChatroomComponent } from './components/chat/collab-chatroom/collab-chatroom.component';
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
@@ -133,6 +136,9 @@ import { PasswordSnackbarComponent } from './components/reset-password/password-
         ChangeAlbumDialogComponent,
         ChangeDrawingNameDialogComponent,
         DeleteDrawingDialogComponent,
+        StampConfigComponent,
+        StampSelectionDialogComponent,
+        DraftDialogComponent,
         CollabChatroomComponent,
         ResetPasswordComponent,
         ForgotPasswordComponent,

@@ -5,27 +5,27 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.ActivityOptions
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
-import android.location.Geocoder
-import android.location.Location
 import android.media.MediaPlayer
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
+import android.text.TextUtils
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.util.Base64
+import android.util.Patterns
 import android.view.animation.AnimationUtils
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import com.example.mobile.Interface.IUser
+import com.example.mobile.Interface.myUser
 import com.example.mobile.R
+import com.example.mobile.REQUEST_IMAGE_CAMERA
 import com.example.mobile.Retrofit.IMyService
 import com.example.mobile.Retrofit.RetrofitClient
 import com.example.mobile.activity.MainActivity
@@ -36,6 +36,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_registration.*
 import java.io.ByteArrayOutputStream
+
 
 class Registration : AppCompatActivity(), SelectAvatarPopUp.DialogListener {
     private lateinit var iMyService: IMyService
@@ -54,9 +55,10 @@ class Registration : AppCompatActivity(), SelectAvatarPopUp.DialogListener {
     private lateinit var cameraBtn : ImageButton
     private lateinit var avatarBtn : ImageButton
     private lateinit var description:String
+    var collaborationCount:Int=0
+    var totalCollaborationTime:Int=0
 
 
-    private val REQUEST_IMAGE_CAMERA = 142
 
     override fun onStop() {
         compositeDisposable.clear()
@@ -97,23 +99,6 @@ class Registration : AppCompatActivity(), SelectAvatarPopUp.DialogListener {
             builder.setNegativeButton("Lance la caméra") { dialog, which ->
                 dialog.dismiss()
                 activityResultLauncher.launch(Manifest.permission.CAMERA)
-//                Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
-//                    takePictureIntent.resolveActivity(packageManager).also {
-//                        val permission = ContextCompat.checkSelfPermission(
-//                            this,
-//                            android.Manifest.permission.CAMERA
-//                        )
-//                        if (permission != PackageManager.PERMISSION_GRANTED) {
-//                            ActivityCompat.requestPermissions(
-//                                this,
-//                                arrayOf(android.Manifest.permission.CAMERA),
-//                                1
-//                            )
-//                        } else {
-//                            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAMERA)
-//                        }
-//                    }
-//                }
             }
 
             val dialog: AlertDialog = builder.create()
@@ -140,11 +125,13 @@ class Registration : AppCompatActivity(), SelectAvatarPopUp.DialogListener {
 
         registerAccountBtn.setOnClickListener {
             var mediaPlayerFail:MediaPlayer=MediaPlayer.create(this,R.raw.failure)
-            if(!identifiant.text.toString().isNullOrBlank() && !pwd.text.toString().isNullOrBlank() && !email.text.toString().isNullOrBlank()){
+            if(!identifiant.text.toString().isNullOrBlank() && !pwd.text.toString().isNullOrBlank() && !email.text.toString().isNullOrBlank() && isValidEmail(email.text.toString())){
                 idEmptyError.isVisible=false
                 mdpEmptyError.isVisible=false
                 emailEmptyError.isVisible=false
-                registerUser(identifiant.text.toString(), pwd.text.toString(),displaypicture,edt_email.text.toString(),description)
+
+
+                registerUser(identifiant.text.toString(), pwd.text.toString(),displaypicture,edt_email.text.toString(),description,collaborationCount,totalCollaborationTime)
             }
             else if(identifiant.text.toString().isEmpty() || pwd.text.toString().isEmpty()|| email.text.toString().isEmpty()){
                 idEmptyError.isVisible=true
@@ -155,6 +142,9 @@ class Registration : AppCompatActivity(), SelectAvatarPopUp.DialogListener {
                 email.animation=AnimationUtils.loadAnimation(this,R.anim.shake_animation)
                 mediaPlayerFail.start()
             }
+            else if(!isValidEmail(email.text.toString())){
+                Toast.makeText(this, "Email invalide ! ", Toast.LENGTH_SHORT).show()
+            }
 
         }
 
@@ -164,6 +154,14 @@ class Registration : AppCompatActivity(), SelectAvatarPopUp.DialogListener {
             startActivity(intent,bundle)
         }
 
+    }
+
+    fun isValidEmail(target: CharSequence?): Boolean {
+        return if (TextUtils.isEmpty(target)) {
+            false
+        } else {
+            Patterns.EMAIL_ADDRESS.matcher(target).matches()
+        }
     }
 
     @SuppressLint("MissingPermission")
@@ -192,12 +190,16 @@ class Registration : AppCompatActivity(), SelectAvatarPopUp.DialogListener {
         }
     }
 
-    private fun registerUser(identifier: String, password: String, avatar:CircularImageView,email: String,description:String) {
+    private fun registerUser(identifier: String, password: String, avatar:CircularImageView,email: String,description:String,collaborationCount:Int,totalCollaborationTime:Int) {
         var avatarByteArray:ByteArray = convertToByteArray(avatar)
         var avatar_str:String = Base64.encodeToString(avatarByteArray,0)
         var mediaPlayerSuccess:MediaPlayer=MediaPlayer.create(this,R.raw.success)
         var mediaPlayerFail:MediaPlayer=MediaPlayer.create(this,R.raw.failure)
-        compositeDisposable.add(iMyService.registerUser(identifier, password,avatar_str,email,description)
+
+        var registeredUser = myUser(identifier, password,avatar_str,email,description,collaborationCount,totalCollaborationTime)
+
+//        compositeDisposable.add(iMyService.registerUser(identifier, password,avatar_str,email,description,collaborationCount,totalCollaborationTime)
+        compositeDisposable.add(iMyService.registerUser(registeredUser)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { result->

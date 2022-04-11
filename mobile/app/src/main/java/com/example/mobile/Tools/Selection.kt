@@ -15,12 +15,14 @@ class  Selection(context: Context, baseCanvas: Canvas, val socket : DrawingSocke
     var strokes = ArrayList<Stroke>()
     var strokesSelected = ArrayList<Stroke>()
     var strokesSelectedBitmap: MutableMap<String, Bitmap> = mutableMapOf()
+    var currentCpIndex: Int = 5
     private var currentStroke: Stroke? = null
     private var selectionCanvas: Canvas? = null
     private var otherSelectionCanvas: Canvas? = null
     private var selectionBitmap: Bitmap? = null
     private var otherSelectionBitmap: Bitmap? = null
     private var selectedIndex: Int? = null
+    private var dimensionsBeforeResize = IVec2(0F, 0F)
     var isToolSelection: Boolean? = null
     var oldTool: ToolbarFragment.MenuItem? = null
     var oldMousePosition: IVec2 = IVec2(0F, 0F)
@@ -50,60 +52,137 @@ class  Selection(context: Context, baseCanvas: Canvas, val socket : DrawingSocke
                 ) || isToolSelection == true
             ) {
                 nextTool = ToolbarFragment.MenuItem.SELECTION
+                dimensionsBeforeResize = IVec2(selectionBitmap!!.width.toFloat(),selectionBitmap!!.height.toFloat())
             }
         }
     }
-
-    fun resetSelection() {
-        if (currentStroke != null && !strokesSelected.contains(currentStroke)) {
-//            if (!strokesSelected.contains(currentStroke)) {
-                currentStroke!!.prepForBaseCanvas()
-//            }
-            currentStroke!!.isSelected = false
-
-            if (selectionCanvas != null) {
-                selectionCanvas!!.drawColor(
-                    Color.TRANSPARENT,
-                    PorterDuff.Mode.CLEAR
-                ) //clear le canvas de selection
-            }
-            baseCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR) //clear le base canvas
-            strokes.forEach { element ->
-                if (!strokesSelected.contains(element)) {
-                    element.drawStroke(baseCanvas) //redessiner toutes les formes sur le base canvas
-                }
-            }
-
-//            strokesSelected.forEachIndexed { i, element ->
-//                createOtherSelectionCanvas(null, element)
-//            }
-            var i = 0
-            strokesSelectedBitmap.forEach {
-                baseCanvas.drawBitmap(
-                    it.value, //hereeeeeeeeeeeeeeeeeeeeeeeeeeeee
-                    strokesSelected[i].boundingPoints[0].x,
-                    strokesSelected[i].boundingPoints[0].y,
-                    null
-                )
-                i++
-            }
-
-            currentStroke = null
-            selectedIndex = null
-            nextTool = ToolbarFragment.MenuItem.SELECTION
-        }
-    }
-
 
     override fun touchMove() {
         if (currentStroke != null) {
-            if (isInResizingPoints(currentStroke!!.boundingPoints, IVec2(mx, my))) {
-//                currentStroke!!.rescale(IVec2(50F, 50F))
-//                selectionCanvas!!.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR)
-//                currentStroke!!.drawStroke(selectionCanvas!!)
-//                drawStrokesOnBaseCanvas(currentStroke!!)
-//                isResizing = true
-            } else {
+            if (isResizing) {
+                var oldWidth = (currentStroke!!.boundingPoints[1].x - currentStroke!!.boundingPoints[0].x)
+                var oldHeight = (currentStroke!!.boundingPoints[1].y - currentStroke!!.boundingPoints[0].y)
+
+                var newWidth = oldWidth
+                var newHeight = oldHeight
+
+                when(currentCpIndex) {
+                    0 -> {
+                        if (currentStroke!!.boundingPoints[1].x - mx > 2F) {
+                            newWidth = (currentStroke!!.boundingPoints[1].x - mx)
+                            currentStroke!!.boundingPoints[0].x = mx
+                        }
+                        if (currentStroke!!.boundingPoints[1].y - my> 2F) {
+                            newHeight = (currentStroke!!.boundingPoints[1].y - my)
+                            currentStroke!!.boundingPoints[0].y = my
+                        }
+                    }
+                    1 -> {
+                        if (mx - currentStroke!!.boundingPoints[0].x > 2F) {
+                            newWidth = (mx - currentStroke!!.boundingPoints[0].x)
+                            currentStroke!!.boundingPoints[1].x = mx
+                        }
+                        if (currentStroke!!.boundingPoints[1].y - my > 2F) {
+                            newHeight = (currentStroke!!.boundingPoints[1].y - my)
+                            currentStroke!!.boundingPoints[0].y = my
+                        }
+                    }
+                    2 -> {
+                        if (currentStroke!!.boundingPoints[1].x - mx > 2F) {
+                            newWidth = (currentStroke!!.boundingPoints[1].x - mx)
+                            currentStroke!!.boundingPoints[0].x = mx
+                        }
+
+                        if(my - currentStroke!!.boundingPoints[0].y > 2F) {
+                            newHeight = (my - currentStroke!!.boundingPoints[0].y)
+                            currentStroke!!.boundingPoints[1].y = my
+                        }
+
+                    }
+                    3 -> {
+                        if (mx - currentStroke!!.boundingPoints[0].x > 2F) {
+                            newWidth = (mx - currentStroke!!.boundingPoints[0].x)
+                            currentStroke!!.boundingPoints[1].x = mx
+                        }
+                        if (my - currentStroke!!.boundingPoints[0].y > 2F) {
+                            newHeight = (my - currentStroke!!.boundingPoints[0].y)
+                            currentStroke!!.boundingPoints[1].y = my
+                        }
+
+                    }
+                }
+
+                var scale = IVec2(newWidth/oldWidth, newHeight/oldHeight)
+
+                currentStroke!!.rescale(scale)
+                selectionCanvas!!.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR)
+                createSelectionCanvas(currentStroke!!)
+                currentStroke!!.drawStroke(selectionCanvas!!)
+                drawStrokesOnBaseCanvas(currentStroke!!)
+                oldMousePosition = IVec2(mx, my)
+            } else if (isInResizingPoints(currentStroke!!.boundingPoints, IVec2(mx, my)) && !isMoving) {
+                var oldWidth = (currentStroke!!.boundingPoints[1].x - currentStroke!!.boundingPoints[0].x)
+                var oldHeight = (currentStroke!!.boundingPoints[1].y - currentStroke!!.boundingPoints[0].y)
+
+                var newWidth = oldWidth
+                var newHeight = oldHeight
+
+                when(currentCpIndex) {
+                    0 -> {
+                        if (currentStroke!!.boundingPoints[1].x - mx > 2F) {
+                            newWidth = (currentStroke!!.boundingPoints[1].x - mx)
+                            currentStroke!!.boundingPoints[0].x = mx
+                        }
+                        if (currentStroke!!.boundingPoints[1].y - my> 2F) {
+                            newHeight = (currentStroke!!.boundingPoints[1].y - my)
+                            currentStroke!!.boundingPoints[0].y = my
+                        }
+                    }
+                    1 -> {
+                        if (mx - currentStroke!!.boundingPoints[0].x > 2F) {
+                            newWidth = (mx - currentStroke!!.boundingPoints[0].x)
+                            currentStroke!!.boundingPoints[1].x = mx
+                        }
+                        if (currentStroke!!.boundingPoints[1].y - my > 2F) {
+                            newHeight = (currentStroke!!.boundingPoints[1].y - my)
+                            currentStroke!!.boundingPoints[0].y = my
+                        }
+                    }
+                    2 -> {
+                        if (currentStroke!!.boundingPoints[1].x - mx > 2F) {
+                            newWidth = (currentStroke!!.boundingPoints[1].x - mx)
+                            currentStroke!!.boundingPoints[0].x = mx
+                        }
+
+                        if(my - currentStroke!!.boundingPoints[0].y > 2F) {
+                            newHeight = (my - currentStroke!!.boundingPoints[0].y)
+                            currentStroke!!.boundingPoints[1].y = my
+                        }
+
+                    }
+                    3 -> {
+                        if (mx - currentStroke!!.boundingPoints[0].x > 2F) {
+                            newWidth = (mx - currentStroke!!.boundingPoints[0].x)
+                            currentStroke!!.boundingPoints[1].x = mx
+                        }
+                        if (my - currentStroke!!.boundingPoints[0].y > 2F) {
+                            newHeight = (my - currentStroke!!.boundingPoints[0].y)
+                            currentStroke!!.boundingPoints[1].y = my
+                        }
+
+                    }
+                }
+
+                var scale = IVec2(newWidth/oldWidth, newHeight/oldHeight)
+
+                currentStroke!!.rescale(scale)
+                selectionCanvas!!.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR)
+                createSelectionCanvas(currentStroke!!)
+                currentStroke!!.drawStroke(selectionCanvas!!)
+                drawStrokesOnBaseCanvas(currentStroke!!)
+                oldMousePosition = IVec2(mx, my)
+                isResizing = true
+            } else if (!isResizing){
                 currentStroke!!.moveStroke(IVec2(mx - oldMousePosition.x, my - oldMousePosition.y))
                 drawStrokesOnBaseCanvas(currentStroke!!)
                 oldMousePosition = IVec2(mx, my)
@@ -128,6 +207,36 @@ class  Selection(context: Context, baseCanvas: Canvas, val socket : DrawingSocke
 
             socket.socket.emit("broadcastSelectionPos", data)
             isMoving = false
+
+        } else if (isResizing) {
+            //send
+            var newPos = JSONObject()
+            newPos.put("x", currentStroke!!.boundingPoints[0].x)
+            newPos.put("y", currentStroke!!.boundingPoints[0].y)
+
+            var newDimensions = JSONObject()
+            newDimensions.put("x", selectionBitmap!!.width)
+            newDimensions.put("y", selectionBitmap!!.height)
+
+            var scale = JSONObject()
+            scale.put("x", selectionBitmap!!.width/dimensionsBeforeResize.x)
+            scale.put("y", selectionBitmap!!.height/dimensionsBeforeResize.y)
+
+
+            var jo = JSONObject()
+
+            jo.put("strokeIndex", selectedIndex)
+            jo.put("newPos", newPos)
+            jo.put("newDimensions", newDimensions)
+            jo.put("scale", scale)
+            jo.put("sender", socket.socket.id())
+
+            var data = JSONObject()
+            data.put("room", drawingId)
+            data.put("data", jo)
+
+            socket.socket.emit("broadcastSelectionSize", data)
+            isResizing = false
         }
         var isInStrokesSelected = false
         strokesSelected.forEach {
@@ -154,7 +263,7 @@ class  Selection(context: Context, baseCanvas: Canvas, val socket : DrawingSocke
     private fun createSelectionCanvas(stroke: Stroke) {
         val width = (stroke.boundingPoints[1].x - stroke.boundingPoints[0].x).toInt()
         val height = (stroke.boundingPoints[1].y - stroke.boundingPoints[0].y).toInt()
-        selectionBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+        selectionBitmap = Bitmap.createBitmap(width + 15, height + 15, Bitmap.Config.ARGB_8888)
         selectionCanvas = Canvas(selectionBitmap!!)
         val borderPaint = Paint().apply {
             color = ResourcesCompat.getColor(context.resources, R.color.red, null)
@@ -165,43 +274,29 @@ class  Selection(context: Context, baseCanvas: Canvas, val socket : DrawingSocke
             strokeCap = Paint.Cap.SQUARE
             strokeWidth = 10f
         }
-        selectionCanvas!!.drawRect(0f, 0f, width.toFloat(), height.toFloat(), borderPaint)
+        selectionCanvas!!.drawRect(15f, 15f, width.toFloat(), height.toFloat(), borderPaint)
 
         //bounding box :
-//        val boundingPointPaint = Paint().apply {
-//            color = ResourcesCompat.getColor(context.resources, R.color.blue, null)
-//            isAntiAlias = true
-//            isDither = true
-//            style = Paint.Style.STROKE
-//            strokeJoin = Paint.Join.MITER
-//            strokeCap = Paint.Cap.SQUARE
-//            strokeWidth = 18f
-//        }
-//
-//        baseCanvas!!.drawRect(
-//            (stroke.boundingPoints[0].x - 20F),
-//            (stroke.boundingPoints[0].y - 20F),
-//            40F, 40F, boundingPointPaint)
-//
-//        baseCanvas!!.drawRect(
-//            (stroke.boundingPoints[1].x - 20F),
-//            (stroke.boundingPoints[0].y - 20F),
-//            40F, 40F, boundingPointPaint)
-//
-//        baseCanvas!!.drawRect(
-//            (stroke.boundingPoints[0].x + 20F),
-//            (stroke.boundingPoints[1].y + 20F),
-//            40F, 40F, boundingPointPaint)
-//
-//        baseCanvas!!.drawRect(
-//            (stroke.boundingPoints[1].x + 20F),
-//            (stroke.boundingPoints[1].y + 20F),
-//            40F, 40F, boundingPointPaint)
+        val boundingPointPaint = Paint().apply {
+            color = ResourcesCompat.getColor(context.resources, R.color.red, null)
+            isAntiAlias = true
+            isDither = true
+            style = Paint.Style.FILL
+            strokeJoin = Paint.Join.MITER
+            strokeCap = Paint.Cap.SQUARE
+            strokeWidth = 1f
+        }
+
+        selectionCanvas!!.drawRect(0f, 0F, 30F, 30F, boundingPointPaint)
+        selectionCanvas!!.drawRect(width.toFloat()-15F, height.toFloat()-15F, width.toFloat()+15F, height.toFloat() + 15F, boundingPointPaint)
+        selectionCanvas!!.drawRect(0f, height.toFloat()-15F, 30F, height.toFloat() + 15F, boundingPointPaint)
+        selectionCanvas!!.drawRect(width.toFloat()-15F, 0F, width.toFloat()+15F, 30F, boundingPointPaint)
+
 
     }
 
     private fun drawStrokeOnSelectionCanvas(stroke: Stroke, canvas: Canvas) {
-        if (!isMoving) {
+        if (!isMoving && !isResizing) {
             stroke.prepForSelection()
         }
         stroke.drawStroke(canvas)
@@ -244,8 +339,6 @@ class  Selection(context: Context, baseCanvas: Canvas, val socket : DrawingSocke
             )
             i++
         }
-
-
     }
 
     private fun drawOtherSelectedStrokesOnBaseCanvas(
@@ -269,10 +362,10 @@ class  Selection(context: Context, baseCanvas: Canvas, val socket : DrawingSocke
         strokes.reversed().forEach { element ->
             if (this.isInBounds(element.boundingPoints, clickedPos)) {
                 this.selectedIndex = strokes.indexOf(element)
-                return true;
+                return true
             }
         }
-        return false;
+        return false
     }
 
     private fun isInBounds(bounds: ArrayList<IVec2>, pointToCheck: IVec2): Boolean {
@@ -290,16 +383,38 @@ class  Selection(context: Context, baseCanvas: Canvas, val socket : DrawingSocke
     private fun isInResizingPoints(bounds: ArrayList<IVec2>, pointToCheck: IVec2): Boolean {
         val topLeftBound = bounds[0];
         val bottomRightBound = bounds[1];
-//        return (
-//                (pointToCheck.x == topLeftBound.x && pointToCheck.y == topLeftBound.y) ||
-//                        (pointToCheck.x == bottomRightBound.x && pointToCheck.y == bottomRightBound.y) ||
-//                        (pointToCheck.x == topLeftBound.x && pointToCheck.y == bottomRightBound.y) ||
-//                        (pointToCheck.x == bottomRightBound.x && pointToCheck.y == topLeftBound.y)
-//                )
-        return (
-                (pointToCheck.x >= bottomRightBound.x -50F) && (pointToCheck.x <= bottomRightBound.x +50F) &&
-                        (pointToCheck.y >= bottomRightBound.y - 50F) && (pointToCheck.y <= bottomRightBound.y + 50F)
-                )
+
+        if ((pointToCheck.x >= topLeftBound.x - 50F) && (pointToCheck.x <= topLeftBound.x + 50F) &&
+            (pointToCheck.y >= topLeftBound.y - 50F) && (pointToCheck.y <= topLeftBound.y + 50F)
+        ) {
+            if (!isResizing) {
+                currentCpIndex = 0
+            }
+            return true
+        } else if ((pointToCheck.x >= bottomRightBound.x - 50F) && (pointToCheck.x <= bottomRightBound.x + 50F) &&
+            (pointToCheck.y >= topLeftBound.y - 50F) && (pointToCheck.y <= topLeftBound.y + 50F)
+        ) {
+            if (!isResizing) {
+                currentCpIndex = 1
+            }
+            return true
+        } else if ((pointToCheck.x >= topLeftBound.x - 50F) && (pointToCheck.x <= topLeftBound.x + 50F) &&
+            (pointToCheck.y >= bottomRightBound.y - 50F) && (pointToCheck.y <= bottomRightBound.y + 50F)
+        ) {
+            if (!isResizing) {
+                currentCpIndex = 2
+            }
+            return true
+
+        } else if ((pointToCheck.x >= bottomRightBound.x - 50F) && (pointToCheck.x <= bottomRightBound.x + 50F) &&
+            (pointToCheck.y >= bottomRightBound.y - 50F) && (pointToCheck.y <= bottomRightBound.y + 50F)
+        ) {
+            if (!isResizing) {
+                currentCpIndex = 3
+            }
+            return true
+        }
+        return false
     }
 
     fun addStroke(stroke: Stroke) {
@@ -346,6 +461,7 @@ class  Selection(context: Context, baseCanvas: Canvas, val socket : DrawingSocke
             //send
             var jo = JSONObject()
             jo.put("strokeIndex", selectedIndex)
+
             jo.put("color", toRBGColor(color))
             jo.put("sender", socket.socket.id())
 
@@ -402,7 +518,7 @@ class  Selection(context: Context, baseCanvas: Canvas, val socket : DrawingSocke
                     )
                     i++
                 } else {
-                    strokesSelectedBitmap.remove(sender)
+//                    strokesSelectedBitmap.remove(sender)
                     strokesSelected[i] = currentStroke
                     createOtherSelectionCanvas(sender, currentStroke)
                 }
@@ -456,7 +572,7 @@ class  Selection(context: Context, baseCanvas: Canvas, val socket : DrawingSocke
                     )
                     i++
                 } else {
-                    strokesSelectedBitmap.remove(sender)
+//                    strokesSelectedBitmap.remove(sender)
                     strokesSelected[i] = currentStroke
                     createOtherSelectionCanvas(sender, currentStroke)
                 }
@@ -493,22 +609,24 @@ class  Selection(context: Context, baseCanvas: Canvas, val socket : DrawingSocke
     private fun createOtherSelectionCanvas(sender: String?, stroke: Stroke) {
         val width = (stroke.boundingPoints[1].x - stroke.boundingPoints[0].x).toInt()
         val height = (stroke.boundingPoints[1].y - stroke.boundingPoints[0].y).toInt()
-        val otherSelectionBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
-        val otherSelectionCanvas = Canvas(otherSelectionBitmap!!)
-        val borderPaint = Paint().apply {
-            color = ResourcesCompat.getColor(context.resources, R.color.blue, null)
-            isAntiAlias = true
-            isDither = true
-            style = Paint.Style.STROKE
-            strokeJoin = Paint.Join.MITER
-            strokeCap = Paint.Cap.SQUARE
-            strokeWidth = 10f
-        }
-        otherSelectionCanvas!!.drawRect(0f, 0f, width.toFloat(), height.toFloat(), borderPaint)
+        if (width != 0 && height !=0) {
+            val otherSelectionBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+            val otherSelectionCanvas = Canvas(otherSelectionBitmap!!)
+            val borderPaint = Paint().apply {
+                color = ResourcesCompat.getColor(context.resources, R.color.blue, null)
+                isAntiAlias = true
+                isDither = true
+                style = Paint.Style.STROKE
+                strokeJoin = Paint.Join.MITER
+                strokeCap = Paint.Cap.SQUARE
+                strokeWidth = 10f
+            }
+            otherSelectionCanvas!!.drawRect(0f, 0f, width.toFloat(), height.toFloat(), borderPaint)
 
-        drawStrokeOnOtherSelectionCanvas(stroke, otherSelectionCanvas!!)
-        drawOtherSelectedStrokesOnBaseCanvas(stroke, otherSelectionBitmap)
-        strokesSelectedBitmap.put(sender!!, otherSelectionBitmap)
+            drawStrokeOnOtherSelectionCanvas(stroke, otherSelectionCanvas!!)
+            drawOtherSelectedStrokesOnBaseCanvas(stroke, otherSelectionBitmap)
+            strokesSelectedBitmap[sender!!] = otherSelectionBitmap
+        }
     }
 
     fun onPasteRequest(sender: String, strokeIndex: Int) {
@@ -672,8 +790,61 @@ class  Selection(context: Context, baseCanvas: Canvas, val socket : DrawingSocke
         }
     }
 
+    fun onResizeRequest(sender: String, strokeIndex: Int, newPos: IVec2, newDimensions: IVec2, scale: IVec2) {
+        strokes[strokeIndex].rescale(scale)
+        strokes[strokeIndex].boundingPoints[0] = newPos
+        strokes[strokeIndex].boundingPoints[1] = IVec2(newDimensions.x + newPos.x, newDimensions.y + newPos.y)
+
+        if (otherSelectionCanvas != null) {
+            otherSelectionCanvas!!.drawColor(
+                Color.TRANSPARENT,
+                PorterDuff.Mode.CLEAR
+            ) //clear le canvas de selection des autres
+        }
+
+        baseCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR) //clear le base canvas
+
+        strokes.forEachIndexed { i, element ->
+            if (i != selectedIndex && i!=strokeIndex) {
+                element.drawStroke(baseCanvas) //redessiner les autres formes sauf la forme selectionner
+            }
+        }
+
+        if (selectionBitmap != null && currentStroke != null) {
+            baseCanvas.drawBitmap(
+                selectionBitmap!!,
+                currentStroke!!.boundingPoints[0].x,
+                currentStroke!!.boundingPoints[0].y,
+                null
+            ) //dessiner la forme selectionner sur le base
+            strokes[selectedIndex!!] = currentStroke!!
+        }
+
+        //redessiner les formes selectionner par les autres
+//            strokesSelected.forEachIndexed { i, element ->
+//                createOtherSelectionCanvas(null, element)
+//            }
+        var i = 0
+        strokesSelectedBitmap.forEach {
+            if (it.key != sender) {
+                baseCanvas.drawBitmap(
+                    it.value, //hereeeeeeeeeeeeeeeeeeeeeeeeeeeee
+                    strokesSelected[i].boundingPoints[0].x,
+                    strokesSelected[i].boundingPoints[0].y,
+                    null
+                )
+                i++
+            } else {
+//                strokesSelectedBitmap.remove(sender)
+                strokesSelected[i] = strokes[strokeIndex]
+                createOtherSelectionCanvas(sender, strokes[strokeIndex])
+            }
+        }
+
+    }
+
+
     fun onMoveRequest(sender: String, pos: IVec2) {
-//        var index = strokes.indexOf(strokesSelected[0])
 
         var i = 0
         strokesSelectedBitmap.forEach {
@@ -686,12 +857,12 @@ class  Selection(context: Context, baseCanvas: Canvas, val socket : DrawingSocke
         strokes[index].updateMove(pos)
 
         strokes[index].boundingPoints[1] = IVec2(
-            pos.x - strokesSelected[0].boundingPoints[0].x + strokesSelected[0].boundingPoints[1].x,
-            pos.y - strokesSelected[0].boundingPoints[0].y + strokesSelected[0].boundingPoints[1].y
+            pos.x - strokes[index].boundingPoints[0].x + strokes[index].boundingPoints[1].x,
+            pos.y - strokes[index].boundingPoints[0].y + strokes[index].boundingPoints[1].y
         )
         strokes[index].boundingPoints[0] = IVec2(pos.x, pos.y)
 
-        strokesSelected[0] = strokes[index]
+        strokesSelected[i] = strokes[index] //TODO de i au lieu de 0?
 
 
 
@@ -713,12 +884,72 @@ class  Selection(context: Context, baseCanvas: Canvas, val socket : DrawingSocke
             strokes[selectedIndex!!] = currentStroke!!
         }
 
-        baseCanvas.drawBitmap(
-            strokesSelectedBitmap[sender]!!,
-            pos.x,
-            pos.y,
-            null
-        ) //dessiner la forme selectionner sur le base
+
+        var j = 0
+        strokesSelectedBitmap.forEach {
+            if (it.key != sender) {
+                baseCanvas.drawBitmap(
+                    it.value, //hereeeeeeeeeeeeeeeeeeeeeeeeeeeee
+                    strokesSelected[j].boundingPoints[0].x,
+                    strokesSelected[j].boundingPoints[0].y,
+                    null
+                )
+                j++
+            } else {
+                baseCanvas.drawBitmap(
+                    strokesSelectedBitmap[sender]!!,
+                    pos.x,
+                    pos.y,
+                    null
+                )
+            }
+        }
+    }
+
+    fun resetSelection() {
+        if (currentStroke != null && !strokesSelected.contains(currentStroke)) {
+//            if (!strokesSelected.contains(currentStroke)) {
+            currentStroke!!.prepForBaseCanvas()
+//            }
+            currentStroke!!.isSelected = false
+
+            if (selectionCanvas != null) {
+                selectionCanvas!!.drawColor(
+                    Color.TRANSPARENT,
+                    PorterDuff.Mode.CLEAR
+                ) //clear le canvas de selection
+            }
+            baseCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR) //clear le base canvas
+            strokes.forEach { element ->
+                if (!strokesSelected.contains(element)) {
+                    element.drawStroke(baseCanvas) //redessiner toutes les formes sur le base canvas
+                }
+            }
+
+//            strokesSelected.forEachIndexed { i, element ->
+//                createOtherSelectionCanvas(null, element)
+//            }
+            var i = 0
+            strokesSelectedBitmap.forEach {
+                baseCanvas.drawBitmap(
+                    it.value, //hereeeeeeeeeeeeeeeeeeeeeeeeeeeee
+                    strokesSelected[i].boundingPoints[0].x,
+                    strokesSelected[i].boundingPoints[0].y,
+                    null
+                )
+                i++
+            }
+
+            currentStroke = null
+            selectedIndex = null
+//            nextTool = ToolbarFragment.MenuItem.SELECTION
+            if (!isToolSelection!!) {
+                nextTool = oldTool!!
+            } else {
+                nextTool = ToolbarFragment.MenuItem.SELECTION
+                isToolSelection = true
+            }
+        }
     }
 }
 

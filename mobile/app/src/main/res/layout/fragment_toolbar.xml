@@ -8,8 +8,8 @@
 
     <Button
         android:id="@+id/backBtn"
-        android:layout_width="100sp"
-        android:layout_height="100sp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:background="@drawable/ic_baseline_arrow_back_ios_new_24"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,16 +22,26 @@
         android:columnWidth="50dp"
         android:horizontalSpacing="0dp"
         android:numColumns="1"
-        android:verticalSpacing="50dp"
+        android:verticalSpacing="40dp"
+        android:layout_marginBottom="50dp"
         app:layout_constraintBottom_toTopOf="@+id/saveDrawingBtn"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/backBtn"></GridView>
+        app:layout_constraintTop_toBottomOf="@+id/backBtn" />
 
     <Button
+        android:id="@+id/takePictureBtn"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginBottom="80dp"
+        android:background="@drawable/camera"
+        app:layout_constraintBottom_toTopOf="@+id/saveDrawingBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+    <Button
         android:id="@+id/saveDrawingBtn"
-        android:layout_width="100sp"
-        android:layout_height="100sp"
-        android:layout_marginBottom="25dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="80dp"
         android:background="@drawable/ic_baseline_save_alt_24"
         app:layout_constraintBottom_toTopOf="@+id/addToStoryBtn"
         app:layout_constraintEnd_toEndOf="parent"
@@ -39,9 +49,10 @@
 
     <Button
         android:id="@+id/addToStoryBtn"
-        android:layout_width="100sp"
-        android:layout_height="100sp"
-        android:layout_marginBottom="25dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="10dp"
         android:background="@drawable/addtostory"
         app:layout_constraintBottom_toBottomOf="@id/addToStoryText"
         app:layout_constraintEnd_toEndOf="parent"
@@ -51,12 +62,12 @@
         android:id="@+id/addToStoryText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="ajouter a ta story"
+        android:text="Story"
         android:textColor="@color/black"
-        android:textSize="20sp"
+        android:textSize="10sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/addToStoryBtn"
-        app:layout_constraintStart_toStartOf="@+id/addToStoryBtn" />
+        android:layout_marginBottom="80dp"
+        app:layout_constraintTop_toBottomOf="@+id/addToStoryBtn"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

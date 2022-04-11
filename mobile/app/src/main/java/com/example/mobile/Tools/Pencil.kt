@@ -56,7 +56,7 @@ class Pencil(context: Context, baseCanvas: Canvas, val socket : DrawingSocket, v
             strokePaint.strokeJoin = Paint.Join.ROUND // default: MITER
             strokePaint.strokeCap = Paint.Cap.ROUND
             baseCanvas!!.drawPath(path!!, strokePaint!!)
-            path!!.reset()
+//            path!!.reset()
 
             //ajout a l'array list des strokes
             val iPencilStroke = IPencilStroke(
@@ -75,7 +75,11 @@ class Pencil(context: Context, baseCanvas: Canvas, val socket : DrawingSocket, v
             selection.isToolSelection = false
             selection.oldTool = ToolbarFragment.MenuItem.PENCIL
             nextTool = ToolbarFragment.MenuItem.SELECTION
+
+            path!!.reset()
         }
+
+
     }
 
     private fun getPointsList():ArrayList<IVec2> {

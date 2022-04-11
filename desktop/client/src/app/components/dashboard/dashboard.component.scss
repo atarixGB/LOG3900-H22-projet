@@ -6,6 +6,20 @@
    z-index: 2;
 }
 
+#startDrawing {
+  margin-top: 50px;
+  height: 125px;
+  width: 125px;
+  text-shadow: 1px 1px 1px rgba(159, 159, 159);
+  cursor: pointer;
+}
+
+#startDrawing:hover {
+  border: solid rgb(165, 247, 165);
+  border-width: 2px;
+  border-radius: 50%;
+}
+
 #storiesDiv {
   display:initial !important;
    overflow-x: auto;

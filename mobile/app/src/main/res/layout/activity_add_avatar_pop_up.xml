@@ -12,6 +12,8 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_alignParentEnd="true"
+        android:paddingRight="5dp"
+        android:paddingTop="5dp"
         android:layout_marginRight="100dp"
         android:src="@drawable/placeholder_logo"
         app:civ_border_color="@color/purple_500"
@@ -22,7 +24,6 @@
         android:id="@+id/linearLayout1"
         android:layout_width="match_parent"
         android:layout_height="120dp"
-        android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
         android:orientation="horizontal"
         app:layout_constraintStart_toStartOf="parent"
@@ -43,18 +44,17 @@
             android:id="@+id/avatar2"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:layout_marginRight="5dp"
+            android:layout_marginRight="15dp"
             android:src="@drawable/monster2"
             app:civ_border_color="@color/purple_200"
             app:civ_border_width="2dp" />
-
 
 
         <com.mikhaellopez.circularimageview.CircularImageView
             android:id="@+id/avatar3"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:layout_marginRight="15dp"
+            android:layout_marginRight="19dp"
             android:src="@drawable/monster3"
             app:civ_border_color="@color/purple_200"
             app:civ_border_width="2dp" />
@@ -121,7 +121,6 @@
             android:id="@+id/avatar7"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:layout_marginLeft="-4dp"
             android:src="@drawable/monster7"
             app:civ_border_color="@color/purple_200"
             app:civ_border_width="2dp" />
@@ -131,7 +130,7 @@
             android:id="@+id/avatar8"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:layout_marginLeft="7dp"
+            android:layout_marginLeft="16dp"
             android:src="@drawable/monster8"
             app:civ_border_color="@color/purple_200"
             app:civ_border_width="2dp" />

@@ -14,25 +14,39 @@ data class IEllipseStroke (
     override var currentStrokeWidth: Float,
     override var isSelected: Boolean,
     var center: IVec2,
-    val radius: IVec2):Stroke(boundingPoints,currentStrokeColor,currentStrokeWidth, isSelected,
+    var radius: IVec2):Stroke(boundingPoints,currentStrokeColor,currentStrokeWidth, isSelected,
     ToolbarFragment.MenuItem.OVAL) {
 
     override fun drawStroke(canvas: Canvas) {
-        val upcomingPaint = Paint().apply {
+        val upcomingPaintStroke = Paint().apply {
             color = currentStrokeColor
             strokeWidth = currentStrokeWidth
             isAntiAlias = true
-            // Dithering affects how colors with higher-precision than the device are down-sampled.
             isDither = true
-            style = Paint.Style.STROKE // default: FILL
-            strokeJoin = Paint.Join.MITER // default: MITER
-            strokeCap = Paint.Cap.SQUARE // default: BUTT
+            style = Paint.Style.STROKE
+            strokeJoin = Paint.Join.MITER
+            strokeCap = Paint.Cap.SQUARE
+        }
+
+        val upcomingPaintFill = Paint().apply {
+            color = secondaryColor
+            strokeWidth = currentStrokeWidth
+            isAntiAlias = true
+            isDither = true
+            style = Paint.Style.FILL
+            strokeJoin = Paint.Join.MITER
+            strokeCap = Paint.Cap.SQUARE
         }
         canvas!!.drawOval(center.x-radius.x,
             center.y-radius.y,
             center.x+radius.x,
             center.y+radius.y,
-            upcomingPaint!!)
+            upcomingPaintFill!!)
+        canvas!!.drawOval(center.x-radius.x,
+            center.y-radius.y,
+            center.x+radius.x,
+            center.y+radius.y,
+            upcomingPaintStroke!!)
     }
 
     override fun prepForSelection() {
@@ -44,11 +58,12 @@ data class IEllipseStroke (
     }
 
     override fun updateMove(pos: IVec2) {
-        center = IVec2(center.x + pos.x, center.y +pos.y)
+        center = IVec2(center.x + pos.x - boundingPoints[0].x, center.y + pos.y - boundingPoints[0].y)
     }
 
     override fun rescale(scale: IVec2) {
-        TODO("Not yet implemented")
+        center = IVec2( center.x * scale.x, center.y * scale.y )
+        radius = IVec2( radius.x * scale.x, radius.y * scale.y )
     }
 
     override fun convertToObject(): JSONObject {
@@ -79,9 +94,4 @@ data class IEllipseStroke (
 
         return jo
     }
-//
-//    override fun moveStroke(newPosition: IVec2) {
-//        TODO("Not yet implemented")
-//    }
-
 }

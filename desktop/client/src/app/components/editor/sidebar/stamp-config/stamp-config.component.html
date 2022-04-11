@@ -1,0 +1,15 @@
+<div fxLayout="column" fxLayoutAlign="center stretch" >
+  <div fxLayout="row" fxLayoutAlign="center center" >
+    <button class="margin" mat-raised-button (click)="this.openStampSelectionDialog()">Choisir une étampe</button>
+  </div>
+
+  <div fxLayout="row" fxLayoutAlign="start center" >
+    <mat-label id="scale">Mise à l'échelle : {{ stampService.resizeFactor }} X</mat-label>
+  </div>
+  
+  <mat-slider thumbLabel min="1" max="10"  value = "stampService.resizeFactor"[(ngModel)]="stampService.resizeFactor"></mat-slider>
+  
+  <div fxLayout="row" fxLayoutAlign="start center">
+    <mat-label id="angle" matTooltip="Utilisez la roulette de la souris pour changer l'orientation" matTooltipPosition="above">Angle: {{ stampService.angle }} degrés</mat-label>
+  </div>
+</div>

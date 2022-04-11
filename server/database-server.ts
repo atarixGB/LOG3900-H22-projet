@@ -91,6 +91,7 @@ mongoClient.connect(process.env.POLYGRAM_APP_DATABASE_URL, { useNewUrlParser: tr
       var email = post_data.email;
       var description = post_data.description;
 
+      
       var collaborationCount = post_data.collaborationCount;
       var totalCollaborationTime = post_data.totalCollaborationTime;
 
@@ -458,39 +459,6 @@ mongoClient.connect(process.env.POLYGRAM_APP_DATABASE_URL, { useNewUrlParser: tr
         return res.status(200).end();
       });
 
-  //get image from DB
-   app.get('/drawings/:drawingId', function (req, res){
-    DB.collection("drawings")
-    .findOne({ _id: mongoose.Types.ObjectId(req.params.drawingId.replace(/"/g, '')) }, function (err, result) {
-      if (err) throw err
-      else {
-        const file = result.data;
-
-        if (fs.existsSync(__dirname + "/uploads/" + file, {encoding: 'base64'})) {
-          var img = fs.readFileSync(__dirname + "/uploads/" + file, {encoding: 'base64'});
-          var returnedJson = {
-            _id: result._id,
-            name: result.name,
-            owner: result.owner,
-            description: result.description,
-            data: img,
-            members: result.members,
-            likes: result.likes,
-            albumName:result.albumName
-          };
-          res.json(returnedJson)
-          console.log("GotDrawing");
-
-        }
-
-        else{
-          console.log(`File ${file} does not exist on server`);
-        }
-
-      }
-    });
-  });
-
   //delete drawing with specific id
   app.delete("/drawing/delete/:id", (request, response, next) => {
     let drawingId = request.params.id;
@@ -521,11 +489,48 @@ mongoClient.connect(process.env.POLYGRAM_APP_DATABASE_URL, { useNewUrlParser: tr
           response.json(result);
         })
     })
+
+    //get image from DB
+    app.get('/drawings/:drawingId', function (req, res) {
+      DB.collection("drawings")
+        .findOne({ _id: mongoose.Types.ObjectId(req.params.drawingId.replace(/"/g, '')) }, function (err, result) {
+          if (err) {
+            console.log("error getting");
+          } else {
+            const file = result.data;
+
+            if (fs.readFileSync(__dirname + `/${UPLOAD_DIR}` + file, { encoding: 'base64' })) {
+              var img = fs.readFileSync(__dirname + `/${UPLOAD_DIR}` + file, { encoding: 'base64' });
+
+              var returnedJson = {
+                _id: result._id,
+                name: result.name,
+                owner: result.owner,
+                description: result.description,
+                data: img,
+                members: result.members,
+                likes: result.likes,
+                albumName: result.albumName,
+              };
+              res.json(returnedJson)
+              console.log("GotDrawing");
+
+            }
+
+            else {
+              console.log(`File ${file} does not exist on server`);
+            }
+
+          }
+        });
+    });
+
   
 
 //==========================================================================================================
 // Album Management
 //==========================================================================================================
+
 
 
     //get all drawings that specified user liked
@@ -590,10 +595,18 @@ mongoClient.connect(process.env.POLYGRAM_APP_DATABASE_URL, { useNewUrlParser: tr
       })
     });
 
-    //==========================================================================================================
-    // Album Management
-    //==========================================================================================================
+    // For Development Purpose Only: Delete all drawings from DB
+    app.delete("/delete/:field", (request, response) => {
+      let field = request.params.field;
+      DB.collection(field).remove({}, (err, result) => {
+        if (err) console.log(`CANNOT DELETE ${field}`);
+        else response.json(`DELETE ${field} COLLECTION OK`)
+      })
+    })
 
+//==========================================================================================================
+// Album Management
+//==========================================================================================================
     //create new album
     app.post("/albums", (request, response, next) => {
       var post_data = request.body;
@@ -836,6 +849,7 @@ mongoClient.connect(process.env.POLYGRAM_APP_DATABASE_URL, { useNewUrlParser: tr
       var newUsername = post_data.newUsername;
       var avatar = post_data.newAvatar;
       var description = post_data.newDescription;
+      var chatThemeId = post_data.newChatThemeId;
 
       //check if a user already has the new name
       DB.collection("users")
@@ -850,9 +864,13 @@ mongoClient.connect(process.env.POLYGRAM_APP_DATABASE_URL, { useNewUrlParser: tr
               $set: {
                 "identifier": newUsername,
                 "avatar": avatar,
-                "description": description
-              },
+                "description": description,
+                "chatThemeId" : chatThemeId // add new theme id
+              }
             }).then(result => {
+              // DB.collection("drawings").findOneAndUpdate({ owner: oldUsername }, { $set: { owner: newUsername } }, { returnDocument: 'after' }, (err, res) => {})
+              // DB.collection("albums").findOneAndUpdate({ owner: oldUsername }, { $set: { owner: newUsername } }, { returnDocument: 'after' }, (err, res) => {})
+              // DB.collection("albums").findOneAndUpdate({ identifier: oldUsername }, { $set: { identifier: newUsername } }, { returnDocument: 'after' }, (err, res) => {})
               response.json(200);
             });
           }
@@ -919,6 +937,19 @@ mongoClient.connect(process.env.POLYGRAM_APP_DATABASE_URL, { useNewUrlParser: tr
       });
     })
 
+    app.get("/profile/stats/collabs/duration/:username", (request, response) => {
+      const identifier = request.params.username;
+
+      DB.collection("users").findOne({ identifier: identifier }, function (error, user) {
+        if (error) throw error;
+        if (user.collaborationCount == 0) {
+          response.json(0);
+        } else {
+          response.json(user.totalCollaborationTime);
+        }
+      });
+    })
+
     //Update collab stats
     app.put("/profile/stats/collabs/update/:username", (request, response, next) => {
       const identifier = request.params.username;
@@ -928,8 +959,35 @@ mongoClient.connect(process.env.POLYGRAM_APP_DATABASE_URL, { useNewUrlParser: tr
         { $inc: { collaborationCount: 1, totalCollaborationTime: secondsSpentInCollab } }, { returnDocument: 'after' }, (err, res) => {
           response.json(201)
           console.log(`Updated collab stats for ${identifier}`);
+          console.log(secondsSpentInCollab);
         })
     });
+
+        // pour leger : Update collab stats incremente seulement le nombre de collab
+        app.put("/profile/stats/collabs/updateCollabCount/:username", (request, response, next) => {
+          const identifier = request.params.username;
+          
+    
+          DB.collection("users").findOneAndUpdate({ identifier: identifier },
+            { $inc: { collaborationCount: 1 } }, { returnDocument: 'after' }, (err, res) => {
+              response.json(201)
+              console.log(`Updated collab stats for ${identifier}`);
+            })
+        });
+
+        // pour leger : Update collab stats incremente seulement les secondes de collab
+        app.put("/profile/stats/collabs/updateCollabDuration/:username", (request, response, next) => {
+          const identifier = request.params.username;
+          const secondsSpentInCollab = request.body.secondsSpentInCollab;
+          
+    
+          DB.collection("users").findOneAndUpdate({ identifier: identifier },
+            { $inc: {totalCollaborationTime: secondsSpentInCollab } }, { returnDocument: 'after' }, (err, res) => {
+              response.json(201)
+              console.log(`Updated collab stats for ${identifier}`);
+              console.log(secondsSpentInCollab);
+            })
+        });
 
     // Get the total number of drawings created by username 
     app.get("/profile/stats/drawings/:username", (request, response) => {

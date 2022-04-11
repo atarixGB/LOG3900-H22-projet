@@ -54,7 +54,7 @@ export class AlbumGalleryService {
       (result) => {
         console.log("Résultat du serveur:", result);
         this.currentDrawing._id = result;
-        this.addDrawingToAlbum(this.currentDrawing, this.selectedAlbumId);
+        this.addDrawingToAlbum(this.currentDrawing, this.selectedAlbumId); // Should be ID not name but we did it with the name
         this.drawingService.setCurrentDrawingBlanc();
         this.collaborationService.joinCollab(this.currentDrawing._id);
         localStorage.setItem('currentDrawingName', this.currentDrawing.name);
@@ -385,14 +385,6 @@ export class AlbumGalleryService {
     });
 
     console.log(this.fetchedDrawings);
-  }
-
-  fetchAllPublicDrawings(): void {
-    console.log("Fetching all public drawings from server...");
-    // this.httpClient.get(url).subscribe(
-    //   (result) => {},
-    //   (error) => {}
-    // )
   }
 
   // All drawings that current user liked

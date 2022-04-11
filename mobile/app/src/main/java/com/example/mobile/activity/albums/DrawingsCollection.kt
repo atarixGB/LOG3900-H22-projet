@@ -66,9 +66,13 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
     private lateinit var userNameAccepted: String
     private lateinit var dialogAcceptMembershipRequest: AcceptMembershipRequestsPopUp
     private lateinit var dialogEditAlbumAttributes: AlbumAttributeModificationPopUp
+    private var collabStartTime:Long =0
 
     private val sharedViewModelToolBar: SharedViewModelToolBar by viewModels()
     private val sharedViewModelCreateDrawingPopUp: SharedViewModelCreateDrawingPopUp by viewModels()
+
+
+
     private lateinit var iMyService: IMyService
     internal var compositeDisposable = CompositeDisposable()
 
@@ -133,7 +137,6 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
         albumNameTextView.text = albumName
 
         getAllAlbumDrawings(albumID)
-
 
         leaveAlbumBtn.setOnClickListener {
             val intent = Intent(this, Albums::class.java)
@@ -263,6 +266,7 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
           roomName: roomName,
           strokes: infoOnActiveRooms.get(roomName).strokes,
         };*/
+        collabStartTime= Date().time
         val collabData = it[0] as JSONObject
         val drawingId = collabData["roomName"] as String
 
@@ -272,10 +276,15 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
         for (i in 0 until jsonStrokes.length()) {
             jsonStrings.add(jsonStrokes[i].toString())
         }
+
+//        var gson = Gson()
+//        var jsonString = gson.toJson(jsonStrokes)
+
         val intent = Intent(this, DrawingActivity::class.java)
         var bundle: Bundle = Bundle()
         bundle.putStringArrayList("jsonString", jsonStrings)
         intent.putExtra("userName", user)
+        intent.putExtra("collabStartTime",collabStartTime)
         intent.putExtra("drawingCollabId", drawingId)
         intent.putExtras(bundle)
         startActivity(intent)
@@ -456,7 +465,8 @@ class DrawingsCollection : AppCompatActivity(), DrawingAdapter.DrawingAdapterLis
         if (!searchText.isEmpty()) {
             drawings.forEach {
                 if ((it.name!!.lowercase(Locale.getDefault()).contains(searchText)) ||
-                    (it.owner!!.lowercase(Locale.getDefault()).contains(searchText))
+                    (it.owner!!.lowercase(Locale.getDefault()).contains(searchText)) ||
+                    (it.creationDate!!.lowercase(Locale.getDefault()).contains(searchText))
                 ){
                     searchArrayList.add(it)
                 }

@@ -3,15 +3,23 @@
     color: black;
 }
 
-button {
+.btn {
     background-color: #c4eba8;
     border: solid 2px;
+    border-radius: 5px;
     border-color: #6f9058;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    cursor: pointer;
 }
 
-button:hover {
+.btn:hover {
     opacity: 75%;
     background-color: #c8f7a7;
+    > mat-icon {
+        color: white;
+        text-shadow: 1px 1px 5px rgb(0, 0, 0);
+    }
 }
 
 .margin {
