@@ -40,6 +40,7 @@ class ToolbarNavigationFragment: Fragment() {
 
         sharedViewModel.user.observe(viewLifecycleOwner) {
             user = it
+            displayUser.text = user
         }
 
         dashbord = rootView.findViewById(R.id.dashbord)
@@ -50,7 +51,7 @@ class ToolbarNavigationFragment: Fragment() {
         draft=rootView.findViewById(R.id.draft)
         displayUser=rootView.findViewById(R.id.displayUser)
 
-//        displayUser.text = user
+
 
         logout = rootView.findViewById(R.id.logout)
 

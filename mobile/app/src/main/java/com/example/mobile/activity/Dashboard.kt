@@ -78,6 +78,7 @@ class Dashboard : AppCompatActivity(), StoryAdapter.StoryAdapterListener {
 
     private fun openSoloDrawing() {
         val intent = Intent(this, DrawingActivity::class.java)
+        intent.putExtra("userName", user)
         var bundle:Bundle = ActivityOptions.makeSceneTransitionAnimation(this).toBundle()
         startActivity(intent,bundle)
     }
@@ -89,7 +90,7 @@ class Dashboard : AppCompatActivity(), StoryAdapter.StoryAdapterListener {
             override fun onResponse(call: Call<List<IUser>>, response: Response<List<IUser>>) {
                 if (response.body() != null) {
                     for (userElement in response.body()!!) {
-                        if (userElement.identifier != user && !userElement.avatar.isNullOrEmpty()) {
+                        if (!userElement.avatar.isNullOrEmpty()) {
                             getAllUserDrawings(userElement.identifier!!, userElement.avatar!!)
                         }
                     }
