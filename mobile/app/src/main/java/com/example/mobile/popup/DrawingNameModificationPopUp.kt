@@ -6,9 +6,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
 import com.example.mobile.R
 import com.example.mobile.Retrofit.IMyService
@@ -28,6 +31,8 @@ class DrawingNameModificationPopUp (val drawingID:String, val oldDrawingName: St
     private lateinit var cancelButton: Button
     private lateinit var drawingName: EditText
     private lateinit var iMyService: IMyService
+    private lateinit var drawingNameEmptyError: TextView
+
     internal var compositeDisposable = CompositeDisposable()
 
     override fun onCreateView(
@@ -37,28 +42,34 @@ class DrawingNameModificationPopUp (val drawingID:String, val oldDrawingName: St
         var rootView: View = inflater.inflate(R.layout.fragment_drawing_name_modification_pop_up, container, false)
         drawingName=rootView.findViewById(R.id.modifiedDrawingName)
         drawingName.setText(oldDrawingName)
-
+        drawingNameEmptyError=rootView.findViewById(R.id.drawingNameEmptyError)
         val retrofit = RetrofitClient.getInstance()
         iMyService = retrofit.create(IMyService::class.java)
 
         submitButton= rootView.findViewById(R.id.modifyDrawingBtn)
         cancelButton=rootView.findViewById(R.id.cancelBtn)
 
-
+        drawingNameEmptyError.isVisible=false
 
         cancelButton.setOnClickListener(){
             dismiss()
         }
 
         submitButton.setOnClickListener{
-            var modifiedName= drawingName.text.toString()
+            if(!drawingName.text.toString().isNullOrBlank()){
+                var modifiedName= drawingName.text.toString()
 
+                updateDrawing(drawingID,modifiedName)
+                drawingNameEmptyError.isVisible=false
+                listener.popUpListener(modifiedName, position)
+                dismiss()
+            }
 
+            else if(drawingName.text.toString().isNullOrBlank() ||drawingName.text.toString().isEmpty()){
+                drawingNameEmptyError.isVisible=true
+                drawingName.animation= AnimationUtils.loadAnimation(context,R.anim.shake_animation)
+            }
 
-            updateDrawing(drawingID,modifiedName)
-
-            listener.popUpListener(modifiedName, position)
-            dismiss()
         }
 
         return rootView

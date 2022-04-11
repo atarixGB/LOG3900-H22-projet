@@ -33,6 +33,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <TextView
+        android:id="@+id/drawingNameEmptyError"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:layout_below="@+id/modifiedDrawingName"
+        android:layout_centerHorizontal="true"
+        android:text="Veuillez saisir un nom d'album"
+        android:textColor="@color/red"
+        android:textSize="15sp" />
     <LinearLayout
         android:id="@+id/buttons"
         android:layout_width="wrap_content"
@@ -40,7 +50,7 @@
         android:layout_below="@+id/modifiedDrawingName"
         android:orientation="horizontal"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="15dp">
+        android:layout_marginTop="25dp">
 
         <Button
             android:id="@+id/cancelBtn"
