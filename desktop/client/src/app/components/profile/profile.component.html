@@ -32,7 +32,8 @@
       </div>
       <!-- Badge -->
       <div fxLayout="column" fxLayoutAlign="center center" fxFlex="20%">
-        <img id="badge" src="{{this.profileService.currentBadge}}">
+        <img *ngIf="this.profileService.nextBadgeCount == 0" matTooltip="Bravo! Vous avez atteint le meilleur badge!" id="badge" src="{{this.profileService.currentBadge}}">
+        <img *ngIf="this.profileService.nextBadgeCount != 0" matTooltip="Il vous manque {{this.profileService.nextBadgeCount}} likes pour passer au badge supérieur!" id="badge" src="{{this.profileService.currentBadge}}">
       </div>
     </div>
 
