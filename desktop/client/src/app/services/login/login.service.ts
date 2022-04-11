@@ -5,7 +5,7 @@ import { ProfileService } from '../profile/profile.service';
 import { LOGIN_URL } from '@app/constants/api-urls';
 import { SoundEffectsService } from '../sound-effects/sound-effects.service';
 import { CollaborationService } from '../collaboration/collaboration.service';
-
+const electron = (<any>window).require('electron');
 @Injectable({
     providedIn: 'root',
 })
@@ -72,5 +72,9 @@ export class LoginService {
                 console.log('Error: ', error);
             },
         );
+    }
+
+    quitApp(): void {
+      electron.ipcRenderer.send("quit-app", null);
     }
 }

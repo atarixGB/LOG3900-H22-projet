@@ -1,3 +1,14 @@
+<div fxLayout="column" fxLayoutAlign="start stretch">
+  <button id="quit-btn" mat-icon-button disableRipple="true" (click)="quitApp()" fxLayout="row" fxLayoutAlign="start center">
+    <mat-icon id="back-btn">directions_run</mat-icon> Quiter l'application
+  </button>
+
+  <div id="drag-btn" mat-icon-button disableRipple="true" fxLayout="row" fxLayoutAlign="end center"
+  matTooltip="Cliquer-glisser ici pour déplacer la fenêtre">
+    <mat-icon id="back-btn">drag_indicator</mat-icon>
+  </div>
+</div>
+
 <div fxLayout="column" fxLayoutAlign="space-evenly center"  fxFlex="auto" class="login-container">
    <img src="./assets/PolyGramLogo.png" alt="Logo" fxFlex="40%">
 

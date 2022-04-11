@@ -17,6 +17,7 @@ function createAppWindows() {
         minWidth: 1400,
         maxHeight: 1080,
         maxWidth: 1920,
+        frame: false,
         webPreferences: {
             nodeIntegration: true,
             contextIsolation: false,
@@ -36,16 +37,23 @@ function createAppWindows() {
     // Initialize the DevTools.
     // mainWindow.webContents.openDevTools();
 
-    mainWindow.on('closed', () => {
-        mainWindow = null;
-        if (chatWindow) {
-            chatWindow.destroy();
-        }
-        if (collabChatWindow) {
-            collabChatWindow.destroy();
-        }
-        app.quit();
-    });
+    // mainWindow.on('closed', () => {
+    //     mainWindow = null;
+    //     if (chatWindow) {
+    //         chatWindow.destroy();
+    //     }
+    //     if (collabChatWindow) {
+    //         collabChatWindow.destroy();
+    //     }
+    //     app.quit();
+    // });
+
+    // mainWindow.on('close', (e) => {
+    //   // On désactive la possibilité de fermer la fenêtre pour
+    //   // éviter la destruction de l'objet (ça lance une erreur sinon)
+    //   e.preventDefault();
+    //   console.log("Closing the main window is disabled")
+    // });
 
     /*********************************/
     /********** CHAT WINDOW **********/
@@ -168,3 +176,16 @@ ipcMain.on('close-collab-chat', (event, data) => {
       collabChatWindow.destroy();
     }
 });
+
+ipcMain.on('quit-app', (event, data) => {
+  console.log('ipcMain received quit-app event');
+
+  mainWindow = null;
+  if (chatWindow) {
+      chatWindow.destroy();
+  }
+  if (collabChatWindow) {
+      collabChatWindow.destroy();
+  }
+  app.quit();
+})
