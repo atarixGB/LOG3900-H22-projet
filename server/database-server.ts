@@ -90,6 +90,7 @@ mongoClient.connect(process.env.POLYGRAM_APP_DATABASE_URL, { useNewUrlParser: tr
       var avatar = post_data.avatar;
       var email = post_data.email;
       var description = post_data.description;
+      var isActive = post_data.isActive;
 
       
       var collaborationCount = post_data.collaborationCount;
@@ -104,6 +105,7 @@ mongoClient.connect(process.env.POLYGRAM_APP_DATABASE_URL, { useNewUrlParser: tr
         description: description,
         collaborationCount: collaborationCount,
         totalCollaborationTime: totalCollaborationTime,
+        isActive: isActive,
       };
 
       //check if identifier exists
@@ -147,22 +149,36 @@ mongoClient.connect(process.env.POLYGRAM_APP_DATABASE_URL, { useNewUrlParser: tr
             response.json(404);
             console.log("email does not exists");
           } else {
-            DB.collection("users").findOne({ email: email },
-              function (error, user) {
+
+
+            DB.collection("users").findOne({ email: email }, (error, user) => {
+                if (error) throw error;
                 var salt = user.salt; //get salt from user
-                var hashed_password = checkHashPassword(
-                  userPassword,
-                  salt
-                ).passwordHash; //hash password with salt
+                var hashed_password = checkHashPassword(userPassword, salt).passwordHash; //hash password with salt
                 var encrypted_password = user.password;
+                let isActive = user.isActive;
+
                 if (hashed_password == encrypted_password) {
-                  response.json(200);
-                  console.log("login success");
+                  // check if user is already online
+                  if (isActive) {
+                    response.json(-1);
+                    console.log("already connected")
+                  } else { // if user not online
+
+                    DB.collection("users").findOneAndUpdate({ email: email }, { $set : { isActive: true } },
+                    function (error, result) {
+                      response.json(200);
+                      console.log("login success");
+                    }
+                  );
+
+                  }
                 } else {
                   response.json(403);
                   console.log("wrong password");
                 }
               }
+
             );
           }
         });
@@ -196,6 +212,20 @@ mongoClient.connect(process.env.POLYGRAM_APP_DATABASE_URL, { useNewUrlParser: tr
           }
         });
     });
+
+    app.get("/disconnect/:email", (request, response) => {
+      const email = request.params.email;
+
+      console.log("email", email);
+      DB.collection("users").findOneAndUpdate({ email: email }, { $set: { isActive: false } },
+      function (error, result) {
+        if (error) throw error;
+        response.json(201);
+        console.log(`${email} has been disconnected from app successfully`);
+      }
+    );
+
+    })
 
     //==========================================================================================================
     // ROOM management

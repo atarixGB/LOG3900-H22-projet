@@ -6,6 +6,7 @@ export interface IUser {
   avatar: any,
   email: string,
   description?: string,
-  collaborationCount?: number;
-  totalCollaborationTime?: number;
+  collaborationCount?: number,
+  totalCollaborationTime?: number,
+  isActive: boolean,
 }

@@ -2,9 +2,11 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProfileService } from '../profile/profile.service';
-import { LOGIN_URL } from '@app/constants/api-urls';
+import { DISCONNECT_URL, LOGIN_URL } from '@app/constants/api-urls';
 import { SoundEffectsService } from '../sound-effects/sound-effects.service';
 import { CollaborationService } from '../collaboration/collaboration.service';
+import { ChatService } from '@app/services/chat/chat.service';
+
 const electron = (<any>window).require('electron');
 @Injectable({
     providedIn: 'root',
@@ -24,7 +26,8 @@ export class LoginService {
       private route: ActivatedRoute,
       private profileService: ProfileService,
       private soundEffectsService: SoundEffectsService,
-      private collaborationService: CollaborationService) {
+      private collaborationService: CollaborationService,
+      private chatService: ChatService) {
         this.email = '';
         this.password = '';
     }
@@ -72,6 +75,23 @@ export class LoginService {
                 console.log('Error: ', error);
             },
         );
+    }
+
+    disconnect(): void {
+      this.httpClient.get(`${DISCONNECT_URL}/${this.email}`).subscribe(
+        (result) => {
+          console.log(result);
+
+          if (result == 201) {
+            console.log("Tu as été déconnecté avec succès!");
+            this.router.navigate([`../home`]);
+            this.chatService.disconnect();
+          }
+
+        },
+        (error) => {
+          console.log("Erreur du serveur:", error);
+      })
     }
 
     quitApp(): void {

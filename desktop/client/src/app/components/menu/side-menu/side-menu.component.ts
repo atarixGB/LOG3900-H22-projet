@@ -34,4 +34,8 @@ export class SideMenuComponent implements OnInit {
       disableClose: true
     });
   }
+
+  disconnect(): void {
+    this.loginService.disconnect();
+  }
 }
