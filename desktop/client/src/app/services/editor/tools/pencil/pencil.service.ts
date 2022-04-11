@@ -43,6 +43,15 @@ export class PencilService extends Tool {
         return { x: mousePos.x - cnvPos.x, y: mousePos.y - cnvPos.y };
     }
 
+    onMouseLeave(event: MouseEvent): void {
+        if (this.mouseDown) {
+            this.drawingService.clearCanvas(this.drawingService.previewCtx);
+            this.clearPath();
+            this.mouseDown = false;
+            this.soundEffectsService.stopDrawSound();
+        }
+    }
+
     onMouseDown(event: MouseEvent): void {
         this.mouseDown = event.button === MouseButton.Left;
         if (this.mouseDown) {

@@ -54,24 +54,6 @@ export abstract class ShapeService extends Tool {
         this.colorSecond = this.colorManager.secondaryColor;
     }
 
-    handleKeyDown(event: KeyboardEvent): void {
-        if (event.key === 'Shift' && this.mouseDown) {
-            this.isShiftShape = true;
-            this.drawingService.clearCanvas(this.drawingService.previewCtx);
-            this.drawShape(this.drawingService.previewCtx);
-        }
-    }
-
-    handleKeyUp(event: KeyboardEvent): void {
-        if (event.key === 'Shift') {
-            this.isShiftShape = false;
-            if (this.mouseDown) {
-                this.drawingService.clearCanvas(this.drawingService.previewCtx);
-                this.drawShape(this.drawingService.previewCtx);
-            }
-        }
-    }
-
     protected findMouseDirection(): void {
         const width = this.pathData[this.pathData.length - 1].x - this.pathData[0].x;
         const height = this.pathData[this.pathData.length - 1].y - this.pathData[0].y;

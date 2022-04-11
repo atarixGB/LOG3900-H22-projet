@@ -22,6 +22,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import com.example.mobile.Interface.IUser
+import com.example.mobile.Interface.myUser
 import com.example.mobile.R
 import com.example.mobile.REQUEST_IMAGE_CAMERA
 import com.example.mobile.Retrofit.IMyService
@@ -53,6 +55,8 @@ class Registration : AppCompatActivity(), SelectAvatarPopUp.DialogListener {
     private lateinit var cameraBtn : ImageButton
     private lateinit var avatarBtn : ImageButton
     private lateinit var description:String
+    var collaborationCount:Int=0
+    var totalCollaborationTime:Int=0
 
 
 
@@ -125,7 +129,9 @@ class Registration : AppCompatActivity(), SelectAvatarPopUp.DialogListener {
                 idEmptyError.isVisible=false
                 mdpEmptyError.isVisible=false
                 emailEmptyError.isVisible=false
-                registerUser(identifiant.text.toString(), pwd.text.toString(),displaypicture,edt_email.text.toString(),description)
+
+
+                registerUser(identifiant.text.toString(), pwd.text.toString(),displaypicture,edt_email.text.toString(),description,collaborationCount,totalCollaborationTime)
             }
             else if(identifiant.text.toString().isEmpty() || pwd.text.toString().isEmpty()|| email.text.toString().isEmpty()){
                 idEmptyError.isVisible=true
@@ -184,12 +190,16 @@ class Registration : AppCompatActivity(), SelectAvatarPopUp.DialogListener {
         }
     }
 
-    private fun registerUser(identifier: String, password: String, avatar:CircularImageView,email: String,description:String) {
+    private fun registerUser(identifier: String, password: String, avatar:CircularImageView,email: String,description:String,collaborationCount:Int,totalCollaborationTime:Int) {
         var avatarByteArray:ByteArray = convertToByteArray(avatar)
         var avatar_str:String = Base64.encodeToString(avatarByteArray,0)
         var mediaPlayerSuccess:MediaPlayer=MediaPlayer.create(this,R.raw.success)
         var mediaPlayerFail:MediaPlayer=MediaPlayer.create(this,R.raw.failure)
-        compositeDisposable.add(iMyService.registerUser(identifier, password,avatar_str,email,description)
+
+        var registeredUser = myUser(identifier, password,avatar_str,email,description,collaborationCount,totalCollaborationTime)
+
+//        compositeDisposable.add(iMyService.registerUser(identifier, password,avatar_str,email,description,collaborationCount,totalCollaborationTime)
+        compositeDisposable.add(iMyService.registerUser(registeredUser)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { result->

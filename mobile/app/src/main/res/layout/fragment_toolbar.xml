@@ -62,11 +62,9 @@
         android:id="@+id/addToStoryText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="ajouter à ta story"
+        android:text="Story"
         android:textColor="@color/black"
-        android:textSize="15sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:textSize="10sp"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginBottom="80dp"
         app:layout_constraintTop_toBottomOf="@+id/addToStoryBtn"/>

@@ -88,6 +88,11 @@ class CustomToolFragment : Fragment(), AdapterView.OnItemClickListener {
         deleteSelection.setOnClickListener {
             toolParametersModel.deleteSelection(true)
         }
+
+        pasteSelection.setOnClickListener {
+            toolParametersModel.pasteSelection(true)
+        }
+
         return rootView
     }
 

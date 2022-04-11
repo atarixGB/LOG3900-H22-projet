@@ -91,6 +91,7 @@ mongoClient.connect(process.env.POLYGRAM_APP_DATABASE_URL, { useNewUrlParser: tr
       var email = post_data.email;
       var description = post_data.description;
 
+      
       var collaborationCount = post_data.collaborationCount;
       var totalCollaborationTime = post_data.totalCollaborationTime;
 
@@ -848,6 +849,7 @@ mongoClient.connect(process.env.POLYGRAM_APP_DATABASE_URL, { useNewUrlParser: tr
       var newUsername = post_data.newUsername;
       var avatar = post_data.newAvatar;
       var description = post_data.newDescription;
+      var chatThemeId = post_data.newChatThemeId;
 
       //check if a user already has the new name
       DB.collection("users")
@@ -862,9 +864,13 @@ mongoClient.connect(process.env.POLYGRAM_APP_DATABASE_URL, { useNewUrlParser: tr
               $set: {
                 "identifier": newUsername,
                 "avatar": avatar,
-                "description": description
-              },
+                "description": description,
+                "chatThemeId" : chatThemeId // add new theme id
+              }
             }).then(result => {
+              // DB.collection("drawings").findOneAndUpdate({ owner: oldUsername }, { $set: { owner: newUsername } }, { returnDocument: 'after' }, (err, res) => {})
+              // DB.collection("albums").findOneAndUpdate({ owner: oldUsername }, { $set: { owner: newUsername } }, { returnDocument: 'after' }, (err, res) => {})
+              // DB.collection("albums").findOneAndUpdate({ identifier: oldUsername }, { $set: { identifier: newUsername } }, { returnDocument: 'after' }, (err, res) => {})
               response.json(200);
             });
           }
@@ -927,6 +933,19 @@ mongoClient.connect(process.env.POLYGRAM_APP_DATABASE_URL, { useNewUrlParser: tr
           response.json('0j 0h 0m 0s');
         } else {
           response.json(stringifySeconds(user.totalCollaborationTime));
+        }
+      });
+    })
+
+    app.get("/profile/stats/collabs/duration/:username", (request, response) => {
+      const identifier = request.params.username;
+
+      DB.collection("users").findOne({ identifier: identifier }, function (error, user) {
+        if (error) throw error;
+        if (user.collaborationCount == 0) {
+          response.json(0);
+        } else {
+          response.json(user.totalCollaborationTime);
         }
       });
     })

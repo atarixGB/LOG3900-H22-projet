@@ -29,9 +29,12 @@ import com.example.mobile.viewModel.ToolModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import kotlinx.android.synthetic.main.activity_profile.*
 import kotlinx.android.synthetic.main.activity_registration.*
 import kotlinx.android.synthetic.main.fragment_toolbar.*
 import org.json.JSONObject
+import retrofit2.Call
+import retrofit2.Response
 import java.io.File
 import java.io.IOException
 import java.util.*
@@ -55,6 +58,7 @@ class ToolbarFragment : Fragment(), AdapterView.OnItemClickListener {
     private lateinit var addToStoryText :TextView
     private lateinit var backBtn : Button
     private lateinit var _img: Bitmap
+    private var totalCollabDuration:Long=0
 //    var photoFile: File? = createImageFile()
     lateinit var currentPhotoPath: String
     private val toolChange: ToolModel by activityViewModels()
@@ -143,6 +147,7 @@ class ToolbarFragment : Fragment(), AdapterView.OnItemClickListener {
                 val intent = Intent(activity, Dashboard::class.java)
                 intent.putExtra("userName", user)
                 startActivity(intent)
+                ISDRAFT=false
             }
 
             takePictureBtn.setOnClickListener{
@@ -249,23 +254,25 @@ class ToolbarFragment : Fragment(), AdapterView.OnItemClickListener {
 
     fun updateCollabStat(username:String, leavingTime:Long){
         var secondsSpentInCollab = Math.round(((leavingTime-collabStartTime)/1000).toDouble())
-        compositeDisposable.add(iMyService.updateCollabDurationStat(username, secondsSpentInCollab)
+        getTotalDurationCollabUnformated(user)
+        totalCollabDuration+=secondsSpentInCollab
+        compositeDisposable.add(iMyService.updateCollabDurationStat(username, totalCollabDuration)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { result ->
                 if (result == "201") {
                     Toast.makeText(
                         context,
-                        "les données de collaboration ont été mis à jour avec succès",
+                        "les données 1 de collaboration ont été mis à jour avec succès",
                         Toast.LENGTH_SHORT
                     ).show()
                 } else {
-                    Toast.makeText(context, "erreur", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "erreur màj durée de collaboration", Toast.LENGTH_SHORT).show()
                 }
             })
     }
 
-    fun updateCollabCountStat(username:String){
+    private fun updateCollabCountStat(username:String){
 
         compositeDisposable.add(iMyService.updateCollabCountStat(username)
             .subscribeOn(Schedulers.io())
@@ -278,8 +285,31 @@ class ToolbarFragment : Fragment(), AdapterView.OnItemClickListener {
                         Toast.LENGTH_SHORT
                     ).show()
                 } else {
-                    Toast.makeText(context, "erreur", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "erreur màj nombre de collaboration", Toast.LENGTH_SHORT).show()
                 }
             })
     }
+
+    private fun getTotalDurationCollabUnformated(username:String){
+        var call: Call<Any> = iMyService.getTotalDurationCollabUnformated(username)
+
+        call.enqueue(object: retrofit2.Callback<Any> {
+            override fun onResponse(call: Call<Any>, response: Response<Any>) {
+
+                if(response.body()!=null){
+                    totalCollabDuration= response.body() as Long
+
+
+                }
+                else {
+                    totalCollabDuration=0
+                }
+            }
+            override fun onFailure(call: Call<Any>, t: Throwable) {
+                Toast.makeText(context, "erreur duree total introuvable", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+
 }

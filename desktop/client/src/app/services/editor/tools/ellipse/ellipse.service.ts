@@ -58,7 +58,6 @@ export class EllipseService extends ShapeService {
         this.computeSize();
         this.findMouseDirection();
         if (!this.isShiftShape) {
-            this.rectangle.drawRectangle(ctx, true);
             this.drawEllipse(ctx);
         } else {
             this.rectangle.drawSquare(ctx, true);
@@ -74,24 +73,34 @@ export class EllipseService extends ShapeService {
         }
     }
 
-    onMouseUp(): void {
-        this.drawingService.clearCanvas(this.drawingService.previewCtx);
-        if (!this.isShiftShape) {
-            this.drawEllipse(this.drawingService.baseCtx);
-            this.width = this.size.x / 2;
-            this.height = this.size.y / 2;
-
-            this.sendEllipseStroke();
-        } else {
-            this.drawCircle(this.drawingService.baseCtx);
-            this.width = this.radius;
-            this.height = this.radius;
-            this.isShiftShape = false;
-        }
+    onMouseLeave(event: MouseEvent): void {
         if (this.mouseDown) {
+            this.drawingService.clearCanvas(this.drawingService.previewCtx);
+            this.clearPath();
             this.mouseDown = false;
             this.soundEffectsService.stopDrawSound();
         }
+    }
+
+    onMouseUp(): void {
+        this.drawingService.clearCanvas(this.drawingService.previewCtx);
+        if (this.mouseDown && this.pathData.length > 1) {
+            if (!this.isShiftShape) {
+                this.drawEllipse(this.drawingService.baseCtx);
+                this.width = this.size.x / 2;
+                this.height = this.size.y / 2;
+
+                this.sendEllipseStroke();
+            } else {
+                this.drawCircle(this.drawingService.baseCtx);
+                this.width = this.radius;
+                this.height = this.radius;
+                this.isShiftShape = false;
+            }
+        }
+
+        this.mouseDown = false;
+        this.soundEffectsService.stopDrawSound();
 
         this.clearPath();
     }

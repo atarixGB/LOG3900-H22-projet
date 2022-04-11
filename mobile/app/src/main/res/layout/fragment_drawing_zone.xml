@@ -4,6 +4,7 @@
     android:layout_height="0dp"
     tools:context="com.example.mobile.activity.drawing.DrawingZoneFragment">
 
+
     <LinearLayout
         android:id="@+id/drawingView"
         android:layout_width="match_parent"
@@ -14,6 +15,7 @@
 
 
     </LinearLayout>
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

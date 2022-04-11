@@ -5,9 +5,12 @@ import android.graphics.*
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.Button
+import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.activityViewModels
@@ -24,6 +27,11 @@ import com.example.mobile.popup.PrepForMemberLeavingPopUp
 import com.example.mobile.popup.PrepForNewMemberPopUp
 import com.example.mobile.viewModel.ToolModel
 import com.example.mobile.viewModel.ToolParameters
+
+import kotlinx.android.synthetic.main.activity_drawings_collection.view.*
+import kotlinx.android.synthetic.main.fragment_custom_tool.view.*
+
+
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -88,6 +96,11 @@ class DrawingZoneFragment : Fragment() {
         toolParameters.deleteSelection.observe(viewLifecycleOwner, Observer { deleteSelection ->
             mDrawingView.deleteSelection(deleteSelection)
         })
+
+        toolParameters.pasteSelection.observe(viewLifecycleOwner, Observer { pasteSelection ->
+            mDrawingView.pasteSelection(pasteSelection)
+        })
+
         toolModel.tool.observe(viewLifecycleOwner, Observer { tool ->
             mDrawingView.changeTool(tool)
         })
@@ -96,10 +109,12 @@ class DrawingZoneFragment : Fragment() {
             mDrawingView.setDrawingId(drawingId)
         })
 
-        sharedViewModelToolBar.collabDrawingId.observe(viewLifecycleOwner, Observer { collabDrawingId ->
-            mDrawingView.setDrawingId(collabDrawingId)
-            mDrawingView.displayDrawingCollab(collabDrawingId)
-        })
+        sharedViewModelToolBar.collabDrawingId.observe(
+            viewLifecycleOwner,
+            Observer { collabDrawingId ->
+                mDrawingView.setDrawingId(collabDrawingId)
+                mDrawingView.displayDrawingCollab(collabDrawingId)
+            })
 
         sharedViewModelToolBar.jsonString.observe(viewLifecycleOwner, Observer { jsonString ->
             mDrawingView.onLoadCurrentStrokeData(jsonString)
@@ -378,9 +393,21 @@ class DrawingZoneFragment : Fragment() {
             toolManager = ToolManager(context, mCanvas!!, this.socket, drawingId)
         }
 
+
         override fun onDraw(canvas: Canvas) {
             super.onDraw(canvas)
             canvas.drawBitmap(mBitmap!!, 0f, 0f, mPaint)
+
+            //selection bounding box button
+//            val button1 = Button(context)
+//            button1.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+//
+//            button1.setBackgroundColor(Color.RED)
+//            button1.setText("hiiii")
+//
+//            val lay = findViewById<LinearLayout>(R.id.drawingView)
+//            lay.addView(button1)
+
 
             if (isDrawing) {
                 toolManager.currentTool.onDraw(canvas)
@@ -466,11 +493,11 @@ class DrawingZoneFragment : Fragment() {
             if (this::toolManager.isInitialized) {
                 this.toolManager.changeTool(tool)
                 resetPath()
-                toolManager.selection.sendPasteSelection()
-                toolManager.selection.resetSelection()
                 if (tool == ToolbarFragment.MenuItem.SELECTION) {
                     toolManager.selection.isToolSelection = true
                 }
+                toolManager.selection.sendPasteSelection()
+                toolManager.selection.resetSelection()
             }
             if (currentDrawingBitmap != null) {
                 mCanvas!!.drawBitmap(currentDrawingBitmap!!, 0F, 0F, null)
@@ -480,6 +507,16 @@ class DrawingZoneFragment : Fragment() {
         fun deleteSelection (delete: Boolean) {
             if (this::toolManager.isInitialized && delete) {
                 toolManager.selection.deleteStroke()
+            }
+            if (currentDrawingBitmap != null) {
+                mCanvas!!.drawBitmap(currentDrawingBitmap!!, 0F, 0F, null)
+            }
+        }
+
+        fun pasteSelection (paste: Boolean) {
+            if (this::toolManager.isInitialized && paste) {
+                toolManager.selection.sendPasteSelection()
+                toolManager.selection.resetSelection()
             }
             if (currentDrawingBitmap != null) {
                 mCanvas!!.drawBitmap(currentDrawingBitmap!!, 0F, 0F, null)

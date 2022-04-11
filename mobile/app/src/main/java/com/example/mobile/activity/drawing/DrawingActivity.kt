@@ -44,11 +44,6 @@ class DrawingActivity : AppCompatActivity(), CreateDrawingPopUp.DialogListener, 
             sharedViewModelCreateDrawingPopUp.setAlbum(albumName, albumID)
         }
 
-        //Open Popup Window
-//        if(!ISDRAFT){
-//            var dialog = CreateDrawingPopUp(user, isAlbumAlreadySelected)
-//            dialog.show(supportFragmentManager, "customDialog")
-//        }
 
         //collaboration
         collabDrawingId = intent.getStringExtra("drawingCollabId").toString()

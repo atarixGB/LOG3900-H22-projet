@@ -5,6 +5,7 @@ import com.example.mobile.Interface.IUser
 import com.example.mobile.IRoom
 import com.example.mobile.Interface.IAlbum
 import com.example.mobile.Interface.IDrawing
+import com.example.mobile.Interface.myUser
 import io.reactivex.Observable
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -14,14 +15,20 @@ import retrofit2.http.*
 import retrofit2.Call
 
 interface IMyService {
+//    @POST("register")
+//    @FormUrlEncoded
+//    fun registerUser(
+//        @Field("identifier") identifier: String,
+//        @Field("password") password: String,
+//        @Field("avatar") avatar: String,
+//        @Field("email") email: String,
+//        @Field("description") description:String,
+//        @Field("collaborationCount") collaborationCount:Int,
+//        @Field("totalCollaborationTime") totalCollaborationTime:Int
+//    ): Observable<String>
+
     @POST("register")
-    @FormUrlEncoded
-    fun registerUser(
-        @Field("identifier") identifier: String,
-        @Field("password") password: String,
-        @Field("avatar") avatar: String,
-        @Field("email") email: String,
-        @Field("description") description:String,
+    fun registerUser(@Body user:myUser
     ): Observable<String>
 
 
@@ -109,7 +116,8 @@ interface IMyService {
                       @Field("members")members:ArrayList<String>,
                       @Field("likes")likes:ArrayList<String>,
                       @Field("isStory")isStory: Boolean,
-                      @Field("location")location: String): Observable<Any>
+                      @Field("location")location: String,
+                      @Field("creationDate")creationDate: String): Observable<Any>
 
     @PUT("albums/addDrawing/{albumId}")
     @FormUrlEncoded
@@ -184,13 +192,16 @@ interface IMyService {
     @GET("/profile/stats/collabs/total-duration/{username}")
     fun getTotalDurationCollab(@Path("username")username:String):Call<Any>
 
+    @GET("/profile/stats/collabs/duration/{username}")
+    fun getTotalDurationCollabUnformated(@Path("username")username:String):Call<Any>
+
     @PUT("/profile/stats/collabs/updateCollabDuration/{username}")
     @FormUrlEncoded
     fun updateCollabDurationStat(@Path("username") username: String,
                          @Field("secondsSpentInCollab")secondsSpentInCollab:Long): Observable<String>
 
     @PUT("/profile/stats/collabs/updateCollabCount/{username}")
-    fun updateCollabCountStat(@Path("username") username: String): Observable<Any>
+    fun updateCollabCountStat(@Path("username") username: String): Observable<String>
 
     @DELETE("/drawing/delete/{id}")
     fun deleteDrawing(@Path("id")drawingID:String): Observable<String>

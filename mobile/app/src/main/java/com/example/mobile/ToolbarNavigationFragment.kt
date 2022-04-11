@@ -26,6 +26,7 @@ class ToolbarNavigationFragment: Fragment() {
     private lateinit var profile: TextView
     private lateinit var draft: TextView
     private lateinit var logout: TextView
+    private  lateinit var displayUser: TextView
     private lateinit var user: String
     private val sharedViewModel: SharedViewModelToolBar by activityViewModels()
     private var mediaPlayerSong: MediaPlayer? = null
@@ -47,6 +48,9 @@ class ToolbarNavigationFragment: Fragment() {
         albums = rootView.findViewById(R.id.albums)
         profile = rootView.findViewById(R.id.profile)
         draft=rootView.findViewById(R.id.draft)
+        displayUser=rootView.findViewById(R.id.displayUser)
+
+//        displayUser.text = user
 
         logout = rootView.findViewById(R.id.logout)
 
