@@ -77,20 +77,20 @@
 
               <mat-card-header>
                 <mat-card-title>{{drawing.name}}</mat-card-title>
-                <div *ngIf="this.isCurrentAlbumMine">
+                <div *ngIf="drawingIsMine(drawing)">
                   <button mat-icon-button [matMenuTriggerFor]="menu" id="more-option-btn">
                     <mat-icon>more_vert</mat-icon>
                   </button>
                   <mat-menu #menu="matMenu">
-                    <button *ngIf="this.isCurrentAlbumMine" (click)="openChangeNameDialog(drawing)" mat-menu-item>
+                    <button (click)="openChangeNameDialog(drawing)" mat-menu-item>
                       <mat-icon>edit_note</mat-icon>
                       <span>Modifier le nom du dessin</span>
                     </button>
-                    <button *ngIf="this.isCurrentAlbumMine" (click)="openChangeAlbumDialog(drawing)" mat-menu-item>
+                    <button (click)="openChangeAlbumDialog(drawing)" mat-menu-item>
                       <mat-icon>edit_note</mat-icon>
                       <span>Changer le dessin d'album</span>
                     </button>
-                    <button *ngIf="this.isCurrentAlbumMine" (click)="openDeleteConfirmationDialog(drawing)" mat-menu-item>
+                    <button (click)="openDeleteConfirmationDialog(drawing)" mat-menu-item>
                       <mat-icon>directions_run</mat-icon>
                       <span>Supprimer le dessin</span>
                     </button>

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostBinding } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PUBLIC_ALBUM } from '@app/constants/constants';
@@ -56,13 +56,11 @@ export class DrawingsViewComponent {
   }
 
   leaveAlbumButton(): void {
-    console.log("Leaving album");
     this.albumGalleryService.leaveAlbum(this.albumGalleryService.currentAlbum);
     this.router.navigate(['../my-albums'], { relativeTo: this.route });
   }
 
   deleteAlbumButton(): void {
-    console.log(`Deleted album id : ${this.albumGalleryService.currentAlbum._id}`);
     this.albumGalleryService.deleteAlbum(this.albumGalleryService.currentAlbum._id);
     this.router.navigate(['../my-albums'], { relativeTo: this.route });
   }
@@ -104,5 +102,9 @@ export class DrawingsViewComponent {
     this.dialog.open(DeleteDrawingDialogComponent, {
       data: drawing,
     });
+  }
+
+  drawingIsMine(drawing: IDrawing): boolean {
+    return drawing.owner == this.loginService.username;
   }
 }
