@@ -17,8 +17,14 @@ class SharedViewModelToolBar: ViewModel() {
     private val _collabDrawingId = MutableLiveData<String>()
     val collabDrawingId: LiveData<String> = _collabDrawingId
 
+    private val _collabStartTime = MutableLiveData<Long>()
+    val collabStartTime: LiveData<Long> = _collabStartTime
+
     private val _jsonString = MutableLiveData<ArrayList<String>>()
     val jsonString: LiveData<ArrayList<String>> = _jsonString
+
+    private val _onEnterPressed = MutableLiveData<Boolean>(false)
+    val onEnterPressed: LiveData<Boolean> = _onEnterPressed
 
     fun setUser(newUser: String) {
         _user.value = newUser
@@ -36,7 +42,15 @@ class SharedViewModelToolBar: ViewModel() {
         _collabDrawingId.value = newId
     }
 
+    fun setCollabStartTime(newStartTime: Long) {
+        _collabStartTime.value = newStartTime
+    }
+
     fun setJsonString(newJsonString: ArrayList<String>) {
         _jsonString.value = newJsonString
+    }
+
+    fun setOnEnterPressed(){
+        _onEnterPressed.value = true
     }
 }

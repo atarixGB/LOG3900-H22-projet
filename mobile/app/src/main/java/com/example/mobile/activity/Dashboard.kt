@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -33,7 +34,7 @@ class Dashboard : AppCompatActivity(), StoryAdapter.StoryAdapterListener {
     private lateinit var rvOutputStories: RecyclerView
     private lateinit var storyAdapter: StoryAdapter
     private lateinit var stories: ArrayList<IStory>
-    private lateinit var sessionStartBtn: Button
+    private lateinit var sessionStartBtn: ImageView
 
     private lateinit var displayStoriesPopUp: StoriesPopUp
 
@@ -54,7 +55,7 @@ class Dashboard : AppCompatActivity(), StoryAdapter.StoryAdapterListener {
         user = intent.getStringExtra("userName").toString()
         sharedViewModel.setUser(user)
 
-        sessionStartBtn = findViewById<Button>(R.id.session_start)
+        sessionStartBtn = findViewById(R.id.session_start)
         rvOutputStories = findViewById(R.id.rvOutputStories)
 
         val retrofit = RetrofitClient.getInstance()
@@ -77,6 +78,7 @@ class Dashboard : AppCompatActivity(), StoryAdapter.StoryAdapterListener {
 
     private fun openSoloDrawing() {
         val intent = Intent(this, DrawingActivity::class.java)
+        intent.putExtra("userName", user)
         var bundle:Bundle = ActivityOptions.makeSceneTransitionAnimation(this).toBundle()
         startActivity(intent,bundle)
     }
@@ -88,7 +90,7 @@ class Dashboard : AppCompatActivity(), StoryAdapter.StoryAdapterListener {
             override fun onResponse(call: Call<List<IUser>>, response: Response<List<IUser>>) {
                 if (response.body() != null) {
                     for (userElement in response.body()!!) {
-                        if (userElement.identifier != user && !userElement.avatar.isNullOrEmpty()) {
+                        if (!userElement.avatar.isNullOrEmpty()) {
                             getAllUserDrawings(userElement.identifier!!, userElement.avatar!!)
                         }
                     }
@@ -163,6 +165,7 @@ class Dashboard : AppCompatActivity(), StoryAdapter.StoryAdapterListener {
                             displayStoriesPopUp = StoriesPopUp(
                                 currentStory.owner,
                                 currentStory.avatar,
+                                user,
                                 drawingsData
                             )
                             displayStoriesPopUp.show(

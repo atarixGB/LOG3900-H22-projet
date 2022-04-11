@@ -15,7 +15,7 @@ import com.example.mobile.activity.profile.Profile
 import com.example.mobile.activity.profile.visitingProfile
 import java.util.*
 
-class MessageAdapter(val context : Context, val msgs: ArrayList<IMessage>, val owner : String) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class MessageAdapter(val context : Context, val msgs: ArrayList<IMessage>, var owner : String) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     val ITEM_RECEIVE = 1
     val ITEM_SENT = 2

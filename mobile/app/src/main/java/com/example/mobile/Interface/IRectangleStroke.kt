@@ -19,21 +19,35 @@ data class IRectangleStroke(
     ToolbarFragment.MenuItem.RECTANGLE) {
 
     override fun drawStroke(canvas: Canvas) {
-        val upcomingPaint = Paint().apply {
+        val upcomingPaintStroke = Paint().apply {
             color = currentStrokeColor
             strokeWidth = currentStrokeWidth
             isAntiAlias = true
-            // Dithering affects how colors with higher-precision than the device are down-sampled.
             isDither = true
-            style = Paint.Style.STROKE // default: FILL
-            strokeJoin = Paint.Join.ROUND // default: MITER
-            strokeCap = Paint.Cap.ROUND // default: BUTT
+            style = Paint.Style.STROKE
+            strokeJoin = Paint.Join.MITER
+            strokeCap = Paint.Cap.SQUARE
+        }
+
+        val upcomingPaintFill = Paint().apply {
+            color = secondaryColor
+            isAntiAlias = true
+            isDither = true
+            style = Paint.Style.FILL
+            strokeJoin = Paint.Join.MITER
+            strokeCap = Paint.Cap.SQUARE
+            strokeWidth = 1f
         }
         canvas!!.drawRect(topLeftCorner.x,
             topLeftCorner.y,
             topLeftCorner.x + width,
             topLeftCorner.y + height,
-            upcomingPaint!!)
+            upcomingPaintFill!!)
+        canvas!!.drawRect(topLeftCorner.x,
+            topLeftCorner.y,
+            topLeftCorner.x + width,
+            topLeftCorner.y + height,
+            upcomingPaintStroke!!)
     }
 
     override fun prepForSelection() {

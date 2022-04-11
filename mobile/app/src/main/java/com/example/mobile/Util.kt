@@ -13,7 +13,9 @@ import com.google.gson.Gson
 import com.mikhaellopez.circularimageview.CircularImageView
 import org.json.JSONObject
 import java.io.ByteArrayOutputStream
+val REQUEST_IMAGE_CAMERA = 142
 
+var ISDRAFT=false
 var SOUND_EFFECT=true
 
 enum class MUSIC{

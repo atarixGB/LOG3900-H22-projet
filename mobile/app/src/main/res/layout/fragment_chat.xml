@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="379dp"
+    android:layout_height="757dp"
+    android:screenOrientation="landscape"
+    tools:context=".activity.drawing.ChatFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvOutputMsgs"
+        android:layout_width="376dp"
+        android:layout_height="691dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/message_input_box"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_editor_absoluteX="1dp"
+        app:layout_editor_absoluteY="1dp" />
+
+    <EditText
+        android:id="@+id/msgText"
+        android:layout_width="275dp"
+        android:layout_height="42dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/message_input_box"
+        android:hint="Ecris un message bro!!"
+        android:padding="8dp"
+        android:singleLine="true"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rvOutputMsgs"
+        app:layout_constraintVertical_bias="0.153" />
+
+    <Button
+        android:id="@+id/btnSend"
+        android:layout_width="93dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="1dp"
+        android:text="Envoyer"
+        android:textSize="11sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/msgText"
+        app:layout_constraintTop_toBottomOf="@+id/rvOutputMsgs" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

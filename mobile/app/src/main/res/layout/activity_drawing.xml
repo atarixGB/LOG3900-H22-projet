@@ -9,10 +9,10 @@
     <fragment
         android:id="@+id/toolBarFragment"
         android:name="com.example.mobile.activity.drawing.ToolbarFragment"
-        android:layout_width="75dp"
+        android:layout_width="80dp"
         android:layout_height="match_parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"></fragment>
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <fragment
         android:id="@+id/customToolFragment"
@@ -20,16 +20,27 @@
         android:layout_width="125dp"
         android:layout_height="match_parent"
         app:layout_constraintStart_toEndOf="@+id/toolBarFragment"
-        app:layout_constraintTop_toTopOf="parent"></fragment>
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <fragment
         android:id="@+id/canvaFragment"
         android:name="com.example.mobile.activity.drawing.DrawingZoneFragment"
-        android:layout_width="1200px"
-        android:layout_height="1000px"
+        android:layout_width="950px"
+        android:layout_height="750px"
         android:layout_marginStart="28dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/customToolFragment"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@drawable/custom_border"/>
+
+    <fragment
+        android:id="@+id/chatFragment"
+        android:name="com.example.mobile.activity.drawing.ChatFragment"
+        android:layout_width="379dp"
+        android:layout_height="757dp"
+        android:layout_marginStart="28dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/canvaFragment"
         app:layout_constraintTop_toTopOf="parent"></fragment>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
