@@ -1,5 +1,6 @@
-import { Component, HostBinding } from '@angular/core';
+import { AfterViewInit, Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PUBLIC_ALBUM } from '@app/constants/constants';
 import { IDrawing } from '@app/interfaces-enums/IDrawing';
@@ -11,15 +12,19 @@ import { AlbumSettingsDialogComponent } from './album-settings-dialog/album-sett
 import { ChangeAlbumDialogComponent } from './change-album-dialog/change-album-dialog.component';
 import { ChangeDrawingNameDialogComponent } from './change-drawing-name-dialog/change-drawing-name-dialog.component';
 import { DeleteDrawingDialogComponent } from './delete-drawing-dialog/delete-drawing-dialog.component';
+import { DrawingOptionsSnackbarComponent } from './drawing-options-snackbar/drawing-options-snackbar.component';
+import { LikeSnackbarComponent } from './like-snackbar/like-snackbar.component';
 import { MembersListDialogComponent } from './members-list-dialog/members-list-dialog.component';
 import { RequestsDialogComponent } from './requests-dialog/requests-dialog.component';
+import { DrawingOptions } from '@app/interfaces-enums/DrawingOptions';
 
 @Component({
   selector: 'app-drawings-view',
   templateUrl: './drawings-view.component.html',
   styleUrls: ['./drawings-view.component.scss']
 })
-export class DrawingsViewComponent {
+export class DrawingsViewComponent implements AfterViewInit {
+  readonly SNACKBAR_DURATION = 5;
   isCurrentAlbumMine: boolean;
   isPublicAlbum: boolean;
 
@@ -27,6 +32,7 @@ export class DrawingsViewComponent {
     public albumGalleryService: AlbumGalleryService,
     public loginService: LoginService,
     public dialog: MatDialog,
+    private snackbar: MatSnackBar,
     private router: Router,
     private route: ActivatedRoute,
     public collaborationService: CollaborationService,
@@ -34,6 +40,7 @@ export class DrawingsViewComponent {
     this.isCurrentAlbumMine = window.localStorage.getItem("username") == albumGalleryService.currentAlbum.owner;
     this.isPublicAlbum = albumGalleryService.currentAlbum.name == PUBLIC_ALBUM.name;
   }
+
 
   ngAfterViewInit(): void {
     this.albumGalleryService.fetchDrawingsFromSelectedAlbum(this.albumGalleryService.currentAlbum);
@@ -66,16 +73,34 @@ export class DrawingsViewComponent {
   }
 
   onLikeBtn(drawing: IDrawing): void {
-    console.log(`Le dessin ${drawing.name} a été aimé par ${this.loginService.username}.`);
-    this.albumGalleryService.likeDrawing(drawing);
+    let data = {
+      drawingName: drawing.name,
+      isAlreadyLiked: false
+    }
+
+    this.albumGalleryService.updateLikes(drawing);
+
+    setTimeout(()=> {
+      console.log("this.albumGalleryService.isAlreadyLike", this.albumGalleryService.isAlreadyLike)
+      data.isAlreadyLiked = this.albumGalleryService.isAlreadyLike
+
+      const snackBarRef = this.snackbar.openFromComponent( LikeSnackbarComponent,{
+        duration: this.SNACKBAR_DURATION * 1000,
+        data: data,
+      })
+
+      snackBarRef.afterDismissed().subscribe(()=> {
+        this.ngAfterViewInit();
+      })
+    }, 200)
+
   }
 
-  onShareBtn(drawing: IDrawing): void {
-    console.log(`Partage du dessin ${drawing.name} sur Dropbox ou OneDrive...`);
-  }
+  // onShareBtn(drawing: IDrawing): void {
+  //   console.log(`Partage du dessin ${drawing.name} sur Dropbox ou OneDrive...`);
+  // }
 
   getUserProfileInfos(username: string): void {
-    console.log("Get info of", username);
     this.router.navigate([`../profile/${username}`], { relativeTo: this.route });
   }
 

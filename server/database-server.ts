@@ -643,6 +643,22 @@ mongoClient.connect(process.env.POLYGRAM_APP_DATABASE_URL, { useNewUrlParser: tr
       })
     });
 
+    // get the list of members that liked the specified drawing
+    app.get("/drawings/getLikes/:drawingId", (request, response) => {
+      let drawingId = request.params.drawingId.replace(/"/g, '');
+
+      DB.collection("drawings").findOne({ _id: mongoose.Types.ObjectId(drawingId)}, { returnDocument: 'after' }, (err, res) => {
+        if (err) throw err;
+        console.log(res)
+        if(res.likes) {
+          response.json(res.likes)
+          console.log(`Drawing with ID ${drawingId} is liked by ${res.likes}`);
+        } else {
+          response.json([]); // empty array
+        }
+      })
+    })
+
     //add drawing to a story
     app.put("/drawings/addDrawingToStory/:drawingId", (request, response, next) => {
       let drawingId = request.params.drawingId.replace(/"/g, '');

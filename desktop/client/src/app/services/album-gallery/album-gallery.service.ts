@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { IAlbum } from '@app/interfaces-enums/IAlbum'
 import { IDrawing } from '@app/interfaces-enums/IDrawing'
 import { LoginService } from '@app/services/login/login.service';
-import { ALBUM_URL, CREATE_DRAWING_URL, JOIN_ALBUM_URL, DECLINE_MEMBERSHIP_REQUEST_URL, ACCEPT_MEMBERSHIP_REQUEST_URL, UPDATE_ALBUM_PARAMETERS_URL, ADD_DRAWING_TO_ALBUM_URL, GET_DRAWING_URL, SAVE_DRAWING_URL, LIKE_DRAWING_URL, GET_USER_FAVORITE_DRAWINGS_URL, GET_USER_TOP_X_DRAWINGS_URL, CHANGE_DRAWING_NAME_URL, DELETE_DRAWING_URL, REMOVE_DRAWING_FROM_ALBUM_URL } from '@app/constants/api-urls';
+import { ALBUM_URL, CREATE_DRAWING_URL, JOIN_ALBUM_URL, DECLINE_MEMBERSHIP_REQUEST_URL, ACCEPT_MEMBERSHIP_REQUEST_URL, UPDATE_ALBUM_PARAMETERS_URL, ADD_DRAWING_TO_ALBUM_URL, GET_DRAWING_URL, SAVE_DRAWING_URL, LIKE_DRAWING_URL, GET_USER_FAVORITE_DRAWINGS_URL, GET_USER_TOP_X_DRAWINGS_URL, CHANGE_DRAWING_NAME_URL, DELETE_DRAWING_URL, REMOVE_DRAWING_FROM_ALBUM_URL, GET_LIKE_DRAWING_URL } from '@app/constants/api-urls';
 import { PUBLIC_ALBUM } from '@app/constants/constants';
 import { DrawingService } from '../editor/drawing/drawing.service';
 import { CollaborationService } from '../collaboration/collaboration.service';
@@ -23,6 +23,9 @@ export class AlbumGalleryService {
   fetchedDrawings: IDrawing[];
   favoriteDrawingsData: IDrawing[];
   topDrawingsData: IDrawing[];
+
+  likes: string[];
+  isAlreadyLike: boolean;
 
   constructor(private httpClient: HttpClient, private loginService: LoginService, private drawingService: DrawingService, private collaborationService: CollaborationService) {
     this.publicAlbums = [];
@@ -111,6 +114,25 @@ export class AlbumGalleryService {
     this.httpClient.put(url, data).subscribe(
       (result) => {
         console.log("Résultat du serveur:", result)
+      },
+      (error) => {
+        console.log(`Impossible d'aimer le dessin "${drawing.name}".\nErreur: ${error}`);
+      }
+    )
+  }
+
+  updateLikes(drawing: IDrawing): void {
+    this.httpClient.get(`${GET_LIKE_DRAWING_URL}/${drawing._id}`).subscribe(
+      (result: any[]) => {
+        console.log("Résultat du serveur:", result)
+        this.likes = result;
+
+        if (!result.includes(this.loginService.username)) {
+          this.likeDrawing(drawing);
+          this.isAlreadyLike = false;
+        } else {
+          this.isAlreadyLike = true;
+        }
       },
       (error) => {
         console.log(`Impossible d'aimer le dessin "${drawing.name}".\nErreur: ${error}`);
