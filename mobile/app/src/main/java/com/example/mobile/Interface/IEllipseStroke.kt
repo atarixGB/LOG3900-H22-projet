@@ -18,21 +18,35 @@ data class IEllipseStroke (
     ToolbarFragment.MenuItem.OVAL) {
 
     override fun drawStroke(canvas: Canvas) {
-        val upcomingPaint = Paint().apply {
+        val upcomingPaintStroke = Paint().apply {
             color = currentStrokeColor
             strokeWidth = currentStrokeWidth
             isAntiAlias = true
-            // Dithering affects how colors with higher-precision than the device are down-sampled.
             isDither = true
-            style = Paint.Style.STROKE // default: FILL
-            strokeJoin = Paint.Join.MITER // default: MITER
-            strokeCap = Paint.Cap.SQUARE // default: BUTT
+            style = Paint.Style.STROKE
+            strokeJoin = Paint.Join.MITER
+            strokeCap = Paint.Cap.SQUARE
+        }
+
+        val upcomingPaintFill = Paint().apply {
+            color = secondaryColor
+            strokeWidth = currentStrokeWidth
+            isAntiAlias = true
+            isDither = true
+            style = Paint.Style.FILL
+            strokeJoin = Paint.Join.MITER
+            strokeCap = Paint.Cap.SQUARE
         }
         canvas!!.drawOval(center.x-radius.x,
             center.y-radius.y,
             center.x+radius.x,
             center.y+radius.y,
-            upcomingPaint!!)
+            upcomingPaintFill!!)
+        canvas!!.drawOval(center.x-radius.x,
+            center.y-radius.y,
+            center.x+radius.x,
+            center.y+radius.y,
+            upcomingPaintStroke!!)
     }
 
     override fun prepForSelection() {

@@ -25,7 +25,7 @@ class ToolManager {
         this.currentTool = pencil
     }
 
-    private fun initialiseTools(){
+    fun initialiseTools(){
         this.selection= Selection(context,baseCanvas,socket, drawingId)
         this.pencil = Pencil(context,baseCanvas,socket, selection, drawingId )
         this.rectangle = Rectangle(context, baseCanvas, socket, selection, drawingId)

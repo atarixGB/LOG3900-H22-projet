@@ -38,7 +38,7 @@ class  Ellipse(context: Context, baseCanvas: Canvas, val socket : DrawingSocket,
             val iEllipseStroke = IEllipseStroke(
                 getBoundingPoints(),
                 getPaintParameters().color,
-                Color.WHITE, //to change
+                getFillColor().color, //to change
                 getPaintParameters().strokeWidth,
                 false,
                 getCenter(),
@@ -54,6 +54,12 @@ class  Ellipse(context: Context, baseCanvas: Canvas, val socket : DrawingSocket,
             selection.oldTool = ToolbarFragment.MenuItem.OVAL
             nextTool = ToolbarFragment.MenuItem.SELECTION
         }
+    }
+
+    private fun getFillColor(): Paint {
+        val paint = Paint()
+        paint.color = this.fillPaint.color
+        return paint
     }
 
     private fun getCenter(): IVec2{
