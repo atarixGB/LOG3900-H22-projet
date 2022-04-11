@@ -8,6 +8,8 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -17,11 +19,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Mobile"
         android:usesCleartextTraffic="true">
+
         <activity
             android:name=".popup.PrepForMemberLeavingPopUp"
-            android:exported="false" />
+            android:exported="false"
+            tools:ignore="Instantiatable" />
         <activity
             android:name=".popup.PrepForNewMemberPopUp"
+            android:exported="false"
+            tools:ignore="Instantiatable" />
+        <activity
+            android:name=".activity.albums.DisplayAllDrawings"
             android:exported="false" />
         <activity
             android:name=".activity.profile.visitingProfile"
@@ -38,9 +46,6 @@
             android:exported="false"
             tools:ignore="Instantiatable" />
 
-        <activity
-            android:name=".activity.albums.DisplayAllDrawings"
-            android:exported="false" />
         <activity
             android:name=".popup.AcceptMembershipRequestsPopUp"
             android:exported="false"
@@ -102,6 +107,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+       <!--- <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.example.mobile.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths"></meta-data>
+        </provider>-->
+
     </application>
 
 </manifest>

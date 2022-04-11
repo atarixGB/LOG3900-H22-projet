@@ -12,11 +12,9 @@ import { AlbumSettingsDialogComponent } from './album-settings-dialog/album-sett
 import { ChangeAlbumDialogComponent } from './change-album-dialog/change-album-dialog.component';
 import { ChangeDrawingNameDialogComponent } from './change-drawing-name-dialog/change-drawing-name-dialog.component';
 import { DeleteDrawingDialogComponent } from './delete-drawing-dialog/delete-drawing-dialog.component';
-import { DrawingOptionsSnackbarComponent } from './drawing-options-snackbar/drawing-options-snackbar.component';
 import { LikeSnackbarComponent } from './like-snackbar/like-snackbar.component';
 import { MembersListDialogComponent } from './members-list-dialog/members-list-dialog.component';
 import { RequestsDialogComponent } from './requests-dialog/requests-dialog.component';
-import { DrawingOptions } from '@app/interfaces-enums/DrawingOptions';
 
 @Component({
   selector: 'app-drawings-view',
