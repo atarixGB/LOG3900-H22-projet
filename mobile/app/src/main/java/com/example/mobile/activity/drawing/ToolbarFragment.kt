@@ -255,8 +255,8 @@ class ToolbarFragment : Fragment(), AdapterView.OnItemClickListener {
     fun updateCollabStat(username:String, leavingTime:Long){
         var secondsSpentInCollab = Math.round(((leavingTime-collabStartTime)/1000).toDouble())
 //        getTotalDurationCollabUnformated(user)
-        totalCollabDuration+=secondsSpentInCollab
-        compositeDisposable.add(iMyService.updateCollabDurationStat(username, totalCollabDuration)
+//        totalCollabDuration+=secondsSpentInCollab
+        compositeDisposable.add(iMyService.updateCollabDurationStat(username, secondsSpentInCollab)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { result ->

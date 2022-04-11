@@ -10,16 +10,12 @@
       <button mat-icon-button disableRipple="true" routerLink="/my-albums">
         <mat-icon id="back-btn">keyboard_arrow_left</mat-icon> Retour vers Mes Albums
       </button>
-      <div fxFlex="70%"></div>
+      <div fxFlex="75%"></div>
 
       <!-- Options -->
       <button fxFlex="5%" mat-icon-button disableRipple="true" (click)="viewMembersList()"
         matTooltip="Afficher la liste des membres">
         <mat-icon>group</mat-icon>
-      </button>
-      <button fxFlex="5%" mat-icon-button disableRipple="true" *ngIf="this.isCurrentAlbumMine"
-        matTooltip="Créer un dessin pour cet album">
-        <mat-icon>add_photo_alternate</mat-icon>
       </button>
       <button fxFlex="5%" mat-icon-button [matMenuTriggerFor]="menu" *ngIf="!this.isPublicAlbum">
         <mat-icon>more_vert</mat-icon>

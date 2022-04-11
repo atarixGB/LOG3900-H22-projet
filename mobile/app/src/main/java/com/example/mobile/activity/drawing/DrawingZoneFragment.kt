@@ -217,6 +217,7 @@ class DrawingZoneFragment : Fragment() {
         mDrawingView.onPrepForNewMember()
     }
 
+
     class DrawingView (context: Context, val socket: DrawingSocket) : View(context){
         private lateinit var toolManager: ToolManager
         private var mPaint: Paint? = null
@@ -224,6 +225,7 @@ class DrawingZoneFragment : Fragment() {
         private var mCanvas: Canvas? = null
         private var isDrawing = false
         private var drawingId: String = ""
+        private var jsonObjects= ArrayList<JSONObject>()
         private var currentDrawingBitmap: Bitmap? = null
         internal var compositeDisposable = CompositeDisposable()
 
@@ -248,11 +250,11 @@ class DrawingZoneFragment : Fragment() {
 
         fun onLoadCurrentStrokeData(jsonString: ArrayList<String>) {
 
-
-
             jsonString.forEachIndexed{ i, it ->
                 var obj = JSONObject(jsonString[i])
-                this.onStrokeReceive(obj)
+                jsonObjects.add(obj)
+
+//                this.onStrokeReceive(obj)
             }
 
 //            for (i in 0 until jsonStrokes.length()) {
@@ -391,6 +393,11 @@ class DrawingZoneFragment : Fragment() {
             }
             mCanvas!!.drawRect(0f,0f, w.toFloat(), h.toFloat(),borderPaint )
             toolManager = ToolManager(context, mCanvas!!, this.socket, drawingId)
+            if (!jsonObjects.isNullOrEmpty()) {
+                jsonObjects.forEachIndexed { i, it ->
+                    onStrokeReceive(it)
+                }
+            }
         }
 
 
@@ -418,6 +425,7 @@ class DrawingZoneFragment : Fragment() {
             toolManager.currentTool.path = Path()
 
         }
+
 
         override fun onTouchEvent(event: MotionEvent): Boolean {
             toolManager.currentTool.mx = event.x
@@ -525,6 +533,12 @@ class DrawingZoneFragment : Fragment() {
 
         fun setDrawingId(drawingId: String) {
             this.drawingId = drawingId
+            if (this::toolManager.isInitialized) {
+                this.toolManager.drawingId = drawingId
+                toolManager.pencil.drawingId = drawingId
+                toolManager.ellipse.drawingId = drawingId
+                toolManager.rectangle.drawingId = drawingId
+            }
         }
 
         fun putToStory() {

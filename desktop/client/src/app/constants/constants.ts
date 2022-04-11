@@ -20,8 +20,8 @@ export const PUBLIC_CHATROOM = {
 export const NAME_MAX_LENGTH = 40;
 
 /***********************/
-export const CNV_WIDTH = 1200;
-export const CNV_HEIGTH = 1000;
+export const CNV_WIDTH = 950;
+export const CNV_HEIGTH = 750;
 export const MAX_DEC_RANGE = 255;
 export const CONTROLPOINTSIZE = 10;
 export const NUMBER_WIDTH_CHOICES = 9;

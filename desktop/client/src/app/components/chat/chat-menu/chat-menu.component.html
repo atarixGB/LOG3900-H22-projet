@@ -7,37 +7,44 @@
   </div>
 
   <div fxLayout="column" fxLayoutAlign="space-evenly stretch" fxFlex="auto">
-    <div fxFlex="20"></div>
+    <div fxFlex="10"></div>
 
 
-    <div fxLayout="row" fxLayoutAlign="space-evenly center">
+    <div fxFlex="10" fxLayout="row" fxLayoutAlign="space-evenly center">
       <button mat-raised-button color="primary" (click)="onCreateNewChatroom()">Créer une conversation</button>
       <button mat-raised-button color="primary"  routerLink="/public-chatrooms">Trouver une conversation</button>
     </div>
 
-    <div fxLayout="row" fxLayoutAlign="center center">
+    <div fxFlex="10" fxLayout="row" fxLayoutAlign="center center">
       <h2>
         Mes conversations
       </h2>
     </div>
 
-    <div fxLayout="row" fxLayoutAlign="space-evenly center">
-      <button mat-raised-button color="accent" (click)="onOpenDefaultPublicRoom()" routerLink="/chatroom">Canal public</button>
+    <div fxFlex="10" fxLayout="row" fxLayoutAlign="space-evenly center">
+      <div fxLayoutAlign="center center" id="settingsBtnDiv" (click)="this.onOpenDefaultPublicRoom()" routerLink="/chatroom">
+        <span>Canal public</span>
+      </div>
     </div>
 
-    <mat-grid-list cols="2" rowHeight="5:1">
-      <mat-grid-tile *ngFor="let room of this.chatService.myRooms">
+    
 
-        <div class="roomname-container" mat-raised-button color="primary">
-            {{room.roomName}}
+    <div fxFlex="50%">
+      <div id="albumRow" fxLayout="row" fxLayoutAlign="center stretch">
+        <div id="albumsDiv" fxFlex="85%">
+          <mat-grid-list cols="2" rowHeight="5:1">
+            <mat-grid-tile *ngFor="let room of this.chatService.myRooms">
+
+              <div fxLayoutAlign="center center" id="settingsBtnDiv" (click)="this.onOpenChatroom(room)" routerLink="/chatroom">
+                <span>{{room.roomName}}</span>
+              </div>
+      
+            </mat-grid-tile>
+          </mat-grid-list>
         </div>
-        <button mat-raised-button color="accent" (click)="this.onOpenChatroom(room)" routerLink="/chatroom">
-          Ouvrir
-        </button>
+      </div>
+    </div>
 
-      </mat-grid-tile>
-    </mat-grid-list>
-
-    <div fxFlex="20"></div>
+    <div fxFlex="10"></div>
   </div>
 </div>

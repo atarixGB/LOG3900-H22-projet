@@ -27,10 +27,6 @@
   font-weight: bold;
 }
 
-mat-icon {
-  color: rgb(52, 52, 52);
-}
-
 h3 {
   margin-top: 10px;
 }
@@ -42,6 +38,10 @@ h3 {
 
 #back-btn {
   transform: scale(2);
+}
+
+mat-icon {
+  color: #000000;
 }
 
 img:hover {
@@ -75,6 +75,10 @@ img:hover {
 
 #more-option-button {
   float:right;
+}
+
+#smoll {
+  transform: scale(0.75);
 }
 
 

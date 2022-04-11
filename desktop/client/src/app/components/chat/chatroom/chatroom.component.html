@@ -1,6 +1,6 @@
 <div id="custom-wrapper" fxLayout="column" fxLayoutAlign="center stretch" fxFlex="100">
 
-  <div>
+  <div fxFlex="5">
     <button mat-icon-button disableRipple="true" routerLink="/chatmenu">
       <mat-icon id="back-btn">keyboard_arrow_left</mat-icon>
       <span class="custom-font">
@@ -9,13 +9,13 @@
     </button>
   </div>
 
-  <div class="center">
-    <h1 class="custom-font"> Conversation "{{ this.displayedRoomName }}" </h1>
-    <h3 class="custom-font">créée par <span class="username-link" (click)="this.getUserProfileInfos(this.chatService.currentRoom.identifier)">{{this.chatService.currentRoom.identifier}}</span></h3>
+  <div class="center" fxFlex="10" id="custom-wrapper" fxLayout="column" fxLayoutAlign="center center">
+    <h1 class="custom-font" fxFlex="70"> Conversation "{{ this.displayedRoomName }}" </h1>
+    <h3 class="custom-font" fxFlex="30">créée par <span class="username-link" (click)="this.getUserProfileInfos(this.chatService.currentRoom.identifier)">{{this.chatService.currentRoom.identifier}}</span></h3>
   </div>
 
   <!-- Encadré du chat -->
-  <div id="main-wrapper" fxFlex="90" fxLayout="row" fxLayoutAlign="center stretch">
+  <div id="main-wrapper" fxFlex="85" fxLayout="row" fxLayoutAlign="center stretch">
     <div fxFlex="90" class="bordered" fxLayout="column" fxLayoutAlign="center stretch">
 
 

@@ -25,12 +25,9 @@
       <mat-grid-list cols="2" rowHeight="5:1" *ngIf="!this.chatService.filterActivated">
         <mat-grid-tile *ngFor="let room of this.chatService.publicRooms">
 
-          <div class="roomname-container" mat-raised-button color="primary">
-            {{room.roomName}}
+          <div fxLayoutAlign="center center" id="settingsBtnDiv" (click)="this.onChatroomClick(room)" >
+            <span>{{room.roomName}}</span>
           </div>
-          <button mat-raised-button color="primary" (click)="this.onChatroomClick(room)">
-            Joindre
-          </button>
 
         </mat-grid-tile>
       </mat-grid-list>
@@ -38,12 +35,9 @@
       <mat-grid-list cols="2" rowHeight="5:1" *ngIf="this.chatService.filterActivated">
         <mat-grid-tile *ngFor="let room of this.chatService.filteredRooms">
 
-          <div class="roomname-container" mat-raised-button color="primary">
-            {{room.roomName}}
+          <div fxLayoutAlign="center center" id="settingsBtnDiv" (click)="this.onChatroomClick(room)" >
+            <span>{{room.roomName}}</span>
           </div>
-          <button mat-raised-button color="primary" (click)="this.onChatroomClick(room)">
-            Joindre
-          </button>
 
         </mat-grid-tile>
       </mat-grid-list>

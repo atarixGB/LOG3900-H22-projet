@@ -532,7 +532,7 @@ mongoClient.connect(process.env.POLYGRAM_APP_DATABASE_URL, { useNewUrlParser: tr
                 members: result.members,
                 likes: result.likes,
                 albumName: result.albumName,
-                creationDate:result.creationDate
+                creationDate: result.creationDate
               };
               res.json(returnedJson)
               console.log("GotDrawing");
@@ -1010,7 +1010,7 @@ mongoClient.connect(process.env.POLYGRAM_APP_DATABASE_URL, { useNewUrlParser: tr
         // pour leger : Update collab stats incremente seulement les secondes de collab
         app.put("/profile/stats/collabs/updateCollabDuration/:username", (request, response, next) => {
           const identifier = request.params.username;
-          const secondsSpentInCollab = request.body.secondsSpentInCollab;
+          const secondsSpentInCollab = Number(request.body.secondsSpentInCollab);
           
     
           DB.collection("users").findOneAndUpdate({ identifier: identifier },

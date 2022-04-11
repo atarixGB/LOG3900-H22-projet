@@ -13,7 +13,7 @@ import org.json.JSONObject
 import java.util.ArrayList
 import kotlin.math.abs
 
-class  Ellipse(context: Context, baseCanvas: Canvas, val socket : DrawingSocket, val selection: Selection, val drawingId: String) : Tool(context, baseCanvas, socket) {
+class  Ellipse(context: Context, baseCanvas: Canvas, val socket : DrawingSocket, val selection: Selection, var drawingId: String) : Tool(context, baseCanvas, socket) {
     var top = 0F
     var right = 0F
     var bottom = 0F
@@ -38,7 +38,7 @@ class  Ellipse(context: Context, baseCanvas: Canvas, val socket : DrawingSocket,
             val iEllipseStroke = IEllipseStroke(
                 getBoundingPoints(),
                 getPaintParameters().color,
-                Color.WHITE, //to change
+                getFillColor().color, //to change
                 getPaintParameters().strokeWidth,
                 false,
                 getCenter(),
@@ -54,6 +54,12 @@ class  Ellipse(context: Context, baseCanvas: Canvas, val socket : DrawingSocket,
             selection.oldTool = ToolbarFragment.MenuItem.OVAL
             nextTool = ToolbarFragment.MenuItem.SELECTION
         }
+    }
+
+    private fun getFillColor(): Paint {
+        val paint = Paint()
+        paint.color = this.fillPaint.color
+        return paint
     }
 
     private fun getCenter(): IVec2{
