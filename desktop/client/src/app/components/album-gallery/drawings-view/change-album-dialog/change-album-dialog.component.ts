@@ -26,8 +26,10 @@ export class ChangeAlbumDialogComponent implements OnInit {
   changeAccess(value: number): void {
     this.isPrivate = value == 1;
     if (this.isPrivate) {
-      this.newAlbumId = this.albumGalleryService.myAlbums[0]._id;
+      this.newAlbumName = this.albumGalleryService.myAlbumsWithoutPublic[0].name;
+      this.newAlbumId = this.albumGalleryService.myAlbumsWithoutPublic[0]._id;
     } else {
+      this.newAlbumName = PUBLIC_ALBUM.name;
       this.newAlbumId = PUBLIC_ALBUM.id;
     }
   }

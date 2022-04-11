@@ -11,16 +11,16 @@
     <mat-label>Accessibilité</mat-label>
     <mat-select (valueChange)="this.changeAccess($event)" value="0">
       <mat-option value="0">Public</mat-option>
-      <mat-option value="1" *ngIf="this.albumGalleryService.myAlbums.length != 0">Privé</mat-option>
+      <mat-option value="1" *ngIf="this.albumGalleryService.myAlbumsWithoutPublic.length != 0">Privé</mat-option>
     </mat-select>
   </mat-form-field>
 
   <div class="albums-container-view" *ngIf="this.isPrivate">
     <mat-grid-list cols="3">
-      <mat-grid-tile *ngFor="let album of this.albumGalleryService.myAlbums" (click)="onAlbumClick(album)">
-        <button mat-icon-button disableRipple="true" matTooltip="{{album.name}}">
+      <mat-grid-tile *ngFor="let album of this.albumGalleryService.myAlbumsWithoutPublic" (click)="onAlbumClick(album)">
+        <button mat-icon-button disableRipple="true">
           <div>
-            <mat-icon>folder</mat-icon>
+            <mat-icon class="folder-icon">folder</mat-icon>
             {{album.name}}
           </div>
         </button>
@@ -28,7 +28,7 @@
     </mat-grid-list>
   </div>
 
-  <p>Le dessin sera transféré dans l'album <span class="bol">{{ this.newAlbumName }}</span></p>
+  <p>Le dessin sera transféré dans l'album <span class="bold">{{ this.newAlbumName }}</span></p>
 
 </mat-dialog-content>
 
