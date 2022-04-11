@@ -13,6 +13,7 @@ import com.example.mobile.Interface.IUser
 import com.example.mobile.R
 import com.example.mobile.Retrofit.IMyService
 import com.example.mobile.Retrofit.RetrofitClient
+import com.example.mobile.activity.drawing.DrawingCollaboration
 import com.example.mobile.bitmapDecoder
 import com.example.mobile.viewModel.SharedViewModelToolBar
 import com.mikhaellopez.circularimageview.CircularImageView
@@ -40,6 +41,9 @@ class visitingProfile : AppCompatActivity() {
     private var totalNbLikes:Int = 0
     private var totalNbDrawingCreated:Double = 0.0
     private var totalNbAlbumCreated :Double =0.0
+    private lateinit var nbCollaboration: TextView
+    private lateinit var avgCollabTime: TextView
+    private lateinit var totalCollabTime: TextView
     //    private lateinit var email: String
     private lateinit var usernameDisplayed: TextView
     private lateinit var iMyService: IMyService
@@ -59,6 +63,9 @@ class visitingProfile : AppCompatActivity() {
         leave = findViewById(R.id.leave)
         usernameDisplayed= findViewById(R.id.username)
         avatar = findViewById(R.id.userAvatar)
+        nbCollaboration = findViewById(R.id.nbCollaboration)
+        avgCollabTime = findViewById(R.id.avgCollabTime)
+        totalCollabTime = findViewById(R.id.totalCollabTime)
 
         visitingUser = intent.getStringExtra("visitingUser").toString()
         user = intent.getStringExtra("user").toString()
@@ -90,8 +97,11 @@ class visitingProfile : AppCompatActivity() {
             startActivity(intent)
         }
 
-        getNbDrawings(user)
-        getNbAlbumsCreated(user)
+        getNbDrawings(visitingUser)
+        getNbAlbumsCreated(visitingUser)
+        getNbCollab(visitingUser)
+        getAvgCollabDuration(visitingUser)
+        getTotalDurationCollab(visitingUser)
 
 
     }
@@ -193,5 +203,68 @@ class visitingProfile : AppCompatActivity() {
             }
         })
 
+    }
+
+    private fun getNbCollab(user:String) {
+        var call: Call<Any> = iMyService.getNbCollab(user)
+
+        call.enqueue(object: retrofit2.Callback<Any> {
+            override fun onResponse(call: Call<Any>, response: Response<Any>) {
+
+                if(response.body()!=null){
+                    var totalNbCollab= response.body()
+
+                    nbCollaboration.setText(totalNbCollab.toString())
+                }
+                else {
+                    nbCollaboration.setText("0")
+                }
+            }
+            override fun onFailure(call: Call<Any>, t: Throwable) {
+                Toast.makeText(this@visitingProfile, "erreur statistique introuvable", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun getAvgCollabDuration(user:String) {
+        var call: Call<Any> = iMyService.getAvgCollabDuration(user)
+
+        call.enqueue(object: retrofit2.Callback<Any> {
+            override fun onResponse(call: Call<Any>, response: Response<Any>) {
+
+                if(response.body()!=null){
+                    var avgDurationCollab= response.body()
+
+                    avgCollabTime.setText(avgDurationCollab.toString())
+                }
+                else {
+                    avgCollabTime.setText("0")
+                }
+            }
+            override fun onFailure(call: Call<Any>, t: Throwable) {
+                Toast.makeText(this@visitingProfile, "erreur statistique introuvable", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun getTotalDurationCollab(user:String) {
+        var call: Call<Any> = iMyService.getTotalDurationCollab(user)
+
+        call.enqueue(object: retrofit2.Callback<Any> {
+            override fun onResponse(call: Call<Any>, response: Response<Any>) {
+
+                if(response.body()!=null){
+                    var totalDurationCollab= response.body()
+
+                    totalCollabTime.setText(totalDurationCollab.toString())
+                }
+                else {
+                    totalCollabTime.setText("0")
+                }
+            }
+            override fun onFailure(call: Call<Any>, t: Throwable) {
+                Toast.makeText(this@visitingProfile, "erreur statistique introuvable", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 }
