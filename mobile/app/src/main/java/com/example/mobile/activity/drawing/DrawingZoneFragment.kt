@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import com.example.mobile.ISDRAFT
 import com.example.mobile.Interface.IDrawing
 import com.example.mobile.Interface.IVec2
 import com.example.mobile.R
@@ -190,7 +191,9 @@ class DrawingZoneFragment : Fragment() {
     }
 
     private var onFetchStrokes = Emitter.Listener {
-        mDrawingView.updateCollabInfos()
+        if (!ISDRAFT) {
+            mDrawingView.updateCollabInfos()
+        }
     }
 
 //    private var onLoadCurrentSessionData= Emitter.Listener {
