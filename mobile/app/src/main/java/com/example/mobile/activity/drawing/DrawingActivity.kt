@@ -107,6 +107,11 @@ class DrawingActivity : AppCompatActivity(), CreateDrawingPopUp.DialogListener, 
             }
             val dialog: androidx.appcompat.app.AlertDialog = builder.create()
             dialog.show()
+
+            var jo = JSONObject()
+            jo.put("room", "rien")
+            jo.put("username", user)
+            DrawingSocket.socket.emit("joinCollab", jo)
         }
     }
 
