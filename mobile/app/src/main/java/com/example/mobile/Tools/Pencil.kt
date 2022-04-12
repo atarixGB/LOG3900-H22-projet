@@ -50,8 +50,9 @@ class Pencil(context: Context, baseCanvas: Canvas, val socket : DrawingSocket, v
 
     override fun touchUp() {
         if (mStartX != mx || mStartY != my) {
-            path!!.lineTo(mStartX, mStartY)
-            points.add(IVec2(mStartX, mStartY))
+            path!!.lineTo(mx, my)
+            points.add(IVec2(mx, my))
+            baseCanvas!!.drawPath(path!!, strokePaint!!)
             this.sendPencilStroke()
             strokePaint.strokeJoin = Paint.Join.ROUND // default: MITER
             strokePaint.strokeCap = Paint.Cap.ROUND
